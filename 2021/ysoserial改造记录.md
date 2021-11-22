@@ -10,7 +10,7 @@
 
 
 
-在 Java 中，所有的类默认通过 ClassLoader 加载，而 Java 默认提供了三层的 ClassLoader，并通过双亲委托模型的原则进行加载，其基本模型与加载位置如下（更多ClassLoader相关原理请自行搜索）：<br />![image.png](https://cdn.nlark.com/yuque/0/2021/png/1074642/1631522331629-059c2803-e871-4e1b-b789-867016cc3aa0.png)<br />s![image.png](https://cdn.nlark.com/yuque/0/2021/png/1074642/1631522779059-f590770a-0e57-4f58-828b-196599082321.png)<br />Java 中默认的 ClassLoader 都规定了其指定的加载目录，一般也不会通过 JVM 参数来使其加载自定义的目录，所以我们需要自定义一个 ClassLoader 来加载装有不同版本的 jar 包的扩展目录，同时为了使运行扩展的 jar 包时，与启动项目实现绝对的隔离，我们需要保证他们所加载的类不会有相同的 ClassLoader，根据双亲委托模型的原理可知，我们必须使自定义的 ClassLoader 的 parent 为 null，这样不管是 JRE 自带的 jar 包或一些基础的 Class 都不会委托给 App ClassLoader（当然仅仅是将 Parent 设置为 null 是不够的，后面会说明)。与此同时这些实现了不同版本的 jar 包，是经过二次开发后的可以独立运行的项目。
+在 Java 中，所有的类默认通过 ClassLoader 加载，而 Java 默认提供了三层的 ClassLoader，并通过双亲委托模型的原则进行加载，其基本模型与加载位置如下（更多ClassLoader相关原理请自行搜索）：<br />![image-20211122172332343](https://gitee.com/samny/images/raw/master/summersec//32u23er32ec/32u23er32ec.png)<br />![image-20211122172352427](https://gitee.com/samny/images/raw/master/summersec//52u23er52ec/52u23er52ec.png)<br />Java 中默认的 ClassLoader 都规定了其指定的加载目录，一般也不会通过 JVM 参数来使其加载自定义的目录，所以我们需要自定义一个 ClassLoader 来加载装有不同版本的 jar 包的扩展目录，同时为了使运行扩展的 jar 包时，与启动项目实现绝对的隔离，我们需要保证他们所加载的类不会有相同的 ClassLoader，根据双亲委托模型的原理可知，我们必须使自定义的 ClassLoader 的 parent 为 null，这样不管是 JRE 自带的 jar 包或一些基础的 Class 都不会委托给 App ClassLoader（当然仅仅是将 Parent 设置为 null 是不够的，后面会说明)。与此同时这些实现了不同版本的 jar 包，是经过二次开发后的可以独立运行的项目。
 
 
 
@@ -85,7 +85,7 @@ public class StandardExecutorClassLoader extends URLClassLoader {
 }
 
 ```
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1074642/1631522862533-35573751-0a98-40f3-9474-3b446afc9ab7.png)<br />
+![image-20211122172440217](https://gitee.com/samny/images/raw/master/summersec//40u24er40ec/40u24er40ec.png)<br />
 
 ### Shiro反序列化漏洞实现
 
