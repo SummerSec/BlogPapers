@@ -64,7 +64,7 @@ public int compare(Attr attr0, Attr attr1) {
 
 `compare`方法是一个有参方法，所以在调用方法时并不能直接传入两个String类型或者Object类型。
 
-![image-20211108173941363](https://gitee.com/samny/images/raw/master/summersec//49u39er49ec/49u39er49ec.png)
+![11](https://img-blog.csdnimg.cn/f7e925b667bd4b979c760313a2e8b6e8.png)
 
 然而Attr是一个接口，不能直接实例化，只能找实现类。这里我使用的是`com\sun\org\apache\xerces\internal\dom\AttrNSImpl.java`类。
 
@@ -155,8 +155,7 @@ public class CommonsBeanutilsAttrCompare {
 
 最终实际结果
 
-![attrcompare](https://gitee.com/samny/images/raw/master/summersec//5u12er5ec/5u12er5ec.gif)
-
+![](https://img-blog.csdnimg.cn/0a6fb4c59be54d3d95fc711a8354e6f1.gif)
 
 
 ----
@@ -537,7 +536,9 @@ CommonsBeanutils的1.9.4的升级描述是，也就是说默认情况下还是�
 
 > 在1.9.2版本中加入了一个特殊的BeanIntrospector类。这可以用来阻止攻击者使用Java对象的class属性来获得对classloader的访问。然而，这种保护在默认情况下是不启用的。PropertyUtilsBean（以及随之而来的BeanUtilsBean）现在默认不允许类级属性访问，从而防止CVE-2014-0114。
 
-![image-20210614171420869](https://gitee.com/samny/images/raw/master/summersec//21u14er21ec/21u14er21ec.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3752208c97184e86b07a244b55f1c660.png)
+
+
 
 
 
