@@ -24,6 +24,7 @@
 | 11/15 | [ysoserial改造记录](./2021/ysoserial改造记录.md)             | ysoserial/Java |
 | 11/30 | [JNDI注入](./2021/JNDI注入.md)                               | JNDI/Java      |
 | 12/08 | [shiro-JRMP-gadget](./2021/shiro-JRMP-gadget.md)             | shiro/exp      |
+| 12/21 | [Fastjson_Mysql_gadget复现](./2021/Fastjson_Mysql_gadget复现.md) | fastjson/exp   |
 
 
 
