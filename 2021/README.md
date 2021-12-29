@@ -9,7 +9,7 @@
 | Time  | Name                                                         | Tags           |
 | ----- | ------------------------------------------------------------ | -------------- |
 | 04/15 | [PII泄露--用CodeQL识别日志中的PII数据](./PII泄露--用CodeQL识别日志中的PII数据.md) | CodeQL/Java    |
-| 04/24 | [CodeQL workshop for Java Unsafe deserialization in Apache Struts](./CodeQL workshop for Java Unsafe deserialization in Apache Struts.md) | CodeQL/Java    |
+| 04/24 | [CodeQL for Java Unsafe deserialization in Apache Struts](./CodeQL-workshop-for-Java-Unsafe-deserialization-in-Apache-Struts.md) | CodeQL/Java    |
 | 06/05 | [weblogic之CVE-2020-2551iiop反序列化漏洞分析](./weblogic之CVE-2020-2551iiop反序列化漏洞分析.md) | Java           |
 | 06/05 | [weblogic之CVE-2020-2551iiop反序列化漏洞复现](./weblogic之CVE-2020-2551iiop反序列化漏洞复现.md) | Java           |
 | 07/21 | [Tomcat通用回显学习笔记](./Tomcat通用回显学习笔记.md)        | Java           |
