@@ -1,6 +1,6 @@
 ## 👋像清水般清澈透明
 
-[🏯 首页](https://sumsec.me/)&emsp;&emsp; &emsp;&emsp;  [&#x1F4E3; About ME]() &emsp;&emsp;&emsp;&emsp;  [&#x1F4D2;Old Blog]()
+[🏯 首页](https://sumsec.me/)&emsp;&emsp; &emsp;&emsp;  [&#x1F4E3; About ME](./AboutMe.md) &emsp;&emsp;&emsp;&emsp;  [&#x1F4D2;Old Blog](https://old.sumsec.me)
 
 
 
