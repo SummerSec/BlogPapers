@@ -19,4 +19,5 @@
 | 11/30 | [JNDI注入](./JNDI注入.md)                                    | JNDI/Java      |
 | 12/08 | [shiro-JRMP-gadget](./shiro-JRMP-gadget.md)                  | shiro/exp      |
 | 12/21 | [Fastjson_Mysql_gadget复现](./Fastjson_Mysql_gadget复现.md)  | fastjson/exp   |
+| 12/31 | [2021年度总结](./2021年度总结.md)                            |                |
 
