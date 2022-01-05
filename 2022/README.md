@@ -12,7 +12,7 @@
 
 | Time | Name                        | Tags |
 | ---- | --------------------------- | ---- |
-|      | [PL_Notes](./PL Notes-1.md) | PL   |
+|      | [PL_Notes](./PL_Notes-1.md) | PL   |
 |      |                             |      |
 |      |                             |      |
 
