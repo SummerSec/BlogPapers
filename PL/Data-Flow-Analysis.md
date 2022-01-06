@@ -60,10 +60,10 @@ B 的输出自然是其输入在经过多次转换后得到的状态。
 <details>
     <summary>Hint </summary>
 
-* 函数调用 Method Calls
-    * 我们将分析的是过程本身中的事情，即 Intra-procedural。而过程之间的分析，将在 Inter-procedural Analysis 中介绍
-* 变量别名 Aliases
-    * 变量不能有别名。有关问题将在指针分析中介绍。
+* 函数调用 Method Calls</br>
+    * 我们将分析的是过程本身中的事情，即 Intra-procedural。而过程之间的分析，将在 Inter-procedural Analysis 中介绍</br>
+* 变量别名 Aliases</br>
+    * 变量不能有别名。有关问题将在指针分析中介绍。</br>
 
 </details>
 
