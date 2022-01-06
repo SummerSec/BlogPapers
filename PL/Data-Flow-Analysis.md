@@ -7,14 +7,10 @@
 将这句话展开来，所谓数据流分析就是：
 
 How <font color="red">application-specific Data (对数据的抽象：+, -, 0 等……)</font>
-
-	<font color="blue">Flows (根据分析的类型，做出合适的估算)</font> through the 
-	
-		<font color="green">Nodes (数据如何 transfer, 如 + op + = +)</font> and
-	
-		<font color="green">Edges (控制流如何处理，例如两个控制流汇入一个BB)</font> of 
-	
-		<font color="green">CFG (整个程序)</font> ?
+​	<font color="blue">Flows (根据分析的类型，做出合适的估算)</font> through the 
+​		<font color="green">Nodes (数据如何 transfer, 如 + op + = +)</font> and
+​		<font color="green">Edges (控制流如何处理，例如两个控制流汇入一个BB)</font> of 
+​		<font color="green">CFG (整个程序)</font> ?
 
 不同的数据流分析，有着不同的<font color="Red">data abstraction</font>, <font color="blue">flow safe-approximation（流动安全近似值）</font>策略，<font color="green">transfer functions&control-flow handlings（转移函数和控制流处理）</font>。
 
