@@ -1,12 +1,14 @@
-## Data Analysis Foundation
+## Data Analysis Foundation 数据分析基础
 
-### Iterative Algorithm, Another View
+### Iterative Algorithm, Another View 迭代算法，另一种观点
 
 给定一个有 k 个节点的 CFG，迭代算法会更新每个节点 n 的 OUT[n] 值。那么我就可以考虑把这些值定义为一个 k-tuple：
+
 $$
 (OUT[n_1],OUT[n_2],...,OUT[n_k])\in (V_1\times V_2 \times ...\times V_k) = V^k
 $$
-则，我们的数据流分析迭代算法框架就可记为$F:V^k \rightarrow V^k$
+
+则，我们的数据流分析迭代算法框架就可记为![formula](https://render.githubusercontent.com/render/math?math=$F:V^k \rightarrow V^k$)
 
 迭代过程就被记为：
 
@@ -28,7 +30,7 @@ $$
 
 为了回答这个问题，我们需要先回顾一些数学。
 
-### Partial Order
+### Partial Order 部分定理
 
 所谓偏序集合（poset），就是一个由集合 $P$ 和偏序关系$\sqsubseteq$所组成$(P, \sqsubseteq)$对。这个对满足以下三个条件：
 
@@ -39,9 +41,11 @@ $$
 
 偏序关系与全序关系的区别在于，全序关系可以让任意两个元素比较，而偏序关系不保证所有元素都能进行比较。
 
+----
 
 
-### Upper and Lower Bounds
+
+### Upper and Lower Bounds 上界和下界
 
 对于偏序集中的某子集 S 来说：
 
@@ -64,9 +68,11 @@ $$
 
 并不是每个偏序集都有 lub 和 glb，但是如果有，那么该 lub, glb 将是唯一的。（可假设存在多个，然后用自反性证明它们是同一个）
 
+----
 
 
-### Lattice, Semilattice, Complete and Product Lattic
+
+### Lattice, Semilattice, Complete and Product Lattic  格子、半格子、完全格子和产品格子
 
 给定一个偏序集，如果任意元素 a, b 都有 lub和glb，那么这么偏序集就叫做 **格（lattice）**。
 
@@ -99,9 +105,11 @@ $$
 
 扩展阅读：如果偏序集任意两元素的上下界仅有其 lub 和 glb，那么称该偏序集为半格（Semilattice）
 
+---
 
 
-### Data Flow Analysis Framework via Lattice
+
+### Data Flow Analysis Framework via Lattice   通过格子的数据流分析框架
 
 一个数据流分析框架（D, L, F）由以下元素组成：
 
@@ -113,13 +121,17 @@ $$
 
 ![image-20220106151409979](https://cdn.jsdelivr.net/gh/SummerSec/Images/10u1410ec10u1410ec.png)
 
-### Monotonicity and Fixed Point Theorem
+----
+
+
+
+### Monotonicity and Fixed Point Theorem  单调性和不动点定理
 
 回看我们在上面提出的问题：迭代算法在什么条件下可以停机？我们在这里引入不动点定理：
 
 
 
-Monotonicity 单调性：如果$x \sqsubseteq y \Rightarrow f(x)\sqsubseteq f(y)$，则说函数f: L -> L 是**单调的**。
+Monotonicity 单调性：如果![formula](https://render.githubusercontent.com/render/math?math=$x \sqsubseteq y \Rightarrow f(x)\sqsubseteq f(y)$]，则说函数f: L -> L 是**单调的**。
 
 FIxed Point Theorem 不动点定理：给定一个全格$(L,\sqsubseteq)$，如果
 
@@ -151,9 +163,11 @@ FIxed Point Theorem 不动点定理：给定一个全格$(L,\sqsubseteq)$，如�
 
 通过上面的证明，我们又回答了一个问题：如果我们的迭代算法符合不动点定理的要求，那么迭代得到的不动点，确实就是最优不动点。
 
+---
 
 
-### Relate Iterative Algorithm to Fixed Point Theorem
+
+### Relate Iterative Algorithm to Fixed Point Theorem 迭代算法与不动点定理的关系
 
 以上我们只是定性的描述了是否能得到最优不动点，但是迭代算法怎样才能算是符合了不动点定理的要求呢？接下来介绍关联的方法。
 
@@ -209,9 +223,9 @@ FIxed Point Theorem 不动点定理：给定一个全格$(L,\sqsubseteq)$，如�
 
 ![image-20220106151437371](https://cdn.jsdelivr.net/gh/SummerSec/Images/37u1437ec37u1437ec.png)
 
-### Distributivity and MOP
+### Distributivity and MOP 
 
-我们引入 Meet-Over-All-Paths Solution，即 MOP。在这个 solution 中，我们不是根据节点与其前驱/后继节点的关系来迭代计算数据流，而是直接查找所有路径，根据所有路径的计算结果再取上/下界。这个结果是最理想的结果。
+我们引入 Meet-Over-All-Paths Solution（满足所有路径的解决方案），即 MOP。在这个 solution 中，我们不是根据节点与其前驱/后继节点的关系来迭代计算数据流，而是直接查找所有路径，根据所有路径的计算结果再取上/下界。这个结果是最理想的结果。
 
 ![image-20220106151444677](https://cdn.jsdelivr.net/gh/SummerSec/Images/44u1444ec44u1444ec.png)
 
@@ -227,7 +241,7 @@ FIxed Point Theorem 不动点定理：给定一个全格$(L,\sqsubseteq)$，如�
 
 但这并没有结束。而如果 F 是可分配的，那么确实可以让偏序符号改为等于号。恰好，gen/kill problem 下，F 确实可分配因此我们能确定，迭代算法的精度与 MOP 相等。
 
-### Constant Propagation
+### Constant Propagation 常量传播
 
 当然有些问题下 F 是不可分配的，如常量传播（Constant Propagation）。
 
@@ -255,7 +269,7 @@ FIxed Point Theorem 不动点定理：给定一个全格$(L,\sqsubseteq)$，如�
 
 ![image-20220106151532875](https://cdn.jsdelivr.net/gh/SummerSec/Images/32u1532ec32u1532ec.png)
 
-### Worklist Algorithm
+### Worklist Algorithm 工作列表算法
 
 worklist 是迭代算法的优化。
 
