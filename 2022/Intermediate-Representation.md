@@ -1,8 +1,8 @@
-## PL Notes Prat I
 
-### Intermediate Representation 中间代表（IR）
 
-#### Compilers and Static Analyzers 编译器与静态分析
+## Intermediate Representation 中间代表（IR）
+
+### Compilers and Static Analyzers 编译器与静态分析
 
 编译器将源代码（Source code） 转换为机器代码（Machine Code）。其中的流程框架是：
 
@@ -16,7 +16,7 @@
 
 ---
 
-#### AST vs. IR
+### AST vs. IR
 
 为什么在静态分析的时候，使用 IR 而非 AST 呢？
 
@@ -34,7 +34,7 @@
 
 ---
 
-#### IR: Three-Address Code
+### IR: Three-Address Code
 
 三地址码（3-Address Code）通常没有统一的格式。在每个指令的右边至多有一个操作符。
 
@@ -59,7 +59,7 @@
 
 <!--more-->
 
-#### Static Single Assignment 静态单赋值（SSA）
+### Static Single Assignment 静态单赋值（SSA）
 
 所谓静态单赋值（SSA），就是让每次对变量x赋值都重新使用一个新的变量xi，并在后续使用中选择最新的变量。
 
@@ -95,7 +95,7 @@ q = p + q    q2 = p2 + q1
 
 ---
 
-#### Basic Blocks & Control Flow Graphs 基本块 & 控制流图
+### Basic Blocks & Control Flow Graphs 基本块 & 控制流图
 
 控制流分析（Control Flow Analysis）通常指的是构建控制流图（Control Flow Graph, CFG），并以 CFG 作为基础结构进行静态分析的过程。
 
@@ -144,4 +144,8 @@ CFG 的一个结点可以是一条单独的 3AC，但是更常见的是一个基
 
 
 这样，我们就完成了一个控制流图的构建：
+
+![image-20220105174001342](https://cdn.jsdelivr.net/gh/SummerSec/Images/1u401ec1u401ec.png)
+
+
 
