@@ -1,5 +1,14 @@
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4943002733193231"
-     crossorigin="anonymous"></script>
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4943002733193231"
+        crossorigin="anonymous"></script>
+</head>
+
+
+
+
+
+
+
 
 
 ## 👋像清水般清澈透明
