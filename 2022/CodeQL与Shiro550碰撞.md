@@ -68,7 +68,7 @@ public int compare(Attr attr0, Attr attr1) {
 
 然而Attr是一个接口，不能直接实例化，只能找实现类。这里我使用的是`com\sun\org\apache\xerces\internal\dom\AttrNSImpl.java`类。
 
-![image-20210614104831362](https://gitee.com/samny/images/raw/master/summersec//31u48er31ec/31u48er31ec.png)
+![image-20220221183035494](https://cdn.jsdelivr.net/gh/SummerSec/Images/35u3035ec35u3035ec.png)
 
 ```
         AttrCompare attrCompare = new AttrCompare();
@@ -156,6 +156,7 @@ public class CommonsBeanutilsAttrCompare {
 最终实际结果
 
 ![](https://img-blog.csdnimg.cn/0a6fb4c59be54d3d95fc711a8354e6f1.gif)
+
 
 
 ----
@@ -252,7 +253,7 @@ public class CommonsBeanutilsString {
 
 在挖掘完前面两个类的时候，我就在想其他第三方组件里面会不会存在呢？于是乎就有了下面的结果，测试了43个开源项目，其中15个有。这里只谈论了两个组件apache/log4j、apache/Commons-lang
 
-![image-20210614112251136](https://gitee.com/samny/images/raw/master/summersec//51u22er51ec/51u22er51ec.png)
+![image-20220221183209062](https://cdn.jsdelivr.net/gh/SummerSec/Images/9u329ec9u329ec.png)
 
 
 
@@ -264,11 +265,11 @@ public class CommonsBeanutilsString {
 
 `PropertySource#Comparator`是在组件`log4j-api`下的一个类，log4j是Apache基金会下的一个Java日志组件，宽泛被应用在各大应用上，在`spring-boot`也能看到其身影。
 
-![image-20210614155143828](https://gitee.com/samny/images/raw/master/summersec//43u51er43ec/43u51er43ec.png)
+![image-20220221183100323](https://cdn.jsdelivr.net/gh/SummerSec/Images/0u310ec0u310ec.png)
 
 
 
-![image-20210614113207171](https://gitee.com/samny/images/raw/master/summersec//7u32er7ec/7u32er7ec.png)
+![image-20220221183140909](https://cdn.jsdelivr.net/gh/SummerSec/Images/41u3141ec41u3141ec.png)
 
 
 
@@ -406,9 +407,7 @@ public class CommonsBeanutilsPropertySource<pubilc> {
 
 `ObjectToStringComparator`是apache属于下的`Commons-lang`组件，也是一个比较典型的组件。
 
-![image-20210614155257724](https://gitee.com/samny/images/raw/master/summersec//57u52er57ec/57u52er57ec.png)
-
-
+![image-20220221183227584](https://cdn.jsdelivr.net/gh/SummerSec/Images/27u3227ec27u3227ec.png)
 
 该类的Compare方法参数是Object类型，比较简单。
 
@@ -526,7 +525,7 @@ public class CommonsBeanutilsObjectToStringComparator<pubilc> {
 
 那么就是以下的情况，只需要在挖掘更多的gadget和解决高版本CommonsBeanutils的serialVersionUID不同问题。
 
-![shiro550](https://gitee.com/samny/images/raw/master/summersec//8u52er8ec/8u52er8ec.png)
+![image-20220221183250833](https://cdn.jsdelivr.net/gh/SummerSec/Images/50u3250ec50u3250ec.png)
 
 目前CommonsBeanutils最高版本是1.9.4（截至本文创作时间）
 
@@ -537,8 +536,6 @@ CommonsBeanutils的1.9.4的升级描述是，也就是说默认情况下还是�
 > 在1.9.2版本中加入了一个特殊的BeanIntrospector类。这可以用来阻止攻击者使用Java对象的class属性来获得对classloader的访问。然而，这种保护在默认情况下是不启用的。PropertyUtilsBean（以及随之而来的BeanUtilsBean）现在默认不允许类级属性访问，从而防止CVE-2014-0114。
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/3752208c97184e86b07a244b55f1c660.png)
-
-
 
 
 
