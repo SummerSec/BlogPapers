@@ -49,6 +49,7 @@
 | 04/24 | [CodeQL workshop for Java Unsafe deserialization in Apache Struts](./2021/CodeQL-workshop-for-Java-Unsafe-deserialization-in-Apache-Struts.md) | CodeQL/Java    |
 | 06/05 | [weblogic之CVE-2020-2551iiop反序列化漏洞分析](./2021/weblogic之CVE-2020-2551iiop反序列化漏洞分析.md) | Java           |
 | 06/05 | [weblogic之CVE-2020-2551iiop反序列化漏洞复现](./2021/weblogic之CVE-2020-2551iiop反序列化漏洞复现.md) | Java           |
+| 07/15 | [Fastjson回显](./2021/Fastjson回显.md)                       | Java/Fastjson  |
 | 07/21 | [Tomcat通用回显学习笔记](./2021/Tomcat通用回显学习笔记.md)   | Java           |
 | 08/03 | [从Java反序列化漏洞题看CodeQL数据流](./2021/从Java反序列化漏洞题看CodeQL数据流.md) | CodeQL/Java    |
 | 11/01 | [Shiro-550反序列化漏洞分析](./2021/Shiro-550反序列化漏洞分析.md) | shiro550/Java  |
