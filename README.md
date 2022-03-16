@@ -1,6 +1,11 @@
 <head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4943002733193231"
         crossorigin="anonymous"></script>
+    <script src="//unpkg.com/heti/umd/heti-addon.min.js"></script>
+    <script>
+  const heti = new Heti('.heti');
+  heti.autoSpacing(); // 自动进行中西文混排美化和标点挤压
+</script>
 </head>
 
 
