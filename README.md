@@ -1,6 +1,8 @@
 <head>
+    <link rel="stylesheet" href="//unpkg.com/heti/umd/heti.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4943002733193231"
         crossorigin="anonymous"></script>
+    
     <script src="//unpkg.com/heti/umd/heti-addon.min.js"></script>
     <script>
   const heti = new Heti('.heti');
