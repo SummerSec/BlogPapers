@@ -11,6 +11,12 @@
 </head>
 
 
+<article class="entry heti">
+  <h1>我的世界观</h1>
+  <p>有钱人的生活就是这么朴实无华，且枯燥</p>
+  ……
+</article>
+
 
 
 
