@@ -26,7 +26,7 @@
 | 03/10 | [GitHub Java CodeQL CTF](./GitHub Java CodeQL CTF.md)        | CodeQL/Java/CTF      |
 | 03/14 | [Shiro后渗透拓展面](./Shiro后渗透拓展面.md)                  | Shiro/Agent/Web/Java |
 | 03/18 | [Spring Boot RCE到内存马探索](./Spring Boot RCE到内存马探索.md) | Spring/RCE/MemShell  |
-|       |                                                              |                      |
+| 03/29 | [CodeQL Usage Tricks](./CodeQl-Usage-Tricks.md)              | CodeQL/Tricks/Java   |
 |       |                                                              |                      |
 |       |                                                              |                      |
 
