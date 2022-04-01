@@ -1,3 +1,5 @@
+
+
 ## CodeQl Usage Tricks
 
 ## 前言
@@ -157,6 +159,56 @@ codeql database interpret-results --threads=2 --format=sarif-latest -v --output=
 这里的action触发方式采用的是手动触发，手动触发之后在执行结束之后可以在Summary下载结果。比例说本人在SPATool项目执行结果[Summary link](https://github.com/SummerSec/SPATool/actions/runs/2044595073)
 
 ![image-20220327143224242](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/24u3224ec24u3224ec.png)
+
+
+
+---
+
+### CodeQL with SCA 
+
+突然看到楼兰师傅写的[**CodeQL 结合Maven实现SCA**](https://www.yuque.com/loulan-b47wt/rc30f7/ll3a4z)文章，这里给出我的解决方案，这里记录一下。**SCA Software Composition Analysis，软件成分分析，第三方组件安全检查。**
+
+```ql
+import java
+import semmle.code.java.DependencyCounts
+
+predicate jarDependencyCount(int total, string entity) {
+  exists(JarFile targetJar, string jarStem |
+    jarStem = targetJar.getStem() and
+    jarStem != "rt"
+  |
+    total =
+      sum(RefType r, RefType dep, int num |
+        r.fromSource() and
+        not dep.fromSource() and
+        dep.getFile().getParentContainer*() = targetJar and
+        numDepends(r, dep, num)
+      |
+        num
+      ) and
+    entity = jarStem
+  )
+}
+
+from string name, int ndeps
+where jarDependencyCount(ndeps, name)
+select name, ndeps order by ndeps desc
+
+```
+
+运行下面命令就会得到`dependencies.bqrs`文件
+
+```
+codeql database run-queries --search-path  --threads 0 --rerun {database_path} {dependencies.ql}
+```
+
+在运行下面命令就会得到下面图片内容，输出格式有多种方式可选。
+
+```
+codeql bqrs decode --no-titles --format text --output dependencies.txt  dependencies.bqrs
+```
+
+![image-20220401135050399](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/57u5057ec57u5057ec.png)
 
 
 
