@@ -41,7 +41,7 @@
 | 03/14 | [Shiro后渗透拓展面](./2022/Shiro后渗透拓展面.md)             | Shiro/Agent/Web/Java |
 | 03/18 | [Spring Boot RCE到内存马探索](./2022/Spring Boot RCE到内存马探索.md) | Spring/RCE/MemShell  |
 | 03/29 | [CodeQL Usage Tricks](./2022/CodeQL-Usage-Tricks.md)         | CodeQL/Tricks/Java   |
-| 04/14 | [Spring-Framework-RCE-CVE-2022-22965漏洞分析](./2022/Spring-Framework-RCE-CVE-2022-22965漏洞分析.md) | Spring/Core/RCE/java |
+|       |                                                              |                      |
 
 
 
