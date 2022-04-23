@@ -1,0 +1,15 @@
+# mixed-port: 7890
+# allow-lan: true
+# external-controller: 127.0.0.1:59820
+# secret: ''
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: Rule
+log-level: info
+external-controller: :9090
+proxies:
+  
+  - {name: test, server: 198.27.123.107, port: 587, type: vmess, uuid: 2cec9d20-4335-44f1-9142-5a2a03324c2b, alterId: 0, cipher: auto, tls: false, skip-cert-verify: false, network: ws, ws-opts: {path: /, headers: {Host: suncy.me} }, udp: false}
+  - {name: clash, server: 104.19.160.186, port: 443, type: vmess, uuid: 9bbe393a-115e-452a-8938-acf1c6bc5294, alterId: 0, cipher: auto, tls: true, skip-cert-verify: false, network: ws, ws-opts: {path: /clash, headers: {Host: clash.suncy.me} }, udp: false}
+  
