@@ -1,0 +1,21 @@
+name: auto-update
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  0 */4 * * *
+
+jobs:
+  build:
+    name: auto update
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - uses: SummerSec/github-profile-terminal-action@main
+      with:
+        feed_url: https://sumsec.me/resources/sitemap.xml
+        twitter_username: SecSummers
+        theme: dark
+        token: ${{ secrets.RELEASE }}
+        file_path: resources/AboutMe.md
