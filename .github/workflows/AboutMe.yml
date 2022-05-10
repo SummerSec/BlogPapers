@@ -22,9 +22,15 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: wget -O resources/AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md
-
+      - name: Commit updated CHANGELOG
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: ${{ github.event.release.target_commitish }}
+          commit_message: Update CHANGELOG
+          file_pattern: AboutMe.md
 
