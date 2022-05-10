@@ -37,4 +37,10 @@ jobs:
           branch: ${{ github.event.release.target_commitish }}
           commit_message: Update AboutMe
           file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md
+      - name: npm install, build and test
+        run: |
+          npm install -S sitemap-generator
+      - name: Sitemap Generator
+        run: |
+          node /home/runner/work/BlogPapers/BlogPapers/resources/SitemapGenerator.js
 
