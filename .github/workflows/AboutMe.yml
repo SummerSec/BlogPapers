@@ -26,7 +26,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: ls -a|wget -O AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md -P ./resources/
+        run: wget  -O  ./resources/AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md 
 
       - name: Commit updated AboutMe
         uses: stefanzweifel/git-auto-commit-action@v4
