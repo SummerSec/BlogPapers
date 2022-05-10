@@ -36,5 +36,5 @@ jobs:
         with:
           branch: ${{ github.event.release.target_commitish }}
           commit_message: Update AboutMe
-          file_pattern: /resources/AboutMe.md
+          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md
 
