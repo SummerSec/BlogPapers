@@ -43,7 +43,7 @@ jobs:
       - name: Sitemap Generator
         run: |
           node /home/runner/work/BlogPapers/BlogPapers/resources/SitemapGenerator.js
-      - name: Commit updated AboutMe
+      - name: Commit updated Sitemap
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.release.target_commitish }}
