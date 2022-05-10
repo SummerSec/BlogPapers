@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [14.x]
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -43,20 +43,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: npm ci
-      - run: npm run build --if-present
-      - run: npm test
       - name: npm install, build and test
-        run: |
-          npm install -S sitemap-generator
+        run: npm install -S sitemap-generator
       - name: Sitemap Generator
-        run: |
-          node /home/runner/work/BlogPapers/BlogPapers/resources/SitemapGenerator.js
+        run: node /home/runner/work/BlogPapers/BlogPapers/resources/SitemapGenerator.js
       - name: Commit updated Sitemap
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.release.target_commitish }}
           commit_message: Update Sitemap
-          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/SitemapGenerator.js
+          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml
 
