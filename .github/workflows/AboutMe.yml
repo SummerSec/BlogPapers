@@ -26,11 +26,12 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: wget -O resources/AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md
-      - name: Commit updated CHANGELOG
+        run: ls -a|wget -O AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md -P ./resources/
+
+      - name: Commit updated AboutMe
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.release.target_commitish }}
-          commit_message: Update CHANGELOG
+          commit_message: Update AboutMe
           file_pattern: AboutMe.md
 
