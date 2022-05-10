@@ -29,7 +29,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: wget  -O  /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md 
+        run: wget  -O  /home/runner/work/BlogPapers/BlogPapers/resources/ -O AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md 
 
       - name: Commit updated AboutMe
         uses: stefanzweifel/git-auto-commit-action@v4
