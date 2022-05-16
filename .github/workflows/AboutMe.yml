@@ -52,5 +52,5 @@ jobs:
         with:
           branch: ${{ github.event.release.target_commitish }}
           commit_message: Update Sitemap && AboutMe
-          file_pattern: .
+          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml
 
