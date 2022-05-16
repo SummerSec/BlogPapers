@@ -33,12 +33,12 @@ jobs:
       - name: Run a one-line script
         run: wget  -O  /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md 
 
-      - name: Commit updated AboutMe
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          branch: ${{ github.event.release.target_commitish }}
-          commit_message: Update AboutMe
-          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md
+#       - name: Commit updated AboutMe
+#         uses: stefanzweifel/git-auto-commit-action@v4
+#         with:
+#           branch: ${{ github.event.release.target_commitish }}
+#           commit_message: Update AboutMe
+#           file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -51,6 +51,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.release.target_commitish }}
-          commit_message: Update Sitemap
-          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml
+          commit_message: Update Sitemap && AboutMe
+          file_pattern: .
 
