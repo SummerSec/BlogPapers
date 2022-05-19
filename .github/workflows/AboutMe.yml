@@ -58,5 +58,5 @@ jobs:
         with:
           branch: ${{ github.event.release.target_commitish }}
           commit_message:  🍭Update Sitemap && AboutMe && Git Svg
-          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml /home/runner/work/BlogPapers/BlogPapers/resources/github-snake-dark.svg /home/runner/work/BlogPapers/BlogPapers/resources/ocean.gif /home/runner/work/BlogPapers/BlogPapers/resources/os.gif /home/runner/work/BlogPapers/BlogPapers/resources/Hi.gif /home/runner/work/BlogPapers/BlogPapers/resources/github-snake.svg 
+          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake-dark.svg /home/runner/work/BlogPapers/BlogPapers/resources/dist/ocean.gif /home/runner/work/BlogPapers/BlogPapers/resources/os.gif /home/runner/work/BlogPapers/BlogPapers/resources/Hi.gif /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake.svg 
 
