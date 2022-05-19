@@ -32,9 +32,11 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: |
-          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/github-snake.svg https://raw.githubusercontent.com/SummerSec/SummerSec/master/dist/github-snake.svg
-          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/ocean.gif https://raw.githubusercontent.com/SummerSec/SummerSec/master/dist/ocean.gif
-          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/github-snake-dark.svg https://raw.githubusercontent.com/SummerSec/SummerSec/master/dist/github-snake-dark.svg
+          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake.svg https://raw.githubusercontent.com/SummerSec/SummerSec/master/dist/github-snake.svg
+          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/dist/ocean.gif https://raw.githubusercontent.com/SummerSec/SummerSec/master/dist/ocean.gif
+          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake-dark.svg https://raw.githubusercontent.com/SummerSec/SummerSec/master/dist/github-snake-dark.svg
+          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/os.gif  https://raw.githubusercontent.com/SummerSec/SummerSec/master/os.gif
+          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/Hi.gif https://raw.githubusercontent.com/SummerSec/SummerSec/master/Hi.gif
           wget  -O  /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md 
 
 #       - name: Commit updated AboutMe
@@ -55,6 +57,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.release.target_commitish }}
-          commit_message:  🍭Update Sitemap && AboutMe &&
-          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml /home/runner/work/BlogPapers/BlogPapers/resources/github-snake-dark.svg /home/runner/work/BlogPapers/BlogPapers/resources/ocean.gif /home/runner/work/BlogPapers/BlogPapers/resources/github-snake.svg 
+          commit_message:  🍭Update Sitemap && AboutMe && Git Svg
+          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml /home/runner/work/BlogPapers/BlogPapers/resources/github-snake-dark.svg /home/runner/work/BlogPapers/BlogPapers/resources/ocean.gif /home/runner/work/BlogPapers/BlogPapers/resources/os.gif /home/runner/work/BlogPapers/BlogPapers/resources/Hi.gif /home/runner/work/BlogPapers/BlogPapers/resources/github-snake.svg 
 
