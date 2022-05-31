@@ -16,8 +16,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.release.target_commitish }}
-          commit_message: Update README
-          file_pattern: README.md
+          commit_message:  💕 Replace
+          file_pattern: .
 #       
 #       - name: Push changes
 #         uses: SummerSec/push@master # 更新README.md
