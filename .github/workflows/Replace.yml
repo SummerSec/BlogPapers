@@ -1,0 +1,25 @@
+name: 💕 Replace
+on:  workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find and Replace
+        uses: SummerSec/gha-find-replace@master
+        with:
+          find: "SummerSec/Images"
+          replace: ${{ github.repository }}
+          regex: false
+          include: "README.md" # 需要替换的文件内容
+      - name: Commit Replace README
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: ${{ github.event.release.target_commitish }}
+          commit_message: Update README
+          file_pattern: README.md
+#       
+#       - name: Push changes
+#         uses: SummerSec/push@master # 更新README.md
+#         with:
+#           github_token: ${{ secrets.RELEASE }} # github token
