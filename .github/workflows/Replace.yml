@@ -11,7 +11,7 @@ jobs:
           find: "https://gitee.com/samny/images/raw/master/"
           replace: "https://raw.githubusercontent.com/SummerSec/Images/main/"
 #           regex: false
-          include: "2021/*.md" # 需要替换的文件内容
+          include: "**/*.md" # 需要替换的文件内容
       - name: Commit Replace README
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
