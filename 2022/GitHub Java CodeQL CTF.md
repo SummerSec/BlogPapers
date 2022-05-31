@@ -38,7 +38,7 @@ public boolean isValid(Container container, ConstraintValidatorContext context) 
 
 大致逻辑如下图，关键点在`buildConstraintViolationWithTemplate`方法调用上。
 
-![image-20210424151151578](https://gitee.com/samny/images/raw/master/56u11er56ec/56u11er56ec.png)
+![image-20210424151151578](https://raw.githubusercontent.com/SummerSec/Images/main/56u11er56ec/56u11er56ec.png)
 
 ---
 
@@ -87,11 +87,11 @@ select "Quick-eval isSource"
 
 第一个`container`是符合要求，但要求只有6个结果也就是说有两个不符合要求。
 
-![image-20210422165129982](https://gitee.com/samny/images/raw/master/56u35er56ec/56u35er56ec.png)
+![image-20210422165129982](https://raw.githubusercontent.com/SummerSec/Images/main/56u35er56ec/56u35er56ec.png)
 
 根据提示：*Map overrides of isValid method from ConstraintValidator*，所以排除不是重写的方法即可。
 
-![image-20210422164940185](https://gitee.com/samny/images/raw/master/40u49er40ec/40u49er40ec.png)
+![image-20210422164940185](https://raw.githubusercontent.com/SummerSec/Images/main/40u49er40ec/40u49er40ec.png)
 
 只需要在加一行`and this.isOverridable()`判断即可，或者注释掉第四、五行再去掉第六行注释也可以。`getASourceOverriddenMethod`首先会判断是否是重写的方法。
 
@@ -155,7 +155,7 @@ predicate isSink(DataFlow::Node sink){
 select "Quick-eval isSink" 
 ```
 
-![image-20210422173829545](https://gitee.com/samny/images/raw/master/29u38er29ec/29u38er29ec.png)
+![image-20210422173829545](https://raw.githubusercontent.com/SummerSec/Images/main/29u38er29ec/29u38er29ec.png)
 
 
 
@@ -190,7 +190,7 @@ select sink, source, sink, "Custom constraint error message contains unsanitized
 
 没有任何结果，和出题人意料一样。
 
-![image-20210422200354218](https://gitee.com/samny/images/raw/master/54u03er54ec/54u03er54ec.png)
+![image-20210422200354218](https://raw.githubusercontent.com/SummerSec/Images/main/54u03er54ec/54u03er54ec.png)
 
 
 
@@ -331,7 +331,7 @@ predicate partial_flow(DataFlow::PartialPathNode n, DataFlow::Node src, int dist
 }
 ```
 
-![image-20210422212855935](https://gitee.com/samny/images/raw/master/56u28er56ec/56u28er56ec.png)
+![image-20210422212855935](https://raw.githubusercontent.com/SummerSec/Images/main/56u28er56ec/56u28er56ec.png)
 
 
 
@@ -383,11 +383,11 @@ dangerousSink(notTainted);
 
 分析1.4的结果，可以发现在停止`getSoftConstraints`和`getHardConstraints`被进一步`track`。
 
-![image-20210424151919760](https://gitee.com/samny/images/raw/master/19u19er19ec/19u19er19ec.png)
+![image-20210424151919760](https://raw.githubusercontent.com/SummerSec/Images/main/19u19er19ec/19u19er19ec.png)
 
 CodeQL允许在在`TaintTracking::Configuration`中声明额外的污点步骤，也就是谓词`isAdditionalTaintStep`。
 
-![image-20210424155832451](https://gitee.com/samny/images/raw/master/32u58er32ec/32u58er32ec.png)
+![image-20210424155832451](https://raw.githubusercontent.com/SummerSec/Images/main/32u58er32ec/32u58er32ec.png)
 
 但这里官方推荐另一种更通用的方法，使用[TaintTracking::AdditionalTaintStep](https://github.com/github/codeql/blob/bc7163aa68017f93c25ec7423044727a5d785142/java/ql/src/semmle/code/java/dataflow/internal/TaintTrackingUtil.qll#L67)类。
 
@@ -425,7 +425,7 @@ class StepThroughMemberMethodCallable extends TaintTracking::AdditionalTaintStep
 }
 ```
 
-![image-20210424173435717](https://gitee.com/samny/images/raw/master/35u34er35ec/35u34er35ec.png)
+![image-20210424173435717](https://raw.githubusercontent.com/SummerSec/Images/main/35u34er35ec/35u34er35ec.png)
 
 
 
@@ -457,7 +457,7 @@ class StepThroughConstructor extends TaintTracking::AdditionalTaintStep {
 }
 ```
 
-![image-20210424173454759](https://gitee.com/samny/images/raw/master/54u34er54ec/54u34er54ec.png)
+![image-20210424173454759](https://raw.githubusercontent.com/SummerSec/Images/main/54u34er54ec/54u34er54ec.png)
 
 
 
@@ -594,7 +594,7 @@ select sink, source, sink, "Custom constraint error message contains unsanitized
 
 
 
-![image-20210424173533177](https://gitee.com/samny/images/raw/master/33u35er33ec/33u35er33ec.png)
+![image-20210424173533177](https://raw.githubusercontent.com/SummerSec/Images/main/33u35er33ec/33u35er33ec.png)
 
 
 

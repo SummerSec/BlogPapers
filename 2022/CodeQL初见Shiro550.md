@@ -52,33 +52,33 @@ Shiro550已知利用方式：
 
 首先`TemplateImpl`类不难发现在Commons-collections4.0版本的反序列化漏洞都用到了这个类，前期大致流程都是差不多，如果不熟悉可以学习笔者之前写的[漫谈Commons-Collections反序列化](https://summersec.github.io/2020/05/26/%E6%BC%AB%E8%B0%88Commons-Collections%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/) 第二部分。
 
-![image-20210609155556389](https://gitee.com/samny/images/raw/master/summersec//56u55er56ec/56u55er56ec.png)
+![image-20210609155556389](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//56u55er56ec/56u55er56ec.png)
 
 `PriorityQueue`调用`siftDownUsingComparator`方法的669行之后会调用`BeanComparator`类的`Compare`方法
 
-![image-20210609162051136](https://gitee.com/samny/images/raw/master/summersec//51u20er51ec/51u20er51ec.png)
+![image-20210609162051136](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//51u20er51ec/51u20er51ec.png)
 
 这里的`property`通过反射修改了`outputProperties`，之后会调用**PropertyUtils.getProperty(o1, this.property)**
 
-![image-20210609162106968](https://gitee.com/samny/images/raw/master/summersec//7u21er7ec/7u21er7ec.png)
+![image-20210609162106968](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//7u21er7ec/7u21er7ec.png)
 
 这里首先会得到一个`PropertyUtilsBean`的实例，然后调用`getProperty`方法，获取属性。
 
-![image-20210609163254880](https://gitee.com/samny/images/raw/master/summersec//54u32er54ec/54u32er54ec.png)
+![image-20210609163254880](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//54u32er54ec/54u32er54ec.png)
 
 接下去是调用`getNestedProperty`方法，然后进行一系列的JavaBean判断之后调用`getSimpleProperty`方法。
 
-![image-20210609163419984](https://gitee.com/samny/images/raw/master/summersec//20u34er20ec/20u34er20ec.png)
+![image-20210609163419984](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//20u34er20ec/20u34er20ec.png)
 
-![image-20210609163816013](https://gitee.com/samny/images/raw/master/summersec//16u38er16ec/16u38er16ec.png)
+![image-20210609163816013](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//16u38er16ec/16u38er16ec.png)
 
 首先还是进行判断之后调用`getPropertyDescriptor`方法，在这里很明显会获取恶意的`TemplatesImpl`对象
 
-![image-20210609164452646](https://gitee.com/samny/images/raw/master/summersec//52u44er52ec/52u44er52ec.png)
+![image-20210609164452646](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//52u44er52ec/52u44er52ec.png)
 
 在方法结束之后返回`PropertyDescriptor`对象，会获取方法（反射调用）然后最终触发漏洞。
 
-![image-20210609164728186](https://gitee.com/samny/images/raw/master/summersec//28u47er28ec/28u47er28ec.png)
+![image-20210609164728186](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//28u47er28ec/28u47er28ec.png)
 
 
 
@@ -125,11 +125,11 @@ Shiro550已知利用方式：
 
 在文章中p牛使用IDEA自带的功能去找了，当我去复现的时候发现这种方式其实是有点效率低下，搞不好会遗落或者完全找不到。这里我使用的环境是[JavaLearnVulnerability](https://github.com/SummerSec/JavaLearnVulnerability)/[shiro](https://github.com/SummerSec/JavaLearnVulnerability/tree/master/shiro)/**shiro-deser**/结果大概是有200+，当然不完全都是shiro自带的依赖，当然原文中也有100+。
 
-![image-20210613164632858](https://gitee.com/samny/images/raw/master/summersec//33u46er33ec/33u46er33ec.png)
+![image-20210613164632858](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//33u46er33ec/33u46er33ec.png)
 
 这种方式满足了第二和第三个条件，无法满足第一个条件。IDEA是支持导出查询结果，我当时想到是找到`Comparator`接口实现类和`Serializable`接口实现类，导出结果在去用工具合并对比。当时没有想到工具可以处理，自己写脚本处理？
 
-![在这里插入图片描述](https://gitee.com/samny/images/raw/master/summersec//34u12er34ec/34u12er34ec.png)
+![在这里插入图片描述](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//34u12er34ec/34u12er34ec.png)
 
 
 
@@ -141,11 +141,11 @@ Shiro550已知利用方式：
 
 
 
-![image-20210613165637032](https://gitee.com/samny/images/raw/master/summersec//37u56er37ec/37u56er37ec.png)
+![image-20210613165637032](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//37u56er37ec/37u56er37ec.png)
 
 
 
-![image-20210613170425194](https://gitee.com/samny/images/raw/master/summersec//25u04er25ec/25u04er25ec.png)
+![image-20210613170425194](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//25u04er25ec/25u04er25ec.png)
 
 
 
