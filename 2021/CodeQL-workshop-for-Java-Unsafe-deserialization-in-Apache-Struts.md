@@ -109,9 +109,9 @@ The workshop is split into several steps. You can write one query per step, or w
     ```
     
     
-    ![image-20210329212430433](https://gitee.com/samny/images/raw/master/51u24er51ec/51u24er51ec.png)
+    ![image-20210329212430433](https://raw.githubusercontent.com/SummerSec/Images/main/51u24er51ec/51u24er51ec.png)
     
-    ![image-20210329212439289](https://gitee.com/samny/images/raw/master/29u40er29ec/29u40er29ec.png)
+    ![image-20210329212439289](https://raw.githubusercontent.com/SummerSec/Images/main/29u40er29ec/29u40er29ec.png)
     
     
     
@@ -147,8 +147,8 @@ The workshop is split into several steps. You can write one query per step, or w
     select call, method
     ```
     
-    ![image-20210329212627120](https://gitee.com/samny/images/raw/master/27u26er27ec/27u26er27ec.png)
-    ![image-20210329212644844](https://gitee.com/samny/images/raw/master/44u26er44ec/44u26er44ec.png)
+    ![image-20210329212627120](https://raw.githubusercontent.com/SummerSec/Images/main/27u26er27ec/27u26er27ec.png)
+    ![image-20210329212644844](https://raw.githubusercontent.com/SummerSec/Images/main/44u26er44ec/44u26er44ec.png)
     
     </details>
     
@@ -181,9 +181,9 @@ The workshop is split into several steps. You can write one query per step, or w
     select fromXML
     ```
 
-    ![image-20210329212821422](https://gitee.com/samny/images/raw/master/21u28er21ec/21u28er21ec.png)
+    ![image-20210329212821422](https://raw.githubusercontent.com/SummerSec/Images/main/21u28er21ec/21u28er21ec.png)
     
-    ![image-20210329212833431](https://gitee.com/samny/images/raw/master/33u28er33ec/33u28er33ec.png)
+    ![image-20210329212833431](https://raw.githubusercontent.com/SummerSec/Images/main/33u28er33ec/33u28er33ec.png)
     
     However, as we now want to report only the call itself, we can inline the temporary `method` variable like so:
     
@@ -226,11 +226,11 @@ The workshop is split into several steps. You can write one query per step, or w
       arg = fromXML.getArgument(0)
     select fromXML, arg
     ```
-    ![image-20210329213437656](https://gitee.com/samny/images/raw/master/37u34er37ec/37u34er37ec.png)
+    ![image-20210329213437656](https://raw.githubusercontent.com/SummerSec/Images/main/37u34er37ec/37u34er37ec.png)
 
-    ![image-20210329213507450](https://gitee.com/samny/images/raw/master/7u35er7ec/7u35er7ec.png)
+    ![image-20210329213507450](https://raw.githubusercontent.com/SummerSec/Images/main/7u35er7ec/7u35er7ec.png)
 
-    ![image-20210329213522528](https://gitee.com/samny/images/raw/master/22u35er22ec/22u35er22ec.png)
+    ![image-20210329213522528](https://raw.githubusercontent.com/SummerSec/Images/main/22u35er22ec/22u35er22ec.png)
     
     
     
@@ -278,11 +278,11 @@ The workshop is split into several steps. You can write one query per step, or w
     where isXMLDeserialized(arg)
     select arg
     ````
-    ![image-20210329213914825](https://gitee.com/samny/images/raw/master/14u39er14ec/14u39er14ec.png)
+    ![image-20210329213914825](https://raw.githubusercontent.com/SummerSec/Images/main/14u39er14ec/14u39er14ec.png)
     
-    ![image-20210329213924749](https://gitee.com/samny/images/raw/master/24u39er24ec/24u39er24ec.png)
+    ![image-20210329213924749](https://raw.githubusercontent.com/SummerSec/Images/main/24u39er24ec/24u39er24ec.png)
     
-    ![image-20210329213933795](https://gitee.com/samny/images/raw/master/33u39er33ec/33u39er33ec.png)
+    ![image-20210329213933795](https://raw.githubusercontent.com/SummerSec/Images/main/33u39er33ec/33u39er33ec.png)
     
     
     
@@ -406,11 +406,11 @@ Like predicates, _classes_ in CodeQL can be used to encapsulate reusable portion
     from ContentTypeHandlerToObject toObjectMethod
     select toObjectMethod.getParameter(0)
     ```
-    ![image-20210330140358683](https://gitee.com/samny/images/raw/master/58u03er58ec/58u03er58ec.png)
+    ![image-20210330140358683](https://raw.githubusercontent.com/SummerSec/Images/main/58u03er58ec/58u03er58ec.png)
     
-    ![image-20210330140435655](https://gitee.com/samny/images/raw/master/35u04er35ec/35u04er35ec.png)
+    ![image-20210330140435655](https://raw.githubusercontent.com/SummerSec/Images/main/35u04er35ec/35u04er35ec.png)
     
-    ![image-20210330140447854](https://gitee.com/samny/images/raw/master/47u04er47ec/47u04er47ec.png)
+    ![image-20210330140447854](https://raw.githubusercontent.com/SummerSec/Images/main/47u04er47ec/47u04er47ec.png)
     
     
     
@@ -450,7 +450,7 @@ The data flow graph for this method will look something like this:
 
 > 这个方法的数据流图会是这样的:
 
-<img src="https://gitee.com/samny/images/raw/master/20u06er20ec/20u06er20ec.png" alt="drawing" width="260"/>
+<img src="https://raw.githubusercontent.com/SummerSec/Images/main/20u06er20ec/20u06er20ec.png" alt="drawing" width="260"/>
 
 This graph represents the flow of data from the tainted parameter. The nodes of graph represent program elements that have a value, such as function parameters and expressions. The edges of this graph represent flow through these nodes.
 
@@ -658,11 +658,11 @@ The answer to this is to convert the query to a _path problem_ query. There are 
     where config.hasFlowPath(source, sink)
     select sink, source, sink, "Unsafe XML deserialization"
     ```
-    ![image-20210330204553733](https://gitee.com/samny/images/raw/master/53u45er53ec/53u45er53ec.png)
+    ![image-20210330204553733](https://raw.githubusercontent.com/SummerSec/Images/main/53u45er53ec/53u45er53ec.png)
     
-    ![image-20210330204604285](https://gitee.com/samny/images/raw/master/4u46er4ec/4u46er4ec.png)
+    ![image-20210330204604285](https://raw.githubusercontent.com/SummerSec/Images/main/4u46er4ec/4u46er4ec.png)
     
-    ![image-20210330204613764](https://gitee.com/samny/images/raw/master/13u46er13ec/13u46er13ec.png)
+    ![image-20210330204613764](https://raw.githubusercontent.com/SummerSec/Images/main/13u46er13ec/13u46er13ec.png)
     
     
     

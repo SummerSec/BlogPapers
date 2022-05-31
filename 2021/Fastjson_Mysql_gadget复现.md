@@ -35,13 +35,13 @@ payload：**{ \"name\": { \"@type\": \"java.lang.AutoCloseable\", \"@type\": \"c
 
 
 
-![image-20211220170706354](https://gitee.com/samny/images/raw/master/summersec//6u07er6ec/6u07er6ec.png)
+![image-20211220170706354](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//6u07er6ec/6u07er6ec.png)
 
 
 
 
 
-![image-20211220154409962](https://gitee.com/samny/images/raw/master/summersec//42u44er42ec/42u44er42ec.png)
+![image-20211220154409962](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//42u44er42ec/42u44er42ec.png)
 
 
 

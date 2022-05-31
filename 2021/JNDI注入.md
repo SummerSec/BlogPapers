@@ -8,7 +8,7 @@
 
 将恶意的Reference类绑定在RMI注册表中，其中恶意引用指向远程恶意的class文件，当用户在JNDI客户端的lookup()函数参数外部可控或Reference类构造方法的classFactoryLocation参数外部可控时，会使用户的JNDI客户端访问RMI注册表中绑定的恶意Reference类，从而加载远程服务器上的恶意class文件在客户端本地执行，最终实现JNDI注入攻击导致远程代码执行
 
-![image-20210427154417233](https://gitee.com/samny/images/raw/master/17u44er17ec/17u44er17ec.png)
+![image-20210427154417233](https://raw.githubusercontent.com/SummerSec/Images/main/17u44er17ec/17u44er17ec.png)
 
 ### jndi注入的利用条件
 
@@ -119,17 +119,17 @@ public class Client {
 
 执行上述命令就会在6666端口、当前目录下运行一个HTTP  Server：
 
-![image-20210427154732163](https://gitee.com/samny/images/raw/master/32u47er32ec/32u47er32ec.png)
+![image-20210427154732163](https://raw.githubusercontent.com/SummerSec/Images/main/32u47er32ec/32u47er32ec.png)
 
 然后运行Server端，启动rmi registry服务
 
-![](https://gitee.com/samny/images/raw/master/47u47er47ec/47u47er47ec.png)
+![](https://raw.githubusercontent.com/SummerSec/Images/main/47u47er47ec/47u47er47ec.png)
 
 
 
 成功弹出计算器。注意,我这里用到的jdk版本为jdk7
 
-![image-20210427154801968](https://gitee.com/samny/images/raw/master/2u48er2ec/2u48er2ec.png)
+![image-20210427154801968](https://raw.githubusercontent.com/SummerSec/Images/main/2u48er2ec/2u48er2ec.png)
 
 
 
@@ -146,7 +146,7 @@ LDAP can be used to store Java objects by using several special Java attributes.
 ● Using JNDI References
  https://docs.oracle.com/javase/jndi/tutorial/objects/storing/reference.html
 
-![img](https://gitee.com/samny/images/raw/master/summersec//14u24er14ec/14u24er14ec.png)
+![img](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//14u24er14ec/14u24er14ec.png)
 
 
 
@@ -162,7 +162,7 @@ LDAP can be used to store Java objects by using several special Java attributes.
 
 **com/sun/jndi/ldap/Obj.java做了两个判断1. reference 2. Serializable**
 
-![img](https://gitee.com/samny/images/raw/master/summersec//46u24er46ec/46u24er46ec.png)
+![img](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//46u24er46ec/46u24er46ec.png)
 
 
 
@@ -170,7 +170,7 @@ LDAP can be used to store Java objects by using several special Java attributes.
 
 如果在返回的属性中存在javaSerializedData，将继续调用deserializeObject函数，该函数主要就是调用常规的反序列化方式readObject对序列化数据进行还原
 
-![image-20211130152733686](https://gitee.com/samny/images/raw/master/summersec//33u27er33ec/33u27er33ec.png)
+![image-20211130152733686](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//33u27er33ec/33u27er33ec.png)
 
 实现代码：
 
