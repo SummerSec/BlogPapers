@@ -24,25 +24,27 @@
 
 #### 2022  📅
 
-| Time  | Name                                                         | Tags                 |
-| ----- | ------------------------------------------------------------ | -------------------- |
-| 07/05 | [正则匹配配置不当.md](./2022/正则匹配配置不当.md)            | Java/正则匹配        |
-| 03/29 | [CodeQL Usage Tricks](./2022/CodeQL-Usage-Tricks.md)         | CodeQL/Tricks/Java   |
-| 03/18 | [Spring Boot RCE到内存马探索](./2022/Spring Boot RCE到内存马探索.md) | Spring/RCE/MemShell  |
-| 03/14 | [Shiro后渗透拓展面](./2022/Shiro后渗透拓展面.md)             | Shiro/Agent/Web/Java |
-| 03/02 | [shiro反序列化漏洞攻击拓展面--修改key](./2022/shiro反序列化漏洞攻击拓展面--修改key.md) | shiro/key/Java/Web   |
-| 03/10 | [GitHub Java CodeQL CTF](./2022/GitHub Java CodeQL CTF.md)   | CodeQL/Java/CTF      |
-| 02/27 | [Hack-Tools2Web](./2022/Hack-Tools2Web.md)                   | Hack/Tools/Web       |
-| 02/21 | [CodeQL与Shiro550碰撞](./2022/CodeQL与Shiro550碰撞.md)       | CodeQL/Java/Shiro    |
-| 02/21 | [CodeQL初见Shiro550](./2022/CodeQL初见Shiro550.md)           | CodeQL/Java/Shiro    |
-| 02/20 | [CodeQL与AST之间联系](./2022/CodeQL与AST之间联系.md)         | CodeQL/AST/Java      |
-| 02/15 | [Java加载动态链接库方式](./2022/Java加载动态链接库方式.md)   | Java/DLL/Load        |
-| 01/20 | [Log4j2漏洞分析](./2022/Log4j2漏洞分析.md)                   | Log4j2/Java/Vul      |
-| 01/08 | [PL-4-Interprocedural Analysis](./PL/Interprocedural-Analysis.md) | PL                   |
-| 01/07 | [PL-3-Data Analysis Foundation](./PL/Data-Analysis-Foundation.md) | PL                   |
-| 01/06 | [PL-2-Data-Flow-Analysis](./PL/Data-Flow-Analysis.md)        | PL                   |
-| 01/04 | [PL-1-Intermediate-Representation](./PL/Intermediate-Representation.md) | PL                   |
-|       |                                                              |                      |
+| Time  | Name                                                         | Tags                                   |
+| ----- | ------------------------------------------------------------ | -------------------------------------- |
+| 07/19 | [CVE-2022-33891 Apache Spark shell command injection](./2022/CVE-2022-33891 Apache Spark shell command injection.md) | Java/命令执行/Spark                    |
+| 07/05 | [正则匹配配置不当.md](./2022/正则匹配配置不当.md)            | Java/正则匹配Java/正则匹配             |
+| 06/22 | [CVE-2022-22980 Mongodb SpEL](./CVE-2022-22980 Mongodb SpEL.md)[CodeQL Usage Tricks](./2022/CodeQL-Usage-Tricks.md) | Java/SpEL/表达式注入CodeQL/Tricks/Java |
+| 03/29 | [CodeQL Usage Tricks](./2022/CodeQL-Usage-Tricks.md)         | CodeQL/Tricks/Java                     |
+| 03/18 | [Spring Boot RCE到内存马探索](./2022/Spring Boot RCE到内存马探索.md) | Spring/RCE/MemShell                    |
+| 03/14 | [Shiro后渗透拓展面](./2022/Shiro后渗透拓展面.md)             | Shiro/Agent/Web/Java                   |
+| 03/02 | [shiro反序列化漏洞攻击拓展面--修改key](./2022/shiro反序列化漏洞攻击拓展面--修改key.md) | shiro/key/Java/Web                     |
+| 03/10 | [GitHub Java CodeQL CTF](./2022/GitHub Java CodeQL CTF.md)   | CodeQL/Java/CTF                        |
+| 02/27 | [Hack-Tools2Web](./2022/Hack-Tools2Web.md)                   | Hack/Tools/Web                         |
+| 02/21 | [CodeQL与Shiro550碰撞](./2022/CodeQL与Shiro550碰撞.md)       | CodeQL/Java/Shiro                      |
+| 02/21 | [CodeQL初见Shiro550](./2022/CodeQL初见Shiro550.md)           | CodeQL/Java/Shiro                      |
+| 02/20 | [CodeQL与AST之间联系](./2022/CodeQL与AST之间联系.md)         | CodeQL/AST/Java                        |
+| 02/15 | [Java加载动态链接库方式](./2022/Java加载动态链接库方式.md)   | Java/DLL/Load                          |
+| 01/20 | [Log4j2漏洞分析](./2022/Log4j2漏洞分析.md)                   | Log4j2/Java/Vul                        |
+| 01/08 | [PL-4-Interprocedural Analysis](./PL/Interprocedural-Analysis.md) | PL                                     |
+| 01/07 | [PL-3-Data Analysis Foundation](./PL/Data-Analysis-Foundation.md) | PL                                     |
+| 01/06 | [PL-2-Data-Flow-Analysis](./PL/Data-Flow-Analysis.md)        | PL                                     |
+| 01/04 | [PL-1-Intermediate-Representation](./PL/Intermediate-Representation.md) | PL                                     |
+|       |                                                              |                                        |
 
 
 
