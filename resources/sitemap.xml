@@ -19,6 +19,9 @@
     <loc>https://sumsec.me/2022/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93.html</loc>
   </url>
   <url>
+    <loc>https://sumsec.me/2022/CVE-2022-22980%20Mongodb%20SpEL.html</loc>
+  </url>
+  <url>
     <loc>https://sumsec.me/2022/CodeQL-Usage-Tricks.html</loc>
   </url>
   <url>
@@ -113,8 +116,5 @@
   </url>
   <url>
     <loc>https://sumsec.me/PL/</loc>
-  </url>
-  <url>
-    <loc>https://sumsec.me/2022/CVE-2022-22980%20Mongodb%20SpEL.html</loc>
   </url>
 </urlset>
