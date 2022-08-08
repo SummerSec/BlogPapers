@@ -13,6 +13,9 @@
     <loc>https://sumsec.me/resources/Advertisements.html</loc>
   </url>
   <url>
+    <loc>https://sumsec.me/resources/</loc>
+  </url>
+  <url>
     <loc>https://sumsec.me/2022/CVE-2022-33891%20Apache%20Spark%20shell%20command%20injection.html</loc>
   </url>
   <url>
@@ -116,5 +119,8 @@
   </url>
   <url>
     <loc>https://sumsec.me/PL/</loc>
+  </url>
+  <url>
+    <loc>https://sumsec.me/resources/OmegaOptions.bak</loc>
   </url>
 </urlset>
