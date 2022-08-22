@@ -12,7 +12,7 @@
 
 
 
-## <img src="./resources/Hi.gif" width="30px"><a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=6000&pause=1500&color=2D94F7&height=45&lines=%E4%BD%A0%E5%A5%BD%E5%91%80%EF%BC%81;%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="Typing SVG" /></a>
+## <img src="./resources/Hi.gif" width="30px"><a href="https://sumsec.me/"><img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=6000&pause=1500&color=2D94F7&height=45&lines=%20%20+%E4%BD%A0%E5%A5%BD%E5%91%80%EF%BC%81;%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="Typing SVG" /></a>
 
 
 
