@@ -125,6 +125,20 @@ jdbcUrl=jdbc:postgresql://fCYhc9Bp/saas?socketFactory=com.vmware.licensecheck.Li
 
 #### 漏洞分析
 
+**/SAAS/API/1.0/REST/oauth2/generateActivationToken/acs**接口对应漏洞代码/SAAS/WEB-INF/classes/com/vmware/horizon/rest/controller/oauth2/OAuth2TokenResourceController.class
+
+![image-20220906171756616](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061717691.png)
+
+默认client会存在acs
+
+![image-20220906171556742](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061715846.png)
+
+**/SAAS/API/1.0/REST/oauth2/activate** 
+
+![image-20220906172705858](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061727041.png)
+
+
+
 
 
 ---
@@ -168,9 +182,40 @@ protected_state=eyJzaWciOiJ7XCJzaWduYXR1cmVCNjRcIjpcIkRaY1JhQ0o4MHJMcjcrNW5teTFZ
 
 #### 漏洞分析
 
+修改host值，然后找日志信息错误的堆栈，找到对应的实现代码。
 
+```bash
+grep -irn "asdasd" -A 200 -B 10
+```
 
+![image-20220906174414211](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061744336.png)
 
+**/SAAS/auth/login/embeddedauthbroker/callback**接口对应代码**/embeddedauthadapters/local-password-auth-adapter-0.1.jar!/com/vmware/horizon/adapters/local/LocalPasswordAuthAdapter.class**
+
+![image-20220906174702552](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061747647.png)
+
+**getLocalUrl方法**中调用**request.getServerName(), request.getServerPort()**获取主机和端口，两个方法是从Host获取主机和端口。如果主机为域名则为域名，IP则为IP。
+
+```java
+private String getLocalUrl(HttpServletRequest request) {
+    if (null == request) {
+        return null;
+    } else {
+        try {
+            return (new URL(SSLConst.HTTPS, request.getServerName(), request.getServerPort(), request.getContextPath() + "/API/1.0/REST/auth/local/login")).toString();
+        } catch (MalformedURLException var3) {
+            log.error("Failed to create URL: " + var3.getMessage(), var3);
+            return null;
+        }
+    }
+}
+```
+
+最终获取到url值为**https://{host}:{port}/SAAS/API/1.0/REST/auth/local/login**，然后会调用**authenticate方法**进行认证。![image-20220906175139592](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061751629.png)
+
+**/embeddedauthadapters/local-password-auth-adapter-0.1.jar!/com/vmware/horizon/adapters/local/LocalPasswordService.class** 的authenticate方法会请求传入的URL，如果**返回状态码为200就返回true**，认证成功。
+
+![image-20220906175324938](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061753030.png)
 
 ---
 
@@ -247,6 +292,16 @@ handlerRewrite方法调用doRewrite方法到/SAAS/WEB-INF/lib/urlrewritefilter-4
 tomcat的**getRequestDispatcher**方法特性，会取第一个**/**后面的路径作为servletPath。
 
 ![image-20220906160409156](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061604250.png)
+
+
+
+---
+
+### 总结
+
+
+
+
 
 ---
 
