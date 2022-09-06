@@ -1,4 +1,4 @@
-## VMWare 系列认证绕过
+## VMWare Workspace ONE Access Auth Bypass
 
 ### 	From OAuth2 Bypass To RCE  CVE-2022-22955
 
@@ -170,9 +170,11 @@ protected_state=eyJzaWciOiJ7XCJzaWduYXR1cmVCNjRcIjpcIkRaY1JhQ0o4MHJMcjcrNW5teTFZ
 
 
 
+
+
 ---
 
-###  UrlRewriteFilter 权限绕过 CVE-2022-31656
+###  UrlRewriteFilter Bypass RCE CVE-2022-31656
 
 #### 漏洞复现
 
