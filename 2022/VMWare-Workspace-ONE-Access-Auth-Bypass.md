@@ -1,5 +1,37 @@
 ## VMWare Workspace ONE Access Auth Bypass
 
+### 前言
+
+[BlackHat议题: I Am Whoever I Say I Am: Infiltrating Identity Providers Using a 0Click Exploit](https://www.blackhat.com/us-22/briefings/schedule/index.html#i-am-whoever-i-say-i-am-infiltrating-identity-providers-using-a-click-exploit-26946)
+
+> Single Sign On (SSO) has become the dominant authentication scheme to login to several related, yet independent, software systems. At the core of this are the identity providers (IdP). Their role is to perform credential verification and to supply a signed token that service providers (SP) can consume for access control.
+>
+> On the other hand, when an application requests resources on behalf of a user and they're granted, then an authorization request is made to an authorization server (AS). The AS exchanges a code for a token which is presented to a resource server (RS) and the requested resources are consumed by the requesting application.
+>
+> Whilst OAuth2 handles authorization, and SAML handles authentication and as such Identity and Access Management (IAM) solutions have become very popular in the enterprise environment to handle both use cases. What if IAM solutions are vulnerable to critical remote attacks? They need to be exposed on the internet, trusted to guard identities and facilitate access to hundreds if not thousands of users and applications.
+>
+> To begin with, I will cover the foundational use-case for IAM solutions and some past in the wild attacks (ITW) attacks with the extent of their impact.
+>
+> Continuing, I will present the approach I took with the audit including the challenges and pitfalls that I was faced with and how I overcame them. The result concluding with an unauthenticated remote code execution as root by chaining multiple vulnerabilities on a very popular IAM solution used by several Fortune 500 companies and government organizations.
+>
+> The vulnerabilities will be discussed in detail including novel exploitation strategies for bypassing strict outbound network access. Finally, a live demo will be presented with a release of functional exploit code so that penetration testers and network administrators can validate and remediate these critical findings.
+
+说人话！（大致意思）
+
+单点登录（SSO）是目前的主流认证方案，其大致原理是身份提供者（IdP）。他们的作用是执行凭证验证，并提供一个签名的令牌，服务提供者（SP）可以使用该令牌进行访问控制。然后引出了作者对OAuth2的认证研究，在表达了一下他研究成果的危害性，重要性。
+
+---
+
+### What Is IAM？
+
+借用作者的PPT里原图，IAM是指 **Identity 认证**  和  **Access 授权** 管理。这里就简单提一下IAM的概念，具体可以看作者PPT内容。
+
+![image-20220907153138806](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209071531935.png)
+
+
+
+---
+
 ### 	From OAuth2 Bypass To RCE  CVE-2022-22955
 
 #### 漏洞复现
@@ -121,6 +153,8 @@ jdbcUrl=jdbc:postgresql://fCYhc9Bp/saas?socketFactory=com.vmware.licensecheck.Li
 
 ![image-20220830151615968](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202208301516002.png)
 
+
+
 ---
 
 #### 漏洞分析
@@ -129,11 +163,11 @@ jdbcUrl=jdbc:postgresql://fCYhc9Bp/saas?socketFactory=com.vmware.licensecheck.Li
 
 ![image-20220906171756616](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061717691.png)
 
-默认client会存在acs
+VMWare Workspace ONE Access 默认安装之后，会默认存在id为acs的Client。
 
 ![image-20220906171556742](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061715846.png)
 
-**/SAAS/API/1.0/REST/oauth2/activate** 
+**/SAAS/API/1.0/REST/oauth2/activate** 会根据传入的activationCode返回密钥
 
 ![image-20220906172705858](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061727041.png)
 
@@ -143,7 +177,7 @@ jdbcUrl=jdbc:postgresql://fCYhc9Bp/saas?socketFactory=com.vmware.licensecheck.Li
 
 ---
 
-### Authentication Bypass RCE CVE-2022-22972	
+### Authentication Bypass To RCE CVE-2022-22972	
 
 #### 漏洞复现
 
@@ -219,7 +253,7 @@ private String getLocalUrl(HttpServletRequest request) {
 
 ---
 
-###  UrlRewriteFilter Bypass RCE CVE-2022-31656
+###  UrlRewriteFilter Bypass To RCE CVE-2022-31656
 
 #### 漏洞复现
 
@@ -297,11 +331,29 @@ tomcat的**getRequestDispatcher**方法特性，会取第一个**/**后面的路
 
 ---
 
-### 总结
+### 回顾总结
 
+本次一共分享了三个漏洞，分别是：
 
+* From OAuth2 Bypass To RCE  CVE-2022-22955
+* Authentication Bypass To RCE CVE-2022-22972
+* UrlRewriteFilter Bypass To RCE CVE-2022-31656
 
+CVE-2022-22955 漏洞是正常功能导致漏洞，而 CVE-2022-22972 和 CVE-2022-31656 是非预期导致漏洞。
 
+CVE-2022-22972 是使用了 request 中的 getServerName 方法获取域名（主机）和 getServerPort 获取端口，关于更多 request 的方法可以参考 [Request中的各种方法](https://www.cnblogs.com/xrq730/p/4903161.html)。
+
+CVE-2022-31656 是 CVE-2022-22972 漏洞的绕过，其主要是使用正则匹配规则不当导致权限绕过，之前也分享其他框架中正则匹配使用不当，参考链接 [正则匹配配置不当](https://sumsec.me/2022/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93.html)。
+
+其中 CVE-2022-22955 是议题中重点内容，CVE-2022-22972 和 CVE-2022-31656 是个人补充的两个漏洞，个人感觉后者两个漏洞相比前者漏洞更有意思一点。
+
+---
+
+### 题外话
+
+在作者的PPT内容里，其实有一半的内容是和IAM的相关性不是很强的。比例说原PPT内容中花了一段篇幅讲述 CVE-2022-22954 SSTI 服务端模版注入、CVE-2020-4006 命令注入漏洞以及 JDBC 注入漏洞利用，当然 JDBC 注入漏洞利用是为了更好表达如何 From OAuth2 Bypass To RCE  CVE-2022-22955 的主题。
+
+其实也能理解作者，这么做为了引言，更好的表达自己发现的漏洞的危害性，厉害之处。这么来看整个PPT内容其实更倾向表达作者是如何发现CVE-2022-22955漏洞，如何一步步的扩大漏洞危害（有一种炫耀的感觉）。
 
 ---
 
@@ -310,3 +362,5 @@ tomcat的**getRequestDispatcher**方法特性，会取第一个**/**后面的路
 https://y4er.com/posts/cve-2022-31656-vmware-workspace-one-access-urlrewritefilter-auth-bypass/#rce
 
 https://petrusviet.medium.com/dancing-on-the-architecture-of-vmware-workspace-one-access-eng-ad592ae1b6dd
+
+https://i.blackhat.com/USA-22/Wednesday/US-22-Seeley-IAM-who-I-say-IAM.pdf
