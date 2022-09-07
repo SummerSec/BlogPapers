@@ -14,7 +14,7 @@
 | ----- | ------------------------------------------------------------ | -------------------- |
 | 08/08 | [相似度算法调研](./相似度算法调研.md)                        | 算法/go              |
 | 07/19 | [CVE-2022-33891 Apache Spark shell command injection](./CVE-2022-33891 Apache Spark shell command injection.md) | Java/命令执行/Spark  |
-| 07/05 | [正则匹配配置不当.md](./正则匹配配置不当.md)                 | Java/正则匹配        |
+| 07/05 | [正则匹配配置不当](./正则匹配配置不当.md)                    | Java/正则匹配        |
 | 06/22 | [CVE-2022-22980 Mongodb SpEL](./CVE-2022-22980 Mongodb SpEL.md) | Java/SpEL/表达式注入 |
 | 03/29 | [CodeQL Usage Tricks](./CodeQL-Usage-Tricks.md)              | CodeQL/Tricks/Java   |
 | 03/18 | [Spring Boot RCE到内存马探索](./Spring Boot RCE到内存马探索.md) | Spring/RCE/MemShell  |
