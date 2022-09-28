@@ -12,6 +12,7 @@
 
 | Time  | Name                                                         | Tags                 |
 | ----- | ------------------------------------------------------------ | -------------------- |
+| 09/28 | [Spring-Framework-RCE-CVE-2022-22965漏洞分析](./Spring-Framework-RCE-CVE-2022-22965漏洞分析.md) | 漏洞分析/Java/RCE    |
 | 08/08 | [相似度算法调研](./相似度算法调研.md)                        | 算法/go              |
 | 07/19 | [CVE-2022-33891 Apache Spark shell command injection](./CVE-2022-33891 Apache Spark shell command injection.md) | Java/命令执行/Spark  |
 | 07/05 | [正则匹配配置不当](./正则匹配配置不当.md)                    | Java/正则匹配        |
