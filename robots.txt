@@ -1,1 +1,1 @@
-sitemap: http://sumsec.me/sitemap.xml
+sitemap: http://sumsec.me/resources/sitemap.xml
