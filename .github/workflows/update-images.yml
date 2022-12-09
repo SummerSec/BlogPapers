@@ -1,0 +1,34 @@
+name: :ambulance: Update images
+
+on: 
+  push:
+  
+  workflow_dispatch :  
+  
+
+jobs:
+  update-images:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update images
+      run: |
+        # Find all markdown files in the repository
+        find . -type f -name "*.md" | while read filename; do
+          # Check if the file contains the old image URL
+          if grep -q 'https://raw.githubusercontent.com/SummerSec/Images/main/' "$filename"; then
+            # Replace the old URL with the new URL
+            sed -i 's/https:\/\/raw\.githubusercontent\.com\/SummerSec\/Images\/main\//https:\/\/img\.sumsec\.me\//g' "$filename"
+          fi
+        done
+
+    - name: Commit and push changes
+      run: |
+        # Add the updated files to the git index
+        git add -u
+
+        # Create a commit with the updated files
+        git commit -m ":beers: Update images"
+
+        # Push the commit to the repository
+        git push
