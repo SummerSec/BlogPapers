@@ -16,7 +16,7 @@
 
 shiro <= 1.2.4默认是将key写在**AbstractRememberMeManager**类的**DEFAULT_CIPHER_KEY_BYTES**字段，当然还有其他方式配置文件、配置类等也是可以的。这里的DEFAULT_CIPHER_KEY_BYTES字段是权限是**private static final**， 只能通过反射方式去修改这个值。
 
-![image-20211104103046859](https://cdn.jsdelivr.net/gh/SummerSec/Images/29u4029ec29u4029ec.png)
+![image-20211104103046859](https://img.sumsec.me//29u4029ec29u4029ec.png)
 
 由于权限太死太小，一般直接调用反射是无法进行直接的修改。值得庆幸的是key是字节数组类型，而不是int、String等基本类型，不然得通过反射修改之后还得通过反射调用才能获取修改后的值。这里给个代码示例：
 
@@ -113,7 +113,7 @@ public class DEMO1 {
 }
 ```
 
-![image-20211104112909926](https://cdn.jsdelivr.net/gh/SummerSec/Images/37u4037ec37u4037ec.png)
+![image-20211104112909926](https://img.sumsec.me//37u4037ec37u4037ec.png)
 
 
 
@@ -165,11 +165,11 @@ public class ShiroConfig {
 
 从命名中就能看到是一个filter bean，debug查看一些请求的堆栈信息。随便找个调用doFilter方法进去就能发现存在filters，ShiroFilterFactoryBean是在第三个。
 
-![image-20211104143156487](https://cdn.jsdelivr.net/gh/SummerSec/Images/3u413ec3u413ec.png)
+![image-20211104143156487](https://img.sumsec.me//3u413ec3u413ec.png)
 
 进行找到securityManager->rememberMeManager就能发现**encryptionCipherKey**和**decryptionCipherKey**。
 
-![image-20211104101315335](https://cdn.jsdelivr.net/gh/SummerSec/Images/10u4110ec10u4110ec.png)
+![image-20211104101315335](https://img.sumsec.me//10u4110ec10u4110ec.png)
 
 
 
@@ -222,17 +222,17 @@ public class ShiroConfig {
 
 这是修改之前的使用配置key(4AvVhmFLUs0KTA3Kprsdag==)的攻击效果：
 
-![image-20211104151049367](https://cdn.jsdelivr.net/gh/SummerSec/Images/17u4117ec17u4117ec.png)
+![image-20211104151049367](https://img.sumsec.me//17u4117ec17u4117ec.png)
 
-![image-20211104151115075](https://cdn.jsdelivr.net/gh/SummerSec/Images/22u4122ec22u4122ec.png)
+![image-20211104151115075](https://img.sumsec.me//22u4122ec22u4122ec.png)
 
 然后访问**/say**修改key
 
-![image-20211104151532116](https://cdn.jsdelivr.net/gh/SummerSec/Images/28u4128ec28u4128ec.png)
+![image-20211104151532116](https://img.sumsec.me//28u4128ec28u4128ec.png)
 
-![image-20211104151554328](https://cdn.jsdelivr.net/gh/SummerSec/Images/33u4133ec33u4133ec.png)
+![image-20211104151554328](https://img.sumsec.me//33u4133ec33u4133ec.png)
 
-![image-20211104151615774](https://cdn.jsdelivr.net/gh/SummerSec/Images/41u4141ec41u4141ec.png)
+![image-20211104151615774](https://img.sumsec.me//41u4141ec41u4141ec.png)
 
 
 

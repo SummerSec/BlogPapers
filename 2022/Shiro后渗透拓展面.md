@@ -42,13 +42,13 @@ VirtualMachine virtualMachine = VirtualMachine.attach(targetPid);
 
 幸好北辰师傅上传代码的时候没有把这个删除掉，不然我可能还要才一波坑。
 
-![image-20220308213612045](https://cdn.jsdelivr.net/gh/SummerSec/Images/12u3612ec12u3612ec.png)
+![image-20220308213612045](https://img.sumsec.me//12u3612ec12u3612ec.png)
 
 
 
 为什么这么说呢？虽然在整个项目中**getMethodSignature**没有被调用，但也不能忽视他的作用。比例说红框中的代码，就是得靠**getMethodSignature**获取到方法的签名。
 
-![image-20220308213842668](https://cdn.jsdelivr.net/gh/SummerSec/Images/42u3842ec42u3842ec.png)
+![image-20220308213842668](https://img.sumsec.me//42u3842ec42u3842ec.png)
 
 这里简单说一下大致作用，具体得配合文章[从内存中Dump JDBC数据库明文密码](https://mp.weixin.qq.com/s/QCfqO2BJuhSOr58rldZzxA)才能看懂。
 
@@ -226,13 +226,13 @@ fileOutputStream.write(org.apache.shiro.codec.Base64.encodeToString(getDecryptio
 
 1. 首先可以确定环境的key是默认的，并且是可以执行命令的。
 
-![image-20220308224448662](https://cdn.jsdelivr.net/gh/SummerSec/Images/48u4448ec48u4448ec.png)
+![image-20220308224448662](https://img.sumsec.me//48u4448ec48u4448ec.png)
 
-![image-20220308224621598](https://cdn.jsdelivr.net/gh/SummerSec/Images/21u4621ec21u4621ec.png)
+![image-20220308224621598](https://img.sumsec.me//21u4621ec21u4621ec.png)
 
 2. 执行命令`java -jar AgentInjectTool.jar list`，获取环境启动的pid。
 
-![image-20220308224738899](https://cdn.jsdelivr.net/gh/SummerSec/Images/39u4739ec39u4739ec.png)
+![image-20220308224738899](https://img.sumsec.me//39u4739ec39u4739ec.png)
 
 3. 执行命令`java -jar AgentInjectTool.jar inject {pid} {file.txt|shirokey}`
 
@@ -240,21 +240,21 @@ fileOutputStream.write(org.apache.shiro.codec.Base64.encodeToString(getDecryptio
 >
 > // 注意一定得使用反斜杠<font color=red>/</font> 
 
-![image-20220308225003956](https://cdn.jsdelivr.net/gh/SummerSec/Images/14u5014ec14u5014ec.png)
+![image-20220308225003956](https://img.sumsec.me//14u5014ec14u5014ec.png)
 
 > 触发获取key操作，需要我们手动发送请求登录请求，无论正确与否均可。比例说使用工具的**检测当前密钥**功能
 
-![image-20220308232335062](https://cdn.jsdelivr.net/gh/SummerSec/Images/35u2335ec35u2335ec.png)
+![image-20220308232335062](https://img.sumsec.me//35u2335ec35u2335ec.png)
 
 > java -jar AgentInjectTool.jar inject  96864  ES2ZK5q7qgNrkigR4EmGNg==
 
-![image-20220308232433218](https://cdn.jsdelivr.net/gh/SummerSec/Images/33u2433ec33u2433ec.png)
+![image-20220308232433218](https://img.sumsec.me//33u2433ec33u2433ec.png)
 
-![image-20220308232505324](https://cdn.jsdelivr.net/gh/SummerSec/Images/5u255ec5u255ec.png)
+![image-20220308232505324](https://img.sumsec.me//5u255ec5u255ec.png)
 
 > 使用获取key功能
 
-![image-20220308232609815](https://cdn.jsdelivr.net/gh/SummerSec/Images/9u269ec9u269ec.png)
+![image-20220308232609815](https://img.sumsec.me//9u269ec9u269ec.png)
 
 
 

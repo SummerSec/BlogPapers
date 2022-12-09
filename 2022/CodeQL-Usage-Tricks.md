@@ -16,7 +16,7 @@ codeql大流行的时代，如何学会使用codeql变得由于重要。学习�
 
 看CodeQL的database的日志，可以发现很多有用的信息。
 
-![image-20220301155005984](https://cdn.jsdelivr.net/gh/SummerSec/Images/6u506ec6u506ec.png)
+![image-20220301155005984](https://img.sumsec.me//6u506ec6u506ec.png)
 
 文件**build-tracer.log**中
 
@@ -43,7 +43,7 @@ codeql大流行的时代，如何学会使用codeql变得由于重要。学习�
 
 使用GitHub官方的CodeQL Action分析Java应用时，如果使用了javafx，创建数据库时会失败的。解决办法在，最开始的时候就设置action环境，添加javafx。完整的代码参考[codeql.yml](https://github.com/SummerSec/SPATool/blob/main/.github/workflows/codeql.yml)
 
-![image-20220327122536672](https://cdn.jsdelivr.net/gh/SummerSec/Images/43u2543ec43u2543ec.png)
+![image-20220327122536672](https://img.sumsec.me//43u2543ec43u2543ec.png)
 
 
 
@@ -55,7 +55,7 @@ codeql database run-queries --ram=5923 --threads=2 /home/runner/work/_temp/codeq
 
 
 
-![image-20220327122943785](https://cdn.jsdelivr.net/gh/SummerSec/Images/14u514ec14u514ec.png)
+![image-20220327122943785](https://img.sumsec.me//14u514ec14u514ec.png)
 
 
 
@@ -84,17 +84,17 @@ codeql database run-queries --ram=5923 --threads=2 /home/runner/work/_temp/codeq
 
 然后就可以在action执行完成之后，在Summary中下载到。比例本人在自己的SPATool仓库下载[https://github.com/SummerSec/SPATool/suites/5809018842/artifacts/194366370](https://github.com/SummerSec/SPATool/suites/5809018842/artifacts/194366370)
 
-![image-20220327133948961](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/49u3949ec49u3949ec.png)
+![image-20220327133948961](https://img.sumsec.me//2022/03/49u3949ec49u3949ec.png)
 
 打开文件之后可以发现，codeql-action查询仓库是否存在漏洞都是使用了CWE目录下的ql文件，这些文件我们都是可以直接在codeql仓库获取到，我们只需要将文件的路径替换一下就可以本地绝对路径即可。
 
-![image-20220327134033941](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/34u4034ec34u4034ec.png)
+![image-20220327134033941](https://img.sumsec.me//2022/03/34u4034ec34u4034ec.png)
 
-![image-20220327134725114](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/25u4725ec25u4725ec.png)
+![image-20220327134725114](https://img.sumsec.me//2022/03/25u4725ec25u4725ec.png)
 
 使用vscode的全部替换模式，`.*0.0.9\/` `- query: D:\codeql\vscode-codeql-starter\ql\java\ql\src\`，再将`\/`替换成`\`即可。
 
-![image-20220327135047201](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/47u5047ec47u5047ec.png)
+![image-20220327135047201](https://img.sumsec.me//2022/03/47u5047ec47u5047ec.png)
 
 批量查询命令
 
@@ -102,7 +102,7 @@ codeql database run-queries --ram=5923 --threads=2 /home/runner/work/_temp/codeq
 codeql  database run-queries --ram=5932 --threads=2 SPATool --min-disk-free=1024 -v java-queries-builtin.qls 
 ```
 
-![image-20220327135812265](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/12u5812ec12u5812ec.png)
+![image-20220327135812265](https://img.sumsec.me//2022/03/12u5812ec12u5812ec.png)
 
 导出查询的结果命令
 
@@ -122,11 +122,11 @@ codeql database interpret-results --threads=2 --format=sarif-latest -v --output=
 
 使用自己的项目[SPATool](https://github.com/SummerSec/SPATool)查询之后的效果如下：
 
-![image-20220327141142706](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/42u1142ec42u1142ec.png)
+![image-20220327141142706](https://img.sumsec.me//2022/03/42u1142ec42u1142ec.png)
 
-![image-20220327141155339](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/55u1155ec55u1155ec.png)
+![image-20220327141155339](https://img.sumsec.me//2022/03/55u1155ec55u1155ec.png)
 
-![image-20220327141206776](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/6u126ec6u126ec.png)
+![image-20220327141206776](https://img.sumsec.me//2022/03/6u126ec6u126ec.png)
 
 
 
@@ -134,31 +134,31 @@ codeql database interpret-results --threads=2 --format=sarif-latest -v --output=
 
 这个问题原作者其实已经解决了，但由于时间久远，原作者的项目一直没有更新，导致出现了一些问题。通过本地debug调试本人针对Java的部分ql规则进行改进解决问题，其主要诞生这些问题的所在均是codeql的库更新，原有的一些规则没了，更新到最新的规则即可。
 
-![image-20220327141613701](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/13u1613ec13u1613ec.png)
+![image-20220327141613701](https://img.sumsec.me//2022/03/13u1613ec13u1613ec.png)
 
 本人已经将最新的Java部分的规则提交pr到原作者的项目，但截至写文章为止作者还没合并规则。建议使用我本人的项目[SummerSec/codeql-debug](https://github.com/SummerSec/codeql-debug)，如果在本地使用的话需要改一下process.py文件。
 
 在56行将`dbpath`设置为**需要查询数据库绝对路径**，60行将`codeql_executable`设置为**codeql的执行文件的绝对路径**。
 
-![image-20220327142148400](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/48u2148ec48u2148ec.png)
+![image-20220327142148400](https://img.sumsec.me//2022/03/48u2148ec48u2148ec.png)
 
 将129注释掉，将`qlf`变量设置为 **dependencies.ql的绝对路径**
 
-![image-20220327142336152](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/36u2336ec36u2336ec.png)
+![image-20220327142336152](https://img.sumsec.me//2022/03/36u2336ec36u2336ec.png)
 
 运行设置参数第一个java 第二个和第三个由于设置成硬编码的方式，随便写就行。
 
-![image-20220327142611394](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/11u2611ec11u2611ec.png)
+![image-20220327142611394](https://img.sumsec.me//2022/03/11u2611ec11u2611ec.png)
 
 ---
 
 集成到action就不需要改这些，在原本的action中添加这几行代码即可。完整的yml参考[codeql-debug.yml](https://github.com/SummerSec/SPATool/blob/main/.github/workflows/codeql-debug.yml)
 
-![image-20220327142857104](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/57u2857ec57u2857ec.png)
+![image-20220327142857104](https://img.sumsec.me//2022/03/57u2857ec57u2857ec.png)
 
 这里的action触发方式采用的是手动触发，手动触发之后在执行结束之后可以在Summary下载结果。比例说本人在SPATool项目执行结果[Summary link](https://github.com/SummerSec/SPATool/actions/runs/2044595073)
 
-![image-20220327143224242](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/24u3224ec24u3224ec.png)
+![image-20220327143224242](https://img.sumsec.me//2022/03/24u3224ec24u3224ec.png)
 
 
 
@@ -208,7 +208,7 @@ codeql database run-queries --search-path  --threads 0 --rerun {database_path} {
 codeql bqrs decode --no-titles --format text --output dependencies.txt  dependencies.bqrs
 ```
 
-![image-20220401135050399](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/57u5057ec57u5057ec.png)
+![image-20220401135050399](https://img.sumsec.me//2022/03/57u5057ec57u5057ec.png)
 
 
 
@@ -224,7 +224,7 @@ codeql bqrs decode --no-titles --format text --output dependencies.txt  dependen
 codeql resolve queries java-code-scanning.qls --format=text
 ```
 
-![image-20220327143823075](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/23u3823ec23u3823ec.png)
+![image-20220327143823075](https://img.sumsec.me//2022/03/23u3823ec23u3823ec.png)
 
 
 
@@ -236,7 +236,7 @@ codeql批量查询的方式，其实除了将所有的ql的绝对路径写入qls
 
 qls文件里面写ql所在的文件夹，可以是相对的路径也可以是绝对路径。然后仅仅只需要将ql文件放入文件夹下面即可，codeql会自动递归搜索并执行查询该文件夹下面的所有ql文件。
 
-![image-20220327151017356](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/17u1017ec17u1017ec.png)
+![image-20220327151017356](https://img.sumsec.me//2022/03/17u1017ec17u1017ec.png)
 
 
 

@@ -98,7 +98,7 @@ payload：**{ \"name\": { \"@type\": \"java.lang.AutoCloseable\", \"@type\": \"c
 
 
 
-![image-20211220173824621](https://cdn.jsdelivr.net/gh/SummerSec/Images//52u3652ec52u3652ec.png)
+![image-20211220173824621](https://img.sumsec.me///52u3652ec52u3652ec.png)
 
 
 

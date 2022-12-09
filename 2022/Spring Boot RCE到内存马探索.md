@@ -95,10 +95,10 @@ public class spel {
 }
 ```
 使用payload rmi时会报找不到lookup方法
-![image-20211228173823526](https://cdn.jsdelivr.net/gh/SummerSec/Images//23u3823ec23u3823ec.png)
+![image-20211228173823526](https://img.sumsec.me///23u3823ec23u3823ec.png)
 使用payload poc2也报错
 
-![image-20211228173906092](https://cdn.jsdelivr.net/gh/SummerSec/Images//6u396ec6u396ec.png)
+![image-20211228173906092](https://img.sumsec.me///6u396ec6u396ec.png)
 
 最终通过不断尝试payload ldap是有效。但这个漏洞利用方式没在工具里集成，是因为SpEL漏洞存在有很多种情况，无法做到考虑完全，如果你发现此漏洞可以用该工具生成Payload打。
 
@@ -165,7 +165,7 @@ String bytes = "!!javax.script.ScriptEngineManager [\n" +
 eureka xstream  反序列化漏洞本质是xstream反序列化漏洞，但有一点和传统XStream漏洞利用有区别的是，eureka处理不了hashmap。得重新构造EXP。
 This XStream payload is a slightly modified version of the ImageIO JDK-only gadget chain from the [Marshalsec research](https://github.com/mbechler/marshalsec). The only difference here is using **LinkedHashSet** to trigger the 'jdk.nashorn.internal.objects.NativeString.hashCode()' method. The original payload leverages java.lang.Map to achieve the same behaviour, but Eureka's XStream configuration has a [custom converter for maps](https://github.com/Netflix/eureka/blob/master/eureka-client/src/main/java/com/netflix/discovery/converters/XmlXStream.java#L58) which makes it unusable. The payload above does not use Maps at all and can be used to achieve Remote Code Execution without additional constraints.
 在[exploiting-spring-boot-actuators](https://www.veracode.com/blog/research/exploiting-spring-boot-actuators)中写上面这段说明，大致意思就是eureka中不能使用hashmap，得替换成**LinkedHashSet** 。网上流传的XStream的payload都是基于hashmap的，原文给的payload以及check list的payload都是弹计算器，不能进一步的深入利用。如何构造转化成JNDI这一问题摆在我们面前，一开始踩了很多坑，后来发现[YSOMAP](https://github.com/wh1t3p1g/ysomap)里面集成了这个Payload。ysomap的使用方法大致类似于msf，如下图。
-![image-20211228174026997](https://cdn.jsdelivr.net/gh/SummerSec/Images//27u4027ec27u4027ec.png)
+![image-20211228174026997](https://img.sumsec.me///27u4027ec27u4027ec.png)
 
 
 但生成的payload得小改一下（将**HashMap**改成**LinkedHashSet** ），经过多次测试最终成形的payload如下：
@@ -318,7 +318,7 @@ This XStream payload is a slightly modified version of the ImageIO JDK-only gadg
 ### h2 database console JNDI RCE
 
 
-![image-20211228174056470](https://cdn.jsdelivr.net/gh/SummerSec/Images//56u4056ec56u4056ec.png)
+![image-20211228174056470](https://img.sumsec.me///56u4056ec56u4056ec.png)
 
 
 

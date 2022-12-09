@@ -20,7 +20,7 @@
 
 为什么在静态分析的时候，使用 IR 而非 AST 呢？
 
-![image-20220105105502801](https://cdn.jsdelivr.net/gh/SummerSec/Images/9u559ec9u559ec.png)
+![image-20220105105502801](https://img.sumsec.me//9u559ec9u559ec.png)
 
 这是因为：
 
@@ -38,7 +38,7 @@
 
 三地址码（3-Address Code）通常没有统一的格式。在每个指令的右边至多有一个操作符。
 
-![image-20220105105745115](https://cdn.jsdelivr.net/gh/SummerSec/Images/45u5745ec45u5745ec.png)
+![image-20220105105745115](https://img.sumsec.me//45u5745ec45u5745ec.png)
 
 三地址码为什么叫做三地址码呢？因为每条 3AC 至多有三个地址。而一个「地址」可以是：
 
@@ -75,7 +75,7 @@ q = p + q    q2 = p2 + q1
 
 但是这样一来，肯定会因为不同控制流汇入到一个块，导致多个变量备选的问题：
 
-<img src="https://cdn.jsdelivr.net/gh/SummerSec/Images/38u1538ec38u1538ec.png" style="zoom:100%;" />
+<img src="https://img.sumsec.me//38u1538ec38u1538ec.png" style="zoom:100%;" />
 
 这里解决的办法就是使用一个合并操作符$\phi$（phi-function），根据控制流的信息确定使用哪个变量。
 
@@ -99,14 +99,14 @@ q = p + q    q2 = p2 + q1
 
 控制流分析（Control Flow Analysis）通常指的是构建控制流图（Control Flow Graph, CFG），并以 CFG 作为基础结构进行静态分析的过程。
 
-![image-20220105111922258](https://cdn.jsdelivr.net/gh/SummerSec/Images/22u1922ec22u1922ec.png)
+![image-20220105111922258](https://img.sumsec.me//22u1922ec22u1922ec.png)
 
 CFG 的一个结点可以是一条单独的 3AC，但是更常见的是一个基本块（Basic Block）。所谓基本块，就是满足以下性质的连续 3AC：
 
 * 只能从块的第一条指令进入。
 * 只能从块的最后一条指令离开。
 
-![image-20220105112133363](https://cdn.jsdelivr.net/gh/SummerSec/Images/33u2133ec33u2133ec.png)
+![image-20220105112133363](https://img.sumsec.me//33u2133ec33u2133ec.png)
 
 如何构建一个基本块呢？
 
@@ -127,11 +127,11 @@ CFG 的一个结点可以是一条单独的 3AC，但是更常见的是一个基
 * <font color="red">A 的末尾有一条指向了 B 开头的跳转指令。</font>
 * <font color="blue">A 的末尾紧接着 B 的开头</font>，<font color="green">且 A 的末尾不是一条无条件跳转指令。</font>
 
-![image-20220105152735721](https://cdn.jsdelivr.net/gh/SummerSec/Images/35u2735ec35u2735ec.png)
+![image-20220105152735721](https://img.sumsec.me//35u2735ec35u2735ec.png)
 
 注意到每个基本块和开头指令的标号唯一对应，因此很自然地，我们可以将跳转指令的目标改为基本块的标号而非指令标号：
 
-![image-20220105152758818](https://cdn.jsdelivr.net/gh/SummerSec/Images/58u2758ec58u2758ec.png)
+![image-20220105152758818](https://img.sumsec.me//58u2758ec58u2758ec.png)
 
 有了这些定义，我们就可以了解一些概念：
 
@@ -145,7 +145,7 @@ CFG 的一个结点可以是一条单独的 3AC，但是更常见的是一个基
 
 这样，我们就完成了一个控制流图的构建：
 
-![image-20220105174001342](https://cdn.jsdelivr.net/gh/SummerSec/Images/1u401ec1u401ec.png)
+![image-20220105174001342](https://img.sumsec.me//1u401ec1u401ec.png)
 
 
 

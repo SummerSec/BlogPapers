@@ -20,17 +20,17 @@ public class TimePrinter {
 }
 ```
 
-![image-20211227104045005](https://cdn.jsdelivr.net/gh/SummerSec/Images//52u4052ec52u4052ec.png)
+![image-20211227104045005](https://img.sumsec.me///52u4052ec52u4052ec.png)
 
 可以看到导入包
 
-![image-20211227105053110](https://cdn.jsdelivr.net/gh/SummerSec/Images//53u5053ec53u5053ec.png)
+![image-20211227105053110](https://img.sumsec.me///53u5053ec53u5053ec.png)
 
 方法声明主体
 
 
 
-![time](https://cdn.jsdelivr.net/gh/SummerSec/Images//25u2525ec25u2525ec.png)
+![time](https://img.sumsec.me///25u2525ec25u2525ec.png)
 
 整个类全部信息
 
@@ -70,7 +70,7 @@ select c
 
 如果ql大部分查询是基于AST语法之上的，通过查看AST语法树的图不难发现所有的实现类都是一个类型**ClassOrInterfaceType**。
 
-![image-20211228101944016](https://cdn.jsdelivr.net/gh/SummerSec/Images//51u1951ec51u1951ec.png)
+![image-20211228101944016](https://img.sumsec.me///51u1951ec51u1951ec.png)
 
 
 
@@ -134,7 +134,7 @@ public class JSONSERDEMO {
 }
 ```
 
-![image-20211228110649571](https://cdn.jsdelivr.net/gh/SummerSec/Images//49u649ec49u649ec.png)
+![image-20211228110649571](https://img.sumsec.me///49u649ec49u649ec.png)
 
 #### DOT
 
@@ -167,7 +167,7 @@ public class DotSerDemo {
 }
 ```
 
-![image-20211228111241967](https://cdn.jsdelivr.net/gh/SummerSec/Images//42u1242ec42u1242ec.png)
+![image-20211228111241967](https://img.sumsec.me///42u1242ec42u1242ec.png)
 
 #### YAML
 
@@ -189,7 +189,7 @@ public class YamlSerDEMO {
 
 
 
-![image-20211228111647854](https://cdn.jsdelivr.net/gh/SummerSec/Images//48u1648ec48u1648ec.png)
+![image-20211228111647854](https://img.sumsec.me///48u1648ec48u1648ec.png)
 
 #### XML
 
@@ -208,7 +208,7 @@ public class XmlSerDemo {
 
 ```
 
-![image-20211228111817441](https://cdn.jsdelivr.net/gh/SummerSec/Images//17u1817ec17u1817ec.png)
+![image-20211228111817441](https://img.sumsec.me///17u1817ec17u1817ec.png)
 
 
 
@@ -230,7 +230,7 @@ public class XmlSerDemo {
 
 首先是有一个根节点，根节点下面有三个叶子节点，分别是**packageDeclaration**、**imports**、**types**。
 
-![image-20211228143811027](https://cdn.jsdelivr.net/gh/SummerSec/Images//11u3811ec11u3811ec.png)
+![image-20211228143811027](https://img.sumsec.me///11u3811ec11u3811ec.png)
 
 
 
@@ -238,7 +238,7 @@ public class XmlSerDemo {
 
 **packageDeclaration**是对应着TimePrinter的包名称，对应ql规则中谓词的hasQualifiedName或者是getQualifiedName
 
-![image-20211228144236650](https://cdn.jsdelivr.net/gh/SummerSec/Images//36u4236ec36u4236ec.png)
+![image-20211228144236650](https://img.sumsec.me///36u4236ec36u4236ec.png)
 
 举例说明
 
@@ -249,7 +249,7 @@ from Class c
 select c.getQualifiedName()
 ```
 
-![image-20211228145616981](https://cdn.jsdelivr.net/gh/SummerSec/Images//17u5617ec17u5617ec.png)
+![image-20211228145616981](https://img.sumsec.me///17u5617ec17u5617ec.png)
 
 ---
 
@@ -261,7 +261,7 @@ select c.getQualifiedName()
 
 
 
-![image-20211228145720020](https://cdn.jsdelivr.net/gh/SummerSec/Images//21u5721ec21u5721ec.png)
+![image-20211228145720020](https://img.sumsec.me///21u5721ec21u5721ec.png)
 
 举例查看哪里导入**org.apache.commons.lang3.compare**下的任意类，编写ql规则就能很快找到。
 
@@ -274,9 +274,9 @@ and i.getImportedType() = c
 select i
 ```
 
-![image-20211228152327119](https://cdn.jsdelivr.net/gh/SummerSec/Images//27u2327ec27u2327ec.png)
+![image-20211228152327119](https://img.sumsec.me///27u2327ec27u2327ec.png)
 
-![image-20211228152318395](https://cdn.jsdelivr.net/gh/SummerSec/Images//18u2318ec18u2318ec.png)
+![image-20211228152318395](https://img.sumsec.me///18u2318ec18u2318ec.png)
 
 
 
@@ -284,7 +284,7 @@ select i
 
 #### Type
 
-![image-20211228152811903](https://cdn.jsdelivr.net/gh/SummerSec/Images//12u2812ec12u2812ec.png)
+![image-20211228152811903](https://img.sumsec.me///12u2812ec12u2812ec.png)
 
 Type是一个大的模块，除了packageDeclaration和import模块其他所有的内容都属于Types。换一句话说，除了包名和导入的包其他所有的都是属于Type，像Javadoc、method、类名、字段等等。。。
 

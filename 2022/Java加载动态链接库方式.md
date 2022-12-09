@@ -22,7 +22,7 @@ public static  void loadDll3(){
 }
 ```
 
-![image-20220124115239143](https://cdn.jsdelivr.net/gh/SummerSec/Images/46u5246ec46u5246ec.png)
+![image-20220124115239143](https://img.sumsec.me//46u5246ec46u5246ec.png)
 
 可以看到可以直接调用System.load方法进行直接加载dll文件。
 
@@ -32,17 +32,17 @@ public static  void loadDll3(){
 
 跟进去可以发现**load**方法调用**Runtime.getRuntime().load0**方法，filename是传入文件名。也就是说我们也可以调用Runtime的load方法进行加载动态链接库。
 
-![image-20220124130944696](https://cdn.jsdelivr.net/gh/SummerSec/Images/44u944ec44u944ec.png)
+![image-20220124130944696](https://img.sumsec.me//44u944ec44u944ec.png)
 
 但其实发现**load0**方法是无法直接调用的，但可以直接调用**load**方法从而间接调用**load0**方法。
 
 
 
-![image-20220124131158138](https://cdn.jsdelivr.net/gh/SummerSec/Images/58u1158ec58u1158ec.png)
+![image-20220124131158138](https://img.sumsec.me//58u1158ec58u1158ec.png)
 
 在**load0**方法的最后一行是调用**ClassLoader**的**loadLibrary**方法，传入的参数依次是当前类，和文件名，已经是否是绝对路径。
 
-![image-20220124131440998](https://cdn.jsdelivr.net/gh/SummerSec/Images/41u1441ec41u1441ec.png)
+![image-20220124131440998](https://img.sumsec.me//41u1441ec41u1441ec.png)
 
 进行跟进**ClassLoader#loadLibrary**方法，方法声明写着一行注释。主要说明loadLibrary方法在`java.lang.Runtime`类中调用实现了**load**和**loadLibrary**方法。
 
@@ -108,15 +108,15 @@ static void loadLibrary(Class<?> fromClass, String name,
 
 在判断传入的是否是绝对路径后就调用了**loadLibrary0**方法
 
-![image-20220124132050291](https://cdn.jsdelivr.net/gh/SummerSec/Images/50u2050ec50u2050ec.png)
+![image-20220124132050291](https://img.sumsec.me//50u2050ec50u2050ec.png)
 
 在**loadLibrary0**方法中会读取**nativeLibraryContext**内容，判断是否已经被其他的classloader加载过了。
 
-![image-20220124134336447](https://cdn.jsdelivr.net/gh/SummerSec/Images/36u4336ec36u4336ec.png)
+![image-20220124134336447](https://img.sumsec.me//36u4336ec36u4336ec.png)
 
 紧接着会实例化**NativeLibrary**类，然后调用load方法加载动态链接库。
 
-![image-20220124134528474](https://cdn.jsdelivr.net/gh/SummerSec/Images/28u4528ec28u4528ec.png)
+![image-20220124134528474](https://img.sumsec.me//28u4528ec28u4528ec.png)
 
 NativeLibrary是**classloader**中的一个静态匿名类，NativeLibrary中的load方法内容如下，可以发现是已经到native层面了。
 
@@ -326,15 +326,15 @@ method.invoke(obj, file, false);
 
 假如已经通过文件上传、RCE等方式上传了前面提到jsp木马。木马会输出一些信息，目前上传路径是写死的，后续这个可以改（以任何方式，这个不重要）。
 
-![image-20220126201326631](https://cdn.jsdelivr.net/gh/SummerSec/Images/33u1333ec33u1333ec.png)
+![image-20220126201326631](https://img.sumsec.me//33u1333ec33u1333ec.png)
 
 然后**Dynamic Link Library Loader Tools**输入url，选择Payload（目前只有弹计算器）。
 
-![image-20220126201629504](https://cdn.jsdelivr.net/gh/SummerSec/Images/34u1634ec34u1634ec.png)
+![image-20220126201629504](https://img.sumsec.me//34u1634ec34u1634ec.png)
 
 点击**提交**，会发送一个请求包以POST方法，发送p = ${payload}$资源。最终会跳转到对应url上，并在目标服务器弹出计算器。
 
-![image-20220126202040625](https://cdn.jsdelivr.net/gh/SummerSec/Images/40u2040ec40u2040ec.png)
+![image-20220126202040625](https://img.sumsec.me//40u2040ec40u2040ec.png)
 
 ---
 
