@@ -22,13 +22,9 @@ jobs:
           fi
         done
 
-    - name: Commit and push changes
-      run: |
-        # Add the updated files to the git index
-        git add -u
-
-        # Create a commit with the updated files
-        git commit -m ":beers: Update images"
-
-        # Push the commit to the repository
-        git push
+    - name: Commit Replace README
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+          branch: ${{ github.event.release.target_commitish }}
+          commit_message:  Replace Images Links
+          file_pattern: .
