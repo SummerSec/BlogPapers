@@ -1,4 +1,4 @@
-name: :ambulance: Update images
+name:  Update images
 
 on: 
   push:
