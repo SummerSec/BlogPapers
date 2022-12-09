@@ -8,8 +8,8 @@ jobs:
       - name: Find and Replace
         uses: SummerSec/gha-find-replace@master
         with:
-          find: "https://gitee.com/samny/images/raw/master/"
-          replace: "https://raw.githubusercontent.com/SummerSec/Images/main/"
+          find: "https://cdn.jsdelivr.net/gh/SummerSec/Images"
+          replace: "https://img.sumsec.me/"
 #           regex: false
           include: "**/*.md" # 需要替换的文件内容
       - name: Commit Replace README
