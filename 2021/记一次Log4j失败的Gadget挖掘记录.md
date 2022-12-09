@@ -51,7 +51,7 @@ BeanComparator是CommonsBeanutils1的chain的漏洞触发点，也可以是直�
 final BeanComparator comparator = new BeanComparator("lowestSetBit");
 ```
 
-![image-20211102170436950](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//44u04er44ec/44u04er44ec.png)
+![image-20211102170436950](https://img.sumsec.me/summersec//44u04er44ec/44u04er44ec.png)
 
 PrioritiyQueue是一个优先队列，配合TemplatesImpl的组合反序列化漏洞chain。为了比较优先级，PrioritiyQueue除了使用内置的comparator之外也是支持传入comparator。queue.add()随意添加两个变量是为了序列化做到兼容，反序列化的时候queue队列中的对象就是恶意TemplatesImpl对象。
 
@@ -91,11 +91,11 @@ final BeanComparator comparator = new BeanComparator("lowestSetBit");
 
 触发TemplatesImpl中的**getOutputProperties**的调用
 
-![image-20211103110157384](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//4u02er4ec/4u02er4ec.png)
+![image-20211103110157384](https://img.sumsec.me/summersec//4u02er4ec/4u02er4ec.png)
 
 **getTransletInstance**进行一个强制的类型转化触发漏洞
 
-![image-20211103110248123](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//48u02er48ec/48u02er48ec.png)
+![image-20211103110248123](https://img.sumsec.me/summersec//48u02er48ec/48u02er48ec.png)
 
 
 
@@ -117,13 +117,13 @@ CommonsBeanutils这个gadget chain核心可以分为BeanComparator和PriorityQue
 
 分析一下BeanComparator在本次gadget做了那些事情，首先作为Comparator传入PriorityQueue中。那来看一下作为PriorityQueue的Comparator有那些要求，首先毋庸置疑得实现Serializable接口。然后作为一个comparator也得实现Java.util.Comparator接口。
 
-![image-20211103143011606](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//11u30er11ec/11u30er11ec.png)
+![image-20211103143011606](https://img.sumsec.me/summersec//11u30er11ec/11u30er11ec.png)
 
 
 
 其次得实现compare方法
 
-![image-20211103143454090](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//20u39er20ec/20u39er20ec.png)
+![image-20211103143454090](https://img.sumsec.me/summersec//20u39er20ec/20u39er20ec.png)
 
 
 
@@ -152,7 +152,7 @@ where isMyClass(c)
 select c
 ```
 
-![image-20211103151036584](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//36u10er36ec/36u10er36ec.png)
+![image-20211103151036584](https://img.sumsec.me/summersec//36u10er36ec/36u10er36ec.png)
 
 
 
@@ -197,7 +197,7 @@ public class PropertySources {
 
 comparator实现compare方法达不到需求，方法的参数类型限制死了只能为PropertySource类。在BeanComparator类中compare方法是一个泛型T，这些需要将TemplatesImpl传入进去，然后得调用getProperty方法获取**outputProperties**值。这里comparator有getProperty方法，但这个方法返回值是int类型，而不是String类型因此无法获取到outputProperties的值进而无法触发反序列化漏洞。
 
-![image-20211103153535785](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//35u35er35ec/35u35er35ec.png)
+![image-20211103153535785](https://img.sumsec.me/summersec//35u35er35ec/35u35er35ec.png)
 
 
 
@@ -245,7 +245,7 @@ column.setName("outputProperties");
 
 进而在调用getProperty方法的调用PropertyUtils触发反序列化漏洞。
 
-![image-20211103161221805](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//21u12er21ec/21u12er21ec.png)
+![image-20211103161221805](https://img.sumsec.me/summersec//21u12er21ec/21u12er21ec.png)
 
 ----
 
@@ -258,7 +258,7 @@ Comparator comparator = (Comparator) Reflections.newInstance("org.apache.click.c
 Comparator comparator = column.getComparator();
 ```
 
-![image-20211103162237208](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//37u22er37ec/37u22er37ec.png)
+![image-20211103162237208](https://img.sumsec.me/summersec//37u22er37ec/37u22er37ec.png)
 
 
 

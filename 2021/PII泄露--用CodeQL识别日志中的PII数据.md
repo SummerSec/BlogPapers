@@ -32,7 +32,7 @@ where
 select f
 ```
 
-![image-20210418173835827](https://raw.githubusercontent.com/SummerSec/Images/main/46u38er46ec/46u38er46ec.png)
+![image-20210418173835827](https://img.sumsec.me/46u38er46ec/46u38er46ec.png)
 
 转化成类的形式
 
@@ -56,7 +56,7 @@ from SenInfoField sif
 select sif 
 ```
 
-![image-20210418173846083](https://raw.githubusercontent.com/SummerSec/Images/main/46u38er46ec/46u38er46ec.png)
+![image-20210418173846083](https://img.sumsec.me/46u38er46ec/46u38er46ec.png)
 
 ---
 
@@ -88,9 +88,9 @@ from LoggerFormatMethod lfm
 select lfm.getAReference()
 ```
 
-![image-20210418173902809](https://raw.githubusercontent.com/SummerSec/Images/main/2u39er2ec/2u39er2ec.png)
+![image-20210418173902809](https://img.sumsec.me/2u39er2ec/2u39er2ec.png)
 
-![image-20210418173927488](https://raw.githubusercontent.com/SummerSec/Images/main/27u39er27ec/27u39er27ec.png)
+![image-20210418173927488](https://img.sumsec.me/27u39er27ec/27u39er27ec.png)
 
 
 
@@ -147,9 +147,9 @@ select sink, "PII data from field $@ is written to long here",f , f.getName()
 
 ```
 
-![image-20210418165443032](https://raw.githubusercontent.com/SummerSec/Images/main/43u54er43ec/43u54er43ec.png)
+![image-20210418165443032](https://img.sumsec.me/43u54er43ec/43u54er43ec.png)
 
-![image-20210418165519019](https://raw.githubusercontent.com/SummerSec/Images/main/19u55er19ec/19u55er19ec.png)
+![image-20210418165519019](https://img.sumsec.me/19u55er19ec/19u55er19ec.png)
 
 在where clause中38和39行是一样的效果，因为在CodeQL中`=`的作用是判断左右两边是否是相同、相等，所以左右的顺序是没有区别。
 
@@ -162,7 +162,7 @@ where
 select sink,"PII data from field $@ is written to long here",source, source.asExpr().toString()
 ```
 
-![image-20210418174013455](https://raw.githubusercontent.com/SummerSec/Images/main/13u40er13ec/13u40er13ec.png)
+![image-20210418174013455](https://img.sumsec.me/13u40er13ec/13u40er13ec.png)
 
 PS：关于`$@`参考[Defining the results of a query](https://github.com/SummerSec/learning-codeql/tree/main/CodeQL%20Queries/Defining%20the%20results%20of%20a%20query)
 
@@ -214,7 +214,7 @@ select sink, source, sink, "PII data from field $@ is written to long here", sou
 
 ```
 
- ![image-20210418174047087](https://raw.githubusercontent.com/SummerSec/Images/main/47u40er47ec/47u40er47ec.png)
+ ![image-20210418174047087](https://img.sumsec.me/47u40er47ec/47u40er47ec.png)
 
 
 
@@ -224,7 +224,7 @@ select sink, source, sink, "PII data from field $@ is written to long here", sou
 
 在路径查询结果中，我们查看的时候可以发现`creditCard`被`mask%`方法处理了，`mask%`方法是`马赛克`的意思。排除这个有这个方法路径，让结果更少的误报，这就需要重写`isSanitizer`谓词。在污点追踪里，`Sanitizer`即是无害处理。
 
-![image-20210418165612231](https://raw.githubusercontent.com/SummerSec/Images/main/12u56er12ec/12u56er12ec.png)
+![image-20210418165612231](https://img.sumsec.me/12u56er12ec/12u56er12ec.png)
 
 
 
@@ -281,7 +281,7 @@ where
 select sink,source,sink ,"PII data from field $@ is written to long here",f ,f.getName()
 ```
 
-![image-20210418171150005](https://raw.githubusercontent.com/SummerSec/Images/main/50u11er50ec/50u11er50ec.png)
+![image-20210418171150005](https://img.sumsec.me/50u11er50ec/50u11er50ec.png)
 
 
 

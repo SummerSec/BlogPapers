@@ -38,13 +38,13 @@ select cl
 
 
 
-![image-20210407165147780](https://raw.githubusercontent.com/SummerSec/Images/main/47u51er47ec/47u51er47ec.png)
+![image-20210407165147780](https://img.sumsec.me/47u51er47ec/47u51er47ec.png)
 
 
 
 点击查询出来的结果可以看到对应的查询结果源码
 
-![image-20210407165420324](https://raw.githubusercontent.com/SummerSec/Images/main/20u54er20ec/20u54er20ec.png)
+![image-20210407165420324](https://img.sumsec.me/20u54er20ec/20u54er20ec.png)
 
 
 
@@ -81,11 +81,11 @@ select clie
 
 
 
-![image-20210403161916030](https://raw.githubusercontent.com/SummerSec/Images/main/16u19er16ec/16u19er16ec.png)
+![image-20210403161916030](https://img.sumsec.me/16u19er16ec/16u19er16ec.png)
 
 可以发现在`IndexController`类59行处实例化`User`类。
 
-![image-20210407170528622](https://raw.githubusercontent.com/SummerSec/Images/main/28u05er28ec/28u05er28ec.png)
+![image-20210407170528622](https://img.sumsec.me/28u05er28ec/28u05er28ec.png)
 
 
 
@@ -186,7 +186,7 @@ from DeserializeTobytes des
 select des
 ```
 
-![image-20210408111311362](https://raw.githubusercontent.com/SummerSec/Images/main/11u13er11ec/11u13er11ec.png)
+![image-20210408111311362](https://img.sumsec.me/11u13er11ec/11u13er11ec.png)
 
 
 
@@ -202,9 +202,9 @@ select exeCmd
 
 
 
-![image-20210408112348838](https://raw.githubusercontent.com/SummerSec/Images/main/48u23er48ec/48u23er48ec.png)
+![image-20210408112348838](https://img.sumsec.me/48u23er48ec/48u23er48ec.png)
 
-![image-20210408112415555](https://raw.githubusercontent.com/SummerSec/Images/main/15u24er15ec/15u24er15ec.png)
+![image-20210408112415555](https://img.sumsec.me/15u24er15ec/15u24er15ec.png)
 
 
 
@@ -250,7 +250,7 @@ public static String exeCmd(String commandStr) {
 
 对`IndexController`简单提炼处理逻辑，画出数据流流程图：
 
-![image-20210407181153644](https://raw.githubusercontent.com/SummerSec/Images/main/53u11er53ec/53u11er53ec.png)
+![image-20210407181153644](https://img.sumsec.me/53u11er53ec/53u11er53ec.png)
 
 
 
@@ -311,7 +311,7 @@ int func(int tainted) {
 
 
 
-![img](https://raw.githubusercontent.com/SummerSec/Images/main/20u06er20ec/20u06er20ec.png)
+![img](https://img.sumsec.me/20u06er20ec/20u06er20ec.png)
 
 
 
@@ -355,7 +355,7 @@ class MyindexTomenthod extends Method{
 }
 ```
 
-![image-20210408203416533](https://raw.githubusercontent.com/SummerSec/Images/main/16u34er16ec/16u34er16ec.png)
+![image-20210408203416533](https://img.sumsec.me/16u34er16ec/16u34er16ec.png)
 
 ##### Sink部分
 
@@ -369,7 +369,7 @@ predicate isDes(Expr arg){
 }
 ```
 
-![image-20210408203429010](https://raw.githubusercontent.com/SummerSec/Images/main/29u34er29ec/29u34er29ec.png)
+![image-20210408203429010](https://img.sumsec.me/29u34er29ec/29u34er29ec.png)
 
 
 
@@ -515,7 +515,7 @@ Error was: Expected result pattern(s) are not present for query kind "path-probl
 
 
 
-![image-20210408203006971](https://raw.githubusercontent.com/SummerSec/Images/main/7u30er7ec/7u30er7ec.png)
+![image-20210408203006971](https://img.sumsec.me/7u30er7ec/7u30er7ec.png)
 
 
 
@@ -640,17 +640,17 @@ select sink.getNode(), source, sink, "Unsafe shiro deserialization" ,source.getN
 
 
 
-![image-20210408204606897](https://raw.githubusercontent.com/SummerSec/Images/main/18u46er18ec/18u46er18ec.png)
+![image-20210408204606897](https://img.sumsec.me/18u46er18ec/18u46er18ec.png)
 
 
 
 其实查到这里并没有达到我心理的预期，预期结果是将：`request->cookies->cookie->bytes`整个路径查询出来。于是我又去Discussion去提问了，[Disuccsion334](https://github.com/github/securitylab/discussions/334) ，起初我没看懂老外的意思，老外也没有懂我的意思，语言的障碍，下面是对话内容：
 
-![image-20210408205610338](https://raw.githubusercontent.com/SummerSec/Images/main/10u56er10ec/10u56er10ec.png)
+![image-20210408205610338](https://img.sumsec.me/10u56er10ec/10u56er10ec.png)
 
 老外给的答案，大致意思这样子已经很好，没有必要去追求。实在想的话，得把source部分改了并且增加谓词`isAdditionTaintStep`。
 
-![image-20210408205635743](https://raw.githubusercontent.com/SummerSec/Images/main/35u56er35ec/35u56er35ec.png)
+![image-20210408205635743](https://img.sumsec.me/35u56er35ec/35u56er35ec.png)
 
 
 

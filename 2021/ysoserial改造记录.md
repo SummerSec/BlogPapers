@@ -10,7 +10,7 @@
 
 
 
-在 Java 中，所有的类默认通过 ClassLoader 加载，而 Java 默认提供了三层的 ClassLoader，并通过双亲委托模型的原则进行加载，其基本模型与加载位置如下（更多ClassLoader相关原理请自行搜索）：<br />![image-20211122172332343](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//32u23er32ec/32u23er32ec.png)<br />![image-20211122172352427](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//52u23er52ec/52u23er52ec.png)<br />Java 中默认的 ClassLoader 都规定了其指定的加载目录，一般也不会通过 JVM 参数来使其加载自定义的目录，所以我们需要自定义一个 ClassLoader 来加载装有不同版本的 jar 包的扩展目录，同时为了使运行扩展的 jar 包时，与启动项目实现绝对的隔离，我们需要保证他们所加载的类不会有相同的 ClassLoader，根据双亲委托模型的原理可知，我们必须使自定义的 ClassLoader 的 parent 为 null，这样不管是 JRE 自带的 jar 包或一些基础的 Class 都不会委托给 App ClassLoader（当然仅仅是将 Parent 设置为 null 是不够的，后面会说明)。与此同时这些实现了不同版本的 jar 包，是经过二次开发后的可以独立运行的项目。
+在 Java 中，所有的类默认通过 ClassLoader 加载，而 Java 默认提供了三层的 ClassLoader，并通过双亲委托模型的原则进行加载，其基本模型与加载位置如下（更多ClassLoader相关原理请自行搜索）：<br />![image-20211122172332343](https://img.sumsec.me/summersec//32u23er32ec/32u23er32ec.png)<br />![image-20211122172352427](https://img.sumsec.me/summersec//52u23er52ec/52u23er52ec.png)<br />Java 中默认的 ClassLoader 都规定了其指定的加载目录，一般也不会通过 JVM 参数来使其加载自定义的目录，所以我们需要自定义一个 ClassLoader 来加载装有不同版本的 jar 包的扩展目录，同时为了使运行扩展的 jar 包时，与启动项目实现绝对的隔离，我们需要保证他们所加载的类不会有相同的 ClassLoader，根据双亲委托模型的原理可知，我们必须使自定义的 ClassLoader 的 parent 为 null，这样不管是 JRE 自带的 jar 包或一些基础的 Class 都不会委托给 App ClassLoader（当然仅仅是将 Parent 设置为 null 是不够的，后面会说明)。与此同时这些实现了不同版本的 jar 包，是经过二次开发后的可以独立运行的项目。
 
 
 
@@ -85,7 +85,7 @@ public class StandardExecutorClassLoader extends URLClassLoader {
 }
 
 ```
-![image-20211122172440217](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//40u24er40ec/40u24er40ec.png)<br />
+![image-20211122172440217](https://img.sumsec.me/summersec//40u24er40ec/40u24er40ec.png)<br />
 
 ### Shiro反序列化漏洞实现
 
@@ -127,7 +127,7 @@ public class CommonsBeanutils1_192 implements ObjectPayload {
 ### 减小payload的体积
 根据文章[缩小ysoserial payload体积的几个方法](https://xz.aliyun.com/t/6227)最大程度上减小生成payload的体积，对比结果直接减小一半多。
 
-![image.png](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//55u46er55ec/55u46er55ec.png)<br />
+![image.png](https://img.sumsec.me/summersec//55u46er55ec/55u46er55ec.png)<br />
 
 
 ---
@@ -144,7 +144,7 @@ public class CommonsBeanutils1_192 implements ObjectPayload {
 | 4    | “codefile:代码文件路径”         | 代码量比较多时采用                                      |
 | 5    | “classfile:class路径“           | 利用已生成好的 class 直接获取其字节码                   |
 
-支持下面这些gadget<br />![image.png](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//55u46er55ec/55u46er55ec.png)<br />
+支持下面这些gadget<br />![image.png](https://img.sumsec.me/summersec//55u46er55ec/55u46er55ec.png)<br />
 
 <a name="Cl1vV"></a>
 #### codebase64、codefile:、code三种命令介绍
@@ -232,7 +232,7 @@ public class Calc extends AbstractTranslet {
 ```
 
 #### 去掉原版绝大数特征
- 原版大量使用ysoserial、Pwer字段，去除后效果。改掉原版package名字换成dogeser，生成的payload的就不会出现ysoserial字段。<br />![image.png](https://raw.githubusercontent.com/SummerSec/Images/main/summersec//55u46er55ec/55u46er55ec.png)<br />
+ 原版大量使用ysoserial、Pwer字段，去除后效果。改掉原版package名字换成dogeser，生成的payload的就不会出现ysoserial字段。<br />![image.png](https://img.sumsec.me/summersec//55u46er55ec/55u46er55ec.png)<br />
 
 
 

