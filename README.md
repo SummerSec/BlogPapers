@@ -25,6 +25,7 @@
 
 | Time  | Name                                                         | Tags           |
 | ----- | ------------------------------------------------------------ | -------------- |
+| 12/09 | [VMWare-Workspace-ONE-Access-Auth-Bypass](./2022/VMWare-Workspace-ONE-Access-Auth-Bypass.md) | 漏洞分析/Java/RCE |
 | 09/28 | [Spring-Framework-RCE-CVE-2022-22965漏洞分析](./2022/Spring-Framework-RCE-CVE-2022-22965漏洞分析.md) | 漏洞分析/Java/RCE                      |
 | 08/08 | [相似度算法调研](./2022/相似度算法调研.md)                   | 算法/go                                |
 | 07/19 | [CVE-2022-33891 Apache Spark shell command injection](./2022/CVE-2022-33891 Apache Spark shell command injection.md) | 命令执行/Spark                    |

@@ -245,6 +245,7 @@ private String getLocalUrl(HttpServletRequest request) {
 }
 ```
 
+
 最终获取到url值为**https://{host}:{port}/SAAS/API/1.0/REST/auth/local/login**，然后会调用**authenticate方法**进行认证。![image-20220906175139592](https://raw.githubusercontent.com/SummerSec/Images/main/202209/202209061751629.png)
 
 **/embeddedauthadapters/local-password-auth-adapter-0.1.jar!/com/vmware/horizon/adapters/local/LocalPasswordService.class** 的authenticate方法会请求传入的URL，如果**返回状态码为200就返回true**，认证成功。
