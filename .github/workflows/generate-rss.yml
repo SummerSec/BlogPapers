@@ -1,0 +1,32 @@
+name: Generate RSS
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  generate-rss:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate RSS
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v3
+      - name: Pull RSS Repo
+        uses: SummerSec/blog-rss@main
+      - name: Install dependencies
+        run: |
+          python -m pip install -r requirements.txt
+      - name: Generate RSS file
+        run: |
+          python generate_rss.py
+      - name: Commit and push changes
+        uses: EndBug/add-and-commit@v2
+        with:
+          add: 'rss.xml'
+          message: 'Generate RSS file'
+          author_name: 'SummerSec'
+          author_email: 'SummerSec@github.com'
+          push: true
