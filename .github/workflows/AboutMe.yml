@@ -38,7 +38,8 @@ jobs:
           wget -O /home/runner/work/BlogPapers/BlogPapers/resources/os.gif  https://raw.githubusercontent.com/SummerSec/SummerSec/master/os.gif
           wget -O /home/runner/work/BlogPapers/BlogPapers/resources/Hi.gif https://raw.githubusercontent.com/SummerSec/SummerSec/master/Hi.gif
           wget  -O  /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md 
-
+          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/atom.xml https://raw.githubusercontent.com/SummerSec/blog-rss/main/atom.xml
+          wget -O  /home/runner/work/BlogPapers/BlogPapers/resources/rss.xml   https://raw.githubusercontent.com/SummerSec/blog-rss/main/rss.xml
 #       - name: Commit updated AboutMe
 #         uses: stefanzweifel/git-auto-commit-action@v4
 #         with:
@@ -58,5 +59,5 @@ jobs:
         with:
           branch: ${{ github.event.release.target_commitish }}
           commit_message:  🍭Update Sitemap && AboutMe && Git Svg
-          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake-dark.svg /home/runner/work/BlogPapers/BlogPapers/resources/dist/ocean.gif /home/runner/work/BlogPapers/BlogPapers/resources/os.gif /home/runner/work/BlogPapers/BlogPapers/resources/Hi.gif /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake.svg 
+          file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake-dark.svg /home/runner/work/BlogPapers/BlogPapers/resources/dist/ocean.gif /home/runner/work/BlogPapers/BlogPapers/resources/os.gif /home/runner/work/BlogPapers/BlogPapers/resources/Hi.gif /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake.svg /home/runner/work/BlogPapers/BlogPapers/resources/atom.xml /home/runner/work/BlogPapers/BlogPapers/resources/rss.xml  
 
