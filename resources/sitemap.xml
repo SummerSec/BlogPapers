@@ -136,6 +136,9 @@
     <loc>https://sumsec.me/resources/ascii.txt</loc>
   </url>
   <url>
+    <loc>https://sumsec.me/resources/rss.xml</loc>
+  </url>
+  <url>
     <loc>https://sumsec.me/resources/atom.xml</loc>
   </url>
 </urlset>
