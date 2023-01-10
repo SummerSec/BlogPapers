@@ -13,7 +13,7 @@
 | sitemap.xml      | [sitemap.xml](./sitemap.xml)                                 |
 | Hi.gif           | [Hi.gif](./Hi.gif)                                           |
 | work.gif         | [work.gif](./work.gif)                                       |
-| rss.xml          | [rss.xml](./rss.xm)                                          |
+| rss.xml          | [rss.xml](./rss.xml)                                         |
 | atom.xml         | [atom.xml](./atom.xml)                                       |
 
 ![QRcode_C2.png](./QRcode_C2.png)
