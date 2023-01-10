@@ -16,6 +16,9 @@
     <loc>https://sumsec.me/resources/</loc>
   </url>
   <url>
+    <loc>https://sumsec.me/resources/rss.xml</loc>
+  </url>
+  <url>
     <loc>https://sumsec.me/2022/VMWare-Workspace-ONE-Access-Auth-Bypass.html</loc>
   </url>
   <url>
@@ -134,9 +137,6 @@
   </url>
   <url>
     <loc>https://sumsec.me/resources/ascii.txt</loc>
-  </url>
-  <url>
-    <loc>https://sumsec.me/resources/rss.xml</loc>
   </url>
   <url>
     <loc>https://sumsec.me/resources/atom.xml</loc>
