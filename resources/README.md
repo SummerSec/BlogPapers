@@ -15,5 +15,7 @@
 | work.gif         | [work.gif](./work.gif)                                       |
 | rss.xml          | [rss.xml](./rss.xml)                                         |
 | atom.xml         | [atom.xml](./atom.xml)                                       |
+| swagger-xss.json | [swagger-xss.json](./swagger-xss.json)                       |
+| swagger-xss.yaml | [swagger-xss.yaml](./swagger-xss.yaml)                       |
 
 ![QRcode_C2.png](./QRcode_C2.png)
