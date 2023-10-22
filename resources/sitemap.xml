@@ -13,10 +13,10 @@
     <loc>https://sumsec.me/resources/Advertisements.html</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/resources/</loc>
+    <loc>https://sumsec.me/resources/rss.xml</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/resources/rss.xml</loc>
+    <loc>https://sumsec.me/resources/</loc>
   </url>
   <url>
     <loc>https://sumsec.me/2022/VMWare-Workspace-ONE-Access-Auth-Bypass.html</loc>
