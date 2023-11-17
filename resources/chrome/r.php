@@ -3,6 +3,7 @@
 <!ENTITY passwd SYSTEM "file:///etc/passwd">
 <!ENTITY hosts SYSTEM "file:///etc/hosts">
 <!ENTITY group SYSTEM "file://localhost/etc/group">
+<!ENTITY group SYSTEM "file://etc/fonts">
 
 ]>
 
