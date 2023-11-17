@@ -18,10 +18,4 @@
  </xsl:template>
 </xsl:stylesheet>
 
-Main file (test.svg):
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE p [
-<!ENTITY passwd SYSTEM "file:///etc/passwd">
-<!ENTITY hosts SYSTEM "file:///etc/hosts">
-<!ENTITY group SYSTEM "file://localhost/etc/group">
-]> 
+
