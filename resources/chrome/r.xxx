@@ -3,8 +3,7 @@
 <!ENTITY passwd SYSTEM "file:///etc/passwd">
 <!ENTITY hosts SYSTEM "file:///etc/hosts">
 <!ENTITY group SYSTEM "file://localhost/etc/group">
-<!ENTITY group SYSTEM "file://etc/fonts">
-
+<!ENTITY fonts SYSTEM "file://etc/fonts">
 ]>
 
 <p>
@@ -22,5 +21,8 @@
 
 &group;
   </p >
+ <p style="border-style: dotted;">/etc/fonts:
 
+&fonts;
+  </p >
 </p >
