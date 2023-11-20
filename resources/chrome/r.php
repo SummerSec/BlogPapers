@@ -10,11 +10,11 @@
 <p>
 
 
-  <p style="border-style: dotted;">/etc/passwd:
+  <p style="border-style: dotted;" >/etc/passwd:
 
 &passwd;
   </p >
- <p style="border-style: dotted;">/etc/hosts:
+ <p style="border-style: dotted;" id ="hosts">/etc/hosts:
 
 &hosts;
   </p >
