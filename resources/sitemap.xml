@@ -139,9 +139,9 @@
     <loc>https://sumsec.me/resources/ascii.txt</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/resources/swagger.yaml</loc>
+    <loc>https://sumsec.me/resources/atom.xml</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/resources/atom.xml</loc>
+    <loc>https://sumsec.me/resources/swagger.yaml</loc>
   </url>
 </urlset>
