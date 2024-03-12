@@ -6,6 +6,7 @@
 
 | 资源名           | 🔗 链接                                                       |
 | ---------------- | ------------------------------------------------------------ |
+| subdomain  | [subdomain](./subdomain.md)                                 |
 | OmegaOptions.bak | [OmegaOptions.bak](https://sumsec.me/resources/OmegaOptions.bak) |
 | QRcode_C2.png    | [QRcode_C2](./QRcode_C2.png)                                 |
 | ascii.txt        | [ascii.txt](./ascii.txt)                                     |
