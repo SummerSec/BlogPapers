@@ -147,4 +147,7 @@
   <url>
     <loc>https://sumsec.me/resources/swagger.yaml</loc>
   </url>
+  <url>
+    <loc>https://sumsec.me/resources/vless.yaml</loc>
+  </url>
 </urlset>
