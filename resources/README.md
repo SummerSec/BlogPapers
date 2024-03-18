@@ -18,5 +18,6 @@
 | atom.xml         | [atom.xml](./atom.xml)                                       |
 | swagger-xss.json | [swagger-xss.json](./swagger.json)                           |
 | swagger-xss.yaml | [swagger-xss.yaml](./swagger.yaml)                           |
+| vless.yaml | [vless.yaml](./vless.yaml)                           |
 
 ![QRcode_C2.png](./QRcode_C2.png)
