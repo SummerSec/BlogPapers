@@ -13,7 +13,7 @@ mode: Rule
 log-level: info
 external-controller: 0.0.0.0:9090
 proxies:
-  - {"type":"vless","name":"vless.sumsec.me","server":"www.visa.com.sg","port":8443,"uuid":"99a881fb-4fd2-4b37-8596-11bd9728dd5c","skip-cert-verify":true,"udp":true,"tls":true,"network":"ws","servername":"vless.sumsec.me","ws-opts":{"path":"/?ed=2048","headers":{"host":"vless.sumsec.me"}}}
+  - {"type":"vless","name":"vless.sumsec.me","server":"www.visa.com.sg","port":8443,"uuid":"88a571fb-4aa2-4cc7-8596-1b7d9728bb5c","skip-cert-verify":true,"udp":true,"tls":true,"network":"ws","servername":"vless.sumsec.me","ws-opts":{"path":"/?ed=2048","headers":{"host":"vless.sumsec.me"}}}
 proxy-groups:
   - name: 🚀 节点选择
     type: select
