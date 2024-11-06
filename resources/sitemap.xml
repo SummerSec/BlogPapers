@@ -133,6 +133,9 @@
     <loc>https://sumsec.me/PL/</loc>
   </url>
   <url>
+    <loc>https://sumsec.me/resources/subdomain.html</loc>
+  </url>
+  <url>
     <loc>https://sumsec.me/resources/OmegaOptions.bak</loc>
   </url>
   <url>
@@ -143,9 +146,6 @@
   </url>
   <url>
     <loc>https://sumsec.me/resources/swagger.yaml</loc>
-  </url>
-  <url>
-    <loc>https://sumsec.me/resources/subdomain.html</loc>
   </url>
   <url>
     <loc>https://sumsec.me/resources/vless.yaml</loc>
