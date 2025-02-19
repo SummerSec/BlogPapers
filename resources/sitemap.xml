@@ -4,9 +4,6 @@
     <loc>https://sumsec.me/</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/resources/Archives.html</loc>
-  </url>
-  <url>
     <loc>https://sumsec.me/resources/AboutMe.html</loc>
   </url>
   <url>
@@ -124,15 +121,6 @@
     <loc>https://sumsec.me/2021/2021%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93.html</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/2021/</loc>
-  </url>
-  <url>
-    <loc>https://sumsec.me/2022/</loc>
-  </url>
-  <url>
-    <loc>https://sumsec.me/PL/</loc>
-  </url>
-  <url>
     <loc>https://sumsec.me/resources/subdomain.html</loc>
   </url>
   <url>
@@ -149,5 +137,17 @@
   </url>
   <url>
     <loc>https://sumsec.me/resources/vless.yaml</loc>
+  </url>
+  <url>
+    <loc>https://sumsec.me/resources/Archives.html</loc>
+  </url>
+  <url>
+    <loc>https://sumsec.me/2021/</loc>
+  </url>
+  <url>
+    <loc>https://sumsec.me/2022/</loc>
+  </url>
+  <url>
+    <loc>https://sumsec.me/PL/</loc>
   </url>
 </urlset>
