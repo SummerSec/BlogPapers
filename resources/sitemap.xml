@@ -22,9 +22,6 @@
     <loc>https://sumsec.me/2022/VMWare-Workspace-ONE-Access-Auth-Bypass.html</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/2022/Spring-Framework-RCE-CVE-2022-22965%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html</loc>
-  </url>
-  <url>
     <loc>https://sumsec.me/2022/%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94.html</loc>
   </url>
   <url>
@@ -44,6 +41,9 @@
   </url>
   <url>
     <loc>https://sumsec.me/2022/Shiro%E5%90%8E%E6%B8%97%E9%80%8F%E6%8B%93%E5%B1%95%E9%9D%A2.html</loc>
+  </url>
+  <url>
+    <loc>https://sumsec.me/2022/Spring-Framework-RCE-CVE-2022-22965%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html</loc>
   </url>
   <url>
     <loc>https://sumsec.me/2022/shiro%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E6%94%BB%E5%87%BB%E6%8B%93%E5%B1%95%E9%9D%A2--%E4%BF%AE%E6%94%B9key.html</loc>
@@ -142,10 +142,10 @@
     <loc>https://sumsec.me/resources/ascii.txt</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/resources/atom.xml</loc>
+    <loc>https://sumsec.me/resources/swagger.yaml</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/resources/swagger.yaml</loc>
+    <loc>https://sumsec.me/resources/atom.xml</loc>
   </url>
   <url>
     <loc>https://sumsec.me/resources/vless.yaml</loc>
