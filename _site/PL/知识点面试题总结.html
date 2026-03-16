@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>知识点 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="知识点" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/PL/%E7%9F%A5%E8%AF%86%E7%82%B9%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/PL/%E7%9F%A5%E8%AF%86%E7%82%B9%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="知识点" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"知识点","url":"http://0.0.0.0:4000/PL/%E7%9F%A5%E8%AF%86%E7%82%B9%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2 id="知识点">知识点</h2>
+
+<h3 id="流敏感">流敏感</h3>
+
+<ul>
+  <li>上下文敏感技术</li>
+  <li>过程间分析技术 <font color="red">ICFG = CFGs + call &amp;return edges</font></li>
+  <li>指针分析技术</li>
+</ul>
+
+<h4 id="上下文敏感context-sensitivity-cs">上下文敏感（Context Sensitivity CS）</h4>
+
+<hr />
+
+<h4 id="过程间分析技术">过程间分析技术</h4>
+
+<p>在乎每一个过程，每一个方法的具体执行情况，大大提升精度。</p>
+
+<hr />
+
+<h3 id="流不敏感">流不敏感</h3>
+
+<ul>
+  <li>
+    <p>CHA技术</p>
+  </li>
+  <li>
+    <p>过程内分析</p>
+  </li>
+  <li>
+    <p>上下文不敏感</p>
+  </li>
+</ul>
+
+<hr />
+
+<h3 id="cha-类继承关系构建的特征">CHA (类继承关系构建)的特征</h3>
+
+<ol>
+  <li>只考虑类继承结构，所以<strong>很快</strong></li>
+  <li>因为忽略了数据流和控制流的信息，所以<strong>不太准确</strong></li>
+</ol>
+
+<hr />
+
+<h2 id="面试题">面试题</h2>
+
+<h3 id="ast和ir的对比">AST和IR的对比</h3>
+
+<font color="red"> AST 相对来说比较**高级**，可读性比较高对象开发者，而相反IR更倾向于机器。AST规范不统一，每一种语言大致相同但不完全一样，而IR是统一的规范的。</font>
+
+<h3 id="call-graph-construction-cha--调用关系图构造">Call Graph Construction (CHA)  调用关系图构造</h3>
+
+<ul>
+  <li>过程间分析 <strong>必要的数据结构Call Graph</strong></li>
+  <li>当前有数种方法来<strong>构建Call Graph</strong>，本节介绍其中<strong>速度最快的一种（Class hierarchy analysis，简称CHA）</strong></li>
+</ul>
+
+<h3 id="流敏感与上下不敏感对比">流敏感与上下不敏感对比</h3>
+
+<ol>
+  <li>首先流敏感技术的速度会大大降低，但精度会大大提高。牺牲精度从而提高速度。</li>
+  <li>
+    <font color="red">流敏感分析重视语句执行的顺序，而流不敏感分析则恰恰相反。</font>
+    <p>这也了导致前者的精度更高，但优势不是特别大；后者的开销则远远小于前者。</p>
+  </li>
+  <li>流敏感技术一般都是采用上下文敏感和过程间分析技术。</li>
+</ol>
+
+
+      </section>
+    </div>
+  </body>
+</html>

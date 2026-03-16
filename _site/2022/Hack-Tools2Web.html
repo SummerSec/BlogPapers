@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hack-Tools 转化成Web | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hack-Tools 转化成Web" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2022/Hack-Tools2Web.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2022/Hack-Tools2Web.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hack-Tools 转化成Web" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Hack-Tools 转化成Web","url":"http://0.0.0.0:4000/2022/Hack-Tools2Web.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2 id="hack-tools-转化成web">Hack-Tools 转化成Web</h2>
+
+<h3 id="前言">前言</h3>
+
+<p><a href="https://github.com/LasCC/Hack-Tools">Hack-Tools</a>是一款非常优秀的开源浏览器工具 ，其集成了非常多的黑客采用的小工具，兼容非常目前市面上所有的主流的浏览器。</p>
+
+<p>这款工具作为浏览器插件来说非常厉害，但其实对于我这种喜欢将生活和工作分开的用户来说，浏览器并不是想装这款浏览器插件，因为大多时候是用不着的。或者说在很多工作时候会将这款浏览器插件忘记，在或者说在一台不熟悉的电脑上，不熟悉的浏览器工作时，大多数时候会将这款浏览器插件遗忘，或者是得重新安装这款浏览器插件，亦或者说有人可能和我一样不太喜欢装很多浏览器插件，对于我这种电脑配置低下的人，浏览器插件过多会消耗很多内存。</p>
+
+<hr />
+
+<h3 id="寻找可能性">寻找可能性</h3>
+
+<p>所以我在想有没有一种可以将这种Web的静态页面部署在网站上可能性呢？第一步我是想找替代方案，去寻找些开源的项目。结果要么没有这款浏览器插件丰富，要么没有这款浏览器方便。</p>
+
+<p>最终还是看这款开源工具的源码，发现这款浏览器工具本身就是静态页面，全都是前端资源。于是乎在想直接git源码看看能否直接搭建，但是很可惜不可以这样子做。</p>
+
+<p><img src="https://img.sumsec.me//3u63ec3u63ec.png" alt="image-20220227140602997" /></p>
+
+<hr />
+
+<h3 id="峰回路转">峰回路转</h3>
+
+<p>在苦恼的时候，就在最后放弃的时候。发现这款插件时可以弹出使用的，并且F12的时候发现所有的资源都是存在的就是一款前端的插件。</p>
+
+<p><img src="https://img.sumsec.me//36u936ec36u936ec.png" alt="image-20220227140936827" /></p>
+
+<p>于是乎在想着能不能去下载已经打包好的插件，然后看看里面的源码呢？然后在解压缩，看看能不能搭建呢？</p>
+
+<p>最终效果：<a href="https://github.com/SummerSec/WebToolsCollections">https://github.com/SummerSec/WebToolsCollections</a></p>
+
+<p>然后在使用GitHub的actions功能将资源部署，最终成了一个静态网站。</p>
+
+<p><a href="https://ht.sumsec.me/">https://ht.sumsec.me/</a>，和原版可能时一模一样的。</p>
+
+<p><img src="https://img.sumsec.me//25u1425ec25u1425ec.png" alt="image-20220227141425285" /></p>
+
+<hr />
+
+<h3 id="结束语">结束语</h3>
+
+<p>最终可能在收集几个类似的功能的前端静态资源，也欢迎搭建提供意见和pr。</p>
+
+<p>联系方式：c3lzYXNlY0BnbWFpbC5jb20=</p>
+
+      </section>
+    </div>
+  </body>
+</html>

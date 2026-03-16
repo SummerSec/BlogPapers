@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>相似度算法调研 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="相似度算法调研" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2022/%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2022/%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="相似度算法调研" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"相似度算法调研","url":"http://0.0.0.0:4000/2022/%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2 id="相似度算法调研">相似度算法调研</h2>
+
+<h3 id="前言">前言</h3>
+
+<p>相似度算法故名思义，就是判断两个件事物是否是存在相似相似性，通常我们比较多是一些字符串、文本文件。相似度算法其实很多都使用过，很经典的案例毕业论文全网匹配相似度，也就是我们常说的查重。</p>
+
+<p>对两个较短的字符串，我们在人工判断是否具有相似性的时候，通常很快就能做出判断。</p>
+
+<p>For Example:</p>
+
+<blockquote>
+  <p>我是中国人，在中国生活！</p>
+
+  <p>我是美国人，在美国生活！</p>
+</blockquote>
+
+<p>这两个句话，就只存在两个字的差异。大家可以试着想想如何判断这两句是否相似的？</p>
+
+<ul>
+  <li>首先很容易想到的是统计字符不同个数的数量，在计算不同的字符串在整个字符串的占比，最终得到相似度。</li>
+</ul>
+
+<p>但如果使用统计字符串的方式很容易就在一些特定的语意的情况下很容易产生较大的差异的，比例说：</p>
+
+<blockquote>
+  <p>在中国，每一个人爱着国家。</p>
+
+  <p>中秋节，每一个人爱吃月饼。</p>
+</blockquote>
+
+<p>在这情况下使用统计字符串的方式就可能误报了太大了，但这种情况在本文中不考虑，这属于是自然语言处理的范围，这个领域在全球都是还是一个比较难的研究课题。</p>
+
+<hr />
+
+<h3 id="相似度算法介绍">相似度算法介绍</h3>
+
+<h4 id="莱文斯坦-编辑距离levenshtein">莱文斯坦-编辑距离(Levenshtein)</h4>
+
+<p>编辑距离（Minimum Edit Distance，MED），由俄罗斯科学家 Vladimir Levenshtein 在1965年提出，也因此而得名 Levenshtein Distance。</p>
+
+<p>编辑距离的本质思想就是将两个中的一个字符串转化成另一个字符串最少需要编辑单个字符的个数。譬如，”kitten” 和 “sitting” 这两个单词，由 “whoami” 转换为 “whoiam” 需要的最少单字符编辑操作有：</p>
+
+<ol>
+  <li>whoami → whoimi (substitution of “a” for “i”)</li>
+  <li>whoimi → whoiai (substitution of “m” for “a”)</li>
+  <li>whoiai → whoiam (substitution of “i”  for “m” at the end)</li>
+</ol>
+
+<p>因此，”whoami”和”whoiam”的编辑距离为3。</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>表示为 ![lev_{a,b}(</td>
+      <td>a</td>
+      <td>,</td>
+      <td>b</td>
+      <td>)](https://math.jianshu.com/math?formula=lev_%7Ba%2Cb%7D(%7Ca%7C%2C%20%7Cb%7C))</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>实现算法：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>我们将两个字符串<img src="https://math.jianshu.com/math?formula=a%2Cb" alt="a,b" />  的 Levenshtein Distance 表示为![lev_{a,b}(</td>
+      <td>a</td>
+      <td>,</td>
+      <td>b</td>
+      <td>)](https://math.jianshu.com/math?formula=lev_%7Ba%2Cb%7D(%7Ca%7C%2C%20%7Cb%7C)) ，其中![</td>
+      <td>a</td>
+      <td>](https://math.jianshu.com/math?formula=</td>
+      <td>a</td>
+      <td>) 和 ![</td>
+      <td>b</td>
+      <td>](https://math.jianshu.com/math?formula=%7Cb%7C) 分别对应 <img src="https://math.jianshu.com/math?formula=a%2Cb" alt="a,b" /> 的长度。那么，在这里两个字符串<img src="https://math.jianshu.com/math?formula=a%2Cb" alt="a,b" />   的 Levenshtein Distance，即![lev_{a,b}(</td>
+      <td>a</td>
+      <td>,</td>
+      <td>b</td>
+      <td>)](https://math.jianshu.com/math?formula=lev_%7Ba%2Cb%7D(%7Ca%7C%2C%20%7Cb%7C))  可用如下的数学语言描述：</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img src="https://img.sumsec.me/202207/202207081610046" alt="img" /></p>
+
+<p>1. 定义 <img class="math-inline" src="https://math.jianshu.com/math?formula=lev_%7Ba%2Cb%7D(i%2C%20j)" alt="lev_{a,b}(i, j)" mathimg="1" /> 指的是 <img class="math-inline" src="https://math.jianshu.com/math?formula=a" alt="a" mathimg="1" /> 中<strong>前 <img class="math-inline" src="https://math.jianshu.com/math?formula=i" alt="i" mathimg="1" /> 个字符</strong>和 <img class="math-inline" src="https://math.jianshu.com/math?formula=b" alt="b" mathimg="1" /> 中<strong>前 <img class="math-inline" src="https://math.jianshu.com/math?formula=j" alt="j" mathimg="1" /> 个字符</strong>之间的距离。为了方便理解，这里的<img class="math-inline" src="https://math.jianshu.com/math?formula=i%2Cj" alt="i,j" mathimg="1" />可以看作是<img class="math-inline" src="https://math.jianshu.com/math?formula=a%2Cb" alt="a,b" mathimg="1" />的长度。这里的字符串的第一个字符 index 从 1 开始（实际因为在表上运算的时候字符串前需要补 0），因此最后的编辑距离便是 <img class="math-inline" src="https://math.jianshu.com/math?formula=i%20%3D%20%7Ca%7C%2C%20j%20%3D%20%7Cb%7C" alt="i = |a|, j = |b|" mathimg="1" /> 时的距离：  <img class="math-inline" src="https://math.jianshu.com/math?formula=lev_%7Ba%2Cb%7D(%7Ca%7C%2C%20%7Cb%7C)" alt="lev_{a,b}(|a|, |b|)" mathimg="1" /></p>
+
+<p>2. 当 <img class="math-inline" src="https://math.jianshu.com/math?formula=min(i%2C%20j)%20%3D%200" alt="min(i, j) = 0" mathimg="1" /> 的时候，对应着字符串<img class="math-inline" src="https://math.jianshu.com/math?formula=a" alt="a" mathimg="1" /> 中<strong>前 <img class="math-inline" src="https://math.jianshu.com/math?formula=i" alt="i" mathimg="1" /> 个字符</strong>和 字符串<img class="math-inline" src="https://math.jianshu.com/math?formula=b" alt="b" mathimg="1" /> 中<strong>前 <img class="math-inline" src="https://math.jianshu.com/math?formula=j" alt="j" mathimg="1" /> 个字符</strong>，此时的 <img class="math-inline" src="https://math.jianshu.com/math?formula=i%2Cj" alt="i,j" mathimg="1" /> 有一个值为 0 ，表示字符串 a 和 b 中有一个为空串，那么从 a 转换到 b 只需要进行<img class="math-inline" src="https://math.jianshu.com/math?formula=max(i%2C%20j)" alt="max(i, j)" mathimg="1" />次单字符编辑操作即可，所以它们之间的编辑距离为 <img class="math-inline" src="https://math.jianshu.com/math?formula=max(i%2C%20j)" alt="max(i, j)" mathimg="1" />，即 <img class="math-inline" src="https://math.jianshu.com/math?formula=i%2C%20j" alt="i, j" mathimg="1" /> 中的最大者。</p>
+
+<p>3. 当 <img class="math-inline" src="https://math.jianshu.com/math?formula=min(i%2C%20j)%20%5Cne%200" alt="min(i, j) \ne 0" mathimg="1" /> 的时候，<img class="math-inline" src="https://math.jianshu.com/math?formula=lev_%7Ba%2Cb%7D(%7Ca%7C%2C%20%7Cb%7C)" alt="lev_{a,b}(|a|, |b|)" mathimg="1" /> 为如下三种情况的最小值：<br />
+1.<img class="math-inline" src="https://math.jianshu.com/math?formula=lev_%7Ba%2Cb%7D(i-1%2C%20j)%20%2B%201" alt="lev_{a,b}(i-1, j) + 1" mathimg="1" /> 表示 删除 <img class="math-inline" src="https://math.jianshu.com/math?formula=a_i" alt="a_i" mathimg="1" /><br />
+2.<img class="math-inline" src="https://math.jianshu.com/math?formula=lev_%7Ba%2Cb%7D(i%2C%20j-1)%20%2B%201" alt="lev_{a,b}(i, j-1) + 1" mathimg="1" /> 表示 插入 <img class="math-inline" src="https://math.jianshu.com/math?formula=b_j" alt="b_j" mathimg="1" /><br />
+3.<img class="math-inline" src="https://math.jianshu.com/math?formula=lev_%7Ba%2Cb%7D(i-1%2C%20j-1)%2B1_%7B(a_i%20%5Cne%20b_j)%7D" alt="lev_{a,b}(i-1, j-1)+1_{(a_i \ne b_j)}" mathimg="1" /> 表示 替换 <img class="math-inline" src="https://math.jianshu.com/math?formula=b_j" alt="b_j" mathimg="1" /></p>
+
+<p><img class="math-inline" src="https://math.jianshu.com/math?formula=1_%7B(a_i%20%5Cne%20b_j)%7D" alt="1_{(a_i \ne b_j)}" mathimg="1" /> 为一个指示函数，表示当 <img class="math-inline" src="https://math.jianshu.com/math?formula=a_i%20%3D%20b_j" alt="a_i = b_j" mathimg="1" /> 的时候取 0 ;当 <img class="math-inline" src="https://math.jianshu.com/math?formula=a_i%20%5Cne%20b_j" alt="a_i \ne b_j" mathimg="1" /> 的时候，其值为 1。</p>
+
+<hr />
+<h4 id="hamming">Hamming</h4>
+
+<p>两个等长字符串之间的汉明距离是两个字符串对应位置的不同字符的个数。换句话说，它就是将一个字符串变换成另外一个字符串所需要替换的字符个数。例如：</p>
+
+<p>1011101 与 1001001 之间的汉明距离是 2。</p>
+
+<p>2143896 与 2233796 之间的汉明距离是 3。</p>
+
+<p>“toned” 与 “roses” 之间的汉明距离是 3。</p>
+
+<p>最简单汉明算法实现</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">h</span> <span class="o">*</span><span class="n">Hamming</span><span class="p">)</span> <span class="n">CompareUtf8</span><span class="p">(</span><span class="n">utf8Str1</span><span class="p">,</span> <span class="n">utf8Str2</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="n">count</span> <span class="o">:=</span> <span class="m">0</span>
+
+	<span class="n">l1</span> <span class="o">:=</span> <span class="n">utf8</span><span class="o">.</span><span class="n">RuneCountInString</span><span class="p">(</span><span class="n">utf8Str1</span><span class="p">)</span>
+	<span class="n">max</span> <span class="o">:=</span> <span class="n">l1</span>
+
+	<span class="n">l2</span> <span class="o">:=</span> <span class="n">utf8</span><span class="o">.</span><span class="n">RuneCountInString</span><span class="p">(</span><span class="n">utf8Str2</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">max</span> <span class="o">&lt;</span> <span class="n">l2</span> <span class="p">{</span>
+		<span class="n">max</span> <span class="o">=</span> <span class="n">l2</span>
+	<span class="p">}</span>
+
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">:=</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">utf8Str1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">utf8Str2</span><span class="p">);</span> <span class="p">{</span>
+		<span class="n">size</span> <span class="o">:=</span> <span class="m">0</span>
+		<span class="n">r1</span><span class="p">,</span> <span class="n">size</span> <span class="o">:=</span> <span class="n">utf8</span><span class="o">.</span><span class="n">DecodeRune</span><span class="p">(</span><span class="n">StringToBytes</span><span class="p">(</span><span class="n">utf8Str1</span><span class="p">[</span><span class="n">i</span><span class="o">:</span><span class="p">]))</span>
+		<span class="n">i</span> <span class="o">+=</span> <span class="n">size</span>
+
+		<span class="n">r2</span><span class="p">,</span> <span class="n">size</span> <span class="o">:=</span> <span class="n">utf8</span><span class="o">.</span><span class="n">DecodeRune</span><span class="p">(</span><span class="n">StringToBytes</span><span class="p">(</span><span class="n">utf8Str2</span><span class="p">[</span><span class="n">j</span><span class="o">:</span><span class="p">]))</span>
+		<span class="n">j</span> <span class="o">+=</span> <span class="n">size</span>
+
+		<span class="k">if</span> <span class="n">r1</span> <span class="o">!=</span> <span class="n">r2</span> <span class="p">{</span>
+			<span class="n">count</span><span class="o">++</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span>
+
+	<span class="k">return</span> <span class="m">1</span> <span class="o">-</span> <span class="p">(</span><span class="kt">float64</span><span class="p">(</span><span class="n">count</span><span class="p">)</span><span class="o">+</span><span class="n">math</span><span class="o">.</span><span class="n">Abs</span><span class="p">(</span><span class="kt">float64</span><span class="p">(</span><span class="n">l1</span><span class="o">-</span><span class="n">l2</span><span class="p">)))</span><span class="o">/</span><span class="kt">float64</span><span class="p">(</span><span class="n">max</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+<h4 id="dices-coefficient">Dice’s coefficient</h4>
+
+<hr />
+<h4 id="jaro">Jaro</h4>
+
+<p><strong>1、Jaro distance/similarity</strong>
+对于两个字符串s1和s2，它们的Jaro 相似度算法由下面公式给出：</p>
+
+<p><img src="https://img.sumsec.me/202207/202208051510866" alt="img" /></p>
+
+<p>其中：
+①|s1|和|s2|表示字符串s1和s2的长度。
+②m表示两字符串的匹配字符数。
+③t表示换位数目transpositions的一半。</p>
+
+<p>m的计算表达式为：</p>
+
+<p><img src="https://img.sumsec.me/202207/202208082003904" alt="img" /></p>
+
+<hr />
+<h4 id="jarowinkler">JaroWinkler</h4>
+
+<p>Jaro-Winkler similarity是在Jaro similarity的基础上，做的进一步修改，在该算法中，更加突出了前缀相同的重要性，即如果两个字符串在前几个字符都相同的情况下，它们会获得更高的相似性。该算法的公式如下：</p>
+
+<p><img src="https://img.sumsec.me/202207/202208082007953" alt="img" /></p>
+
+<p>其中：
+ ①simj 就是刚才求得的Jaro similarity。
+ ②l表示两个字符串的共同前缀字符的个数，最大不超过4个，取值范围[0,4]。
+ ③p是缩放因子常量，它描述的是共同前缀对于相似度的贡献，p越大，表示共同前缀权重越大，最大不超过0.25。p默认取值是0.1</p>
+
+<hr />
+<h4 id="cosine">Cosine</h4>
+
+<p>余弦相似度，相关原理就是高中学过的空间向量定理，两个向量夹角的角度。但余弦相似度得计算词出现频率，如果用分词的效率不高，并且计算量，内存开销都会很大。于是我想到采用base64编码的方式，因为base64编码的字符串同一个字符是相同的，也等价的计算词语出现的频率。然后将base64标准字符串进行余弦计算。</p>
+
+<p><img src="https://img.sumsec.me/202207/202208082012260.gif" alt="img" /></p>
+
+<hr />
+<h4 id="simhash">SimHash</h4>
+
+<p>传统的Hash算法只负责将原始内容尽量均匀随机地映射为一个签名值，原理上仅相当于伪随机数产生算法。传统的hash算法产生的两个签名，如果原始内容在一定概率下是相等的；如果不相等，除了说明原始内容不相等外，不再提供任何信息，因为即使原始内容只相差一个字节，所产生的签名也很可能差别很大。所以传统的Hash是无法在签名的维度上来衡量原内容的相似度，而SimHash本身属于一种局部敏感哈希算法，它产生的hash签名在一定程度上可以表征原内容的相似度。</p>
+
+<p>　　我们主要解决的是文本相似度计算，要比较的是两个文章是否相识，当然我们降维生成了hash签名也是用于这个目的。看到这里估计大家就明白了，我们使用的simhash就算把文章中的字符串变成 01 串也还是可以用于计算相似度的，而传统的hash却不行。我们可以来做个测试，两个相差只有一个字符的文本串，“你妈妈喊你回家吃饭哦，回家罗回家罗” 和 “你妈妈叫你回家吃饭啦，回家罗回家罗”。</p>
+
+<p>　　通过simhash计算结果为：</p>
+
+<p>　　1000010010101101<strong>1</strong>11111100000101011010001001111100001<strong>0</strong>0101<strong>1</strong>001011</p>
+
+<p>　　1000010010101101<strong>0</strong>11111100000101011010001001111100001<strong>1</strong>0101<strong>0</strong>001011</p>
+
+<p>　　通过传统hash计算为：</p>
+
+<p>　　0001000001100110100111011011110</p>
+
+<p>　　1010010001111111110010110011101</p>
+
+<p>　　大家可以看得出来，相似的文本只有部分 01 串变化了，而普通的hash却不能做到，这个就是局部敏感哈希的魅力。</p>
+
+<p>​		SimHash的难点感觉是在分词和加权，分词处理之后，加权操作目前没有很好的解决方法。分词的话，如果是中英文的都有的情况也很难处理，比例说网页的源代码。对于分词这部分，我目前简单将文本进行base64编码，然后将粗暴的以四个字符分为一组。对于加权这块，我是统计每组出现的概率进行加权。</p>
+
+<hr />
+
+<h3 id="总结">总结</h3>
+
+<p>​		本节主要是讨论一下相似度算法的实现算法，目前本来中所有的算法都均已开源到GitHub，仓库地址 https://github.com/antlabs/strsim 。这个仓库并不是我的，我只是一个贡献者，目前算法的实现还没有结果大量测试，欢迎大家讨论并提出改进算法想法💡。</p>
+
+<hr />
+
+<h3 id="参考">参考</h3>
+
+<ul>
+  <li>https://github.com/antlabs/strsim/issues/1</li>
+  <li>https://www.jianshu.com/p/a617d20162cf</li>
+  <li>https://www.jianshu.com/p/a4af202cb702</li>
+  <li>https://www.geeksforgeeks.org/jaro-and-jaro-winkler-similarity/?ref=lbp</li>
+  <li>https://www.cnblogs.com/sddai/p/10088007.html</li>
+</ul>
+
+
+      </section>
+    </div>
+  </body>
+</html>

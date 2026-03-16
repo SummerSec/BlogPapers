@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>正则匹配配置不当 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="正则匹配配置不当" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2022/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2022/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="正则匹配配置不当" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"正则匹配配置不当","url":"http://0.0.0.0:4000/2022/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        
+<h2 id="正则匹配配置不当">正则匹配配置不当</h2>
+
+<h3 id="前言">前言</h3>
+
+<p>正则匹配如果被使用在权限检验的场景中，需要注意一些是否使用默认配置。如果使用默认配置会<strong>可能</strong>会导致被Bypass的情况，历史Java框架漏洞 <a href="https://tanzu.vmware.com/security/cve-2022-22978">Spring Security  CVE-2022-22978</a>，<a href="https://lists.apache.org/thread/y8260dw8vbm99oq7zv6y3mzn5ovk90xh">Apache Shiro CVE-2022-32532</a>。</p>
+
+<hr />
+
+<h3 id="默认情况下的漏洞">默认情况下的漏洞</h3>
+
+<p>示例代码，大多数开放很少注意到使用<code class="language-plaintext highlighter-rouge">Pattern.DOTALL</code>来避免匹配文本中的<code class="language-plaintext highlighter-rouge">\r\n\t</code>等字符，就很可能存在被绕过的风险。</p>
+
+<blockquote>
+  <p>Ps: Pattern内置了 CASE_INSENSITIVE、MULTILINE、DOTALL、UNICODE_CASE、CANON_EQ、UNIX_LINES、LITERAL、UNICODE_CHARACTER_CLASS、COMMENTS 等匹配设置</p>
+
+  <p>CASE_INSENSITIVE 不区分大小写</p>
+
+  <p>DOTALL 在 dotall 模式下，表达式 {@code .} 匹配任何字符，包括行终止符。默认情况下，此表达式不匹配行终止符。</p>
+
+  <p>MULTILINE  启用多行模式。在多行模式中，表达式 ^ 和匹配分别在行终止符或输入序列的结尾之后或之前。默认情况下，这些表达式只匹配整个输入序列的开头和结尾。多行模式也可以通过嵌入式标志表达式 (?m) 启用</p>
+
+  <p>….</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.regex.Pattern</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RegexBypassDemo</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">regex</span> <span class="o">=</span> <span class="s">"/permit/.*"</span><span class="o">;</span>
+        <span class="nc">Pattern</span> <span class="n">pattern</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="n">regex</span><span class="o">,</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">DOTALL</span><span class="o">);</span>
+        <span class="nc">Pattern</span> <span class="n">pattern1</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="n">regex</span><span class="o">);</span>
+
+        <span class="nc">String</span> <span class="n">source</span> <span class="o">=</span> <span class="s">"/permit/a\nb"</span><span class="o">;</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">source</span><span class="o">).</span><span class="na">matches</span><span class="o">()){</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"pattern: /permit/a\nb is match!"</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">pattern1</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">source</span><span class="o">).</span><span class="na">matches</span><span class="o">()){</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"pattern1: /permit/a\nb is match!"</span><span class="o">);</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Output:</p>
+
+<blockquote>
+  <p>pattern: /permit/a
+b is match!</p>
+</blockquote>
+
+<hr />
+
+<h3 id="漏洞场景">漏洞场景</h3>
+
+<h4 id="apache-shiro-cve-2022-32532">Apache Shiro CVE-2022-32532</h4>
+
+<p>漏洞环境 https://github.com/4ra1n/CVE-2022-32532</p>
+
+<p>正常情况下场景：</p>
+
+<p>请求中带了Token是能访问/permit/的目录，如果没有带Token是不允许访问。</p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/permit/any</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Token</span><span class="p">:</span> <span class="s">4ra1n</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>success</p>
+</blockquote>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/permit/any</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Access is not allowed</p>
+</blockquote>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/permit/a%0any</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Bypass Success</p>
+</blockquote>
+
+<hr />
+
+<p>漏洞源代码<code class="language-plaintext highlighter-rouge">org.apache.shiro.util.RegExPatternMatcher</code> 实现</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.shiro.util</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.regex.Matcher</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.regex.Pattern</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RegExPatternMatcher</span> <span class="kd">implements</span> <span class="nc">PatternMatcher</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">RegExPatternMatcher</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">matches</span><span class="o">(</span><span class="nc">String</span> <span class="n">pattern</span><span class="o">,</span> <span class="nc">String</span> <span class="n">source</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">pattern</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"pattern argument cannot be null."</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="nc">Pattern</span> <span class="n">p</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="n">pattern</span><span class="o">);</span>
+            <span class="nc">Matcher</span> <span class="n">m</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">source</span><span class="o">);</span>
+            <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="na">matches</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>修复后的漏洞代码，在<code class="language-plaintext highlighter-rouge">Pattern.compile()</code>方法，默认情况下<strong>flag=Pattern.DOTALL</strong>。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.shiro.util</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.regex.Pattern</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.regex.Matcher</span><span class="o">;</span>
+
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RegExPatternMatcher</span> <span class="kd">implements</span> <span class="nc">PatternMatcher</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DEFAULT</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">DOTALL</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">CASE_INSENSITIVE</span> <span class="o">=</span> <span class="no">DEFAULT</span> <span class="o">|</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">CASE_INSENSITIVE</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">caseInsensitive</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">matches</span><span class="o">(</span><span class="nc">String</span> <span class="n">pattern</span><span class="o">,</span> <span class="nc">String</span> <span class="n">source</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">pattern</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"pattern argument cannot be null."</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="nc">Pattern</span> <span class="n">p</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="n">pattern</span><span class="o">,</span> <span class="n">caseInsensitive</span> <span class="o">?</span> <span class="no">CASE_INSENSITIVE</span> <span class="o">:</span> <span class="no">DEFAULT</span><span class="o">);</span>
+        <span class="nc">Matcher</span> <span class="n">m</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">source</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="na">matches</span><span class="o">();</span>
+    <span class="o">}</span>
+
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isCaseInsensitive</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">caseInsensitive</span><span class="o">;</span>
+    <span class="o">}</span>
+
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setCaseInsensitive</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">caseInsensitive</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">caseInsensitive</span> <span class="o">=</span> <span class="n">caseInsensitive</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h4 id="spring-security--cve-2022-22978">Spring Security  CVE-2022-22978</h4>
+
+<p>漏洞代码<a href="https://raw.githubusercontent.com/spring-projects/spring-security/5.0.x/web/src/main/java/org/springframework/security/web/util/matcher/RegexRequestMatcher.java">Version: 5.0.x  RegexRequestMatcher</a></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.springframework.security.web.util.matcher</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.regex.Pattern</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.commons.logging.Log</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.commons.logging.LogFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.http.HttpMethod</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.security.web.util.matcher.RequestMatcher</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.util.StringUtils</span><span class="o">;</span>
+
+
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">RegexRequestMatcher</span> <span class="kd">implements</span> <span class="nc">RequestMatcher</span> <span class="o">{</span>
+	<span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="nc">Log</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LogFactory</span><span class="o">.</span><span class="na">getLog</span><span class="o">(</span><span class="nc">RegexRequestMatcher</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Pattern</span> <span class="n">pattern</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">HttpMethod</span> <span class="n">httpMethod</span><span class="o">;</span>
+
+
+	<span class="kd">public</span> <span class="nf">RegexRequestMatcher</span><span class="o">(</span><span class="nc">String</span> <span class="n">pattern</span><span class="o">,</span> <span class="nc">String</span> <span class="n">httpMethod</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">(</span><span class="n">pattern</span><span class="o">,</span> <span class="n">httpMethod</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+	<span class="o">}</span>
+
+
+	<span class="kd">public</span> <span class="nf">RegexRequestMatcher</span><span class="o">(</span><span class="nc">String</span> <span class="n">pattern</span><span class="o">,</span> <span class="nc">String</span> <span class="n">httpMethod</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">caseInsensitive</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">caseInsensitive</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">pattern</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="n">pattern</span><span class="o">,</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">CASE_INSENSITIVE</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="k">else</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">pattern</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="n">pattern</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">httpMethod</span> <span class="o">=</span> <span class="nc">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">httpMethod</span><span class="o">)</span> <span class="o">?</span> <span class="nc">HttpMethod</span>
+				<span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">httpMethod</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="o">}</span>
+
+
+	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">matches</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">httpMethod</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">request</span><span class="o">.</span><span class="na">getMethod</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span>
+				<span class="o">&amp;&amp;</span> <span class="n">httpMethod</span> <span class="o">!=</span> <span class="n">valueOf</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getMethod</span><span class="o">()))</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="o">}</span>
+
+		<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getServletPath</span><span class="o">();</span>
+		<span class="nc">String</span> <span class="n">pathInfo</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getPathInfo</span><span class="o">();</span>
+		<span class="nc">String</span> <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getQueryString</span><span class="o">();</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">pathInfo</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">query</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="nc">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">(</span><span class="n">url</span><span class="o">);</span>
+
+			<span class="k">if</span> <span class="o">(</span><span class="n">pathInfo</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">pathInfo</span><span class="o">);</span>
+			<span class="o">}</span>
+
+			<span class="k">if</span> <span class="o">(</span><span class="n">query</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="sc">'?'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
+			<span class="o">}</span>
+			<span class="n">url</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+		<span class="o">}</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
+			<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Checking match of request : '"</span> <span class="o">+</span> <span class="n">url</span> <span class="o">+</span> <span class="s">"'; against '"</span> <span class="o">+</span> <span class="n">pattern</span>
+					<span class="o">+</span> <span class="s">"'"</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="k">return</span> <span class="n">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">url</span><span class="o">).</span><span class="na">matches</span><span class="o">();</span>
+	<span class="o">}</span>
+
+	<span class="kd">private</span> <span class="kd">static</span> <span class="nc">HttpMethod</span> <span class="nf">valueOf</span><span class="o">(</span><span class="nc">String</span> <span class="n">method</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="nc">HttpMethod</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">method</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="k">catch</span> <span class="o">(</span><span class="nc">IllegalArgumentException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		<span class="o">}</span>
+
+		<span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>修复后的代码<a href="https://github.com/spring-projects/spring-security/blob/5.7.x/web/src/main/java/org/springframework/security/web/util/matcher/RegexRequestMatcher.java">Version: 5.7.x  RegexRequestMatcher.java </a>：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.springframework.security.web.util.matcher</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.regex.Pattern</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.commons.logging.Log</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.commons.logging.LogFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.core.log.LogMessage</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.http.HttpMethod</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.util.StringUtils</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">RegexRequestMatcher</span> <span class="kd">implements</span> <span class="nc">RequestMatcher</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DEFAULT</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">DOTALL</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">CASE_INSENSITIVE</span> <span class="o">=</span> <span class="no">DEFAULT</span> <span class="o">|</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">CASE_INSENSITIVE</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Log</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LogFactory</span><span class="o">.</span><span class="na">getLog</span><span class="o">(</span><span class="nc">RegexRequestMatcher</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Pattern</span> <span class="n">pattern</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">HttpMethod</span> <span class="n">httpMethod</span><span class="o">;</span>
+
+
+	<span class="kd">public</span> <span class="nf">RegexRequestMatcher</span><span class="o">(</span><span class="nc">String</span> <span class="n">pattern</span><span class="o">,</span> <span class="nc">String</span> <span class="n">httpMethod</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">(</span><span class="n">pattern</span><span class="o">,</span> <span class="n">httpMethod</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+	<span class="o">}</span>
+
+
+	<span class="kd">public</span> <span class="nf">RegexRequestMatcher</span><span class="o">(</span><span class="nc">String</span> <span class="n">pattern</span><span class="o">,</span> <span class="nc">String</span> <span class="n">httpMethod</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">caseInsensitive</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">pattern</span> <span class="o">=</span> <span class="nc">Pattern</span><span class="o">.</span><span class="na">compile</span><span class="o">(</span><span class="n">pattern</span><span class="o">,</span> <span class="n">caseInsensitive</span> <span class="o">?</span> <span class="no">CASE_INSENSITIVE</span> <span class="o">:</span> <span class="no">DEFAULT</span><span class="o">);</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">httpMethod</span> <span class="o">=</span> <span class="nc">StringUtils</span><span class="o">.</span><span class="na">hasText</span><span class="o">(</span><span class="n">httpMethod</span><span class="o">)</span> <span class="o">?</span> <span class="nc">HttpMethod</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">httpMethod</span><span class="o">)</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="o">}</span>
+
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">matches</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">httpMethod</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">request</span><span class="o">.</span><span class="na">getMethod</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span>
+				<span class="o">&amp;&amp;</span> <span class="k">this</span><span class="o">.</span><span class="na">httpMethod</span> <span class="o">!=</span> <span class="nc">HttpMethod</span><span class="o">.</span><span class="na">resolve</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getMethod</span><span class="o">()))</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="o">}</span>
+		<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getServletPath</span><span class="o">();</span>
+		<span class="nc">String</span> <span class="n">pathInfo</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getPathInfo</span><span class="o">();</span>
+		<span class="nc">String</span> <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getQueryString</span><span class="o">();</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">pathInfo</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">query</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="nc">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">(</span><span class="n">url</span><span class="o">);</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">pathInfo</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">pathInfo</span><span class="o">);</span>
+			<span class="o">}</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">query</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="sc">'?'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
+			<span class="o">}</span>
+			<span class="n">url</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+		<span class="o">}</span>
+		<span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="nc">LogMessage</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Checking match of request : '%s'; against '%s'"</span><span class="o">,</span> <span class="n">url</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">pattern</span><span class="o">));</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">pattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">url</span><span class="o">).</span><span class="na">matches</span><span class="o">();</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">();</span>
+		<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"Regex [pattern='"</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">pattern</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"'"</span><span class="o">);</span>
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">httpMethod</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">", "</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">httpMethod</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"]"</span><span class="o">);</span>
+		<span class="k">return</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>主要差异</p>
+
+<p><img src="/2022/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93.assets/image-20220706165712413.png" alt="image-20220706165712413" /></p>
+
+<p><img src="/2022/%E6%AD%A3%E5%88%99%E5%8C%B9%E9%85%8D%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93.assets/image-20220706165730031.png" alt="image-20220706165730031" /></p>
+
+<hr />
+
+<h3 id="漏洞场景分析">漏洞场景分析</h3>
+
+<p>这个bypass和之前历史路径bypass不一样，因为这个具体的uri都改变了，无法将请求转发到具体代码逻辑下或者说转发到需要的uri上。</p>
+
+<p>这里根据4ra1n大佬的代码可能存在某些特殊情况的场景利用，当路径使用<strong>{value}</strong>取值时就可能存在漏洞。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">path</span> <span class="o">=</span> <span class="s">"/permit/{value}"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">permit</span><span class="o">(</span><span class="nd">@PathVariable</span> <span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"success!"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"success is "</span> <span class="o">+</span> <span class="n">value</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="https://img.sumsec.me/202207/202207141528588.png" alt="image-20220714152845423" /></p>
+
+<p>但这种情况在实际开放场景很少会使用<strong>{value}</strong>取路径。</p>
+
+<hr />
+
+<h3 id="总结">总结</h3>
+
+<ol>
+  <li>使用正则匹配作为权限检验不能直接使用<code class="language-plaintext highlighter-rouge">Pattern.compile(regex)</code>，应当使用<code class="language-plaintext highlighter-rouge">Pattern.compile(regex, Pattern.DOTALL);</code></li>
+  <li>使用正则匹配匹配文本也应当尽量避免使用<code class="language-plaintext highlighter-rouge">Pattern.compile(regex);</code>，尽量加上Pattern中的匹配模式。</li>
+  <li>尽量避免使用<strong>{value}</strong>这种模糊方式取路径的值</li>
+  <li>关于自动化检测，目前CodeQL是支持了，详情参考 https://github.com/github/securitylab/issues/694 。</li>
+</ol>
+
+<hr />
+
+<h3 id="参考">参考</h3>
+
+<ul>
+  <li>https://lists.apache.org/thread/y8260dw8vbm99oq7zv6y3mzn5ovk90xh</li>
+  <li>https://tanzu.vmware.com/security/cve-2022-22978</li>
+  <li>https://xz.aliyun.com/t/11501</li>
+</ul>
+
+
+      </section>
+    </div>
+  </body>
+</html>

