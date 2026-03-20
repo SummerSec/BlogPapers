@@ -4,19 +4,13 @@
     <loc>https://sumsec.me/</loc>
   </url>
   <url>
-    <loc>https://sumsec.me/resources/Archives</loc>
-  </url>
-  <url>
-    <loc>https://sumsec.me/resources/AboutMe</loc>
-  </url>
-  <url>
-    <loc>https://sumsec.me/resources/rss.xml</loc>
-  </url>
-  <url>
     <loc>https://sumsec.me/resources/Archives.html</loc>
   </url>
   <url>
     <loc>https://sumsec.me/resources/AboutMe.html</loc>
+  </url>
+  <url>
+    <loc>https://sumsec.me/resources/rss.xml</loc>
   </url>
   <url>
     <loc>https://sumsec.me/resources/Advertisements.html</loc>
