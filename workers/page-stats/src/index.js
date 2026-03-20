@@ -45,8 +45,10 @@ function isOriginAllowed(origin, env) {
   try {
     var u = new URL(origin);
     var h = u.hostname;
-    if (h === suf) return true;
-    if (h.endsWith('.' + suf)) return true;
+    /* 后缀配成 www.xxx 时仍放行 apex（如 Referer 为 https://sumsec.me/） */
+    var apex = suf.replace(/^www\./, '');
+    if (h === suf || h === apex) return true;
+    if (h.endsWith('.' + apex)) return true;
   } catch (e) { /* ignore */ }
   return false;
 }

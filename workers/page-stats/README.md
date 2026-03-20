@@ -40,6 +40,14 @@
 
 博客端对 Worker **只使用 JSONP（`<script src>`）**，不依赖 `fetch` CORS；`ALLOW_HOST_SUFFIX` 在控制台若留空仍会按默认 `sumsec.me` 后缀放行。
 
+### 本机验证（Windows）
+
+- PowerShell 里 **`curl` 是 `Invoke-WebRequest` 别名**，请用 **`curl.exe`**，例如：  
+  `curl.exe -sS -i "https://capi.sumsec.me/hit?ns=sumsecme&key=site-total&callback=cb"`  
+  期望首行 `HTTP/1.1 200`，正文 `cb({"value":…});`。
+- 若出现 **`schannel: failed to receive handshake`**，可试：`curl.exe --ssl-no-revoke` 或换终端/WSL；与 Worker 逻辑无关。
+- 页面是否走 Worker：打开首页源代码，应存在 `<meta name="stats-endpoint" content="https://capi.sumsec.me">`；若无，说明站点尚未用带 `stats_endpoint` 的配置构建发布。
+
 ## 页面上一直显示 **—**？
 
 1. 浏览器 **F12 → 网络**，找 `capi.xxx/hit?...`：若为 **403**，多半是 **Origin 未放行**（例如用了 `www` 而只配了 apex）。改 `ALLOW_ORIGINS` / `ALLOW_HOST_SUFFIX` 后执行 `wrangler deploy`；若 Dashboard 里给 Worker 配了 **Variables**，会覆盖仓库里的 `wrangler.toml`，两边要一致。
