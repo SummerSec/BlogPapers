@@ -103,16 +103,16 @@ export default {
 
     var ns = sanitizeSegment(url.searchParams.get('ns') || 'default', 64);
     var key = sanitizeSegment(url.searchParams.get('key') || 'page', 200);
-    if (!env.STATS) {
-      return rejectJson(500, 'KV binding STATS missing');
+    if (!env.capi) {
+      return rejectJson(500, 'KV binding capi missing');
     }
 
     var name = kvKey(ns, key);
-    var prev = await env.STATS.get(name);
+    var prev = await env.capi.get(name);
     var n = parseInt(prev, 10);
     if (isNaN(n) || n < 0) n = 0;
     n += 1;
-    ctx.waitUntil(env.STATS.put(name, String(n)));
+    ctx.waitUntil(env.capi.put(name, String(n)));
 
     var body = JSON.stringify({ value: n });
     return new Response(body, {

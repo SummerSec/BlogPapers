@@ -3,10 +3,10 @@ name = "sumsec-page-stats"
 main = "src/index.js"
 compatibility_date = "2024-11-01"
 
-# 创建 KV：wrangler kv namespace create STATS
-# 把下面 id 换成命令输出的 id
+# 创建 KV：wrangler kv namespace create <任意名称>
+# 把下面 id 换成命令输出的 id；binding 须为 capi（与代码 env.capi 一致）
 [[kv_namespaces]]
-binding = "STATS"
+binding = "capi"
 id = "c8724f3f5c8640f69f38b8e93c556e1a"
 
 [vars]

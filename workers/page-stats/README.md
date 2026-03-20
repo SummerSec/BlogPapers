@@ -13,9 +13,9 @@
 2. 创建 KV 命名空间：
    ```bash
    cd workers/page-stats
-   wrangler kv namespace create STATS
+   wrangler kv namespace create page-stats-kv
    ```
-3. 将输出的 `id` 填入 `wrangler.toml` 里 `[[kv_namespaces]]` 的 `id =`
+3. 将输出的 `id` 填入 `wrangler.toml` 里 `[[kv_namespaces]]` 的 `id =`；**`binding = "capi"`** 勿改（与 Worker 里 `env.capi` 一致）。
 4. 编辑 `wrangler.toml` 中 `[vars]`：
    - **`ALLOW_HOST_SUFFIX`**：默认 `sumsec.me`，会放行所有 `https://*.sumsec.me` 与 `https://sumsec.me`（避免漏配 `www` 等子域导致 CORS 403，页面上访问量变成 **—**）。
    - **`ALLOW_ORIGINS`**：需**完整写出**的 Origin（如本地 `http://127.0.0.1:4000`、`https://xxx.github.io` 预览站等）；后缀匹配不到时才靠这里。
