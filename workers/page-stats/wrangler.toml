@@ -7,8 +7,8 @@ compatibility_date = "2024-11-01"
 # 把下面 id 换成命令输出的 id
 [[kv_namespaces]]
 binding = "STATS"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id = "c8724f3f5c8640f69f38b8e93c556e1a"
 
 [vars]
 # 逗号分隔；博客所在域必须列入，否则浏览器 CORS 会拦截
-ALLOW_ORIGINS = "https://sumsec.me,https://www.sumsec.me"
+ALLOW_ORIGINS = "https://sumsec.me,https://old.sumsec.me"

@@ -1,2 +1,5 @@
 .DS_Store
 .claude/
+
+# Cloudflare Wrangler 本地缓存（勿提交）
+**/.wrangler/
