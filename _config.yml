@@ -3,6 +3,10 @@
 markdown: kramdown
 highlighter: rouge
 
+# 正式站首页与 canonical（GitHub Pages + 自定义域）
+url: "https://sumsec.me"
+baseurl: ""
+
 # 站点短名（用于浏览器标题后缀，不写域名）
 title: SUMSEC
 description: SummerSec · 安全研究与笔记
