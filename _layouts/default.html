@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SummerSec // Security Research Terminal">
-  <title>{% if page.title %}{{ page.title }} // SUMSEC.ME{% else %}SUMSEC.ME // SEC_RESEARCH_TERMINAL{% endif %}</title>
+  <meta name="theme-color" content="#050508">
+  <meta name="color-scheme" content="dark">
+  <title>{% if page.url == '/' or page.url == '/index.html' or page.path == 'README.md' %}{{ page.title | default: 'SUMSEC.ME' }} — SEC_RESEARCH_TERMINAL{% elsif page.title %}{{ page.title }} // SUMSEC.ME{% else %}SUMSEC.ME // SEC_RESEARCH_TERMINAL{% endif %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -12,37 +14,63 @@
 </head>
 <body>
   <div id="read-progress"></div>
-  <div class="scanlines"></div>
-  <div class="grid-bg"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="hex-mesh" aria-hidden="true"></div>
 
   <header class="site-header">
     <div class="header-inner">
+      <div class="header-brand-lock" aria-hidden="true" title="SEC">
+        <svg class="icon-shield" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+          <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
       <div class="terminal-prompt">root@sumsec:~$</div>
       <a href="{{ '/' | relative_url }}" class="site-title">
         <span class="title-main">SUMSEC.ME</span><span class="title-sep">&nbsp;//&nbsp;</span><span class="title-sub">SEC_RESEARCH_TERMINAL</span>
       </a>
       <div class="header-meta">
+        <span class="threat-strip" aria-hidden="true"><span class="threat-label">THREAT</span><span class="threat-level">L2</span></span>
         <span class="blink-cursor">&#x25AE;</span>
         <span class="sys-status">SYS:ONLINE</span>
       </div>
     </div>
-    <nav class="site-nav" aria-label="Main navigation">
-      <a href="{{ '/' | relative_url }}" class="nav-link" aria-label="Home">[&#x2302;&nbsp;HOME]</a>
-      <a href="{{ '/resources/Archives' | relative_url }}" class="nav-link" aria-label="Archives">[&#x1F4C1;&nbsp;ARCHIVES]</a>
-      <a href="{{ '/resources/AboutMe' | relative_url }}" class="nav-link" aria-label="About">[&#x1F464;&nbsp;ABOUT]</a>
-      <a href="https://old.sumsec.me" class="nav-link" target="_blank" rel="noopener" aria-label="Old blog (opens in new tab)">[&#x1F4D2;&nbsp;OLD_BLOG]</a>
-      <a href="{{ '/resources/sitemap.xml' | relative_url }}" class="nav-link" aria-label="Sitemap">[&#x1F310;&nbsp;SITEMAP]</a>
-      <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link" aria-label="RSS feed">[&#x1F4E1;&nbsp;RSS]</a>
+    <nav class="site-nav" aria-label="主导航">
+      <a href="{{ '/' | relative_url }}" class="nav-link" aria-label="首页">
+        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        <span>HOME</span>
+      </a>
+      <a href="{{ '/resources/Archives.html' | relative_url }}" class="nav-link" aria-label="归档">
+        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
+        <span>ARCHIVES</span>
+      </a>
+      <a href="{{ '/resources/AboutMe.html' | relative_url }}" class="nav-link" aria-label="关于">
+        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+        <span>ABOUT</span>
+      </a>
+      <a href="https://old.sumsec.me" class="nav-link nav-external" target="_blank" rel="noopener" aria-label="旧博客（新标签页）">
+        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+        <span>OLD_BLOG</span>
+      </a>
+      <a href="{{ '/resources/sitemap.xml' | relative_url }}" class="nav-link" aria-label="站点地图">
+        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+        <span>SITEMAP</span>
+      </a>
+      <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link" aria-label="RSS">
+        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></span>
+        <span>RSS</span>
+      </a>
     </nav>
   </header>
 
-  <main class="main-content">
+  <main class="main-content" id="main-content">
     <div class="terminal-window">
       <div class="terminal-titlebar">
         <span class="tb-dot tb-red"></span>
         <span class="tb-dot tb-yellow"></span>
         <span class="tb-dot tb-green"></span>
-        <span class="tb-title">// OUTPUT STREAM //</span>
+        <span class="tb-title">// OUTPUT_STREAM // SEC_CLASS:PUBLIC</span>
       </div>
       <div class="terminal-body">
         {{ content }}
@@ -63,8 +91,8 @@
     <div class="footer-coords">LAT:30.0°N // LON:120.0°E // TZ:CST+8</div>
   </footer>
 
-  <canvas id="matrix-canvas"></canvas>
-  <button id="back-to-top" aria-label="Back to top">&#x2191;</button>
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+  <button type="button" id="back-to-top" aria-label="返回顶部">&#x2191;</button>
   <script src="{{ '/assets/js/scifi.js' | relative_url }}"></script>
 </body>
 </html>

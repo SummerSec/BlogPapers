@@ -2,3 +2,31 @@
 # theme: jekyll-theme-hacker
 markdown: kramdown
 highlighter: rouge
+
+exclude:
+  - CLAUDE.md
+
+# GitHub Pages: process Markdown without --- front matter; use README as site index
+plugins:
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-titles-from-headings
+
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default
+  - scope:
+      path: "README.md"
+    values:
+      title: "SUMSEC.ME"
+  - scope:
+      path: "resources/Archives.md"
+    values:
+      title: "归档 · ARCHIVE_INDEX"
+  - scope:
+      path: "resources/AboutMe.md"
+    values:
+      title: "关于 · OPERATOR_PROFILE"
