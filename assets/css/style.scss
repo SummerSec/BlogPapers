@@ -596,6 +596,18 @@ header, main, footer, nav { position: relative; z-index: 10; }
   text-shadow: 0 0 14px rgba(192, 132, 252, 0.35);
 }
 
+.view-stats__sparkline {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  vertical-align: middle;
+  opacity: 0.92;
+}
+
+.view-stats__sparkline svg {
+  display: block;
+}
+
 .view-stats__value--loading {
   animation: view-stats-pulse 1.1s ease-in-out infinite;
 }

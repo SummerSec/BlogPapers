@@ -1,67 +1,16 @@
 /**
  * 文章 / 全站浏览计数（Cloudflare Worker + KV）
- * GET /hit?ns=&key=  →  JSON { "value": n }
- * GET /hit?...&callback=cb  →  application/javascript  cb({"value":n});
+ * GET /hit?ns=&key=            →  JSON { "value": n }
+ * GET /hit?...&callback=cb     →  application/javascript  cb({"value":n});
+ * GET /trend?ns=&key=&days=30  →  JSON { "points": [...], "total": n }
  */
 
-function parseAllowedOrigins(env) {
-  var raw = env.ALLOW_ORIGINS || '';
-  return raw.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-}
-
-/** 浏览器可能发字面量 "null"；无效则当未携带 */
-function normalizeOriginHeader(request) {
-  var o = request.headers.get('Origin');
-  if (!o || o === 'null') return null;
-  return o;
-}
-
-function isOriginAllowed(origin, env) {
-  if (!origin) return false;
-  var list = parseAllowedOrigins(env);
-  if (list.indexOf('*') !== -1) return true;
-  if (list.indexOf(origin) !== -1) return true;
-
-  /* 未设置或显式空字符串：仍默认按 sumsec.me 后缀放行，避免 Dashboard 误配空串导致整站 403 */
-  var sufRaw = env.ALLOW_HOST_SUFFIX;
-  var suf =
-    sufRaw === undefined || sufRaw === null || String(sufRaw).trim() === ''
-      ? 'sumsec.me'
-      : String(sufRaw).trim();
-
-  try {
-    var u = new URL(origin);
-    var h = u.hostname;
-    /* 后缀配成 www.xxx 时仍放行 apex（如 Referer 为 https://sumsec.me/） */
-    var apex = suf.replace(/^www\./, '');
-    if (h === suf || h === apex) return true;
-    if (h.endsWith('.' + apex)) return true;
-  } catch (e) { /* ignore */ }
-  return false;
-}
-
-function corsHeaders(request, env) {
-  var origin = normalizeOriginHeader(request);
-  var list = parseAllowedOrigins(env);
-  var allow = null;
-  if (list.indexOf('*') !== -1) {
-    allow = '*';
-  } else if (origin && isOriginAllowed(origin, env)) {
-    allow = origin;
-  } else if (!origin && list.length) {
-    allow = list[0];
-  }
-  var h = {
-    'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Max-Age': '86400',
-  };
-  if (allow) {
-    h['Access-Control-Allow-Origin'] = allow;
-    if (allow !== '*') h.Vary = 'Origin';
-  }
-  return h;
-}
+var OPEN_CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Cross-Origin-Resource-Policy': 'cross-origin',
+};
 
 function rejectJson(status, msg) {
   return new Response(JSON.stringify({ error: msg }), {
@@ -89,22 +38,97 @@ function kvKey(ns, key) {
   return 'v1:' + sanitizeSegment(ns, 64) + ':' + sanitizeSegment(key, 200);
 }
 
+function todayUTC() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+/* ---- /hit handler ---- */
+
+async function handleHit(url, env, ctx) {
+  var ns = sanitizeSegment(url.searchParams.get('ns') || 'default', 64);
+  var key = sanitizeSegment(url.searchParams.get('key') || 'page', 200);
+  var cbName = sanitizeJsonpCallback(url.searchParams.get('callback'));
+
+  if (!env.capi) return rejectJson(500, 'KV binding capi missing');
+
+  var name = kvKey(ns, key);
+  var prev = await env.capi.get(name);
+  var n = parseInt(prev, 10);
+  if (isNaN(n) || n < 0) n = 0;
+  n += 1;
+
+  var dayKey = name + ':d:' + todayUTC();
+  ctx.waitUntil(Promise.all([
+    env.capi.put(name, String(n)),
+    env.capi.put(dayKey, String(n)),
+  ]));
+
+  if (cbName) {
+    return new Response(cbName + '(' + JSON.stringify({ value: n }) + ');', {
+      headers: Object.assign({
+        'content-type': 'application/javascript; charset=utf-8',
+        'cache-control': 'no-store, private',
+        'CDN-Cache-Control': 'no-store',
+        'X-Content-Type-Options': 'nosniff',
+      }, OPEN_CORS),
+    });
+  }
+
+  return new Response(JSON.stringify({ value: n }), {
+    headers: Object.assign({
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store, private',
+      'CDN-Cache-Control': 'no-store',
+    }, OPEN_CORS),
+  });
+}
+
+/* ---- /trend handler ---- */
+
+async function handleTrend(url, env) {
+  var ns = sanitizeSegment(url.searchParams.get('ns') || 'default', 64);
+  var key = sanitizeSegment(url.searchParams.get('key') || 'page', 200);
+  var days = Math.min(Math.max(parseInt(url.searchParams.get('days'), 10) || 30, 1), 90);
+
+  if (!env.capi) return rejectJson(500, 'KV binding capi missing');
+
+  var prefix = kvKey(ns, key) + ':d:';
+  var listed = await env.capi.list({ prefix: prefix, limit: 1000 });
+  var allKeys = (listed.keys || []).map(function (k) { return k.name; });
+  allKeys.sort();
+  var recent = allKeys.slice(-days);
+
+  var points = await Promise.all(recent.map(function (k) {
+    return env.capi.get(k).then(function (v) {
+      var date = k.slice(prefix.length);
+      var val = parseInt(v, 10);
+      return { date: date, value: isNaN(val) ? 0 : val };
+    });
+  }));
+
+  var totalRaw = await env.capi.get(kvKey(ns, key));
+  var total = parseInt(totalRaw, 10);
+  if (isNaN(total)) total = 0;
+
+  return new Response(JSON.stringify({ points: points, total: total }), {
+    headers: Object.assign({
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'public, max-age=300',
+    }, OPEN_CORS),
+  });
+}
+
+/* ---- main fetch ---- */
+
 export default {
   async fetch(request, env, ctx) {
     var url = new URL(request.url);
     var path = url.pathname.replace(/\/$/, '') || '/';
 
-    /* 简单 GET 计数无 Cookie：放宽预检，便于任意页面 fetch 读 JSON（避免 JSONP 被 CSP 拦脚本） */
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         status: 204,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Max-Age': '86400',
-          'Cross-Origin-Resource-Policy': 'cross-origin',
-        },
+        headers: Object.assign({ 'Access-Control-Max-Age': '86400' }, OPEN_CORS),
       });
     }
 
@@ -112,56 +136,14 @@ export default {
       return rejectJson(405, 'method not allowed');
     }
 
-    if (path !== '/hit' && path !== '/hit/') {
-      return new Response(JSON.stringify({ ok: true, service: 'page-stats' }), {
-        headers: Object.assign(
-          { 'content-type': 'application/json; charset=utf-8' },
-          corsHeaders(request, env)
-        ),
-      });
-    }
+    if (path === '/hit') return handleHit(url, env, ctx);
+    if (path === '/trend') return handleTrend(url, env);
 
-    var ns = sanitizeSegment(url.searchParams.get('ns') || 'default', 64);
-    var key = sanitizeSegment(url.searchParams.get('key') || 'page', 200);
-    var cbName = sanitizeJsonpCallback(url.searchParams.get('callback'));
-
-    /* 计数与 JSONP 一致：不因 Origin/Referer 拒绝请求（误配 ALLOW_* 时曾导致 curl/浏览器 403） */
-
-    if (!env.capi) {
-      return rejectJson(500, 'KV binding capi missing');
-    }
-
-    var name = kvKey(ns, key);
-    var prev = await env.capi.get(name);
-    var n = parseInt(prev, 10);
-    if (isNaN(n) || n < 0) n = 0;
-    n += 1;
-    ctx.waitUntil(env.capi.put(name, String(n)));
-
-    if (cbName) {
-      var js = cbName + '(' + JSON.stringify({ value: n }) + ');';
-      return new Response(js, {
-        headers: {
-          'content-type': 'application/javascript; charset=utf-8',
-          'cache-control': 'no-store, private',
-          'CDN-Cache-Control': 'no-store',
-          'X-Content-Type-Options': 'nosniff',
-          'Cross-Origin-Resource-Policy': 'cross-origin',
-        },
-      });
-    }
-
-    var body = JSON.stringify({ value: n });
-    return new Response(body, {
-      headers: {
-        'content-type': 'application/json; charset=utf-8',
-        'cache-control': 'no-store, private',
-        'CDN-Cache-Control': 'no-store',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Cross-Origin-Resource-Policy': 'cross-origin',
-      },
+    return new Response(JSON.stringify({ ok: true, service: 'page-stats' }), {
+      headers: Object.assign(
+        { 'content-type': 'application/json; charset=utf-8' },
+        OPEN_CORS
+      ),
     });
   },
 };

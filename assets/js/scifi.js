@@ -298,15 +298,66 @@
     el.classList.remove('view-stats__value--loading');
   }
 
+  /* ---- Sparkline (纯 SVG，30 天趋势) ---- */
+
+  function fetchTrend(ns, key, days, done) {
+    if (!STATS_ENDPOINT || typeof fetch !== 'function') { done(null); return; }
+    var url = STATS_ENDPOINT + '/trend?ns=' + encodeURIComponent(ns) +
+      '&key=' + encodeURIComponent(key) + '&days=' + days +
+      '&_=' + Date.now();
+    fetch(url, { mode: 'cors', credentials: 'omit', cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { done(d && d.points ? d : null); })
+      .catch(function () { done(null); });
+  }
+
+  function renderSparkline(container, points, isPage) {
+    if (!container || !points || points.length < 2) return;
+    var vals = points.map(function (p) { return p.value; });
+    var prev = vals[0];
+    var daily = [0];
+    for (var i = 1; i < vals.length; i++) {
+      var diff = vals[i] - prev;
+      daily.push(diff > 0 ? diff : 0);
+      prev = vals[i];
+    }
+
+    var W = 80, H = 22, pad = 1;
+    var max = Math.max.apply(null, daily) || 1;
+    var n = daily.length;
+    var stepX = (W - pad * 2) / (n - 1);
+    var coords = [];
+    for (var j = 0; j < n; j++) {
+      var x = pad + j * stepX;
+      var y = H - pad - ((daily[j] / max) * (H - pad * 2));
+      coords.push(x.toFixed(1) + ',' + y.toFixed(1));
+    }
+    var lineColor = isPage ? 'rgba(192,132,252,0.9)' : 'rgba(45,212,191,0.9)';
+    var fillColor = isPage ? 'rgba(192,132,252,0.15)' : 'rgba(45,212,191,0.15)';
+    var fillCoords = coords.concat([
+      (pad + (n - 1) * stepX).toFixed(1) + ',' + H,
+      pad + ',' + H
+    ]);
+    var svg = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H +
+      '" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<polygon points="' + fillCoords.join(' ') + '" fill="' + fillColor + '"/>' +
+      '<polyline points="' + coords.join(' ') + '" stroke="' + lineColor +
+      '" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' +
+      '</svg>';
+    container.innerHTML = svg;
+    container.title = '最近 ' + n + ' 天每日增量趋势';
+  }
+
   function runViewStats() {
     var banner = document.getElementById('view-stats-banner');
     var siteEl = document.getElementById('stat-site-total');
     var pageEl = document.getElementById('stat-page-views');
+    var sparkEl = document.getElementById('stat-sparkline');
     if (!banner || (!siteEl && !pageEl)) return;
 
     var isHome = document.body.classList.contains('page-front');
+    var trendKey = isHome ? STATS_SITE_KEY : statsPageKey();
 
-    /* 统计条默认可见；Worker 失败时回退 CountAPI */
     statsHit(STATS_NS, STATS_SITE_KEY, function (siteVal) {
       if (isHome && siteEl) {
         statsApplyValue(siteEl, siteVal);
@@ -317,6 +368,10 @@
       if (!isHome && pageEl) {
         statsApplyValue(pageEl, pageVal);
       }
+    });
+
+    fetchTrend(STATS_NS, trendKey, 30, function (data) {
+      renderSparkline(sparkEl, data && data.points, !isHome);
     });
   }
 

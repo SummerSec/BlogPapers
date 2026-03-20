@@ -128,6 +128,7 @@
             </span>
             <span class="view-stats__label">全站访问</span>
             <span class="view-stats__value view-stats__value--loading" id="stat-site-total">…</span>
+            <span class="view-stats__sparkline" id="stat-sparkline" aria-hidden="true"></span>
           </div>
           {% else %}
           <div class="view-stats view-stats--page" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
@@ -136,6 +137,7 @@
             </span>
             <span class="view-stats__label">本文浏览</span>
             <span class="view-stats__value view-stats__value--loading" id="stat-page-views">…</span>
+            <span class="view-stats__sparkline" id="stat-sparkline" aria-hidden="true"></span>
           </div>
           {% endif %}
           {{ content }}
