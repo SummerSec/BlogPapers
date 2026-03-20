@@ -1,12 +1,30 @@
+{% assign sep = site.title_separator | default: " · " %}
+{% assign brand = site.title | default: "SUMSEC" %}
+{% assign motto = site.motto | default: "像清水一般清澈透明" %}
+{% assign thr = site.title_scroll_threshold | default: 34 %}
+{% if page.url == '/' or page.url == '/index.html' or page.path == 'README.md' %}
+  {% assign doc_title = motto | append: sep | append: brand %}
+{% elsif page.title %}
+  {% assign doc_title = page.title | append: sep | append: brand %}
+{% else %}
+  {% assign doc_title = brand %}
+{% endif %}
+{% assign tlen = doc_title | size %}
+{% if tlen > thr %}
+  {% assign doc_title_static = doc_title | truncate: thr, "…" %}
+{% else %}
+  {% assign doc_title_static = doc_title %}
+{% endif %}
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN"{% if tlen > thr %} data-title-marquee-at="{{ thr }}"{% endif %}>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SummerSec // Security Research Terminal">
-  <meta name="theme-color" content="#12001f">
+  <meta name="description" content="{{ page.description | default: site.description | default: 'SummerSec · 安全研究' }}">
+  <meta name="theme-color" content="#090a0f">
   <meta name="color-scheme" content="dark">
-  <title>{% if page.url == '/' or page.url == '/index.html' or page.path == 'README.md' %}{{ page.title | default: 'SUMSEC.ME' }} — SEC_RESEARCH_TERMINAL{% elsif page.title %}{{ page.title }} // SUMSEC.ME{% else %}SUMSEC.ME // SEC_RESEARCH_TERMINAL{% endif %}</title>
+  <title>{{ doc_title_static }}</title>
+  {% if tlen > thr %}<meta name="doc-title-full" content="{{ doc_title | xml_escape }}">{% endif %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,6 +33,14 @@
 <body class="theme-hud">
   <div id="read-progress"></div>
   <div class="vignette" aria-hidden="true"></div>
+  <div class="side-eggs" aria-hidden="true">
+    <div class="side-egg-rail side-egg-rail--left">
+      <span class="side-egg" title="仔细看" data-egg-msg="像清水一般清澈透明 — 留白处的诚实。">0xDEC0DE · grep -R honesty .</span>
+    </div>
+    <div class="side-egg-rail side-egg-rail--right">
+      <span class="side-egg" title="仔细看" data-egg-msg="trust → verify → write it down. 没有后门，只有复盘。">SIG526E · rm -i doubt</span>
+    </div>
+  </div>
   <div class="ambient-glow" aria-hidden="true"></div>
   <div class="scanlines" aria-hidden="true"></div>
   <div class="grid-bg" aria-hidden="true"></div>
@@ -39,27 +65,27 @@
       </div>
     </div>
     <nav class="site-nav" aria-label="主导航">
-      <a href="{{ '/' | relative_url }}" class="nav-link" aria-label="首页">
+      <a href="{{ '/' | relative_url }}" class="nav-link nav-link--home" aria-label="首页">
         <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
         <span>HOME</span>
       </a>
-      <a href="{{ '/resources/Archives.html' | relative_url }}" class="nav-link" aria-label="归档">
+      <a href="{{ '/resources/Archives.html' | relative_url }}" class="nav-link nav-link--archives" aria-label="归档">
         <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
         <span>ARCHIVES</span>
       </a>
-      <a href="{{ '/resources/AboutMe.html' | relative_url }}" class="nav-link" aria-label="关于">
+      <a href="{{ '/resources/AboutMe.html' | relative_url }}" class="nav-link nav-link--about" aria-label="关于">
         <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
         <span>ABOUT</span>
       </a>
-      <a href="https://old.sumsec.me" class="nav-link nav-external" target="_blank" rel="noopener" aria-label="旧博客（新标签页）">
-        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
-        <span>OLD_BLOG</span>
-      </a>
-      <a href="{{ '/resources/sitemap.xml' | relative_url }}" class="nav-link" aria-label="站点地图">
+      <a href="https://old.sumsec.me" class="nav-link nav-link--legacy" target="_blank" rel="noopener" aria-label="另一站点（新标签页）">
         <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+        <span>NOTEBOOK</span>
+      </a>
+      <a href="{{ '/resources/sitemap.xml' | relative_url }}" class="nav-link nav-link--sitemap" aria-label="站点地图">
+        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
         <span>SITEMAP</span>
       </a>
-      <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link" aria-label="RSS">
+      <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link nav-link--rss" aria-label="RSS">
         <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></span>
         <span>RSS</span>
       </a>
@@ -68,21 +94,17 @@
 
   <main class="main-content" id="main-content">
     <div class="terminal-window-wrap">
-      <span class="hud-bracket hud-bracket--tl" aria-hidden="true"></span>
-      <span class="hud-bracket hud-bracket--tr" aria-hidden="true"></span>
-      <span class="hud-bracket hud-bracket--bl" aria-hidden="true"></span>
-      <span class="hud-bracket hud-bracket--br" aria-hidden="true"></span>
-    <div class="terminal-window">
-      <div class="terminal-titlebar">
-        <span class="tb-dot tb-red"></span>
-        <span class="tb-dot tb-yellow"></span>
-        <span class="tb-dot tb-green"></span>
-        <span class="tb-title">// OUTPUT_STREAM // SEC_CLASS:PUBLIC</span>
+      <div class="terminal-window">
+        <div class="terminal-titlebar">
+          <span class="tb-dot tb-red"></span>
+          <span class="tb-dot tb-yellow"></span>
+          <span class="tb-dot tb-green"></span>
+          <span class="tb-title">session.log · public</span>
+        </div>
+        <div class="terminal-body">
+          {{ content }}
+        </div>
       </div>
-      <div class="terminal-body">
-        {{ content }}
-      </div>
-    </div>
     </div>
   </main>
 

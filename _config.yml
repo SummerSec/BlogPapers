@@ -3,6 +3,15 @@
 markdown: kramdown
 highlighter: rouge
 
+# 站点短名（用于浏览器标题后缀，不写域名）
+title: SUMSEC
+description: SummerSec · 安全研究与笔记
+# 首页 <title> 展示的座右铭
+motto: 像清水一般清澈透明
+title_separator: " · "
+# 标题超过该字数（字符数）时，标签页内用 JS 滚动展示全文
+title_scroll_threshold: 34
+
 exclude:
   - CLAUDE.md
 
@@ -21,12 +30,12 @@ defaults:
   - scope:
       path: "README.md"
     values:
-      title: "SUMSEC.ME"
+      title: ""
   - scope:
       path: "resources/Archives.md"
     values:
-      title: "归档 · ARCHIVE_INDEX"
+      title: "归档"
   - scope:
       path: "resources/AboutMe.md"
     values:
-      title: "关于 · OPERATOR_PROFILE"
+      title: "关于"
