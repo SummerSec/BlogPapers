@@ -233,40 +233,8 @@
   }
 
   function workerHit(ns, key, done) {
-    /* 先 fetch；CORS/网络失败时用 JSONP（<script> 不校验 CORS） */
-    var base =
-      STATS_ENDPOINT +
-      '/hit?ns=' +
-      encodeURIComponent(ns) +
-      '&key=' +
-      encodeURIComponent(key) +
-      '&_=' +
-      String(Date.now());
-    var opts = { mode: 'cors', cache: 'no-store', credentials: 'omit' };
-    try {
-      if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
-        opts.signal = AbortSignal.timeout(10000);
-      }
-    } catch (eW) { /* ignore */ }
-    fetch(base, opts)
-      .then(function (r) {
-        if (!r.ok) throw new Error('stats worker http');
-        return r.text();
-      })
-      .then(function (text) {
-        var d;
-        try {
-          d = JSON.parse(text);
-        } catch (eJ) {
-          done(null);
-          return;
-        }
-        var v = statsParseDataValue(d);
-        done(v != null ? v : null);
-      })
-      .catch(function () {
-        workerJsonp(ns, key, done);
-      });
+    /* 仅用 JSONP 调 Worker，避免 fetch 跨域与 Origin:null 等 CORS 边角问题 */
+    workerJsonp(ns, key, done);
   }
 
   function statsHit(ns, key, done) {

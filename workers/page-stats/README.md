@@ -38,6 +38,8 @@
 
 修改 Worker 后请执行 `wrangler deploy`。
 
+博客端对 Worker **只使用 JSONP（`<script src>`）**，不依赖 `fetch` CORS；`ALLOW_HOST_SUFFIX` 在控制台若留空仍会按默认 `sumsec.me` 后缀放行。
+
 ## 页面上一直显示 **—**？
 
 1. 浏览器 **F12 → 网络**，找 `capi.xxx/hit?...`：若为 **403**，多半是 **Origin 未放行**（例如用了 `www` 而只配了 apex）。改 `ALLOW_ORIGINS` / `ALLOW_HOST_SUFFIX` 后执行 `wrangler deploy`；若 Dashboard 里给 Worker 配了 **Variables**，会覆盖仓库里的 `wrangler.toml`，两边要一致。

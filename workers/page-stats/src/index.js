@@ -1,12 +1,32 @@
 /**
  * 文章 / 全站浏览计数（Cloudflare Worker + KV）
- * API: GET /hit?ns=&key=  →  JSON { "value": n }
- *      GET /hit?ns=&key=&callback=cb  →  application/javascript  cb({"value":n});  （绕过 CORS，供前端 script 回退）
+ * GET /hit?ns=&key=  →  JSON { "value": n }
+ * GET /hit?...&callback=cb  →  application/javascript  cb({"value":n});
  */
 
 function parseAllowedOrigins(env) {
   var raw = env.ALLOW_ORIGINS || '';
   return raw.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+}
+
+/** 浏览器可能发字面量 "null"；无效则当未携带 */
+function normalizeOriginHeader(request) {
+  var o = request.headers.get('Origin');
+  if (!o || o === 'null') return null;
+  return o;
+}
+
+/** 用于放行判断：优先 Origin，否则从 Referer 推导（curl 常无 Origin 仅有 Referer） */
+function effectiveOriginForPolicy(request) {
+  var o = normalizeOriginHeader(request);
+  if (o) return o;
+  var ref = request.headers.get('Referer');
+  if (!ref) return null;
+  try {
+    return new URL(ref).origin;
+  } catch (e) {
+    return null;
+  }
 }
 
 function isOriginAllowed(origin, env) {
@@ -15,10 +35,12 @@ function isOriginAllowed(origin, env) {
   if (list.indexOf('*') !== -1) return true;
   if (list.indexOf(origin) !== -1) return true;
 
-  var suf = env.ALLOW_HOST_SUFFIX;
-  if (suf === undefined || suf === null) suf = 'sumsec.me';
-  suf = String(suf).trim();
-  if (!suf) return false;
+  /* 未设置或显式空字符串：仍默认按 sumsec.me 后缀放行，避免 Dashboard 误配空串导致整站 403 */
+  var sufRaw = env.ALLOW_HOST_SUFFIX;
+  var suf =
+    sufRaw === undefined || sufRaw === null || String(sufRaw).trim() === ''
+      ? 'sumsec.me'
+      : String(sufRaw).trim();
 
   try {
     var u = new URL(origin);
@@ -30,7 +52,7 @@ function isOriginAllowed(origin, env) {
 }
 
 function corsHeaders(request, env) {
-  var origin = request.headers.get('Origin');
+  var origin = normalizeOriginHeader(request);
   var list = parseAllowedOrigins(env);
   var allow = null;
   if (list.indexOf('*') !== -1) {
@@ -104,10 +126,9 @@ export default {
     var key = sanitizeSegment(url.searchParams.get('key') || 'page', 200);
     var cbName = sanitizeJsonpCallback(url.searchParams.get('callback'));
 
-    var origin = request.headers.get('Origin');
-    /* JSONP 走 <script src>，浏览器常不带 Origin；不做 Origin 校验以免误杀。仅允许安全 callback 名。 */
+    var eff = effectiveOriginForPolicy(request);
     if (!cbName) {
-      if (origin && !isOriginAllowed(origin, env)) {
+      if (eff && !isOriginAllowed(eff, env)) {
         return rejectJson(403, 'origin not allowed');
       }
     }
