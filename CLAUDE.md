@@ -27,13 +27,13 @@ Requires Jekyll 4.x and Dart Sass (not LibSass).
 - `_layouts/default.html` — main layout: sci-fi terminal header + matrix canvas + `scifi.js`
 - `assets/css/style.scss` — all theme styles using CSS custom properties (`--bg-primary`, `--accent-blue`, etc.)
 - `assets/js/scifi.js` — matrix rain canvas animation；浏览量：若 `_config.yml` 填写 `stats_endpoint`（Cloudflare Worker 根 URL），则优先请求 Worker（见 `workers/page-stats/`），失败再回退 [CountAPI](https://countapi.xyz）。键名仍为 `meta stats-namespace` + `site-total` / `pv-*`（与 CountAPI 一致）。
-- 评论 — [utterances](https://utteranc.es/)（GitHub Issues）：在仓库安装 [utterances GitHub App](https://github.com/apps/utterances)，并在 Issues 中创建标签 `blog-comments`（与 `_config.yml` 中 `utterances.label` 一致）。**Utterances 只读布局里的脚本配置，不要求各篇 Markdown 带 `tags`。** 若仍希望 Jekyll 里有 `page.tags`，可在 **GitHub Actions 构建时** 用 `_scripts/add_blog_comments_tag.py` 在 runner 上注入（见 **jekyll-pages** workflow），无需提交进仓库。某页关闭评论：front matter 设 `comments: false`（`resources/Archives.md`、`resources/AboutMe.md` 已在 `defaults` 中关闭）。
+- 评论 — [utterances](https://utteranc.es/)（GitHub Issues）：在仓库安装 [utterances GitHub App](https://github.com/apps/utterances)，并在 Issues 中创建标签 `blog-comments`（与 `_config.yml` 中 `utterances.label` 一致）。**Utterances 只读布局里的脚本配置，不要求各篇 Markdown 带 `tags`。** 若需 `page.tags` 可本地跑 `_scripts/add_blog_comments_tag.py` 或使用 pre-commit。某页关闭评论：front matter 设 `comments: false`（`resources/Archives.md`、`resources/AboutMe.md` 已在 `defaults` 中关闭）。
 - `README.md` — serves as the site homepage (`/`); contains the post timeline table
 - `resources/` — static assets, AboutMe, Archives, sitemap, RSS feeds
 
 ## Adding a New Post
 
-1. Create `YYYY/post-title.md`（可无 front matter，站点 `defaults` 会补 `layout`；`tags: blog-comments` 可由 CI 在构建时注入，不必手写；若用本地 pre-commit 也可在提交前自动写入）。如需手写：
+1. Create `YYYY/post-title.md`（可无 front matter，站点 `defaults` 会补 `layout`；`tags: blog-comments` 可用 pre-commit 或手动执行 `_scripts/add_blog_comments_tag.py`）。如需手写：
    ```yaml
    ---
    layout: default
@@ -44,11 +44,14 @@ Requires Jekyll 4.x and Dart Sass (not LibSass).
 3. Update `resources/Archives.md` if needed
 4. **Do not** update hard-coded article counts manually — they are static strings in the HTML
 
+## GitHub Pages 发布源
+
+本站依赖 `jekyll-readme-index` 等插件将根目录 `README.md` 生成为首页 **`/`**。请在仓库 **Settings → Pages → Build and deployment** 使用 **Deploy from a branch**：分支 **`master`**，文件夹 **`/ (root)`**。若曾改为 **GitHub Actions** 作为唯一发布源且配套 workflow 构建失败，会出现 **整站或首页 404**；此时改回「从分支部署」并等待一次构建完成即可恢复。
+
 ## GitHub Actions
 
 Several workflows run on `master` (and/or schedule):
 
-- **jekyll-pages**（`.github/workflows/jekyll-pages.yml`）— `jekyll build` + 部署 **GitHub Pages**；在构建前于 runner 上执行 `python _scripts/add_blog_comments_tag.py`，**只影响当次构建产物，不回写仓库**。启用前必须在 **Settings → Pages** 将 **Source** 设为 **GitHub Actions**，并停止使用「从分支/build 部署」，否则部署行为与官方预期不一致（详见该 workflow 文件头注释）。
 - **AboutMe** (every 6h + push) — syncs `AboutMe.md`, `rss.xml`, `atom.xml`, and `dist/` SVG assets from other SummerSec repos via `wget`
 - **SitemapGenerator** — regenerates `resources/sitemap.xml` and `resources/rss.xml` from repo content
 - **Update images** — rewrites old image URLs (`raw.githubusercontent.com/SummerSec/Images/main/`) to CDN (`img.sumsec.me/`) across all Markdown files
@@ -57,7 +60,7 @@ Do not manually edit `resources/AboutMe.md`, `resources/rss.xml`, `resources/ato
 
 ## Local Git hooks（可选）
 
-若**不**希望在本地改 Markdown、且已用 **jekyll-pages** 在 CI 注入 `tags`，可跳过本节。
+若**不**希望在本地改 Markdown、且不需要 `tags: blog-comments`，可跳过本节。
 
 提交前为**暂存区**内的 `.md` 自动写入或合并 `tags: blog-comments`（跳过 `resources/AboutMe.md`、`CLAUDE.md`）。
 
