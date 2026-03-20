@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔐</text></svg>">
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ '/' | relative_url }}" class="nav-logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">SummerSec</span>
+        <span class="logo-bracket">]</span>
+        <span class="logo-cursor">_</span>
+      </a>
+      <div class="nav-links">
+        <a href="{{ '/' | relative_url }}" class="nav-link">
+          <span class="nav-icon">🏯</span> 首页
+        </a>
+        <a href="{{ '/resources/Archives' | relative_url }}" class="nav-link">
+          <span class="nav-icon">📁</span> 归档
+        </a>
+        <a href="{{ '/resources/AboutMe' | relative_url }}" class="nav-link">
+          <span class="nav-icon">👤</span> 关于
+        </a>
+        <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link">
+          <span class="nav-icon">📡</span> RSS
+        </a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 主内容 -->
+  <main class="main-content">
+    {{ content }}
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h4 class="footer-title">SummerSec</h4>
+          <p class="footer-desc">专注 Java 安全研究 · CodeQL 静态分析 · 漏洞挖掘</p>
+        </div>
+        <div class="footer-section">
+          <h4 class="footer-title">快速链接</h4>
+          <ul class="footer-links">
+            <li><a href="{{ '/' | relative_url }}">首页</a></li>
+            <li><a href="{{ '/resources/Archives' | relative_url }}">文章归档</a></li>
+            <li><a href="{{ '/resources/AboutMe' | relative_url }}">关于我</a></li>
+            <li><a href="https://old.sumsec.me" target="_blank">旧博客</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4 class="footer-title">主题分类</h4>
+          <ul class="footer-links">
+            <li><a href="{{ '/PL/' | relative_url }}">程序语言理论</a></li>
+            <li><a href="{{ '/resources/sitemap.xml' | relative_url }}">站点地图</a></li>
+            <li><a href="{{ '/resources/rss.xml' | relative_url }}">RSS 订阅</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2021-2026 SummerSec · Built with Jekyll · Hosted on GitHub Pages</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 移动端导航切换
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (navToggle) {
+      navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('nav-open');
+        navToggle.classList.toggle('active');
+      });
+    }
+
+    // 滚动时导航栏效果
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // 代码块添加复制按钮
+    document.querySelectorAll('pre code').forEach(block => {
+      const pre = block.parentElement;
+      const btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = '复制';
+      pre.style.position = 'relative';
+      pre.appendChild(btn);
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(block.textContent).then(() => {
+          btn.textContent = '已复制!';
+          setTimeout(() => btn.textContent = '复制', 2000);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
