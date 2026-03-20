@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 ## PII[^1]泄露--用CodeQL识别日志中的PII数据
 
  [shopizer](https://www.shopizer.com/)是一款开源电子商务系统，使用Java语言开发。[shopizer‘s github](https://github.com/shopizer-ecommerce/shopizer)

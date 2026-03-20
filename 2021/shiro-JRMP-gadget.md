@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 ## shiro JRMP gadget
 
 第一步：

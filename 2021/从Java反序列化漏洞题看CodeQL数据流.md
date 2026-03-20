@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 # 从Java反序列化漏洞题看CodeQL数据流
 
 ### 前言

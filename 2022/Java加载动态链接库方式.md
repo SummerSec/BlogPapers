@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 ## Java加载动态链接库
 
 ### 前言

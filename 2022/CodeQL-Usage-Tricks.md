@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 
 
 ## CodeQl Usage Tricks

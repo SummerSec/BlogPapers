@@ -1,0 +1,14 @@
+# 使用方式见 README.md
+name = "sumsec-page-stats"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# 创建 KV：wrangler kv namespace create STATS
+# 把下面 id 换成命令输出的 id
+[[kv_namespaces]]
+binding = "STATS"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+[vars]
+# 逗号分隔；博客所在域必须列入，否则浏览器 CORS 会拦截
+ALLOW_ORIGINS = "https://sumsec.me,https://www.sumsec.me"

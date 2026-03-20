@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 ## JNDI注入
 
 **文中环境代码上传到https://github.com/SummerSec/JavaLearnVulnerability/tree/master/RMI%20JRMP%20JNDI**

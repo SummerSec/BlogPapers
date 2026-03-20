@@ -22,8 +22,13 @@ utterances:
   theme: github-dark
   label: blog-comments
 
+# 可选：Cloudflare Worker 统计根 URL（无尾部斜杠），见 workers/page-stats/README.md；留空则用 CountAPI
+stats_endpoint: ""
+
 exclude:
   - CLAUDE.md
+  - _scripts
+  - workers
 
 # GitHub Pages: process Markdown without --- front matter; use README as site index
 plugins:

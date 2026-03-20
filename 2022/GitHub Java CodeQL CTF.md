@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 # GitHub Java CodeQL CTF
 
 GitHub Security Lab CTF 4: CodeQL and Chill - The Java Edition  

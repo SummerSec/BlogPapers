@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 ## 记一次Log4j失败的Gadget挖掘记录
 
 

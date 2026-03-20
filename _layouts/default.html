@@ -31,6 +31,10 @@
   <meta name="theme-color" content="#06070d">
   <meta name="color-scheme" content="dark">
   <meta name="stats-namespace" content="sumsecme">
+  {% assign _stats_ep = site.stats_endpoint | default: "" | strip %}
+  {% if _stats_ep != "" %}
+  <meta name="stats-endpoint" content="{{ _stats_ep | xml_escape }}">
+  {% endif %}
   <title>{{ doc_title_static }}</title>
   {% if tlen > thr %}<meta name="doc-title-full" content="{{ doc_title | xml_escape }}">{% endif %}
   <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml" sizes="any">
@@ -111,15 +115,26 @@
           <span class="tb-title">session.log · public</span>
         </div>
         <div class="terminal-body">
+          {% assign _stats_banner_title = "使用 CountAPI；若长期为 — 可能是网络或广告拦截" %}
+          {% assign _stats_tip_ep = site.stats_endpoint | default: "" | strip %}
+          {% if _stats_tip_ep != "" %}
+            {% assign _stats_banner_title = "优先 Cloudflare Worker，失败回退 CountAPI；若长期为 — 检查 Worker、ALLOW_ORIGINS 与网络" %}
+          {% endif %}
           {% if page_is_home %}
-          <div class="view-stats view-stats--site" id="view-stats-banner" hidden>
+          <div class="view-stats view-stats--site" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
+            <span class="view-stats__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-7"/></svg>
+            </span>
             <span class="view-stats__label">全站访问</span>
-            <span class="view-stats__value" id="stat-site-total">…</span>
+            <span class="view-stats__value view-stats__value--loading" id="stat-site-total">…</span>
           </div>
           {% else %}
-          <div class="view-stats view-stats--page" id="view-stats-banner" hidden>
+          <div class="view-stats view-stats--page" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
+            <span class="view-stats__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </span>
             <span class="view-stats__label">本文浏览</span>
-            <span class="view-stats__value" id="stat-page-views">…</span>
+            <span class="view-stats__value view-stats__value--loading" id="stat-page-views">…</span>
           </div>
           {% endif %}
           {{ content }}
@@ -159,7 +174,15 @@
 
   <div class="cyber-sheen" aria-hidden="true"></div>
   <canvas id="matrix-canvas" aria-hidden="true"></canvas>
-  <button type="button" id="back-to-top" aria-label="返回顶部">&#x2191;</button>
+  <button type="button" id="back-to-top" class="back-to-top" aria-label="返回顶部">
+    <span class="back-to-top__ring" aria-hidden="true"></span>
+    <span class="back-to-top__inner">
+      <svg class="back-to-top__chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+      <span class="back-to-top__label">TOP</span>
+    </span>
+  </button>
   <script src="{{ '/assets/js/scifi.js' | relative_url }}"></script>
 </body>
 </html>

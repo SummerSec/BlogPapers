@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 ## VMWare Workspace ONE Access Auth Bypass
 
 ### 前言

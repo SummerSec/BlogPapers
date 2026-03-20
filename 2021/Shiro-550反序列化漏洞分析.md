@@ -1,4 +1,8 @@
-﻿
+---
+tags:
+- blog-comments
+---
+
 # 概述
 
 &emsp;&emsp; Shiro反序列化漏洞目前为止有两个，Shiro-550``(Apache  Shiro < 1.2.5)``和Shiro-721``( Apache  Shiro < 1.4.2 )``。这两个漏洞主要区别在于Shiro550使用已知密钥撞，后者Shiro721是使用``登录后rememberMe={value}去爆破正确的key值``进而反序列化，对比Shiro550条件只要有``足够密钥库``（条件比较低）、Shiro721需要登录（要求比较高~~鸡肋~~）。

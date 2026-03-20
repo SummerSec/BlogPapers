@@ -83,10 +83,13 @@
     }
   }, true);
 
-  // --- 浏览量（CountAPI，静态站无后端；广告拦截可能导致失败显示 —）---
+  // --- 浏览量：优先 meta stats-endpoint（Cloudflare Worker），否则 CountAPI ---
   var STATS_NS_EL = document.querySelector('meta[name="stats-namespace"]');
   var STATS_NS = (STATS_NS_EL && STATS_NS_EL.getAttribute('content')) || 'sumsecme';
   var STATS_SITE_KEY = 'site-total';
+  var STATS_EP_EL = document.querySelector('meta[name="stats-endpoint"]');
+  var STATS_ENDPOINT = (STATS_EP_EL && STATS_EP_EL.getAttribute('content')) || '';
+  STATS_ENDPOINT = String(STATS_ENDPOINT).replace(/^\s+|\s+$/g, '').replace(/\/$/, '');
 
   function statsFormatNum(n) {
     if (n == null || typeof n !== 'number' || isNaN(n)) return '—';
@@ -110,18 +113,25 @@
     var cb = 'countapi_cb_' + String(Date.now()) + '_' + Math.floor(Math.random() * 1e6);
     var script = document.createElement('script');
     script.async = true;
-    window[cb] = function (data) {
+    var fired = false;
+    function once(val) {
+      if (fired) return;
+      fired = true;
+      window.clearTimeout(slow);
       try {
         delete window[cb];
       } catch (e0) { /* ignore */ }
       if (script.parentNode) script.parentNode.removeChild(script);
-      done(data && typeof data.value === 'number' ? data.value : null);
+      done(val);
+    }
+    var slow = window.setTimeout(function () {
+      once(null);
+    }, 12000);
+    window[cb] = function (data) {
+      once(data && typeof data.value === 'number' ? data.value : null);
     };
     script.onerror = function () {
-      try {
-        delete window[cb];
-      } catch (e1) { /* ignore */ }
-      done(null);
+      once(null);
     };
     script.src = base + '?callback=' + encodeURIComponent(cb);
     document.head.appendChild(script);
@@ -129,18 +139,96 @@
 
   function countapiHit(ns, key, done) {
     var url = 'https://api.countapi.xyz/hit/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
-    if (typeof fetch === 'function') {
-      fetch(url, { mode: 'cors', cache: 'no-store' })
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-          done(typeof d.value === 'number' ? d.value : null);
-        })
-        .catch(function () {
-          countapiJsonp(ns, key, done);
-        });
-    } else {
-      countapiJsonp(ns, key, done);
+    var finished = false;
+    function doneOnce(v) {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(fallbackTimer);
+      done(v);
     }
+    var fallbackTimer = window.setTimeout(function () {
+      countapiJsonp(ns, key, doneOnce);
+    }, 10000);
+
+    if (typeof fetch !== 'function') {
+      window.clearTimeout(fallbackTimer);
+      countapiJsonp(ns, key, doneOnce);
+      return;
+    }
+
+    var opts = { mode: 'cors', cache: 'no-store' };
+    try {
+      if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
+        opts.signal = AbortSignal.timeout(8000);
+      }
+    } catch (eT) { /* ignore */ }
+
+    fetch(url, opts)
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        doneOnce(typeof d.value === 'number' ? d.value : null);
+      })
+      .catch(function () {
+        window.clearTimeout(fallbackTimer);
+        countapiJsonp(ns, key, doneOnce);
+      });
+  }
+
+  function workerHit(ns, key, done) {
+    var base =
+      STATS_ENDPOINT +
+      '/hit?ns=' +
+      encodeURIComponent(ns) +
+      '&key=' +
+      encodeURIComponent(key);
+    var finished = false;
+    function doneOnce(v) {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(t);
+      done(v);
+    }
+    var t = window.setTimeout(function () {
+      doneOnce(null);
+    }, 8000);
+    var opts = { mode: 'cors', cache: 'no-store', credentials: 'omit' };
+    try {
+      if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
+        opts.signal = AbortSignal.timeout(6000);
+      }
+    } catch (eW) { /* ignore */ }
+    fetch(base, opts)
+      .then(function (r) {
+        if (!r.ok) throw new Error('stats worker http');
+        return r.json();
+      })
+      .then(function (d) {
+        doneOnce(typeof d.value === 'number' ? d.value : null);
+      })
+      .catch(function () {
+        window.clearTimeout(t);
+        doneOnce(null);
+      });
+  }
+
+  function statsHit(ns, key, done) {
+    if (STATS_ENDPOINT) {
+      workerHit(ns, key, function (v) {
+        if (typeof v === 'number' && !isNaN(v)) {
+          done(v);
+          return;
+        }
+        countapiHit(ns, key, done);
+      });
+      return;
+    }
+    countapiHit(ns, key, done);
+  }
+
+  function statsApplyValue(el, val) {
+    if (!el) return;
+    el.textContent = statsFormatNum(val);
+    el.classList.remove('view-stats__value--loading');
   }
 
   function runViewStats() {
@@ -151,17 +239,16 @@
 
     var isHome = document.body.classList.contains('page-front');
 
-    countapiHit(STATS_NS, STATS_SITE_KEY, function (siteVal) {
+    /* 统计条默认可见；Worker 失败时回退 CountAPI */
+    statsHit(STATS_NS, STATS_SITE_KEY, function (siteVal) {
       if (isHome && siteEl) {
-        siteEl.textContent = statsFormatNum(siteVal);
-        banner.removeAttribute('hidden');
+        statsApplyValue(siteEl, siteVal);
       }
     });
 
-    countapiHit(STATS_NS, statsPageKey(), function (pageVal) {
+    statsHit(STATS_NS, statsPageKey(), function (pageVal) {
       if (!isHome && pageEl) {
-        pageEl.textContent = statsFormatNum(pageVal);
-        banner.removeAttribute('hidden');
+        statsApplyValue(pageEl, pageVal);
       }
     });
   }

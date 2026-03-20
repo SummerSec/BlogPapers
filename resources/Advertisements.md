@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4943002733193231"
      crossorigin="anonymous"></script>
 

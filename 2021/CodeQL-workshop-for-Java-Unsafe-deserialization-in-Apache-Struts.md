@@ -1,3 +1,7 @@
+---
+tags:
+- blog-comments
+---
 # CodeQL workshop for Java: Unsafe deserialization in Apache Struts
 
  - Analyzed language: Java
