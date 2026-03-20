@@ -15,6 +15,13 @@
 {% else %}
   {% assign doc_title_static = doc_title %}
 {% endif %}
+{% assign _root_path = site.baseurl | append: '/' %}
+{% assign page_is_home = false %}
+{% if page.path == 'README.md' or page.url == '/' or page.url == '/index.html' %}
+  {% assign page_is_home = true %}
+{% elsif page.url == _root_path %}
+  {% assign page_is_home = true %}
+{% endif %}
 <!DOCTYPE html>
 <html lang="zh-CN"{% if tlen > thr %} data-title-marquee-at="{{ thr }}"{% endif %}>
 <head>
@@ -25,12 +32,13 @@
   <meta name="color-scheme" content="dark">
   <title>{{ doc_title_static }}</title>
   {% if tlen > thr %}<meta name="doc-title-full" content="{{ doc_title | xml_escape }}">{% endif %}
+  <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml" sizes="any">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
-<body class="theme-hud">
+<body class="theme-hud{% if page_is_home %} page-front{% endif %}">
   <div id="read-progress"></div>
   <div class="vignette" aria-hidden="true"></div>
   <div class="side-eggs" aria-hidden="true">

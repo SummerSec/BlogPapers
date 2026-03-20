@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="SUMSEC">
+  <defs>
+    <linearGradient id="sumsec-fav-frame" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="52%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#f472b6"/>
+    </linearGradient>
+    <linearGradient id="sumsec-fav-fill" x1="6" y1="6" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0c1018"/>
+      <stop offset="100%" stop-color="#06080d"/>
+    </linearGradient>
+  </defs>
+  <rect
+    x="2"
+    y="2"
+    width="28"
+    height="28"
+    rx="7.5"
+    fill="url(#sumsec-fav-fill)"
+    stroke="url(#sumsec-fav-frame)"
+    stroke-width="1.35"/>
+  <!-- 终端：> 与底线与光标（直线构成，小尺寸下不会像放大镜） -->
+  <path
+    d="M9.5 11.5 13 16l-3.5 4.5"
+    fill="none"
+    stroke="#2dd4bf"
+    stroke-width="2.25"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+  <path
+    d="M15 21.5h11"
+    fill="none"
+    stroke="#c084fc"
+    stroke-width="2"
+    stroke-linecap="round"
+    opacity="0.95"/>
+  <rect x="24" y="11" width="2.75" height="7" rx="0.6" fill="#4ade80"/>
+</svg>
