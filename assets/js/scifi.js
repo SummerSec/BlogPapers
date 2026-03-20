@@ -88,7 +88,7 @@
   if (canvas && !reduceMotion) {
     var ctx = canvas.getContext('2d');
     var W, H, cols, drops;
-    var CHARS = '01ABCDEFabcdef0123456789アイウエオカキクケコサシスセソタチツテト';
+    var CHARS = '01ABCDEFΣ◇▣⟨⟩∴×÷アイウエオカキクケコサシスセソタチツテト';
 
     function resizeCanvas() {
       W = canvas.width = window.innerWidth;
@@ -99,14 +99,14 @@
     }
 
     var NEON = [
-      'rgba(56, 250, 220, 0.3)',
-      'rgba(232, 121, 249, 0.26)',
-      'rgba(74, 222, 128, 0.22)',
-      'rgba(255, 100, 200, 0.2)'
+      'rgba(72, 255, 228, 0.34)',
+      'rgba(200, 150, 255, 0.3)',
+      'rgba(94, 255, 150, 0.26)',
+      'rgba(255, 120, 210, 0.24)'
     ];
 
     function drawMatrix() {
-      ctx.fillStyle = 'rgba(9, 10, 15, 0.07)';
+      ctx.fillStyle = 'rgba(6, 7, 13, 0.065)';
       ctx.fillRect(0, 0, W, H);
       ctx.font = '14px "JetBrains Mono", "Noto Sans SC", monospace';
       for (var i = 0; i < cols; i++) {
