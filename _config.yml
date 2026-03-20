@@ -23,7 +23,7 @@ utterances:
   label: blog-comments
 
 # 可选：Cloudflare Worker 统计根 URL（无尾部斜杠），见 workers/page-stats/README.md；留空则用 CountAPI
-stats_endpoint: ""
+stats_endpoint: "https://capi.sumsec.me"
 
 exclude:
   - CLAUDE.md
