@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SummerSec // Security Research Terminal">
-  <meta name="theme-color" content="#050508">
+  <meta name="theme-color" content="#12001f">
   <meta name="color-scheme" content="dark">
   <title>{% if page.url == '/' or page.url == '/index.html' or page.path == 'README.md' %}{{ page.title | default: 'SUMSEC.ME' }} — SEC_RESEARCH_TERMINAL{% elsif page.title %}{{ page.title }} // SUMSEC.ME{% else %}SUMSEC.ME // SEC_RESEARCH_TERMINAL{% endif %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,8 +12,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
-<body>
+<body class="theme-hud">
   <div id="read-progress"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="ambient-glow" aria-hidden="true"></div>
   <div class="scanlines" aria-hidden="true"></div>
   <div class="grid-bg" aria-hidden="true"></div>
   <div class="hex-mesh" aria-hidden="true"></div>
@@ -65,6 +67,11 @@
   </header>
 
   <main class="main-content" id="main-content">
+    <div class="terminal-window-wrap">
+      <span class="hud-bracket hud-bracket--tl" aria-hidden="true"></span>
+      <span class="hud-bracket hud-bracket--tr" aria-hidden="true"></span>
+      <span class="hud-bracket hud-bracket--bl" aria-hidden="true"></span>
+      <span class="hud-bracket hud-bracket--br" aria-hidden="true"></span>
     <div class="terminal-window">
       <div class="terminal-titlebar">
         <span class="tb-dot tb-red"></span>
@@ -75,6 +82,7 @@
       <div class="terminal-body">
         {{ content }}
       </div>
+    </div>
     </div>
   </main>
 

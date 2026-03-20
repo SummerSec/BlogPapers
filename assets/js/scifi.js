@@ -93,12 +93,19 @@
       for (var i = 0; i < cols; i++) drops[i] = Math.random() * -H;
     }
 
+    var NEON = [
+      'rgba(0, 255, 247, 0.26)',
+      'rgba(255, 0, 200, 0.22)',
+      'rgba(191, 127, 255, 0.2)',
+      'rgba(57, 255, 20, 0.18)'
+    ];
+
     function drawMatrix() {
-      ctx.fillStyle = 'rgba(5, 5, 8, 0.07)';
+      ctx.fillStyle = 'rgba(3, 3, 10, 0.075)';
       ctx.fillRect(0, 0, W, H);
-      ctx.fillStyle = '#00f5ff18';
       ctx.font = '14px "JetBrains Mono", "Noto Sans SC", monospace';
       for (var i = 0; i < cols; i++) {
+        ctx.fillStyle = NEON[i % NEON.length];
         var ch = CHARS[Math.floor(Math.random() * CHARS.length)];
         ctx.fillText(ch, i * 16, drops[i]);
         if (drops[i] > H && Math.random() > 0.97) drops[i] = 0;
