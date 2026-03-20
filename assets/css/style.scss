@@ -511,8 +511,116 @@ body { animation: flicker 8s infinite; }
   .site-header    { padding: 14px 16px 0; }
   .terminal-body  { padding: 20px 18px; }
   .main-content   { margin: 16px auto; padding: 0 12px; }
-  .site-nav       { gap: 2px; }
-  .nav-link       { font-size: 11px; padding: 4px 8px; }
+  .site-nav       { gap: 2px; flex-wrap: wrap; }
+  .nav-link       { font-size: 11px; padding: 4px 8px; min-height: 36px; display: inline-flex; align-items: center; }
   .header-inner   { gap: 10px; }
   .title-sub      { display: none; }
 }
+
+/* =============================================
+   READING PROGRESS BAR
+   ============================================= */
+#read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--green));
+  z-index: 200;
+  pointer-events: none;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px rgba(0,245,255,0.8);
+}
+
+/* =============================================
+   BACK TO TOP BUTTON
+   ============================================= */
+#back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  background: var(--panel);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 150;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, box-shadow 0.3s;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#back-to-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: var(--glow-c);
+}
+
+#back-to-top:hover {
+  background: rgba(0,245,255,0.1);
+  box-shadow: var(--glow-c), 0 0 30px rgba(0,245,255,0.4);
+}
+
+/* =============================================
+   TAG BADGES
+   ============================================= */
+.tag-badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  margin: 1px 2px 1px 0;
+  font-family: var(--font-mono);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.tag-security { border: 1px solid var(--pink);  color: var(--pink);  background: rgba(255,0,144,0.07); }
+.tag-java     { border: 1px solid var(--green); color: var(--green); background: rgba(57,255,20,0.07); }
+.tag-ai       { border: 1px solid var(--cyan);  color: var(--cyan);  background: rgba(0,245,255,0.07); }
+.tag-default  { border: 1px solid var(--dim);   color: var(--text-dim); background: transparent; }
+
+/* =============================================
+   NAV ACTIVE STATE
+   ============================================= */
+.nav-active {
+  color: var(--cyan) !important;
+  text-shadow: var(--glow-c);
+  border-bottom: 2px solid var(--cyan);
+  padding-bottom: 2px;
+}
+
+/* =============================================
+   YEAR SECTION HEADINGS (h4 in content)
+   ============================================= */
+.terminal-body h4 {
+  font-family: var(--font-hdr);
+  font-size: 13px;
+  color: var(--cyan);
+  letter-spacing: 3px;
+  text-shadow: var(--glow-c);
+  margin: 2em 0 0.8em;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.terminal-body h4::before {
+  content: '## ';
+  color: var(--green);
+  text-shadow: var(--glow-g);
+}
+
+/* =============================================
+   CONTRAST & ACCESSIBILITY
+   ============================================= */
+.text-dim, .text-dim * { color: #8ab0c0; }
+
+h2, h3, h4 { scroll-margin-top: 80px; }

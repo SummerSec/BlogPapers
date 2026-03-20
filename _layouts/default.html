@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
+  <div id="read-progress"></div>
   <div class="scanlines"></div>
   <div class="grid-bg"></div>
 
@@ -25,13 +26,13 @@
         <span class="sys-status">SYS:ONLINE</span>
       </div>
     </div>
-    <nav class="site-nav">
-      <a href="{{ '/' | relative_url }}" class="nav-link">[&#x2302;&nbsp;HOME]</a>
-      <a href="{{ '/resources/Archives.md' | relative_url }}" class="nav-link">[&#x1F4C1;&nbsp;ARCHIVES]</a>
-      <a href="{{ '/resources/AboutMe.md' | relative_url }}" class="nav-link">[&#x1F464;&nbsp;ABOUT]</a>
-      <a href="https://old.sumsec.me" class="nav-link" target="_blank" rel="noopener">[&#x1F4D2;&nbsp;OLD_BLOG]</a>
-      <a href="{{ '/resources/sitemap.xml' | relative_url }}" class="nav-link">[&#x1F310;&nbsp;SITEMAP]</a>
-      <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link">[&#x1F4E1;&nbsp;RSS]</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="{{ '/' | relative_url }}" class="nav-link" aria-label="Home">[&#x2302;&nbsp;HOME]</a>
+      <a href="{{ '/resources/Archives' | relative_url }}" class="nav-link" aria-label="Archives">[&#x1F4C1;&nbsp;ARCHIVES]</a>
+      <a href="{{ '/resources/AboutMe' | relative_url }}" class="nav-link" aria-label="About">[&#x1F464;&nbsp;ABOUT]</a>
+      <a href="https://old.sumsec.me" class="nav-link" target="_blank" rel="noopener" aria-label="Old blog (opens in new tab)">[&#x1F4D2;&nbsp;OLD_BLOG]</a>
+      <a href="{{ '/resources/sitemap.xml' | relative_url }}" class="nav-link" aria-label="Sitemap">[&#x1F310;&nbsp;SITEMAP]</a>
+      <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link" aria-label="RSS feed">[&#x1F4E1;&nbsp;RSS]</a>
     </nav>
   </header>
 
@@ -63,6 +64,7 @@
   </footer>
 
   <canvas id="matrix-canvas"></canvas>
+  <button id="back-to-top" aria-label="Back to top">&#x2191;</button>
   <script src="{{ '/assets/js/scifi.js' | relative_url }}"></script>
 </body>
 </html>
