@@ -88,10 +88,5 @@
 
 
 
-**感谢[https://evolution-host.com](https://evolution-host.com/)的赞助**
-
-[![https://evolution-host.com/](https://img.sumsec.me/2022/03/29u5529ec29u5529ec.png)](https://evolution-host.com/)
-
-
 
 <script> function cb(response) {     document.getElementById('visits').innerText = response.value; } </script> <script async src="https://api.countapi.xyz/hit/sumsec.me/:PATHNAME:/visits?callback=cb"></script>sumsec.me

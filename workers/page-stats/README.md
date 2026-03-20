@@ -26,7 +26,7 @@
 6. （推荐）在 Cloudflare 控制台为该 Worker 绑定自定义域，例如 `stats.sumsec.me`，并确保 DNS 橙云代理开启。
 7. 在博客仓库 `_config.yml` 设置：
    ```yaml
-   stats_endpoint: "https://stats.sumsec.me"
+   stats_endpoint: "https://capi.sumsec.me"
    ```
    留空则继续使用 CountAPI。
 
