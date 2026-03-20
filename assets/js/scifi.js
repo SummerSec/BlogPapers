@@ -88,7 +88,7 @@
     function resizeCanvas() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
-      cols = Math.floor(W / 18);
+      cols = Math.floor(W / 16);
       drops = [];
       for (var i = 0; i < cols; i++) drops[i] = Math.random() * -H;
     }
@@ -97,12 +97,12 @@
       ctx.fillStyle = 'rgba(5, 5, 8, 0.07)';
       ctx.fillRect(0, 0, W, H);
       ctx.fillStyle = '#00f5ff18';
-      ctx.font = '13px "Fira Code", monospace';
+      ctx.font = '14px "JetBrains Mono", "Noto Sans SC", monospace';
       for (var i = 0; i < cols; i++) {
         var ch = CHARS[Math.floor(Math.random() * CHARS.length)];
-        ctx.fillText(ch, i * 18, drops[i]);
+        ctx.fillText(ch, i * 16, drops[i]);
         if (drops[i] > H && Math.random() > 0.97) drops[i] = 0;
-        drops[i] += 18;
+        drops[i] += 16;
       }
     }
 
