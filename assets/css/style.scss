@@ -53,7 +53,7 @@ body {
   background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-body);
-  font-size: clamp(16px, 1.05rem + 0.2vw, 18px);
+  font-size: clamp(16px, calc(1.05rem + 0.2vw), 18px);
   line-height: 1.72;
   min-height: 100vh;
   overflow-x: hidden;
@@ -78,7 +78,7 @@ body {
   top: -25%;
   left: 50%;
   transform: translateX(-50%);
-  width: min(160vw, 1400px);
+  width: unquote("min(160vw, 1400px)");
   height: 55vh;
   z-index: 0;
   pointer-events: none;
@@ -204,7 +204,7 @@ header, main, footer, nav { position: relative; z-index: 10; }
 .terminal-prompt {
   color: var(--green);
   font-family: var(--font-mono);
-  font-size: clamp(13px, 0.9rem + 0.2vw, 15px);
+  font-size: clamp(13px, calc(0.9rem + 0.2vw), 15px);
   font-weight: 500;
   white-space: nowrap;
   text-shadow: var(--glow-g);
@@ -228,7 +228,7 @@ header, main, footer, nav { position: relative; z-index: 10; }
 
 .title-main {
   font-family: var(--font-hdr);
-  font-size: clamp(22px, 3.2vw + 0.5rem, 34px);
+  font-size: clamp(22px, calc(3.2vw + 0.5rem), 34px);
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -248,13 +248,13 @@ header, main, footer, nav { position: relative; z-index: 10; }
 .title-sep {
   color: var(--dim);
   font-family: var(--font-mono);
-  font-size: clamp(14px, 1.2vw + 0.5rem, 19px);
+  font-size: clamp(14px, calc(1.2vw + 0.5rem), 19px);
   font-weight: 500;
 }
 
 .title-sub {
   font-family: var(--font-mono);
-  font-size: clamp(11px, 0.75vw + 0.55rem, 14px);
+  font-size: clamp(11px, calc(0.75vw + 0.55rem), 14px);
   font-weight: 500;
   color: var(--text-dim);
   letter-spacing: 0.18em;
@@ -269,7 +269,7 @@ header, main, footer, nav { position: relative; z-index: 10; }
 }
 
 .sys-status {
-  font-size: clamp(11px, 0.65rem + 0.15vw, 13px);
+  font-size: clamp(11px, calc(0.65rem + 0.15vw), 13px);
   font-family: var(--font-mono);
   font-weight: 600;
   color: var(--green);
@@ -286,7 +286,7 @@ header, main, footer, nav { position: relative; z-index: 10; }
   border-radius: 2px;
   box-shadow: 0 0 12px rgba(255, 221, 51, 0.25), inset 0 0 12px rgba(255, 0, 200, 0.06);
   font-family: var(--font-hdr);
-  font-size: clamp(10px, 0.55rem + 0.2vw, 12px);
+  font-size: clamp(10px, calc(0.55rem + 0.2vw), 12px);
   font-weight: 600;
   letter-spacing: 0.15em;
   color: var(--amber);
@@ -321,7 +321,7 @@ header, main, footer, nav { position: relative; z-index: 10; }
   color: var(--text-dim);
   text-decoration: none;
   font-family: var(--font-hdr);
-  font-size: clamp(12px, 0.7rem + 0.35vw, 14px);
+  font-size: clamp(12px, calc(0.7rem + 0.35vw), 14px);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -393,7 +393,7 @@ header, main, footer, nav { position: relative; z-index: 10; }
    MAIN CONTENT
    ============================================= */
 .main-content {
-  max-width: min(1040px, 100% - 32px);
+  max-width: unquote("min(1040px, calc(100% - 32px))");
   margin: 32px auto;
   padding: 0 24px;
 }
@@ -491,7 +491,7 @@ header, main, footer, nav { position: relative; z-index: 10; }
 
 .tb-title {
   margin-left: 10px;
-  font-size: clamp(11px, 0.65rem + 0.2vw, 13px);
+  font-size: clamp(11px, calc(0.65rem + 0.2vw), 13px);
   font-family: var(--font-mono);
   font-weight: 500;
   color: var(--text-dim);
@@ -518,7 +518,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: clamp(1.45rem, 3.5vw + 0.5rem, 2.15rem);
+  font-size: clamp(1.45rem, calc(3.5vw + 0.5rem), 2.15rem);
   font-weight: 800;
   color: var(--cyan);
   text-shadow: var(--glow-c), 0 0 36px rgba(255, 0, 200, 0.15);
@@ -547,7 +547,7 @@ h1::after {
 }
 
 h2 {
-  font-size: clamp(1.2rem, 2.4vw + 0.45rem, 1.65rem);
+  font-size: clamp(1.2rem, calc(2.4vw + 0.45rem), 1.65rem);
   font-weight: 700;
   color: var(--cyan-dim);
   text-shadow: 0 0 8px rgba(0, 184, 200, 0.45);
@@ -556,7 +556,7 @@ h2 {
 h2::before { content: '>> '; color: var(--green); }
 
 h3 {
-  font-size: clamp(1.05rem, 1.8vw + 0.35rem, 1.35rem);
+  font-size: clamp(1.05rem, calc(1.8vw + 0.35rem), 1.35rem);
   font-weight: 600;
   color: var(--green);
   text-shadow: var(--glow-g);
@@ -564,10 +564,10 @@ h3 {
 
 h3::before { content: '> '; color: var(--cyan-dim); }
 
-h4 { font-size: clamp(1rem, 1.2vw + 0.4rem, 1.15rem); font-weight: 600; color: var(--text); }
+h4 { font-size: clamp(1rem, calc(1.2vw + 0.4rem), 1.15rem); font-weight: 600; color: var(--text); }
 h4::before { content: '# '; color: var(--dim); }
 
-h5, h6 { font-size: clamp(0.95rem, 1vw + 0.35rem, 1.05rem); font-weight: 600; color: var(--text-dim); }
+h5, h6 { font-size: clamp(0.95rem, calc(1vw + 0.35rem), 1.05rem); font-weight: 600; color: var(--text-dim); }
 
 p {
   margin-bottom: 1.2em;
@@ -610,7 +610,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5em 0;
-  font-size: clamp(13px, 0.8rem + 0.25vw, 15px);
+  font-size: clamp(13px, calc(0.8rem + 0.25vw), 15px);
   overflow-x: auto;
   display: block;
 }
@@ -624,7 +624,7 @@ thead tr {
 th {
   color: var(--cyan);
   font-family: var(--font-hdr);
-  font-size: clamp(11px, 0.65rem + 0.2vw, 13px);
+  font-size: clamp(11px, calc(0.65rem + 0.2vw), 13px);
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -679,7 +679,7 @@ pre code {
   border: none;
   padding: 0;
   color: var(--green);
-  font-size: clamp(13px, 0.78rem + 0.25vw, 15px);
+  font-size: clamp(13px, calc(0.78rem + 0.25vw), 15px);
   line-height: 1.68;
   font-weight: 450;
 }
@@ -730,7 +730,7 @@ hr {
   box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.45), 0 -1px 0 rgba(0, 255, 247, 0.12), 0 -32px 70px rgba(255, 0, 200, 0.07);
   text-align: center;
   font-family: var(--font-mono);
-  font-size: clamp(11px, 0.68rem + 0.15vw, 13px);
+  font-size: clamp(11px, calc(0.68rem + 0.15vw), 13px);
   font-weight: 500;
   letter-spacing: 0.16em;
   color: var(--text-dim);
@@ -760,7 +760,7 @@ hr {
 
 .footer-coords {
   color: var(--dim);
-  font-size: clamp(10px, 0.6rem + 0.12vw, 12px);
+  font-size: clamp(10px, calc(0.6rem + 0.12vw), 12px);
   letter-spacing: 0.2em;
   margin-top: 4px;
 }
@@ -896,7 +896,7 @@ body { animation: flicker 6s infinite; }
    ============================================= */
 .tag-badge {
   display: inline-block;
-  font-size: clamp(11px, 0.68rem + 0.1vw, 12px);
+  font-size: clamp(11px, calc(0.68rem + 0.1vw), 12px);
   font-weight: 500;
   padding: 2px 8px;
   border-radius: 2px;
@@ -924,7 +924,7 @@ body { animation: flicker 6s infinite; }
    ============================================= */
 .terminal-body h4 {
   font-family: var(--font-hdr);
-  font-size: clamp(13px, 0.8rem + 0.25vw, 15px);
+  font-size: clamp(13px, calc(0.8rem + 0.25vw), 15px);
   font-weight: 700;
   color: var(--cyan);
   letter-spacing: 0.2em;
