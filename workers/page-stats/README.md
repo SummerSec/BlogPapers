@@ -38,7 +38,7 @@
 
 修改 Worker 后请执行 `wrangler deploy`。
 
-博客端对 Worker **只使用 JSONP（`<script src>`）**，不依赖 `fetch` CORS；`ALLOW_HOST_SUFFIX` 在控制台若留空仍会按默认 `sumsec.me` 后缀放行。
+博客端对 Worker **只使用 JSONP（`<script src>`）**，不依赖 `fetch` CORS。`/hit` **不会因 Origin/Referer 返回 403**（与带 `callback` 时一致）；`ALLOW_ORIGINS` / `ALLOW_HOST_SUFFIX` 仅影响 **JSON 响应上的 CORS 头**（浏览器 `fetch` 读 body 时用），控制台误配不会再把整次计数请求挡掉。
 
 ### 本机验证（Windows）
 
@@ -50,11 +50,11 @@
 
 ## 页面上一直显示 **—**？
 
-1. 浏览器 **F12 → 网络**，找 `capi.xxx/hit?...`：若为 **403**，多半是 **Origin 未放行**（例如用了 `www` 而只配了 apex）。改 `ALLOW_ORIGINS` / `ALLOW_HOST_SUFFIX` 后执行 `wrangler deploy`；若 Dashboard 里给 Worker 配了 **Variables**，会覆盖仓库里的 `wrangler.toml`，两边要一致。
+1. 浏览器 **F12 → 网络**，找 `capi.xxx/hit?...&callback=...`：应为 **200**、`content-type: application/javascript`。若 **脚本红字失败**，看是否被扩展拦截、或 **CSP**（Cloudflare / Pages）未允许该子域脚本。
 2. 若 Worker 失败，前端会回退 **CountAPI**；广告拦截可能屏蔽 `api.countapi.xyz`，也会显示 **—**。
 3. 修改 Worker 后务必 **`wrangler deploy`**，否则线上仍是旧逻辑。
 
 ## 安全说明
 
-- 通过 **`ALLOW_HOST_SUFFIX` + `ALLOW_ORIGINS`** 限制可写计数的来源；勿随意把后缀设为 `.com` 这类过宽的值。
-- 勿把 Worker URL 当作秘密；计数本身可伪造，仅作展示用途。
+- **`ALLOW_HOST_SUFFIX` + `ALLOW_ORIGINS`** 只影响返回 JSON 时的 **CORS**，不当作「防刷票」；任何人可用 curl/JSONP 递增计数，仅作展示用途。
+- 勿把 Worker URL 当作秘密。

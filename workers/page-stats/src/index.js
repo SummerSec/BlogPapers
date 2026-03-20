@@ -16,19 +16,6 @@ function normalizeOriginHeader(request) {
   return o;
 }
 
-/** 用于放行判断：优先 Origin，否则从 Referer 推导（curl 常无 Origin 仅有 Referer） */
-function effectiveOriginForPolicy(request) {
-  var o = normalizeOriginHeader(request);
-  if (o) return o;
-  var ref = request.headers.get('Referer');
-  if (!ref) return null;
-  try {
-    return new URL(ref).origin;
-  } catch (e) {
-    return null;
-  }
-}
-
 function isOriginAllowed(origin, env) {
   if (!origin) return false;
   var list = parseAllowedOrigins(env);
@@ -128,12 +115,7 @@ export default {
     var key = sanitizeSegment(url.searchParams.get('key') || 'page', 200);
     var cbName = sanitizeJsonpCallback(url.searchParams.get('callback'));
 
-    var eff = effectiveOriginForPolicy(request);
-    if (!cbName) {
-      if (eff && !isOriginAllowed(eff, env)) {
-        return rejectJson(403, 'origin not allowed');
-      }
-    }
+    /* 计数与 JSONP 一致：不因 Origin/Referer 拒绝请求（误配 ALLOW_* 时曾导致 curl/浏览器 403） */
 
     if (!env.capi) {
       return rejectJson(500, 'KV binding capi missing');
