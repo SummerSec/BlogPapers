@@ -33,7 +33,10 @@
 ## API
 
 - `GET /hit?ns=sumsecme&key=site-total` → `{"value":123}`（与 `scifi.js` 中 ns/key 一致）
+- `GET /hit?ns=…&key=…&callback=fn` → `application/javascript`，正文 `fn({"value":123});`，供前端 **JSONP** 在 CORS 异常时仍能拉到计数（`callback` 须为合法 JS 标识符）
 - `GET /` → 健康检查 JSON
+
+修改 Worker 后请执行 `wrangler deploy`。
 
 ## 页面上一直显示 **—**？
 

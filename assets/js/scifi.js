@@ -91,6 +91,17 @@
   var STATS_ENDPOINT = (STATS_EP_EL && STATS_EP_EL.getAttribute('content')) || '';
   STATS_ENDPOINT = String(STATS_ENDPOINT).replace(/^\s+|\s+$/g, '').replace(/\/$/, '');
 
+  function statsParseDataValue(data) {
+    if (!data || data.value === undefined || data.value === null) return null;
+    var v = data.value;
+    if (typeof v === 'number' && !isNaN(v)) return Math.floor(v);
+    if (typeof v === 'string') {
+      var n = parseInt(v, 10);
+      if (!isNaN(n)) return n;
+    }
+    return null;
+  }
+
   function statsFormatNum(n) {
     if (n == null || typeof n !== 'number' || isNaN(n)) return '—';
     return String(Math.floor(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -128,7 +139,7 @@
       once(null);
     }, 12000);
     window[cb] = function (data) {
-      once(data && typeof data.value === 'number' ? data.value : null);
+      once(statsParseDataValue(data));
     };
     script.onerror = function () {
       once(null);
@@ -164,9 +175,16 @@
     } catch (eT) { /* ignore */ }
 
     fetch(url, opts)
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        doneOnce(typeof d.value === 'number' ? d.value : null);
+      .then(function (r) { return r.text(); })
+      .then(function (text) {
+        var d;
+        try {
+          d = JSON.parse(text);
+        } catch (eJ) {
+          doneOnce(null);
+          return;
+        }
+        doneOnce(statsParseDataValue(d));
       })
       .catch(function () {
         window.clearTimeout(fallbackTimer);
@@ -174,8 +192,11 @@
       });
   }
 
-  function workerHit(ns, key, done) {
-    /* 缓存破坏：避免边缘或浏览器误缓存 GET /hit */
+  function workerJsonp(ns, key, done) {
+    if (!STATS_ENDPOINT) {
+      done(null);
+      return;
+    }
     var base =
       STATS_ENDPOINT +
       '/hit?ns=' +
@@ -184,33 +205,67 @@
       encodeURIComponent(key) +
       '&_=' +
       String(Date.now());
-    var finished = false;
-    function doneOnce(v) {
-      if (finished) return;
-      finished = true;
-      window.clearTimeout(t);
-      done(v);
+    var cb = 'worker_stats_cb_' + String(Date.now()) + '_' + Math.floor(Math.random() * 1e6);
+    var script = document.createElement('script');
+    script.async = true;
+    var fired = false;
+    function once(val) {
+      if (fired) return;
+      fired = true;
+      window.clearTimeout(slow);
+      try {
+        delete window[cb];
+      } catch (e0) { /* ignore */ }
+      if (script.parentNode) script.parentNode.removeChild(script);
+      done(val);
     }
-    var t = window.setTimeout(function () {
-      doneOnce(null);
-    }, 15000);
+    var slow = window.setTimeout(function () {
+      once(null);
+    }, 12000);
+    window[cb] = function (data) {
+      once(statsParseDataValue(data));
+    };
+    script.onerror = function () {
+      once(null);
+    };
+    script.src = base + '&callback=' + encodeURIComponent(cb);
+    document.head.appendChild(script);
+  }
+
+  function workerHit(ns, key, done) {
+    /* 先 fetch；CORS/网络失败时用 JSONP（<script> 不校验 CORS） */
+    var base =
+      STATS_ENDPOINT +
+      '/hit?ns=' +
+      encodeURIComponent(ns) +
+      '&key=' +
+      encodeURIComponent(key) +
+      '&_=' +
+      String(Date.now());
     var opts = { mode: 'cors', cache: 'no-store', credentials: 'omit' };
     try {
       if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
-        opts.signal = AbortSignal.timeout(12000);
+        opts.signal = AbortSignal.timeout(10000);
       }
     } catch (eW) { /* ignore */ }
     fetch(base, opts)
       .then(function (r) {
         if (!r.ok) throw new Error('stats worker http');
-        return r.json();
+        return r.text();
       })
-      .then(function (d) {
-        doneOnce(typeof d.value === 'number' ? d.value : null);
+      .then(function (text) {
+        var d;
+        try {
+          d = JSON.parse(text);
+        } catch (eJ) {
+          done(null);
+          return;
+        }
+        var v = statsParseDataValue(d);
+        done(v != null ? v : null);
       })
       .catch(function () {
-        window.clearTimeout(t);
-        doneOnce(null);
+        workerJsonp(ns, key, done);
       });
   }
 

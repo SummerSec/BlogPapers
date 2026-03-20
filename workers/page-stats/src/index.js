@@ -1,7 +1,7 @@
 /**
  * 文章 / 全站浏览计数（Cloudflare Worker + KV）
- * API: GET /hit?ns=命名空间&key=键名  →  { "value": <递增后的整数> }
- * 与博客端 scifi.js 中 CountAPI 的 key 规则一致（ns + key 存入 KV）。
+ * API: GET /hit?ns=&key=  →  JSON { "value": n }
+ *      GET /hit?ns=&key=&callback=cb  →  application/javascript  cb({"value":n});  （绕过 CORS，供前端 script 回退）
  */
 
 function parseAllowedOrigins(env) {
@@ -9,10 +9,6 @@ function parseAllowedOrigins(env) {
   return raw.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
 }
 
-/**
- * 是否允许该 Origin。除显式列表外，还可通过 ALLOW_HOST_SUFFIX（默认 sumsec.me）
- * 放行同一主域下任意 https 子域（如 www / 根域 / 其他子域），避免漏配导致 CORS 403。
- */
 function isOriginAllowed(origin, env) {
   if (!origin) return false;
   var list = parseAllowedOrigins(env);
@@ -70,6 +66,14 @@ function sanitizeSegment(s, max) {
     .slice(0, max);
 }
 
+function sanitizeJsonpCallback(name) {
+  if (!name || typeof name !== 'string') return null;
+  name = name.trim();
+  if (name.length > 64) return null;
+  if (!/^[$A-Za-z_][$\w]*$/.test(name)) return null;
+  return name;
+}
+
 function kvKey(ns, key) {
   return 'v1:' + sanitizeSegment(ns, 64) + ':' + sanitizeSegment(key, 200);
 }
@@ -87,11 +91,6 @@ export default {
       return rejectJson(405, 'method not allowed');
     }
 
-    var origin = request.headers.get('Origin');
-    if (origin && !isOriginAllowed(origin, env)) {
-      return rejectJson(403, 'origin not allowed');
-    }
-
     if (path !== '/hit' && path !== '/hit/') {
       return new Response(JSON.stringify({ ok: true, service: 'page-stats' }), {
         headers: Object.assign(
@@ -103,6 +102,16 @@ export default {
 
     var ns = sanitizeSegment(url.searchParams.get('ns') || 'default', 64);
     var key = sanitizeSegment(url.searchParams.get('key') || 'page', 200);
+    var cbName = sanitizeJsonpCallback(url.searchParams.get('callback'));
+
+    var origin = request.headers.get('Origin');
+    /* JSONP 走 <script src>，浏览器常不带 Origin；不做 Origin 校验以免误杀。仅允许安全 callback 名。 */
+    if (!cbName) {
+      if (origin && !isOriginAllowed(origin, env)) {
+        return rejectJson(403, 'origin not allowed');
+      }
+    }
+
     if (!env.capi) {
       return rejectJson(500, 'KV binding capi missing');
     }
@@ -113,6 +122,18 @@ export default {
     if (isNaN(n) || n < 0) n = 0;
     n += 1;
     ctx.waitUntil(env.capi.put(name, String(n)));
+
+    if (cbName) {
+      var js = cbName + '(' + JSON.stringify({ value: n }) + ');';
+      return new Response(js, {
+        headers: {
+          'content-type': 'application/javascript; charset=utf-8',
+          'cache-control': 'no-store, private',
+          'CDN-Cache-Control': 'no-store',
+          'X-Content-Type-Options': 'nosniff',
+        },
+      });
+    }
 
     var body = JSON.stringify({ value: n });
     return new Response(body, {
