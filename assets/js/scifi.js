@@ -423,16 +423,76 @@
     canvas.style.opacity = '0.12';
   }
 
-  // --- 宽屏两侧彩蛋：点击后在控制台输出（无弹窗） ---
-  document.querySelectorAll('.side-egg[data-egg-msg]').forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      var msg = el.getAttribute('data-egg-msg');
-      if (!msg || typeof console === 'undefined' || !console.log) return;
-      console.log('%c■ SUMSEC.EGG', 'color:#2dd4bf;font-weight:bold;font-size:12px', '\n' + msg);
+  // --- 两侧随机彩蛋 ---
+  var EGG_POOL = [
+    { text: 'UPLINK: STABLE', msg: '信号稳定，思路清晰。' },
+    { text: 'SIGNAL: 98.7%', msg: '几乎无损的信念传输。' },
+    { text: 'CORE_TEMP: 36.5\u00b0C', msg: '正常体温，异常头脑。' },
+    { text: 'DECRYPT: AES-256', msg: '有些秘密值得用最强的锁。' },
+    { text: 'PACKET_LOSS: 0.00%', msg: '一个字节都不能少。' },
+    { text: 'MEM: 0xCAFEBABE', msg: 'Java class 文件的魔数。你知道的。' },
+    { text: 'FIREWALL: 0 THREATS', msg: '今日无事，便是好事。' },
+    { text: 'TRACE: 127.0.0.1', msg: '追踪到最后，发现是自己。' },
+    { text: 'PID: 1337 \u00b7 STATUS: OK', msg: 'Elite process, always running.' },
+    { text: 'CHECKSUM: VALID', msg: '校验通过，内容未被篡改。' },
+    { text: 'sudo make coffee', msg: '权限足够，咖啡不够。' },
+    { text: '404: sleep.exe', msg: '找不到睡眠进程。' },
+    { text: 'while(alive) code()', msg: '活着就写代码。简单粗暴。' },
+    { text: 'CVE-0000-COFFEE', msg: '高危漏洞：咖啡不足。' },
+    { text: '/dev/null > doubt', msg: '把疑虑丢进黑洞。' },
+    { text: 'rm -rf /doubt', msg: '递归删除所有犹豫。' },
+    { text: 'git commit -m "sleep"', msg: '提交了，但没推送到枕头。' },
+    { text: 'HEAP: 64% USED', msg: '还有余量。继续。' },
+    { text: 'LATENCY: 3ms', msg: '思考延迟极低。状态在线。' },
+    { text: 'SECTOR: 7G \u00b7 CLEAR', msg: '这片区域已经扫描完毕。' },
+    { text: 'ACK: RECEIVED', msg: '收到确认。继续前进。' },
+    { text: 'TTL: 128', msg: '生命值还够跳 128 次。' },
+    { text: 'PORT 443: LISTENING', msg: '安全端口，随时待命。' },
+    { text: 'ENTROPY: HIGH', msg: '混乱度很高——这是好事。' },
+    { text: 'EOF: NOT YET', msg: '还没到文件末尾。故事继续。' },
+  ];
+
+  function shuffleArray(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  function initSideEggs() {
+    var eggs = document.querySelectorAll('.side-egg');
+    if (!eggs.length) return;
+    var pool = shuffleArray(EGG_POOL.slice());
+    var positions = [22, 50, 78];
+    eggs.forEach(function (el, i) {
+      var data = pool[i % pool.length];
+      el.textContent = data.text;
+      el.title = data.msg;
+      el.setAttribute('data-egg-msg', data.msg);
+      var posIdx = i % positions.length;
+      el.style.top = positions[posIdx] + (Math.random() * 6 - 3) + '%';
+      el.style.animationDelay = '-' + (Math.random() * 8).toFixed(1) + 's';
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        showHudToast(data.msg);
+      });
     });
-  });
+  }
+
+  function showHudToast(msg) {
+    var toast = document.getElementById('hud-toast');
+    if (!toast) return;
+    toast.textContent = '\u25b6 ' + msg;
+    toast.classList.add('visible');
+    if (toast._timer) clearTimeout(toast._timer);
+    toast._timer = setTimeout(function () {
+      toast.classList.remove('visible');
+    }, 3500);
+  }
+
+  initSideEggs();
 
   // --- Glitch effect on site title hover ---
   var titleEl = document.querySelector('.title-main');
