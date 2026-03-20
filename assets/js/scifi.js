@@ -175,12 +175,15 @@
   }
 
   function workerHit(ns, key, done) {
+    /* 缓存破坏：避免边缘或浏览器误缓存 GET /hit */
     var base =
       STATS_ENDPOINT +
       '/hit?ns=' +
       encodeURIComponent(ns) +
       '&key=' +
-      encodeURIComponent(key);
+      encodeURIComponent(key) +
+      '&_=' +
+      String(Date.now());
     var finished = false;
     function doneOnce(v) {
       if (finished) return;
@@ -190,11 +193,11 @@
     }
     var t = window.setTimeout(function () {
       doneOnce(null);
-    }, 8000);
+    }, 15000);
     var opts = { mode: 'cors', cache: 'no-store', credentials: 'omit' };
     try {
       if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
-        opts.signal = AbortSignal.timeout(6000);
+        opts.signal = AbortSignal.timeout(12000);
       }
     } catch (eW) { /* ignore */ }
     fetch(base, opts)

@@ -16,7 +16,9 @@
    wrangler kv namespace create STATS
    ```
 3. 将输出的 `id` 填入 `wrangler.toml` 里 `[[kv_namespaces]]` 的 `id =`
-4. 编辑 `wrangler.toml` 中 `[vars] ALLOW_ORIGINS`，加入你的站点源（含 `https://xxx.github.io` 等 GitHub Pages 预览域如需）
+4. 编辑 `wrangler.toml` 中 `[vars]`：
+   - **`ALLOW_HOST_SUFFIX`**：默认 `sumsec.me`，会放行所有 `https://*.sumsec.me` 与 `https://sumsec.me`（避免漏配 `www` 等子域导致 CORS 403，页面上访问量变成 **—**）。
+   - **`ALLOW_ORIGINS`**：需**完整写出**的 Origin（如本地 `http://127.0.0.1:4000`、`https://xxx.github.io` 预览站等）；后缀匹配不到时才靠这里。
 5. 部署：
    ```bash
    wrangler deploy
@@ -33,7 +35,13 @@
 - `GET /hit?ns=sumsecme&key=site-total` → `{"value":123}`（与 `scifi.js` 中 ns/key 一致）
 - `GET /` → 健康检查 JSON
 
+## 页面上一直显示 **—**？
+
+1. 浏览器 **F12 → 网络**，找 `capi.xxx/hit?...`：若为 **403**，多半是 **Origin 未放行**（例如用了 `www` 而只配了 apex）。改 `ALLOW_ORIGINS` / `ALLOW_HOST_SUFFIX` 后执行 `wrangler deploy`；若 Dashboard 里给 Worker 配了 **Variables**，会覆盖仓库里的 `wrangler.toml`，两边要一致。
+2. 若 Worker 失败，前端会回退 **CountAPI**；广告拦截可能屏蔽 `api.countapi.xyz`，也会显示 **—**。
+3. 修改 Worker 后务必 **`wrangler deploy`**，否则线上仍是旧逻辑。
+
 ## 安全说明
 
-- 通过 `ALLOW_ORIGINS` 限制可写计数的来源，避免被任意网站盗刷请求。
+- 通过 **`ALLOW_HOST_SUFFIX` + `ALLOW_ORIGINS`** 限制可写计数的来源；勿随意把后缀设为 `.com` 这类过宽的值。
 - 勿把 Worker URL 当作秘密；计数本身可伪造，仅作展示用途。

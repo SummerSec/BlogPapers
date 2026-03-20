@@ -5,8 +5,32 @@
  */
 
 function parseAllowedOrigins(env) {
-  var raw = env.ALLOW_ORIGINS || 'https://sumsec.me,https://www.sumsec.me';
+  var raw = env.ALLOW_ORIGINS || '';
   return raw.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+}
+
+/**
+ * 是否允许该 Origin。除显式列表外，还可通过 ALLOW_HOST_SUFFIX（默认 sumsec.me）
+ * 放行同一主域下任意 https 子域（如 www / 根域 / 其他子域），避免漏配导致 CORS 403。
+ */
+function isOriginAllowed(origin, env) {
+  if (!origin) return false;
+  var list = parseAllowedOrigins(env);
+  if (list.indexOf('*') !== -1) return true;
+  if (list.indexOf(origin) !== -1) return true;
+
+  var suf = env.ALLOW_HOST_SUFFIX;
+  if (suf === undefined || suf === null) suf = 'sumsec.me';
+  suf = String(suf).trim();
+  if (!suf) return false;
+
+  try {
+    var u = new URL(origin);
+    var h = u.hostname;
+    if (h === suf) return true;
+    if (h.endsWith('.' + suf)) return true;
+  } catch (e) { /* ignore */ }
+  return false;
 }
 
 function corsHeaders(request, env) {
@@ -15,10 +39,9 @@ function corsHeaders(request, env) {
   var allow = null;
   if (list.indexOf('*') !== -1) {
     allow = '*';
-  } else if (origin && list.indexOf(origin) !== -1) {
+  } else if (origin && isOriginAllowed(origin, env)) {
     allow = origin;
   } else if (!origin && list.length) {
-    /* 无 Origin（如 curl）：仍返回 JSON，便于自检；浏览器跨域必须有合法 Origin */
     allow = list[0];
   }
   var h = {
@@ -65,8 +88,7 @@ export default {
     }
 
     var origin = request.headers.get('Origin');
-    var list = parseAllowedOrigins(env);
-    if (list.indexOf('*') === -1 && origin && list.indexOf(origin) === -1) {
+    if (origin && !isOriginAllowed(origin, env)) {
       return rejectJson(403, 'origin not allowed');
     }
 
@@ -95,7 +117,11 @@ export default {
     var body = JSON.stringify({ value: n });
     return new Response(body, {
       headers: Object.assign(
-        { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+        {
+          'content-type': 'application/json; charset=utf-8',
+          'cache-control': 'no-store, private',
+          'CDN-Cache-Control': 'no-store',
+        },
         corsHeaders(request, env)
       ),
     });

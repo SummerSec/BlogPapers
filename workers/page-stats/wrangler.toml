@@ -10,5 +10,7 @@ binding = "STATS"
 id = "c8724f3f5c8640f69f38b8e93c556e1a"
 
 [vars]
-# 逗号分隔；博客所在域必须列入，否则浏览器 CORS 会拦截
-ALLOW_ORIGINS = "https://sumsec.me,https://old.sumsec.me"
+# 逗号分隔的完整 Origin（本地预览、GitHub Pages 等需显式写）
+ALLOW_ORIGINS = "https://sumsec.me,https://www.sumsec.me,https://old.sumsec.me,http://127.0.0.1:4000,http://localhost:4000"
+# 主域后缀：放行所有 https://*.该域 与 https://该域（与 ALLOW_ORIGINS 叠加）。设为空字符串可关闭。
+ALLOW_HOST_SUFFIX = "sumsec.me"
