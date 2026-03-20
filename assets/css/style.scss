@@ -543,6 +543,84 @@ header, main, footer, nav { position: relative; z-index: 10; }
     radial-gradient(ellipse 55% 40% at 90% 20%, rgba(167, 139, 250, 0.05), transparent 50%);
 }
 
+/* --- 浏览量 HUD（CountAPI，见 scifi.js） --- */
+.view-stats {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin: 0 0 1.25em;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: clamp(11px, calc(0.65rem + 0.2vw), 13px);
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(62, 232, 208, 0.28);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, rgba(62, 232, 208, 0.08), rgba(167, 139, 250, 0.06));
+  box-shadow: 0 0 20px rgba(62, 232, 208, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.view-stats--page {
+  border-color: rgba(167, 139, 250, 0.32);
+  background: linear-gradient(90deg, rgba(167, 139, 250, 0.1), rgba(62, 232, 208, 0.05));
+}
+
+.view-stats__label {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.view-stats__value {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.08em;
+  text-shadow: 0 0 12px rgba(62, 232, 208, 0.35);
+}
+
+/* --- utterances（GitHub Issues 评论 iframe 容器） --- */
+.comments-section {
+  margin-top: 2.5em;
+  padding-top: 1.75em;
+  border-top: 1px solid rgba(62, 232, 208, 0.22);
+}
+
+.comments-section__title {
+  font-family: var(--font-hdr);
+  font-size: clamp(1.05rem, calc(1.5vw + 0.4rem), 1.35rem);
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 0.5em;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 18px rgba(62, 232, 208, 0.2);
+}
+
+.comments-section__title::before {
+  content: '// ';
+  color: var(--green);
+  font-weight: 700;
+}
+
+.comments-section__hint {
+  font-size: clamp(12px, calc(0.72rem + 0.15vw), 13px);
+  color: var(--text-muted);
+  margin-bottom: 1.25em;
+  line-height: 1.6;
+}
+
+.comments-section__hint a {
+  color: var(--magenta);
+  border-bottom-color: rgba(192, 132, 252, 0.4);
+}
+
+.comments-section .utterances {
+  max-width: 100%;
+}
+
+.comments-section iframe[src*="utteranc"] {
+  width: 100% !important;
+}
+
 /* =============================================
    TYPOGRAPHY
    ============================================= */

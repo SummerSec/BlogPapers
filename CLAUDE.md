@@ -26,7 +26,8 @@ Requires Jekyll 4.x and Dart Sass (not LibSass).
 - `_config.yml` — Jekyll config: markdown engine (kramdown), highlighter (rouge), Sass settings
 - `_layouts/default.html` — main layout: sci-fi terminal header + matrix canvas + `scifi.js`
 - `assets/css/style.scss` — all theme styles using CSS custom properties (`--bg-primary`, `--accent-blue`, etc.)
-- `assets/js/scifi.js` — matrix rain canvas animation
+- `assets/js/scifi.js` — matrix rain canvas animation；全站/单页浏览量通过 [CountAPI](https://countapi.xyz)（`meta stats-namespace` + `site-total` / `pv-*` 键）
+- 评论 — [utterances](https://utteranc.es/)（GitHub Issues）：在仓库安装 [utterances GitHub App](https://github.com/apps/utterances)，并在 Issues 中创建标签 `blog-comments`（与 `_config.yml` 中 `utterances.label` 一致）。某页关闭评论：front matter 设 `comments: false`（`resources/Archives.md`、`resources/AboutMe.md` 已在 `defaults` 中关闭）。
 - `README.md` — serves as the site homepage (`/`); contains the post timeline table
 - `resources/` — static assets, AboutMe, Archives, sitemap, RSS feeds
 

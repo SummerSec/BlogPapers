@@ -83,6 +83,95 @@
     }
   }, true);
 
+  // --- 浏览量（CountAPI，静态站无后端；广告拦截可能导致失败显示 —）---
+  var STATS_NS_EL = document.querySelector('meta[name="stats-namespace"]');
+  var STATS_NS = (STATS_NS_EL && STATS_NS_EL.getAttribute('content')) || 'sumsecme';
+  var STATS_SITE_KEY = 'site-total';
+
+  function statsFormatNum(n) {
+    if (n == null || typeof n !== 'number' || isNaN(n)) return '—';
+    return String(Math.floor(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function statsPageKey() {
+    var p = window.location.pathname.replace(/\/$/, '') || '/';
+    if (p === '/' || p === '/index.html' || /\/index\.html$/i.test(p)) {
+      return 'page-home';
+    }
+    var raw = p.replace(/^\/+/, '').replace(/\.html$/i, '');
+    var k = raw.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase().replace(/^-+|-+$/g, '');
+    if (!k) k = 'root';
+    if (k.length > 60) k = k.slice(0, 60);
+    return 'pv-' + k;
+  }
+
+  function countapiJsonp(ns, key, done) {
+    var base = 'https://api.countapi.xyz/hit/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
+    var cb = 'countapi_cb_' + String(Date.now()) + '_' + Math.floor(Math.random() * 1e6);
+    var script = document.createElement('script');
+    script.async = true;
+    window[cb] = function (data) {
+      try {
+        delete window[cb];
+      } catch (e0) { /* ignore */ }
+      if (script.parentNode) script.parentNode.removeChild(script);
+      done(data && typeof data.value === 'number' ? data.value : null);
+    };
+    script.onerror = function () {
+      try {
+        delete window[cb];
+      } catch (e1) { /* ignore */ }
+      done(null);
+    };
+    script.src = base + '?callback=' + encodeURIComponent(cb);
+    document.head.appendChild(script);
+  }
+
+  function countapiHit(ns, key, done) {
+    var url = 'https://api.countapi.xyz/hit/' + encodeURIComponent(ns) + '/' + encodeURIComponent(key);
+    if (typeof fetch === 'function') {
+      fetch(url, { mode: 'cors', cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          done(typeof d.value === 'number' ? d.value : null);
+        })
+        .catch(function () {
+          countapiJsonp(ns, key, done);
+        });
+    } else {
+      countapiJsonp(ns, key, done);
+    }
+  }
+
+  function runViewStats() {
+    var banner = document.getElementById('view-stats-banner');
+    var siteEl = document.getElementById('stat-site-total');
+    var pageEl = document.getElementById('stat-page-views');
+    if (!banner || (!siteEl && !pageEl)) return;
+
+    var isHome = document.body.classList.contains('page-front');
+
+    countapiHit(STATS_NS, STATS_SITE_KEY, function (siteVal) {
+      if (isHome && siteEl) {
+        siteEl.textContent = statsFormatNum(siteVal);
+        banner.removeAttribute('hidden');
+      }
+    });
+
+    countapiHit(STATS_NS, statsPageKey(), function (pageVal) {
+      if (!isHome && pageEl) {
+        pageEl.textContent = statsFormatNum(pageVal);
+        banner.removeAttribute('hidden');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runViewStats);
+  } else {
+    runViewStats();
+  }
+
   // --- Matrix rain ---
   var canvas = document.getElementById('matrix-canvas');
   if (canvas && !reduceMotion) {

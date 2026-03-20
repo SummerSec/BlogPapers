@@ -30,6 +30,7 @@
   <meta name="description" content="{{ page.description | default: site.description | default: 'SummerSec · 安全研究' }}">
   <meta name="theme-color" content="#06070d">
   <meta name="color-scheme" content="dark">
+  <meta name="stats-namespace" content="sumsecme">
   <title>{{ doc_title_static }}</title>
   {% if tlen > thr %}<meta name="doc-title-full" content="{{ doc_title | xml_escape }}">{% endif %}
   <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml" sizes="any">
@@ -110,7 +111,34 @@
           <span class="tb-title">session.log · public</span>
         </div>
         <div class="terminal-body">
+          {% if page_is_home %}
+          <div class="view-stats view-stats--site" id="view-stats-banner" hidden>
+            <span class="view-stats__label">全站访问</span>
+            <span class="view-stats__value" id="stat-site-total">…</span>
+          </div>
+          {% else %}
+          <div class="view-stats view-stats--page" id="view-stats-banner" hidden>
+            <span class="view-stats__label">本文浏览</span>
+            <span class="view-stats__value" id="stat-page-views">…</span>
+          </div>
+          {% endif %}
           {{ content }}
+          {% assign ut = site.utterances %}
+          {% unless page_is_home %}
+          {% if ut.repo and page.comments != false %}
+          <section class="comments-section" id="comments" aria-labelledby="comments-heading">
+            <h2 class="comments-section__title" id="comments-heading">评论</h2>
+            <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
+            <script src="https://utteranc.es/client.js"
+              repo="{{ ut.repo }}"
+              issue-term="{{ ut.issue_term | default: 'pathname' }}"
+              theme="{{ ut.theme | default: 'github-dark' }}"
+              {% if ut.label %}label="{{ ut.label }}"{% endif %}
+              crossorigin="anonymous"
+              async></script>
+          </section>
+          {% endif %}
+          {% endunless %}
         </div>
       </div>
     </div>

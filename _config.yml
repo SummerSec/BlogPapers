@@ -12,6 +12,16 @@ title_separator: " · "
 # 标题超过该字数（字符数）时，标签页内用 JS 滚动展示全文
 title_scroll_threshold: 34
 
+# GitHub 仓库（utterances 评论、部分主题变量用）
+repository: SummerSec/BlogPapers
+
+# 基于 GitHub Issues 的评论：https://utteranc.es/ 需在仓库安装 utterances app
+utterances:
+  repo: SummerSec/BlogPapers
+  issue_term: pathname
+  theme: github-dark
+  label: blog-comments
+
 exclude:
   - CLAUDE.md
 
@@ -35,7 +45,9 @@ defaults:
       path: "resources/Archives.md"
     values:
       title: "归档"
+      comments: false
   - scope:
       path: "resources/AboutMe.md"
     values:
       title: "关于"
+      comments: false
