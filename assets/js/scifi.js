@@ -88,7 +88,11 @@
   var STATS_NS = (STATS_NS_EL && STATS_NS_EL.getAttribute('content')) || 'sumsecme';
   var STATS_SITE_KEY = 'site-total';
   var STATS_EP_EL = document.querySelector('meta[name="stats-endpoint"]');
-  var STATS_ENDPOINT = (STATS_EP_EL && STATS_EP_EL.getAttribute('content')) || '';
+  var STATS_ENDPOINT =
+    (STATS_EP_EL && STATS_EP_EL.getAttribute('content')) ||
+    (document.body && document.body.getAttribute('data-stats-endpoint')) ||
+    (typeof window.__BLOG_STATS_EP === 'string' ? window.__BLOG_STATS_EP : '') ||
+    '';
   STATS_ENDPOINT = String(STATS_ENDPOINT).replace(/^\s+|\s+$/g, '').replace(/\/$/, '');
 
   function statsParseDataValue(data) {
@@ -192,6 +196,7 @@
       });
   }
 
+  /** 无 fetch 环境（极少）才用 JSONP；正常路径用 fetch，避免 capi 脚本被 CSP 拦截导致「本文浏览 —」 */
   function workerJsonp(ns, key, done) {
     if (!STATS_ENDPOINT) {
       done(null);
@@ -233,8 +238,44 @@
   }
 
   function workerHit(ns, key, done) {
-    /* 仅用 JSONP 调 Worker，避免 fetch 跨域与 Origin:null 等 CORS 边角问题 */
-    workerJsonp(ns, key, done);
+    if (!STATS_ENDPOINT) {
+      done(null);
+      return;
+    }
+    var url =
+      STATS_ENDPOINT +
+      '/hit?ns=' +
+      encodeURIComponent(ns) +
+      '&key=' +
+      encodeURIComponent(key) +
+      '&_=' +
+      String(Date.now());
+    if (typeof fetch !== 'function') {
+      workerJsonp(ns, key, done);
+      return;
+    }
+    /* 不设 AbortSignal：超时中止可能导致请求已在 Worker 计数后仍走 JSONP，重复 +1；由浏览器自然超时即可 */
+    var opts = { method: 'GET', mode: 'cors', credentials: 'omit', cache: 'no-store' };
+    fetch(url, opts)
+      .then(function (r) {
+        if (!r.ok) throw new Error('stats http');
+        return r.text();
+      })
+      .then(function (text) {
+        var d;
+        try {
+          d = JSON.parse(text);
+        } catch (eJ) {
+          /* 服务端已 /hit 计数，勿再 JSONP 以免二次 +1 */
+          done(null);
+          return;
+        }
+        done(statsParseDataValue(d));
+      })
+      .catch(function () {
+        /* 多为网络或 connect-src 拦截（未命中服务端），可再试 JSONP */
+        workerJsonp(ns, key, done);
+      });
   }
 
   function statsHit(ns, key, done) {

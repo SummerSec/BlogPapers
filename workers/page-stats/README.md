@@ -38,7 +38,7 @@
 
 修改 Worker 后请执行 `wrangler deploy`。
 
-博客端对 Worker **只使用 JSONP（`<script src>`）**，不依赖 `fetch` CORS。`/hit` **不会因 Origin/Referer 返回 403**（与带 `callback` 时一致）；`ALLOW_ORIGINS` / `ALLOW_HOST_SUFFIX` 仅影响 **JSON 响应上的 CORS 头**（浏览器 `fetch` 读 body 时用），控制台误配不会再把整次计数请求挡掉。
+博客端对 Worker **优先 `fetch` 读无 `callback` 的 JSON**（`/hit` 带 `Access-Control-Allow-Origin: *` 与 **`Cross-Origin-Resource-Policy: cross-origin`**，避免站点开 COEP 时跨域被拦）；失败再 **JSONP**，最后 **CountAPI**。布局里另有 `data-stats-endpoint` 与 `window.__BLOG_STATS_EP` 作端点备用，避免仅依赖 `<meta>` 时偶发读不到。
 
 ### 本机验证（Windows）
 

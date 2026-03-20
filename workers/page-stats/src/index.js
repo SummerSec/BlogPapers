@@ -94,8 +94,18 @@ export default {
     var url = new URL(request.url);
     var path = url.pathname.replace(/\/$/, '') || '/';
 
+    /* 简单 GET 计数无 Cookie：放宽预检，便于任意页面 fetch 读 JSON（避免 JSONP 被 CSP 拦脚本） */
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders(request, env) });
+      return new Response(null, {
+        status: 204,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Max-Age': '86400',
+          'Cross-Origin-Resource-Policy': 'cross-origin',
+        },
+      });
     }
 
     if (request.method !== 'GET' && request.method !== 'HEAD') {
@@ -136,20 +146,22 @@ export default {
           'cache-control': 'no-store, private',
           'CDN-Cache-Control': 'no-store',
           'X-Content-Type-Options': 'nosniff',
+          'Cross-Origin-Resource-Policy': 'cross-origin',
         },
       });
     }
 
     var body = JSON.stringify({ value: n });
     return new Response(body, {
-      headers: Object.assign(
-        {
-          'content-type': 'application/json; charset=utf-8',
-          'cache-control': 'no-store, private',
-          'CDN-Cache-Control': 'no-store',
-        },
-        corsHeaders(request, env)
-      ),
+      headers: {
+        'content-type': 'application/json; charset=utf-8',
+        'cache-control': 'no-store, private',
+        'CDN-Cache-Control': 'no-store',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Cross-Origin-Resource-Policy': 'cross-origin',
+      },
     });
   },
 };
