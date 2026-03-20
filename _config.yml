@@ -1,2 +1,40 @@
-# theme: jekyll-theme-cayman
-theme: jekyll-theme-hacker
+title: SummerSec's Blog
+description: 专注 Java 安全研究 · CodeQL 静态分析 · 漏洞挖掘
+url: "https://sumsec.me"
+baseurl: ""
+
+author:
+  name: SummerSec
+  bio: Java Security Researcher | CodeQL Enthusiast
+  github: SummerSec
+
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+
+highlighter: rouge
+
+sass:
+  sass_dir: assets/css
+  style: compressed
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+exclude:
+  - resources/SitemapGenerator.js
+  - resources/1644461078948.yml
+  - resources/OmegaOptions.bak
+  - resources/spring-framework-rce.zip
+  - resources/vless.yaml
+  - resources/ascii.txt
+  - resources/urls.txt
+  - node_modules
+  - Gemfile
+  - Gemfile.lock

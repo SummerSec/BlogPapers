@@ -1,0 +1,44 @@
+---
+layout: default
+---
+
+<article class="post-article">
+  <header class="post-header">
+    <div class="post-meta">
+      {% if page.tags %}
+      <div class="post-tags">
+        {% assign tags = page.tags | split: '/' %}
+        {% for tag in tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if page.date %}
+      <time class="post-date">📅 {{ page.date | date: "%Y年%m月%d日" }}</time>
+      {% endif %}
+    </div>
+    <h1 class="post-title">{{ page.title }}</h1>
+  </header>
+  
+  <div class="post-content markdown-body">
+    {{ content }}
+  </div>
+
+  <footer class="post-footer">
+    <div class="post-nav">
+      {% if page.previous %}
+      <a href="{{ page.previous.url | relative_url }}" class="post-nav-link prev">
+        <span class="nav-arrow">←</span>
+        <span>{{ page.previous.title }}</span>
+      </a>
+      {% endif %}
+      {% if page.next %}
+      <a href="{{ page.next.url | relative_url }}" class="post-nav-link next">
+        <span>{{ page.next.title }}</span>
+        <span class="nav-arrow">→</span>
+      </a>
+      {% endif %}
+    </div>
+    <a href="{{ '/' | relative_url }}" class="back-home">← 返回首页</a>
+  </footer>
+</article>
