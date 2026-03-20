@@ -585,6 +585,31 @@ table {
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
+/* 首页：各表格同宽铺满主栏，三列时间轴列宽一致（广告两列表首列固定、次列吃满） */
+.page-front .terminal-body table {
+  display: table;
+  table-layout: fixed;
+  min-width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: visible;
+}
+
+.page-front .terminal-body table :is(th, td):first-child {
+  width: 9rem;
+}
+
+.page-front .terminal-body table :is(th, td):nth-child(2) {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.page-front .terminal-body table :is(th, td):nth-child(3) {
+  width: 26%;
+  min-width: 11rem;
+  white-space: normal;
+}
+
 thead tr {
   background: linear-gradient(180deg, rgba(45, 212, 191, 0.14), rgba(192, 132, 252, 0.08));
   border-bottom: 1px solid rgba(56, 250, 220, 0.45);
@@ -642,9 +667,19 @@ table tbody tr:hover td {
   color: #fff;
 }
 
-/* 左侧霓虹条只画一次，避免每列重复 inset */
+/* 悬停文章行：左侧青、右侧品红，与中间列区分 */
 table tbody tr:hover td:first-child {
   box-shadow: inset 4px 0 0 var(--accent);
+}
+
+table tbody tr:hover td:last-child {
+  box-shadow: inset -4px 0 0 #e879f9;
+}
+
+table tbody tr:hover td:first-child:last-child {
+  box-shadow:
+    inset 4px 0 0 var(--accent),
+    inset -4px 0 0 #e879f9;
 }
 
 /* --- Code --- */
@@ -794,6 +829,14 @@ hr {
   table tbody tr:hover td:first-child {
     box-shadow: inset 4px 0 0 var(--accent);
   }
+  table tbody tr:hover td:last-child {
+    box-shadow: inset -4px 0 0 #e879f9;
+  }
+  table tbody tr:hover td:first-child:last-child {
+    box-shadow:
+      inset 4px 0 0 var(--accent),
+      inset -4px 0 0 #e879f9;
+  }
   thead tr:hover th { text-shadow: none; }
 }
 
@@ -855,6 +898,7 @@ hr {
 }
 
 .tag-badge {
+  --tag-rgb: 140, 165, 190;
   display: inline-block;
   font-size: clamp(11px, calc(0.68rem + 0.1vw), 12px);
   font-weight: 500;
@@ -863,12 +907,11 @@ hr {
   margin: 2px 3px 2px 0;
   font-family: var(--font-mono);
   white-space: nowrap;
+  border: 1px solid rgba(var(--tag-rgb), 0.58);
+  color: rgb(var(--tag-rgb));
+  background: rgba(var(--tag-rgb), 0.14);
+  text-shadow: 0 0 10px rgba(var(--tag-rgb), 0.35);
 }
-
-.tag-security { border: 1px solid var(--danger); color: #fda4af; background: rgba(244, 114, 182, 0.08); }
-.tag-java     { border: 1px solid var(--green); color: var(--green); background: rgba(74, 222, 128, 0.08); }
-.tag-ai       { border: 1px solid var(--accent); color: var(--accent); background: var(--accent-glow); }
-.tag-default  { border: 1px solid var(--text-dim); color: var(--text-muted); background: transparent; }
 
 .terminal-body h4 {
   font-family: var(--font-hdr);

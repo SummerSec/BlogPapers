@@ -202,17 +202,37 @@
     });
   }
 
-  // --- Tag badge coloring ---
-  var SECURITY_TAGS = ['漏洞分析', '命令执行', 'RCE', 'SpEL', 'SSRF', 'XSS', 'SQL', 'bypass', 'Injection', 'injection', 'CVE', 'shell'];
-  var JAVA_TAGS = ['Java', 'CodeQL', 'go', 'Spark', 'MongoDB', 'Spring', 'JVM', 'Kotlin'];
-  var AI_TAGS = ['AI', 'SKILL', 'LLM', '语义', '大模型', 'GPT', '机器学习', '算法'];
+  // --- Tag：按标签文字哈希自动配色，无需改 JS；新文章只要在表格末列写 甲/乙/丙 ---
+  var TAG_PALETTE = [
+    '45, 212, 191',
+    '192, 132, 252',
+    '74, 222, 128',
+    '251, 146, 60',
+    '244, 114, 182',
+    '96, 165, 250',
+    '251, 191, 36',
+    '250, 82, 170'
+  ];
 
-  function tagCategory(t) {
-    var u = t.trim();
-    if (SECURITY_TAGS.some(function (k) { return u.indexOf(k) !== -1; })) return 'security';
-    if (JAVA_TAGS.some(function (k) { return u.indexOf(k) !== -1; })) return 'java';
-    if (AI_TAGS.some(function (k) { return u.indexOf(k) !== -1; })) return 'ai';
-    return 'default';
+  function hashTagLabel(s) {
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) {
+      h = ((h << 5) + h) + s.charCodeAt(i);
+      h |= 0;
+    }
+    return h === 0 ? 0 : Math.abs(h);
+  }
+
+  /** 同一标签全文颜色稳定；同一格内若与左侧相邻同色则顺延调色板 */
+  function paletteIndexForTag(label, prevIdx) {
+    var n = TAG_PALETTE.length;
+    var idx = hashTagLabel(label) % n;
+    var guard = 0;
+    while (idx === prevIdx && guard < n) {
+      idx = (idx + 1) % n;
+      guard++;
+    }
+    return idx;
   }
 
   // --- 过长页面标题：标签页内循环滚动（尊重 reduced-motion 则无动画）---
@@ -237,18 +257,31 @@
     }
   }
 
-  document.querySelectorAll('.terminal-body table td:last-child').forEach(function (td) {
-    var raw = td.textContent.trim();
-    if (!raw || td.querySelector('a')) return;
-    var tags = raw.split('/');
-    if (tags.length < 1) return;
-    td.textContent = '';
-    tags.forEach(function (t) {
-      if (!t.trim()) return;
-      var span = document.createElement('span');
-      span.className = 'tag-badge tag-' + tagCategory(t);
-      span.textContent = t.trim();
-      td.appendChild(span);
+  var bodyTables = document.querySelectorAll('.terminal-body table');
+  bodyTables.forEach(function (table) {
+    var rows = table.querySelectorAll('tbody tr');
+    if (!rows.length) {
+      rows = table.querySelectorAll('tr');
+    }
+    rows.forEach(function (row) {
+      if (row.parentElement && row.parentElement.tagName === 'THEAD') return;
+      var td = row.querySelector('td:last-child');
+      if (!td) return;
+      var raw = td.textContent.trim();
+      if (!raw || td.querySelector('a')) return;
+      var parts = raw.split('/').map(function (x) { return x.trim(); }).filter(Boolean);
+      if (!parts.length) return;
+      td.textContent = '';
+      var prevIdx = -1;
+      parts.forEach(function (t) {
+        var idx = paletteIndexForTag(t, prevIdx);
+        prevIdx = idx;
+        var span = document.createElement('span');
+        span.className = 'tag-badge';
+        span.style.setProperty('--tag-rgb', TAG_PALETTE[idx]);
+        span.textContent = t;
+        td.appendChild(span);
+      });
     });
   });
 })();

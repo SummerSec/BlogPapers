@@ -39,7 +39,7 @@ Requires Jekyll 4.x and Dart Sass (not LibSass).
    title: Post Title
    ---
    ```
-2. Add a row to `README.md` timeline table under the correct year section
+2. Add a row to `README.md` timeline table under the correct year section. In the **last column**, list tags as `标签甲/标签乙` (slash-separated); any new tag names are picked up automatically by `scifi.js` and colored by hash—no JS changes needed.
 3. Update `resources/Archives.md` if needed
 4. **Do not** update hard-coded article counts manually — they are static strings in the HTML
 
