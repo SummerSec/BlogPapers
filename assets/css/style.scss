@@ -377,11 +377,6 @@ header, main, footer, nav { position: relative; z-index: 10; }
   max-width: 100%;
   margin: 0 auto;
   border-top: 1px solid var(--border);
-  justify-content: flex-start;
-}
-
-/* 首页：主导航整组水平居中 */
-.page-front .site-nav {
   justify-content: center;
 }
 
