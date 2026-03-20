@@ -1,2 +1,4 @@
 # theme: jekyll-theme-cayman
-theme: jekyll-theme-hacker
+# theme: jekyll-theme-hacker
+markdown: kramdown
+highlighter: rouge

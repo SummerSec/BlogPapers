@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SummerSec // Security Research Terminal">
+  <title>{% if page.title %}{{ page.title }} // SUMSEC.ME{% else %}SUMSEC.ME // SEC_RESEARCH_TERMINAL{% endif %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="grid-bg"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="terminal-prompt">root@sumsec:~$</div>
+      <a href="{{ '/' | relative_url }}" class="site-title">
+        <span class="title-main">SUMSEC.ME</span><span class="title-sep">&nbsp;//&nbsp;</span><span class="title-sub">SEC_RESEARCH_TERMINAL</span>
+      </a>
+      <div class="header-meta">
+        <span class="blink-cursor">&#x25AE;</span>
+        <span class="sys-status">SYS:ONLINE</span>
+      </div>
+    </div>
+    <nav class="site-nav">
+      <a href="{{ '/' | relative_url }}" class="nav-link">[&#x2302;&nbsp;HOME]</a>
+      <a href="{{ '/resources/Archives.md' | relative_url }}" class="nav-link">[&#x1F4C1;&nbsp;ARCHIVES]</a>
+      <a href="{{ '/resources/AboutMe.md' | relative_url }}" class="nav-link">[&#x1F464;&nbsp;ABOUT]</a>
+      <a href="https://old.sumsec.me" class="nav-link" target="_blank" rel="noopener">[&#x1F4D2;&nbsp;OLD_BLOG]</a>
+      <a href="{{ '/resources/sitemap.xml' | relative_url }}" class="nav-link">[&#x1F310;&nbsp;SITEMAP]</a>
+      <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link">[&#x1F4E1;&nbsp;RSS]</a>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="tb-dot tb-red"></span>
+        <span class="tb-dot tb-yellow"></span>
+        <span class="tb-dot tb-green"></span>
+        <span class="tb-title">// OUTPUT STREAM //</span>
+      </div>
+      <div class="terminal-body">
+        {{ content }}
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-item">&#x25B6;&nbsp;SUMSEC.ME&nbsp;&#x25C0;</span>
+      <span class="footer-sep">&nbsp;|&nbsp;</span>
+      <span class="footer-item">SECURITY_RESEARCH</span>
+      <span class="footer-sep">&nbsp;|&nbsp;</span>
+      <a href="https://github.com/SummerSec" class="footer-link" target="_blank" rel="noopener">GITHUB</a>
+      <span class="footer-sep">&nbsp;|&nbsp;</span>
+      <span class="footer-item" id="footer-year">CYCLE_{{ site.time | date: "%Y" }}</span>
+    </div>
+    <div class="footer-coords">LAT:30.0°N // LON:120.0°E // TZ:CST+8</div>
+  </footer>
+
+  <canvas id="matrix-canvas"></canvas>
+  <script src="{{ '/assets/js/scifi.js' | relative_url }}"></script>
+</body>
+</html>
