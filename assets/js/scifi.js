@@ -461,6 +461,20 @@
     return arr;
   }
 
+  /** 从池里无放回取前 n 条（用于两侧 6 个槽位互不重复） */
+  function sampleUniqueEggs(n) {
+    if (n <= 0) return [];
+    var copy = EGG_POOL.slice();
+    shuffleArray(copy);
+    return copy.slice(0, Math.min(n, copy.length));
+  }
+
+  /** 单次随机一条（点击播报用，可与槽位展示不同） */
+  function pickRandomEgg() {
+    if (!EGG_POOL.length) return { chan: 'SIG', code: '\u2014', msg: '' };
+    return EGG_POOL[Math.floor(Math.random() * EGG_POOL.length)];
+  }
+
   function buildEggButton(el, entry) {
     while (el.firstChild) el.removeChild(el.firstChild);
     var inner = document.createElement('span');
@@ -485,14 +499,14 @@
     var eggs = root.querySelectorAll('.side-egg');
     if (!eggs.length) return;
     root.setAttribute('data-egg-ready', '1');
-    var pool = shuffleArray(EGG_POOL.slice());
+    var picked = sampleUniqueEggs(eggs.length);
     eggs.forEach(function (el, i) {
-      var entry = pool[i % pool.length];
+      var entry = picked[i] || pickRandomEgg();
       buildEggButton(el, entry);
       el.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        showHudToast(entry);
+        showHudToast(pickRandomEgg());
       });
     });
   }
