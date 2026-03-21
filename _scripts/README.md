@@ -41,6 +41,6 @@ python _scripts/fetch_cloudflare_subdomains.py --write
 3. （可选）**Variables** 中新增：
    - **`CLOUDFLARE_ZONE_NAME`** — 默认可不建（工作流内默认 `sumsec.me`）；若域名不同再填。
    - **`CLOUDFLARE_ZONE_ID`** — 可选，填写后脚本不再按名称查 Zone。
-4. **Actions** 页选择 **Sync Cloudflare DNS (subdomain.md)** → **Run workflow** 手动运行；工作流也会按 cron **每周一 UTC 02:00** 尝试同步（无变更则不会提交）。
+4. **Actions** 页选择 **Sync Cloudflare DNS (subdomain.md)** → **Run workflow** 手动运行；工作流也会按 cron **每天 UTC 0:00** 尝试同步（无变更则不会提交）。若要 **北京时间 0:00**，将 workflow 中 cron 改为 `0 16 * * *`。
 
 推送提交使用默认 `GITHUB_TOKEN`；若 `master` 有分支保护禁止 workflow 推送，需在保护规则中为「GitHub Actions」放行或改用 PAT（`PERSONAL_ACCESS_TOKEN` 等）——此处未内置 PAT，按仓库策略自行调整。

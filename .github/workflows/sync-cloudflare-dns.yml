@@ -10,7 +10,8 @@ name: Sync Cloudflare DNS (subdomain.md)
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 2 * * 1' # 每周一 UTC 02:00
+    # GitHub cron 为 UTC：每天 UTC 0:00；若需北京时间 0:00 请改为 '0 16 * * *'
+    - cron: '0 0 * * *'
 
 permissions:
   contents: write
