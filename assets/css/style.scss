@@ -850,6 +850,107 @@ li { margin-bottom: 0.3em; color: var(--text); }
 ul li::marker { color: var(--accent); }
 ol li::marker { color: var(--green); }
 
+/* =============================================
+   首页 · 浮空字体（仅 body.page-front，文章页不受影响）
+   ============================================= */
+body.page-front .terminal-body {
+  --home-float-lift:
+    0 1px 0 rgba(255, 255, 255, 0.07),
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 10px 32px rgba(0, 0, 0, 0.38),
+    0 4px 22px rgba(92, 219, 207, 0.09);
+}
+
+/* 主标题级：层叠阴影 + 轻微上下漂浮 */
+body.page-front .terminal-body :is(h1, h2, h3) {
+  transform-origin: 0 50%;
+  animation: home-float-type 7.5s ease-in-out infinite;
+}
+
+body.page-front .terminal-body h1 {
+  animation-duration: 8.5s;
+  animation-delay: -0.8s;
+  text-shadow:
+    var(--home-float-lift),
+    0 0 36px rgba(92, 219, 207, 0.14);
+}
+
+body.page-front .terminal-body h2 {
+  animation-duration: 7s;
+  animation-delay: -2s;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.07),
+    0 8px 28px rgba(0, 0, 0, 0.34),
+    0 2px 20px rgba(92, 219, 207, 0.16),
+    0 0 24px rgba(148, 168, 232, 0.06);
+}
+
+body.page-front .terminal-body h3 {
+  animation-duration: 6.2s;
+  animation-delay: -3.2s;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.055),
+    0 6px 24px rgba(0, 0, 0, 0.3),
+    0 2px 16px rgba(125, 215, 154, 0.11);
+}
+
+/* 次级标题：仅「悬空」阴影，不晃动（年份等小标题数量多） */
+body.page-front .terminal-body :is(h4, h5, h6) {
+  animation: none;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.045),
+    0 5px 18px rgba(0, 0, 0, 0.28),
+    0 2px 12px rgba(92, 219, 207, 0.05);
+}
+
+body.page-front .terminal-body p,
+body.page-front .terminal-body li {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.035),
+    0 4px 18px rgba(0, 0, 0, 0.26),
+    0 2px 10px rgba(92, 219, 207, 0.045);
+}
+
+body.page-front .terminal-body td,
+body.page-front .terminal-body th {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.028),
+    0 3px 14px rgba(0, 0, 0, 0.22);
+}
+
+body.page-front .terminal-body a {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04),
+    0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+body.page-front .terminal-body a:hover {
+  text-shadow:
+    0 0 14px rgba(92, 219, 207, 0.38),
+    0 6px 20px rgba(0, 0, 0, 0.28);
+}
+
+body.page-front .terminal-body strong {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05),
+    0 4px 16px rgba(92, 219, 207, 0.12);
+}
+
+/* 首页访问量条：整体略抬升 + 缓慢呼吸 */
+body.page-front .view-stats--site {
+  transform: translateY(-4px);
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.38),
+    0 0 36px rgba(92, 219, 207, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  animation: home-float-card 6.5s ease-in-out infinite;
+}
+
+body.page-front .terminal-body hr {
+  opacity: 0.95;
+  filter: drop-shadow(0 8px 16px rgba(92, 219, 207, 0.12));
+}
+
 /* --- Tables：赛博网格 + 任意行悬停霓虹扫亮 --- */
 table {
   width: 100%;
@@ -1137,6 +1238,16 @@ hr {
   50% { opacity: 1; filter: brightness(1.15); }
 }
 
+@keyframes home-float-type {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes home-float-card {
+  0%, 100% { transform: translateY(-4px); }
+  50% { transform: translateY(-7px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .blink-cursor { animation: none; opacity: 0.85; }
@@ -1178,6 +1289,15 @@ hr {
   .side-egg:focus-visible { transform: none; }
   .side-egg__inner { animation: none; transform: none; }
   .side-egg__led { animation: none; opacity: 0.85; filter: none; }
+  body.page-front .terminal-body :is(h1, h2, h3) {
+    animation: none;
+    transform: none;
+  }
+  body.page-front .view-stats--site {
+    animation: none;
+    transform: none;
+  }
+  body.page-front .terminal-body hr { filter: none; }
   table tbody tr { transition: none; }
   table tbody tr:hover td:first-child {
     box-shadow: inset 4px 0 0 var(--accent);
