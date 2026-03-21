@@ -7,6 +7,8 @@ tags:
 
 以下为 **sumsec.me** 相关子域整理。**截图**列中：带 GitHub `user-assets` 的为已上传的固定图；标「—」的尚未配图，可自行截图后上传到图床（如 `img.sumsec.me`）再替换该单元格为 `![说明](图片URL)`。
 
+### 站点说明与截图（手工维护）
+
 | 子域名 | 描述 | 截图 |
 | ------ | ---- | ---- |
 | [sumsec.me](https://sumsec.me/) | 主站 / GitHub Pages 博客 | — |
@@ -28,4 +30,22 @@ tags:
 | [vless.sumsec.me](https://vless.sumsec.me/) | VLESS 配置中的节点域名（见 `resources/vless.yaml`，通常非 Web 首页） | — |
 | [webcheck.sumsec.me](https://webcheck.sumsec.me/) | WebCheck 站点检测 | ![webcheck](https://github.com/SummerSec/BlogPapers/assets/47944478/03702ed0-7078-4b09-83a5-efaf4a946a8d) |
 
-> **说明**：若你还有其它 DNS 记录未在表中列出，在 DNS 面板核对后按行追加即可。API / CDN / 代理类子域若无独立网页，可不配图或仅配管理后台截图。
+### Cloudflare DNS 全量（脚本同步）
+
+设置环境变量 `CLOUDFLARE_API_TOKEN`（需 Zone + DNS 读权限）后，在仓库根目录执行：
+
+`python _scripts/fetch_cloudflare_subdomains.py --write`
+
+不写 `--write` 时仅打印生成的片段，不修改本文件。可选：`CLOUDFLARE_ZONE_NAME`（默认 `sumsec.me`）、`CLOUDFLARE_ZONE_ID`（可省略，由名称解析）。
+
+<!--CLOUDFLARE_DNS_SYNC_BEGIN-->
+
+> 运行上方命令后，此处将替换为从 Cloudflare API 拉取的 DNS 表格（含 MX/TXT 等，与上表可能重复）。
+
+| 主机名 | 类型 | 内容（节选） | Proxied |
+| ------ | ---- | ------------ | ------- |
+| * | — | *待运行脚本* | — |
+
+<!--CLOUDFLARE_DNS_SYNC_END-->
+
+> **说明**：若你还有其它 DNS 记录未在表中列出，在 DNS 面板核对后按行追加即可。API / CDN / 代理类子域若无独立网页，可不配图或仅配管理后台截图。手工表以说明与截图为准；下方 Cloudflare 表以 DNS 事实为准。
