@@ -332,8 +332,8 @@
       var y = H - pad - ((daily[j] / max) * (H - pad * 2));
       coords.push(x.toFixed(1) + ',' + y.toFixed(1));
     }
-    var lineColor = isPage ? 'rgba(192,132,252,0.9)' : 'rgba(45,212,191,0.9)';
-    var fillColor = isPage ? 'rgba(192,132,252,0.15)' : 'rgba(45,212,191,0.15)';
+    var lineColor = isPage ? 'rgba(148,168,232,0.9)' : 'rgba(92,219,207,0.9)';
+    var fillColor = isPage ? 'rgba(148,168,232,0.14)' : 'rgba(92,219,207,0.14)';
     var fillCoords = coords.concat([
       (pad + (n - 1) * stepX).toFixed(1) + ',' + H,
       pad + ',' + H
@@ -397,14 +397,14 @@
     }
 
     var NEON = [
-      'rgba(72, 255, 228, 0.34)',
-      'rgba(200, 150, 255, 0.3)',
-      'rgba(94, 255, 150, 0.26)',
-      'rgba(255, 120, 210, 0.24)'
+      'rgba(92, 219, 207, 0.22)',
+      'rgba(148, 168, 232, 0.2)',
+      'rgba(125, 215, 160, 0.18)',
+      'rgba(140, 180, 220, 0.16)'
     ];
 
     function drawMatrix() {
-      ctx.fillStyle = 'rgba(6, 7, 13, 0.065)';
+      ctx.fillStyle = 'rgba(5, 6, 12, 0.055)';
       ctx.fillRect(0, 0, W, H);
       ctx.font = '14px "JetBrains Mono", "Noto Sans SC", monospace';
       for (var i = 0; i < cols; i++) {
