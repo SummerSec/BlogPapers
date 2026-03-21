@@ -1104,14 +1104,14 @@ hr {
 
 /* --- 返回顶部：响应式 FAB（clamp + 安全区；触控端更大最小尺寸） --- */
 #back-to-top.back-to-top {
-  --fab-size: clamp(3.5rem, 10vw + 2.25rem, 5rem);
+  --fab-size: clamp(4rem, 11vw + 2rem, 5.25rem);
   position: fixed;
-  bottom: max(1rem, calc(env(safe-area-inset-bottom, 0px) + 0.5rem));
-  right: max(1rem, calc(env(safe-area-inset-right, 0px) + 0.5rem));
+  bottom: max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 0.75rem));
+  right: max(1.25rem, calc(env(safe-area-inset-right, 0px) + 0.75rem));
   width: var(--fab-size);
   height: var(--fab-size);
-  min-width: 3.5rem;
-  min-height: 3.5rem;
+  min-width: 4rem;
+  min-height: 4rem;
   padding: 0;
   border: none;
   background: transparent;
@@ -1132,15 +1132,28 @@ hr {
 
 @media (pointer: coarse) {
   #back-to-top.back-to-top {
-    --fab-size: clamp(3.75rem, 12vw + 2.5rem, 5.5rem);
-    min-width: 3.75rem;
-    min-height: 3.75rem;
+    --fab-size: clamp(4.25rem, 13vw + 2rem, 5.5rem);
+    min-width: 4.25rem;
+    min-height: 4.25rem;
+  }
+}
+
+@media (max-width: 479px) {
+  #back-to-top.back-to-top {
+    --fab-size: clamp(4rem, 14vw + 1.5rem, 5rem);
+    bottom: max(2rem, calc(env(safe-area-inset-bottom, 0px) + 1.25rem));
+  }
+}
+
+@media (min-width: 480px) and (max-width: 1199px) and (pointer: fine) {
+  #back-to-top.back-to-top {
+    --fab-size: clamp(4.25rem, 6vw + 2.5rem, 5.25rem);
   }
 }
 
 @media (min-width: 1200px) and (pointer: fine) {
   #back-to-top.back-to-top {
-    --fab-size: clamp(4rem, 4vw + 2.75rem, 5.25rem);
+    --fab-size: clamp(4.25rem, 4vw + 2.75rem, 5.5rem);
   }
 }
 
