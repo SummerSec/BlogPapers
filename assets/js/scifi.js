@@ -574,6 +574,75 @@
     } catch (err) { /* ignore */ }
   });
 
+  // --- 文章页：鼠标所在「视觉行」高亮（按 line-height 分行，非首页） ---
+  function getLineHeightPx(el) {
+    var cs = getComputedStyle(el);
+    var lh = cs.lineHeight;
+    if (lh === 'normal') {
+      var fs = parseFloat(cs.fontSize);
+      if (isNaN(fs)) fs = 16;
+      return fs * 1.55;
+    }
+    var n = parseFloat(lh);
+    return isNaN(n) ? parseFloat(cs.fontSize) * 1.55 : n;
+  }
+
+  function skipArticleLineHover(el) {
+    if (!el || !el.closest) return true;
+    if (el.closest('pre, table, .view-stats')) return true;
+    return false;
+  }
+
+  function paintLineHover(el, e) {
+    var lh = getLineHeightPx(el);
+    var rect = el.getBoundingClientRect();
+    var padTop = parseFloat(getComputedStyle(el).paddingTop) || 0;
+    var y = e.clientY - rect.top - padTop;
+    if (y < 0) y = 0;
+    var idx = Math.floor(y / lh);
+    el.style.setProperty('--article-lh', lh + 'px');
+    el.style.setProperty('--hover-line', String(idx));
+    el.style.setProperty('--line-active', '1');
+  }
+
+  function initArticleLineHover() {
+    if (reduceMotion) return;
+    if (typeof document.body.classList !== 'undefined' && document.body.classList.contains('page-front')) return;
+    if (typeof window.matchMedia === 'function' && window.matchMedia('(hover: none)').matches) return;
+    var root = document.querySelector('.terminal-body');
+    if (!root) return;
+
+    var sel = 'p, li, h1, h2, h3, h4, h5, h6';
+    root.querySelectorAll(sel).forEach(function (el) {
+      if (skipArticleLineHover(el)) return;
+      el.classList.add('article-line-hover-target');
+      var raf = 0;
+      var pendingEv = null;
+      function flushLineHover() {
+        raf = 0;
+        var ev = pendingEv;
+        pendingEv = null;
+        if (ev) paintLineHover(el, ev);
+      }
+      el.addEventListener('mousemove', function (e) {
+        pendingEv = e;
+        if (!raf) raf = requestAnimationFrame(flushLineHover);
+      });
+      el.addEventListener('mouseleave', function () {
+        pendingEv = null;
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+        el.style.setProperty('--line-active', '0');
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initArticleLineHover);
+  } else {
+    initArticleLineHover();
+  }
+
   // --- Reading progress bar ---
   var progressBar = document.getElementById('read-progress');
   if (progressBar) {

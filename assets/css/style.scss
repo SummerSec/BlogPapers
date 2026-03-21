@@ -850,6 +850,55 @@ li { margin-bottom: 0.3em; color: var(--text); }
 ul li::marker { color: var(--accent); }
 ol li::marker { color: var(--green); }
 
+/* --- 文章页：鼠标所在行高亮（由 scifi.js 添加 .article-line-hover-target + CSS 变量） --- */
+body:not(.page-front) .terminal-body .article-line-hover-target {
+  position: relative;
+  isolation: isolate;
+}
+
+/* h1 的 ::after 已用于下划线，行带用 ::before */
+body:not(.page-front) .terminal-body h1.article-line-hover-target::before {
+  content: '';
+  position: absolute;
+  left: -0.3em;
+  right: -0.3em;
+  top: calc(var(--hover-line, 0) * var(--article-lh, 1.75em));
+  height: var(--article-lh, 1.75em);
+  background: linear-gradient(
+    90deg,
+    rgba(92, 219, 207, 0.14) 0%,
+    rgba(148, 168, 232, 0.07) 50%,
+    transparent 100%
+  );
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: var(--line-active, 0);
+  transition: opacity 0.12s ease, top 0.04s linear;
+  z-index: -1;
+  box-shadow: inset 3px 0 0 rgba(92, 219, 207, 0.42);
+}
+
+body:not(.page-front) .terminal-body :is(p, li, h2, h3, h4, h5, h6).article-line-hover-target::after {
+  content: '';
+  position: absolute;
+  left: -0.3em;
+  right: -0.3em;
+  top: calc(var(--hover-line, 0) * var(--article-lh, 1.75em));
+  height: var(--article-lh, 1.75em);
+  background: linear-gradient(
+    90deg,
+    rgba(92, 219, 207, 0.14) 0%,
+    rgba(148, 168, 232, 0.07) 50%,
+    transparent 100%
+  );
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: var(--line-active, 0);
+  transition: opacity 0.12s ease, top 0.04s linear;
+  z-index: -1;
+  box-shadow: inset 3px 0 0 rgba(92, 219, 207, 0.42);
+}
+
 /* =============================================
    首页 · 浮空字体（仅 body.page-front，文章页不受影响）
    ============================================= */
@@ -1298,6 +1347,10 @@ hr {
     transform: none;
   }
   body.page-front .terminal-body hr { filter: none; }
+  body:not(.page-front) .terminal-body .article-line-hover-target::before,
+  body:not(.page-front) .terminal-body .article-line-hover-target::after {
+    transition: none;
+  }
   table tbody tr { transition: none; }
   table tbody tr:hover td:first-child {
     box-shadow: inset 4px 0 0 var(--accent);
