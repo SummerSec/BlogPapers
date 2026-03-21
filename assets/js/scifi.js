@@ -423,33 +423,34 @@
     canvas.style.opacity = '0.12';
   }
 
-  // --- 两侧随机彩蛋 ---
+  // --- 侧栏 HUD 信号槽彩蛋（chan + code 竖排展示，点击底部广播条） ---
   var EGG_POOL = [
-    { text: 'UPLINK: STABLE', msg: '信号稳定，思路清晰。' },
-    { text: 'SIGNAL: 98.7%', msg: '几乎无损的信念传输。' },
-    { text: 'CORE_TEMP: 36.5\u00b0C', msg: '正常体温，异常头脑。' },
-    { text: 'DECRYPT: AES-256', msg: '有些秘密值得用最强的锁。' },
-    { text: 'PACKET_LOSS: 0.00%', msg: '一个字节都不能少。' },
-    { text: 'MEM: 0xCAFEBABE', msg: 'Java class 文件的魔数。你知道的。' },
-    { text: 'FIREWALL: 0 THREATS', msg: '今日无事，便是好事。' },
-    { text: 'TRACE: 127.0.0.1', msg: '追踪到最后，发现是自己。' },
-    { text: 'PID: 1337 \u00b7 STATUS: OK', msg: 'Elite process, always running.' },
-    { text: 'CHECKSUM: VALID', msg: '校验通过，内容未被篡改。' },
-    { text: 'sudo make coffee', msg: '权限足够，咖啡不够。' },
-    { text: '404: sleep.exe', msg: '找不到睡眠进程。' },
-    { text: 'while(alive) code()', msg: '活着就写代码。简单粗暴。' },
-    { text: 'CVE-0000-COFFEE', msg: '高危漏洞：咖啡不足。' },
-    { text: '/dev/null > doubt', msg: '把疑虑丢进黑洞。' },
-    { text: 'rm -rf /doubt', msg: '递归删除所有犹豫。' },
-    { text: 'git commit -m "sleep"', msg: '提交了，但没推送到枕头。' },
-    { text: 'HEAP: 64% USED', msg: '还有余量。继续。' },
-    { text: 'LATENCY: 3ms', msg: '思考延迟极低。状态在线。' },
-    { text: 'SECTOR: 7G \u00b7 CLEAR', msg: '这片区域已经扫描完毕。' },
-    { text: 'ACK: RECEIVED', msg: '收到确认。继续前进。' },
-    { text: 'TTL: 128', msg: '生命值还够跳 128 次。' },
-    { text: 'PORT 443: LISTENING', msg: '安全端口，随时待命。' },
-    { text: 'ENTROPY: HIGH', msg: '混乱度很高——这是好事。' },
-    { text: 'EOF: NOT YET', msg: '还没到文件末尾。故事继续。' },
+    { chan: 'NET', code: 'UPLINK', msg: '链路稳定。带宽易得，清醒难得。' },
+    { chan: 'SYS', code: 'SYN_OK', msg: '握手完成。你正在正确的时区阅读。' },
+    { chan: 'SEC', code: 'AES256', msg: '有些内容值得用最笨、最稳的锁。' },
+    { chan: 'OPS', code: 'LOSS0', msg: '零丢包是理想；零幻觉是底线。' },
+    { chan: 'MEM', code: 'CAFE', msg: '0xCAFEBABE — 魔数对齐，直觉也要对齐。' },
+    { chan: 'FW', code: 'CLR', msg: '今日无告警。无事发生，往往是好事。' },
+    { chan: 'TRACE', code: 'LOOP', msg: '127.0.0.1：追到最后，常是自己。' },
+    { chan: 'PROC', code: '1337', msg: 'PID 体面，进程也要体面地活着。' },
+    { chan: 'CHK', code: 'PASS', msg: '校验通过。写下来，比记在脑子里安全。' },
+    { chan: 'ROOT', code: 'SUDO', msg: '权限够了，咖啡可能还不够。' },
+    { chan: 'HTTP', code: '404Z', msg: 'sleep.exe 未找到：缺觉不算漏洞，算债。' },
+    { chan: 'CODE', code: 'LIVE', msg: 'while(alive) 里别忘了 break 去晒太阳。' },
+    { chan: 'CVE', code: 'COFF', msg: 'CVSS 不高，但咖啡因严重度是 Critical。' },
+    { chan: 'DEV', code: 'NULL', msg: '/dev/null 收好疑虑，stdout 留给结论。' },
+    { chan: 'FS', code: 'RMRF', msg: '递归删除犹豫前，先 git status 一下人生。' },
+    { chan: 'VCS', code: 'SLEEP', msg: 'commit 了 sleep，但忘了 push 到枕头。' },
+    { chan: 'HEAP', code: '64P', msg: '堆还有余量。脑子也是，别塞满缓存。' },
+    { chan: 'LAT', code: '3MS', msg: '延迟够低，说明你还在场。' },
+    { chan: 'RAD', code: '7G', msg: '扇区扫完。留白处往往最诚实。' },
+    { chan: 'TCP', code: 'ACK', msg: 'ACK 收到。下一步：动手验证。' },
+    { chan: 'IP', code: 'TTL', msg: 'TTL 还够跳几跳。别在每一跳都停下来内耗。' },
+    { chan: 'TLS', code: '443', msg: '443 在听。明文情绪请线下消化。' },
+    { chan: 'RNG', code: 'HIGH', msg: '熵够高才好玩；写文也是。' },
+    { chan: 'IO', code: 'EOF', msg: '文件还没结束，你的故事同理。' },
+    { chan: 'AUD', code: 'TRUST', msg: 'Trust but verify — 对链接、对结论、对自己。' },
+    { chan: 'LOG', code: 'NOTE', msg: '没有后门，只有复盘与勘误表。' },
   ];
 
   function shuffleArray(arr) {
@@ -460,6 +461,24 @@
     return arr;
   }
 
+  function buildEggButton(el, entry) {
+    while (el.firstChild) el.removeChild(el.firstChild);
+    var inner = document.createElement('span');
+    inner.className = 'side-egg__inner';
+    var led = document.createElement('span');
+    led.className = 'side-egg__led';
+    led.setAttribute('aria-hidden', 'true');
+    var codeEl = document.createElement('span');
+    codeEl.className = 'side-egg__code';
+    codeEl.textContent = entry.code;
+    inner.appendChild(led);
+    inner.appendChild(codeEl);
+    el.appendChild(inner);
+    el.setAttribute('title', entry.msg);
+    el.setAttribute('data-egg-msg', entry.msg);
+    el.setAttribute('aria-label', '播报信号 ' + entry.chan + '/' + entry.code + '：' + entry.msg);
+  }
+
   function initSideEggs() {
     var root = document.querySelector('.side-eggs');
     if (!root || root.getAttribute('data-egg-ready') === '1') return;
@@ -467,33 +486,43 @@
     if (!eggs.length) return;
     root.setAttribute('data-egg-ready', '1');
     var pool = shuffleArray(EGG_POOL.slice());
-    var positions = [22, 50, 78];
     eggs.forEach(function (el, i) {
-      var data = pool[i % pool.length];
-      el.textContent = data.text;
-      el.title = data.msg;
-      el.setAttribute('data-egg-msg', data.msg);
-      var posIdx = i % positions.length;
-      el.style.top = positions[posIdx] + (Math.random() * 6 - 3) + '%';
-      el.style.animationDelay = '-' + (Math.random() * 8).toFixed(1) + 's';
+      var entry = pool[i % pool.length];
+      buildEggButton(el, entry);
       el.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        showHudToast(data.msg);
+        showHudToast(entry);
       });
     });
   }
 
-  function showHudToast(msg) {
+  function showHudToast(entry) {
     var toast = document.getElementById('hud-toast');
     if (!toast) return;
-    toast.textContent = '\u25b6 ' + msg;
+    var meta = toast.querySelector('.hud-toast__meta');
+    var body = toast.querySelector('.hud-toast__body');
+    var line = '[' + (entry.chan || 'SIG') + '] \u00b7 ' + (entry.code || '\u2014') + ' \u00b7 BROADCAST';
+    if (meta && body) {
+      meta.textContent = line;
+      body.textContent = entry.msg || '';
+    } else {
+      toast.textContent = '\u25b6 ' + line + ' \u2014 ' + (entry.msg || '');
+    }
     toast.classList.add('visible');
     if (toast._timer) clearTimeout(toast._timer);
     toast._timer = setTimeout(function () {
       toast.classList.remove('visible');
-    }, 3500);
+    }, 4200);
   }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var toast = document.getElementById('hud-toast');
+    if (!toast || !toast.classList.contains('visible')) return;
+    toast.classList.remove('visible');
+    if (toast._timer) clearTimeout(toast._timer);
+  });
 
   function runInitSideEggs() {
     initSideEggs();

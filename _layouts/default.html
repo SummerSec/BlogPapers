@@ -47,19 +47,25 @@
 <body class="theme-hud{% if page_is_home %} page-front{% endif %}"{% if _stats_ep_body != "" %} data-stats-endpoint="{{ _stats_ep_body | xml_escape }}"{% endif %}>
   <div id="read-progress"></div>
   <div class="vignette" aria-hidden="true"></div>
-  <div class="side-eggs" aria-hidden="true">
+  <div class="side-eggs" role="region" aria-label="侧栏趣味信号（可点击播报）">
     <div class="side-egg-rail side-egg-rail--left">
-      <span class="side-egg"></span>
-      <span class="side-egg"></span>
-      <span class="side-egg"></span>
+      <button type="button" class="side-egg"></button>
+      <button type="button" class="side-egg"></button>
+      <button type="button" class="side-egg"></button>
     </div>
     <div class="side-egg-rail side-egg-rail--right">
-      <span class="side-egg"></span>
-      <span class="side-egg"></span>
-      <span class="side-egg"></span>
+      <button type="button" class="side-egg"></button>
+      <button type="button" class="side-egg"></button>
+      <button type="button" class="side-egg"></button>
     </div>
   </div>
-  <div class="hud-toast" id="hud-toast"></div>
+  <div class="hud-toast" id="hud-toast" role="status" aria-live="polite" aria-atomic="true">
+    <span class="hud-toast__rail" aria-hidden="true"></span>
+    <div class="hud-toast__content">
+      <div class="hud-toast__meta"></div>
+      <div class="hud-toast__body"></div>
+    </div>
+  </div>
   <div class="ambient-glow" aria-hidden="true"></div>
   <div class="scanlines" aria-hidden="true"></div>
   <div class="grid-bg" aria-hidden="true"></div>
