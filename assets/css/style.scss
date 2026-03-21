@@ -44,7 +44,11 @@
 /* --- Reset --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* 横向溢出在 html 收敛；body 不设 overflow-x:hidden，避免部分浏览器裁剪 body 下 position:fixed 的彩蛋层 */
+  overflow-x: hidden;
+}
 
 body.theme-hud,
 body {
@@ -60,7 +64,7 @@ body {
   font-size: clamp(16px, calc(1.06rem + 0.22vw), 18px);
   line-height: 1.75;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: visible;
   position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -162,12 +166,13 @@ body {
   display: none;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .side-eggs {
     display: block;
     position: fixed;
     inset: 0;
-    z-index: 15;
+    /* 高于 main/header/nav/footer(10)，低于返回顶部(150) 与进度条(200) */
+    z-index: 50;
     pointer-events: none;
   }
 
@@ -175,7 +180,7 @@ body {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 32px;
+    width: 44px;
     pointer-events: auto;
   }
 
@@ -195,8 +200,9 @@ body {
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--accent);
-    opacity: 0.1;
+    opacity: 0.14;
     cursor: pointer;
+    pointer-events: auto;
     user-select: none;
     transition: opacity 0.35s ease, color 0.35s ease, text-shadow 0.35s ease;
     text-shadow: none;

@@ -461,8 +461,11 @@
   }
 
   function initSideEggs() {
-    var eggs = document.querySelectorAll('.side-egg');
+    var root = document.querySelector('.side-eggs');
+    if (!root || root.getAttribute('data-egg-ready') === '1') return;
+    var eggs = root.querySelectorAll('.side-egg');
     if (!eggs.length) return;
+    root.setAttribute('data-egg-ready', '1');
     var pool = shuffleArray(EGG_POOL.slice());
     var positions = [22, 50, 78];
     eggs.forEach(function (el, i) {
@@ -492,11 +495,15 @@
     }, 3500);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSideEggs);
-  } else {
+  function runInitSideEggs() {
     initSideEggs();
   }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runInitSideEggs);
+  } else {
+    runInitSideEggs();
+  }
+  window.addEventListener('load', runInitSideEggs);
 
   // --- Glitch effect on site title hover ---
   var titleEl = document.querySelector('.title-main');
