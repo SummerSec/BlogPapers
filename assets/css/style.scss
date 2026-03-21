@@ -850,10 +850,22 @@ li { margin-bottom: 0.3em; color: var(--text); }
 ul li::marker { color: var(--accent); }
 ol li::marker { color: var(--green); }
 
-/* --- 文章页：鼠标所在行 — 霓虹 + 浮起（伪元素叠在字上，mix-blend 染霓虹；scifi.js 设变量） --- */
+/* --- 文章页：鼠标所在行 — 霓虹条在字下方（z-index:-1），mix-blend 已弃用（多环境不可见）；scifi.js 设变量 + .article-line-hover--active --- */
 body:not(.page-front) .terminal-body .article-line-hover-target {
   position: relative;
+  z-index: 0;
   isolation: isolate;
+  transition: text-shadow 0.14s ease, filter 0.14s ease;
+}
+
+body:not(.page-front) .terminal-body .article-line-hover-target.article-line-hover--active {
+  text-shadow:
+    0 -0.5px 0 rgba(255, 0, 220, 0.35),
+    0 1px 0 rgba(0, 0, 0, 0.55),
+    0 0 12px rgba(0, 255, 247, 0.65),
+    0 0 26px rgba(255, 0, 200, 0.4),
+    0 0 42px rgba(168, 85, 255, 0.25);
+  filter: brightness(1.08) saturate(1.12);
 }
 
 /* h1 的 ::after 已用于下划线，行带用 ::before */
@@ -867,35 +879,28 @@ body:not(.page-front) .terminal-body h1.article-line-hover-target::before {
   border-radius: var(--radius-sm);
   pointer-events: none;
   opacity: var(--line-active, 0);
-  z-index: 1;
-  transform: translateY(-3px) scale(1.006);
+  z-index: -1;
+  transform: translateY(-2px) scale(1.008);
   transform-origin: center center;
   background: linear-gradient(
     105deg,
-    rgba(0, 255, 247, 0.5) 0%,
-    rgba(255, 0, 220, 0.38) 38%,
-    rgba(168, 85, 255, 0.32) 62%,
-    rgba(0, 255, 200, 0.08) 85%,
+    rgba(0, 255, 247, 0.42) 0%,
+    rgba(255, 0, 220, 0.3) 38%,
+    rgba(168, 85, 255, 0.26) 62%,
+    rgba(0, 255, 200, 0.12) 82%,
     transparent 100%
   );
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -2px 6px rgba(0, 0, 0, 0.35),
-    inset 5px 0 14px rgba(0, 255, 247, 0.55),
-    0 0 22px rgba(0, 255, 247, 0.45),
-    0 0 48px rgba(255, 0, 220, 0.22),
-    0 10px 28px rgba(0, 0, 0, 0.45);
-  mix-blend-mode: plus-lighter;
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.4),
+    inset 4px 0 12px rgba(0, 255, 247, 0.45),
+    0 0 18px rgba(0, 255, 247, 0.5),
+    0 0 36px rgba(255, 0, 220, 0.28),
+    0 8px 22px rgba(0, 0, 0, 0.5);
   transition:
     opacity 0.14s ease,
     top 0.05s linear,
     transform 0.1s ease-out;
-}
-
-@supports not (mix-blend-mode: plus-lighter) {
-  body:not(.page-front) .terminal-body h1.article-line-hover-target::before {
-    mix-blend-mode: screen;
-  }
 }
 
 body:not(.page-front) .terminal-body :is(p, li, h2, h3, h4, h5, h6).article-line-hover-target::after {
@@ -908,35 +913,28 @@ body:not(.page-front) .terminal-body :is(p, li, h2, h3, h4, h5, h6).article-line
   border-radius: var(--radius-sm);
   pointer-events: none;
   opacity: var(--line-active, 0);
-  z-index: 1;
-  transform: translateY(-3px) scale(1.006);
+  z-index: -1;
+  transform: translateY(-2px) scale(1.008);
   transform-origin: center center;
   background: linear-gradient(
     105deg,
-    rgba(0, 255, 247, 0.5) 0%,
-    rgba(255, 0, 220, 0.38) 38%,
-    rgba(168, 85, 255, 0.32) 62%,
-    rgba(0, 255, 200, 0.08) 85%,
+    rgba(0, 255, 247, 0.42) 0%,
+    rgba(255, 0, 220, 0.3) 38%,
+    rgba(168, 85, 255, 0.26) 62%,
+    rgba(0, 255, 200, 0.12) 82%,
     transparent 100%
   );
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -2px 6px rgba(0, 0, 0, 0.35),
-    inset 5px 0 14px rgba(0, 255, 247, 0.55),
-    0 0 22px rgba(0, 255, 247, 0.45),
-    0 0 48px rgba(255, 0, 220, 0.22),
-    0 10px 28px rgba(0, 0, 0, 0.45);
-  mix-blend-mode: plus-lighter;
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.4),
+    inset 4px 0 12px rgba(0, 255, 247, 0.45),
+    0 0 18px rgba(0, 255, 247, 0.5),
+    0 0 36px rgba(255, 0, 220, 0.28),
+    0 8px 22px rgba(0, 0, 0, 0.5);
   transition:
     opacity 0.14s ease,
     top 0.05s linear,
     transform 0.1s ease-out;
-}
-
-@supports not (mix-blend-mode: plus-lighter) {
-  body:not(.page-front) .terminal-body :is(p, li, h2, h3, h4, h5, h6).article-line-hover-target::after {
-    mix-blend-mode: screen;
-  }
 }
 
 /* 标题前缀在 ::before，行带右移避免盖住 //、>、# */
@@ -1400,6 +1398,15 @@ hr {
     transform: none;
   }
   body.page-front .terminal-body hr { filter: none; }
+  body:not(.page-front) .terminal-body .article-line-hover-target {
+    transition: none;
+  }
+
+  body:not(.page-front) .terminal-body .article-line-hover-target.article-line-hover--active {
+    text-shadow: none;
+    filter: none;
+  }
+
   body:not(.page-front) .terminal-body .article-line-hover-target::before,
   body:not(.page-front) .terminal-body .article-line-hover-target::after {
     transition: none;

@@ -603,12 +603,17 @@
     el.style.setProperty('--article-lh', lh + 'px');
     el.style.setProperty('--hover-line', String(idx));
     el.style.setProperty('--line-active', '1');
+    el.classList.add('article-line-hover--active');
   }
 
   function initArticleLineHover() {
-    if (reduceMotion) return;
     if (typeof document.body.classList !== 'undefined' && document.body.classList.contains('page-front')) return;
-    if (typeof window.matchMedia === 'function' && window.matchMedia('(hover: none)').matches) return;
+    /* 许多触控笔记本会报 (hover: none)，但仍可用鼠标；仅在「主要输入为粗指针」时跳过 */
+    if (typeof window.matchMedia === 'function') {
+      var mqNoHover = window.matchMedia('(hover: none)');
+      var mqCoarse = window.matchMedia('(pointer: coarse)');
+      if (mqNoHover.matches && mqCoarse.matches) return;
+    }
     var root = document.querySelector('.terminal-body');
     if (!root) return;
 
@@ -633,6 +638,7 @@
         if (raf) cancelAnimationFrame(raf);
         raf = 0;
         el.style.setProperty('--line-active', '0');
+        el.classList.remove('article-line-hover--active');
       });
     });
   }
