@@ -32,11 +32,9 @@ tags:
 
 ### Cloudflare DNS 全量（脚本同步）
 
-设置环境变量 `CLOUDFLARE_API_TOKEN`（需 Zone + DNS 读权限）后，在仓库根目录执行：
+**GitHub Actions（推荐）**：在仓库 **Settings → Secrets and variables → Actions** 中新增 Secret **`CLOUDFLARE_API_TOKEN`**（Cloudflare 令牌，需 Zone + DNS 读权限），然后在 **Actions** 里运行工作流 **Sync Cloudflare DNS (subdomain.md)**；亦可每周自动同步（无变更则不提交）。详见 `_scripts/README.md`。
 
-`python _scripts/fetch_cloudflare_subdomains.py --write`
-
-不写 `--write` 时仅打印生成的片段，不修改本文件。可选：`CLOUDFLARE_ZONE_NAME`（默认 `sumsec.me`）、`CLOUDFLARE_ZONE_ID`（可省略，由名称解析）。
+**本地**：设置环境变量 `CLOUDFLARE_API_TOKEN` 后，在仓库根目录执行 `python _scripts/fetch_cloudflare_subdomains.py --write`（不写 `--write` 则只打印片段）。可选：`CLOUDFLARE_ZONE_NAME`、`CLOUDFLARE_ZONE_ID`。
 
 <!--CLOUDFLARE_DNS_SYNC_BEGIN-->
 

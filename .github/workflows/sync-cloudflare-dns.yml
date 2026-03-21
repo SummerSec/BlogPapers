@@ -1,0 +1,57 @@
+# 从 Cloudflare DNS API 同步全量记录到 resources/subdomain.md（标记区块内）
+# 需在仓库 Settings → Secrets and variables → Actions 中配置：
+#   CLOUDFLARE_API_TOKEN — Cloudflare API 令牌（Zone + DNS Read）
+# 可选 Repository variables（同一页 Variables）：
+#   CLOUDFLARE_ZONE_NAME — 默认 sumsec.me
+#   CLOUDFLARE_ZONE_ID   — 若填写则跳过按域名解析 Zone
+
+name: Sync Cloudflare DNS (subdomain.md)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * 1' # 每周一 UTC 02:00
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-cloudflare-dns
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch DNS and patch subdomain.md
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_NAME: ${{ vars.CLOUDFLARE_ZONE_NAME }}
+          CLOUDFLARE_ZONE_ID: ${{ vars.CLOUDFLARE_ZONE_ID }}
+        run: |
+          if [ -z "${CLOUDFLARE_API_TOKEN}" ]; then
+            echo "::error::未配置 Secret CLOUDFLARE_API_TOKEN，请在仓库 Settings → Secrets and variables → Actions 中添加。"
+            exit 1
+          fi
+          export CLOUDFLARE_ZONE_NAME="${CLOUDFLARE_ZONE_NAME:-sumsec.me}"
+          python _scripts/fetch_cloudflare_subdomains.py --write
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add resources/subdomain.md
+          if git diff --staged --quiet; then
+            echo "subdomain.md 无变更，跳过提交。"
+          else
+            git commit -m "🤖 sync Cloudflare DNS 表（subdomain.md）"
+            git push
+          fi

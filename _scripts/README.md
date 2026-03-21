@@ -31,3 +31,16 @@ python _scripts/fetch_cloudflare_subdomains.py --write
 - `CLOUDFLARE_ZONE_ID`：可选；若设置则跳过按域名查 Zone。
 
 **切勿**把 API 令牌提交进 Git。
+
+### GitHub Actions（自动同步）
+
+工作流：`.github/workflows/sync-cloudflare-dns.yml`
+
+1. 打开仓库 **Settings** → **Secrets and variables** → **Actions**。
+2. **New repository secret**：名称 **`CLOUDFLARE_API_TOKEN`**，值为 Cloudflare API 令牌。
+3. （可选）**Variables** 中新增：
+   - **`CLOUDFLARE_ZONE_NAME`** — 默认可不建（工作流内默认 `sumsec.me`）；若域名不同再填。
+   - **`CLOUDFLARE_ZONE_ID`** — 可选，填写后脚本不再按名称查 Zone。
+4. **Actions** 页选择 **Sync Cloudflare DNS (subdomain.md)** → **Run workflow** 手动运行；工作流也会按 cron **每周一 UTC 02:00** 尝试同步（无变更则不会提交）。
+
+推送提交使用默认 `GITHUB_TOKEN`；若 `master` 有分支保护禁止 workflow 推送，需在保护规则中为「GitHub Actions」放行或改用 PAT（`PERSONAL_ACCESS_TOKEN` 等）——此处未内置 PAT，按仓库策略自行调整。
