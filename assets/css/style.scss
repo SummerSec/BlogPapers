@@ -1101,13 +1101,16 @@ hr {
   box-shadow: 0 0 12px rgba(45, 212, 191, 0.2);
 }
 
-/* --- 返回顶部：大号 FAB，青紫描边 + 双态动效 --- */
+/* --- 返回顶部：响应式 FAB（clamp + 安全区；触控端更大最小尺寸） --- */
 #back-to-top.back-to-top {
+  --fab-size: clamp(3.5rem, 10vw + 2.25rem, 5rem);
   position: fixed;
-  bottom: max(22px, env(safe-area-inset-bottom, 0px));
-  right: max(18px, env(safe-area-inset-right, 0px));
-  width: 60px;
-  height: 60px;
+  bottom: max(1rem, calc(env(safe-area-inset-bottom, 0px) + 0.5rem));
+  right: max(1rem, calc(env(safe-area-inset-right, 0px) + 0.5rem));
+  width: var(--fab-size);
+  height: var(--fab-size);
+  min-width: 3.5rem;
+  min-height: 3.5rem;
   padding: 0;
   border: none;
   background: transparent;
@@ -1122,6 +1125,22 @@ hr {
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (pointer: coarse) {
+  #back-to-top.back-to-top {
+    --fab-size: clamp(3.75rem, 12vw + 2.5rem, 5.5rem);
+    min-width: 3.75rem;
+    min-height: 3.75rem;
+  }
+}
+
+@media (min-width: 1200px) and (pointer: fine) {
+  #back-to-top.back-to-top {
+    --fab-size: clamp(4rem, 4vw + 2.75rem, 5.25rem);
+  }
 }
 
 #back-to-top.back-to-top.visible {
@@ -1133,7 +1152,7 @@ hr {
 .back-to-top__ring {
   position: absolute;
   inset: 0;
-  border-radius: 16px;
+  border-radius: max(14px, calc(var(--fab-size) * 0.27));
   background: linear-gradient(125deg, rgba(45, 212, 191, 0.55), rgba(192, 132, 252, 0.5), rgba(45, 212, 191, 0.4));
   opacity: 0.9;
   box-shadow:
@@ -1153,11 +1172,12 @@ hr {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  width: 54px;
-  height: 54px;
+  gap: clamp(2px, 0.4vmin, 4px);
+  box-sizing: border-box;
+  width: calc(var(--fab-size) - 6px);
+  height: calc(var(--fab-size) - 6px);
   margin: 3px;
-  border-radius: 13px;
+  border-radius: max(12px, calc(var(--fab-size) * 0.22));
   background: linear-gradient(168deg, rgba(20, 24, 36, 0.98), rgba(10, 12, 20, 0.99));
   border: 1px solid rgba(62, 232, 208, 0.42);
   color: var(--accent);
@@ -1171,11 +1191,13 @@ hr {
   flex-shrink: 0;
   margin-top: -1px;
   stroke: currentColor;
+  width: calc(var(--fab-size) * 0.36);
+  height: calc(var(--fab-size) * 0.36);
 }
 
 .back-to-top__label {
   font-family: var(--font-hdr);
-  font-size: 8.5px;
+  font-size: clamp(9px, calc(var(--fab-size) * 0.13), 11px);
   font-weight: 800;
   letter-spacing: 0.14em;
   color: rgba(226, 232, 240, 0.88);
@@ -1202,8 +1224,8 @@ hr {
 
 #back-to-top.back-to-top:focus-visible {
   outline: 2px solid rgba(45, 212, 191, 0.85);
-  outline-offset: 4px;
-  border-radius: 18px;
+  outline-offset: max(4px, calc(var(--fab-size) * 0.06));
+  border-radius: max(16px, calc(var(--fab-size) * 0.3));
 }
 
 .tag-badge {
