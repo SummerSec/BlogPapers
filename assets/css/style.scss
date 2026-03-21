@@ -157,7 +157,7 @@ body {
 
 .hex-mesh { display: none; }
 
-/* --- 宽屏两侧留白：近乎不可见的彩蛋（悬停略显，点击在控制台） --- */
+/* --- 宽屏两侧留白：低对比彩蛋（须高于 main/header z-index:10，否则与主栏重叠无法点击） --- */
 .side-eggs {
   display: none;
 }
@@ -167,7 +167,7 @@ body {
     display: block;
     position: fixed;
     inset: 0;
-    z-index: 2;
+    z-index: 15;
     pointer-events: none;
   }
 
@@ -195,8 +195,8 @@ body {
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--accent);
-    opacity: 0.055;
-    cursor: help;
+    opacity: 0.1;
+    cursor: pointer;
     user-select: none;
     transition: opacity 0.35s ease, color 0.35s ease, text-shadow 0.35s ease;
     text-shadow: none;

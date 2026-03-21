@@ -492,7 +492,11 @@
     }, 3500);
   }
 
-  initSideEggs();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSideEggs);
+  } else {
+    initSideEggs();
+  }
 
   // --- Glitch effect on site title hover ---
   var titleEl = document.querySelector('.title-main');
