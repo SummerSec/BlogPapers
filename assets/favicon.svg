@@ -1,9 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="SUMSEC">
   <defs>
     <linearGradient id="sumsec-fav-frame" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#5cdbcf"/>
-      <stop offset="52%" stop-color="#94a8e8"/>
-      <stop offset="100%" stop-color="#7dd79a"/>
+      <stop offset="0%" stop-color="#5cdbcf">
+        <animate attributeName="stop-color" values="#5cdbcf;#94a8e8;#7dd79a;#5cdbcf" dur="5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="52%" stop-color="#94a8e8">
+        <animate attributeName="stop-color" values="#94a8e8;#7dd79a;#5cdbcf;#94a8e8" dur="5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#7dd79a">
+        <animate attributeName="stop-color" values="#7dd79a;#5cdbcf;#94a8e8;#7dd79a" dur="5s" repeatCount="indefinite"/>
+      </stop>
     </linearGradient>
     <linearGradient id="sumsec-fav-fill" x1="6" y1="6" x2="26" y2="26" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#0e1220"/>
@@ -18,21 +24,29 @@
     rx="7.5"
     fill="url(#sumsec-fav-fill)"
     stroke="url(#sumsec-fav-frame)"
-    stroke-width="1.35"/>
-  <!-- 终端：> 与底线与光标（直线构成，小尺寸下不会像放大镜） -->
+    stroke-width="1.35">
+    <animate attributeName="opacity" values="1;0.92;1" dur="3.2s" repeatCount="indefinite"/>
+  </rect>
+  <!-- 终端：> 与底线与光标 -->
   <path
     d="M9.5 11.5 13 16l-3.5 4.5"
     fill="none"
     stroke="#5cdbcf"
     stroke-width="2.25"
     stroke-linecap="round"
-    stroke-linejoin="round"/>
+    stroke-linejoin="round">
+    <animate attributeName="stroke-opacity" values="0.75;1;0.75" dur="2.8s" repeatCount="indefinite"/>
+  </path>
   <path
     d="M15 21.5h11"
     fill="none"
     stroke="#94a8e8"
     stroke-width="2"
     stroke-linecap="round"
-    opacity="0.95"/>
-  <rect x="24" y="11" width="2.75" height="7" rx="0.6" fill="#7dd79a"/>
+    opacity="0.95">
+    <animate attributeName="opacity" values="0.55;0.98;0.55" dur="2.2s" repeatCount="indefinite"/>
+  </path>
+  <rect x="24" y="11" width="2.75" height="7" rx="0.6" fill="#7dd79a">
+    <animate attributeName="opacity" values="1;0.12;1" keyTimes="0;0.45;1" dur="1.1s" repeatCount="indefinite"/>
+  </rect>
 </svg>
