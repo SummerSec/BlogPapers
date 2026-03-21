@@ -506,8 +506,7 @@
       el.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        /* 播报当前槽位这条（与 code / title 一致）；刷新页面后槽位会重新随机 */
-        showHudToast(entry);
+        showHudToast(pickRandomEgg());
       });
     });
   }
