@@ -38,7 +38,7 @@ tags:
 
 <!--CLOUDFLARE_DNS_SYNC_BEGIN-->
 
-> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **68** 条原始记录，**56** 个主机名）。TXT 等内容已截断。
+> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **69** 条原始记录，**57** 个主机名）。TXT 等内容已截断。
 
 | 主机名 | 类型 | 内容（节选） | Proxied |
 | ------ | ---- | ------------ | ------- |
@@ -78,6 +78,7 @@ tags:
 | [mvnc.sumsec.me](https://mvnc.sumsec.me/) | CNAME | CNAME: 85d9e87f-3dcd-4c1f-b6a3-84e72ebc896d.cfargotunn… | 是 |
 | [nawvs.sumsec.me](https://nawvs.sumsec.me/) | CNAME | CNAME: c424a3e4-916b-4174-8d44-c9e59b54fbb5.cfargotunn… | 是 |
 | [old.sumsec.me](https://old.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
+| [openchat.sumsec.me](https://openchat.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [proxy.sumsec.me](https://proxy.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
 | [school.sumsec.me](https://school.sumsec.me/) | CNAME | CNAME: 413a8c38-4ac9-4828-97cd-828c83f75e69.cfargotunn… | 是 |
 | [serverless-dns.sumsec.me](https://serverless-dns.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
