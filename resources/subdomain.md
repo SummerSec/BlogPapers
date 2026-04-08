@@ -51,9 +51,7 @@ tags:
 | [ait.sumsec.me](https://ait.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [arl.sumsec.me](https://arl.sumsec.me/) | CNAME | CNAME: 413a8c38-4ac9-4828-97cd-828c83f75e69.cfargotunn… | 是 |
 | [awvs.sumsec.me](https://awvs.sumsec.me/) | CNAME | CNAME: c424a3e4-916b-4174-8d44-c9e59b54fbb5.cfargotunn… | 是 |
-| [bing.sumsec.me](https://bing.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [capi.sumsec.me](https://capi.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
-| [cf-ai.sumsec.me](https://cf-ai.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [cf2024-1._domainkey.sumsec.me](https://cf2024-1._domainkey.sumsec.me/) | TXT | TXT: "v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w… | 否 |
 | [chat.sumsec.me](https://chat.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [code-e62txx8fdi.sumsec.me](https://code-e62txx8fdi.sumsec.me/) | CNAME | CNAME: ziyuan.baidu.com | 是 |
@@ -94,6 +92,8 @@ tags:
 | [tv.sumsec.me](https://tv.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [ubuntu.sumsec.me](https://ubuntu.sumsec.me/) | CNAME | CNAME: c424a3e4-916b-4174-8d44-c9e59b54fbb5.cfargotunn… | 是 |
 | [uvnc.sumsec.me](https://uvnc.sumsec.me/) | CNAME | CNAME: b5c0ffe9-340b-41ff-9de9-b391adb59334.cfargotunn… | 是 |
+| [vless.sumsec.me](https://vless.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
+| [vless2sub.sumsec.me](https://vless2sub.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
 | [vnc.sumsec.me](https://vnc.sumsec.me/) | CNAME | CNAME: c424a3e4-916b-4174-8d44-c9e59b54fbb5.cfargotunn… | 是 |
 | [vps.sumsec.me](https://vps.sumsec.me/) | A | A: 107.175.245.109 | 否 |
 | [webcheck.sumsec.me](https://webcheck.sumsec.me/) | CNAME | CNAME: cute-hotteok-8af4f6.netlify.app | 是 |
