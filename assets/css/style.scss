@@ -2062,9 +2062,6 @@ h2, h3, h4 { scroll-margin-top: 72px; }
     display: flex;
   }
 
-  #article-reading-mode .reading-mode-switcher__btn[data-reading-mode="ppt"] {
-    display: none;
-  }
 }
 
 @media (max-width: 767px) {
