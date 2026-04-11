@@ -652,6 +652,10 @@ header, main, footer, nav { position: relative; z-index: 10; }
   padding: clamp(22px, 2vw, 34px) clamp(18px, 1.8vw, 28px);
 }
 
+body.reading-mode-shell-article .terminal-body--with-ppt {
+  padding: clamp(26px, 3.2vw, 44px) clamp(20px, 3vw, 38px);
+}
+
 /* --- 浏览量 HUD（CountAPI，见 scifi.js；默认可见，避免 API 挂起时整块消失） --- */
 .view-stats {
   display: flex;
@@ -1892,10 +1896,37 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   .terminal-window-wrap--with-ppt::before {
     width: 3px;
   }
+
+  body.reading-mode-shell-article .terminal-window-wrap--with-ppt {
+    border-radius: var(--radius);
+  }
+
+  body.reading-mode-shell-article .terminal-window-wrap--with-ppt::before {
+    width: 2px;
+  }
 }
 
 /* 桌面：带 PPT 时进入更接近全屏的阅读舞台 */
 @media (min-width: 768px) {
+  body.reading-mode-shell-article #article-reading-mode .article-column {
+    width: 100%;
+    margin: 0;
+  }
+
+  body.reading-mode-shell-article #article-reading-mode #article-pane {
+    overflow: visible;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  body.reading-mode-shell-article #article-reading-mode #article-pane .article-pane__inner {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
   #article-reading-mode.mode-article #article-ppt-shell {
     display: block;
   }

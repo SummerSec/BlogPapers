@@ -781,6 +781,9 @@
       if (!pptOk && (mode === 'split' || mode === 'ppt')) mode = 'article';
       readingRoot.classList.remove('mode-split', 'mode-article', 'mode-ppt');
       readingRoot.classList.add('mode-' + mode);
+      if (document.body && document.body.classList) {
+        document.body.classList.toggle('reading-mode-shell-article', mode === 'article');
+      }
       syncAria(mode);
       if (opts.fromUser) userChosen = true;
     }
