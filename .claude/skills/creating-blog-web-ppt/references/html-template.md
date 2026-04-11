@@ -89,6 +89,48 @@ deck 的“主画布”必须始终被限制在当前视口内，不能让用户
 - 首屏 slide 在常见桌面视口下应完整落在可视区域内
 - 当视口过窄、过矮或内容过多时，允许切换为纵向流式布局，而不是硬撑固定舞台
 
+## 原文图片约束
+
+当页面直接复用原文中的配图时，图片必须服从 slide 舞台，而不是让舞台反过来服从图片原始尺寸。
+
+默认要求：
+
+- 图片优先放在受限的 figure 容器中，例如 `.figure-frame`
+- figure 容器本身要有明确的 `max-width` 与 `max-height`
+- 内容图默认优先 `object-fit: contain`，保证图片完整可见
+- 不要让图片的原始分辨率、长宽比或内联尺寸把列布局撑开
+- 不要因为一张大图就让 `slide-inner` 高度或宽度突破既定舞台边框
+
+推荐模式：
+
+```html
+<div class="figure-wrap">
+  <div class="figure-frame">
+    <img src="./pic/..." alt="配图说明">
+  </div>
+  <div class="figure-caption">图注</div>
+</div>
+```
+
+```css
+.figure-frame {
+  width: 100%;
+  max-width: 100%;
+  max-height: min(42vh, calc(var(--frame-height) - 180px));
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.figure-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+```
+
+如果该图是纯装饰性背景图、封面氛围图或明确允许裁切的视觉素材，才考虑 `cover`；原文中的图表、流程图、对比图、截图默认不应裁切关键内容。
+
 常见安全做法：
 
 - 桌面端用一个受限宽高的舞台容器承载 `slide-inner`
@@ -123,6 +165,7 @@ deck 的“主画布”必须始终被限制在当前视口内，不能让用户
 - 固定在顶部的 HUD
 - 通过视口约束避免主画布超宽或超高
 - 右下角提供固定定位、可点击且不遮挡主内容的全屏按钮
+- 让原文图片缩进受限图框，而不是把图框或舞台撑大
 
 ## 响应式底线
 
@@ -132,6 +175,8 @@ deck 的“主画布”必须始终被限制在当前视口内，不能让用户
 - 缩小窗口后出现横向滚动条
 - 为了保固定比例，导致文字或图表被压到不可读
 - 小屏下仍保持桌面多列布局，导致信息挤压
+- 一张原文大图把 figure 容器、列布局或 `slide-inner` 直接撑破
+- 对原文图表默认使用 `cover`，导致关键内容被裁切
 
 ## 内容映射提醒
 

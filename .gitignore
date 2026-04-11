@@ -9,5 +9,6 @@ __pycache__/
 output/**
 docs/**
 .cursor/**
+.playwright-cli/**
 
 # Trigger Pages redeploy
