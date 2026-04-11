@@ -234,14 +234,14 @@
             data-ppt-url="{{ ppt_href | xml_escape }}"
             data-reading-default-desktop="split"
             data-reading-default-mobile="article">
+            <div id="reading-mode-switcher" class="reading-mode-switcher" role="toolbar" aria-label="阅读模式切换">
+              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="split">开启 PPT 框</button>
+              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="article">关闭 PPT 框</button>
+              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="ppt">仅看 PPT</button>
+              <a id="ppt-standalone-link" class="reading-mode-switcher__btn reading-mode-switcher__link" href="{{ ppt_href }}" target="_blank" rel="noopener noreferrer">独立打开</a>
+            </div>
             <div id="article-ppt-shell" class="article-ppt-shell">
               <div class="article-column">
-                <div id="reading-mode-switcher" class="reading-mode-switcher" role="toolbar" aria-label="阅读模式切换">
-                  <button type="button" class="reading-mode-switcher__btn" data-reading-mode="split">开启 PPT 框</button>
-                  <button type="button" class="reading-mode-switcher__btn" data-reading-mode="article">关闭 PPT 框</button>
-                  <button type="button" class="reading-mode-switcher__btn" data-reading-mode="ppt">仅看 PPT</button>
-                  <a id="ppt-standalone-link" class="reading-mode-switcher__btn reading-mode-switcher__link" href="{{ ppt_href }}" target="_blank" rel="noopener noreferrer">独立打开</a>
-                </div>
                 <div id="article-pane" class="article-pane">
                   <div class="article-pane__inner">
                     {{ content }}
