@@ -557,10 +557,6 @@ header, main, footer, nav { position: relative; z-index: 10; }
   box-sizing: border-box;
 }
 
-.main-content--with-ppt {
-  width: min(100%, calc(100vw - 2 * var(--layout-gutter)));
-}
-
 .terminal-window-wrap {
   position: relative;
   border-radius: var(--radius);
@@ -1927,10 +1923,6 @@ h2, h3, h4 { scroll-margin-top: 72px; }
 }
 
 @media (min-width: 1200px) {
-  .main-content--with-ppt {
-    width: min(98vw, 150rem);
-  }
-
   .terminal-window-wrap--with-ppt {
     border-radius: 16px;
   }
