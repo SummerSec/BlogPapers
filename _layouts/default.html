@@ -234,30 +234,32 @@
             data-ppt-url="{{ ppt_href | xml_escape }}"
             data-reading-default-desktop="split"
             data-reading-default-mobile="article">
-            <div id="reading-mode-switcher" class="reading-mode-switcher" role="toolbar" aria-label="阅读模式切换">
-              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="split">开启 PPT 框</button>
-              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="article">关闭 PPT 框</button>
-              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="ppt">仅看 PPT</button>
-            </div>
             <div id="article-ppt-shell" class="article-ppt-shell">
-              <div id="article-pane" class="article-pane">
-                <div class="article-pane__inner">
-                  {{ content }}
-                  {% unless page_is_home %}
-                  {% if ut.repo and page.comments != false %}
-                  <section class="comments-section" id="comments" aria-labelledby="comments-heading">
-                    <h2 class="comments-section__title" id="comments-heading">评论</h2>
-                    <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
-                    <script src="https://utteranc.es/client.js"
-                      repo="{{ ut.repo }}"
-                      issue-term="{{ ut.issue_term | default: 'pathname' }}"
-                      theme="{{ ut.theme | default: 'github-dark' }}"
-                      {% if ut.label %}label="{{ ut.label }}"{% endif %}
-                      crossorigin="anonymous"
-                      async></script>
-                  </section>
-                  {% endif %}
-                  {% endunless %}
+              <div class="article-column">
+                <div id="reading-mode-switcher" class="reading-mode-switcher" role="toolbar" aria-label="阅读模式切换">
+                  <button type="button" class="reading-mode-switcher__btn" data-reading-mode="split">开启 PPT 框</button>
+                  <button type="button" class="reading-mode-switcher__btn" data-reading-mode="article">关闭 PPT 框</button>
+                  <button type="button" class="reading-mode-switcher__btn" data-reading-mode="ppt">仅看 PPT</button>
+                </div>
+                <div id="article-pane" class="article-pane">
+                  <div class="article-pane__inner">
+                    {{ content }}
+                    {% unless page_is_home %}
+                    {% if ut.repo and page.comments != false %}
+                    <section class="comments-section" id="comments" aria-labelledby="comments-heading">
+                      <h2 class="comments-section__title" id="comments-heading">评论</h2>
+                      <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
+                      <script src="https://utteranc.es/client.js"
+                        repo="{{ ut.repo }}"
+                        issue-term="{{ ut.issue_term | default: 'pathname' }}"
+                        theme="{{ ut.theme | default: 'github-dark' }}"
+                        {% if ut.label %}label="{{ ut.label }}"{% endif %}
+                        crossorigin="anonymous"
+                        async></script>
+                    </section>
+                    {% endif %}
+                    {% endunless %}
+                  </div>
                 </div>
               </div>
               <div id="ppt-pane" class="ppt-pane">

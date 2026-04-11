@@ -1723,7 +1723,7 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   gap: var(--reading-switcher-gap);
   row-gap: 10px;
   max-width: 100%;
-  margin: 0 0 1.2rem;
+  margin: 0;
   padding: 10px 12px;
   border-radius: 999px;
   border: 1px solid rgba(100, 140, 180, 0.18);
@@ -1799,6 +1799,13 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   max-width: 100%;
   min-width: 0;
   overflow-x: hidden;
+}
+
+#article-reading-mode .article-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  min-width: 0;
 }
 
 #article-reading-mode #article-pane,
@@ -1939,7 +1946,7 @@ h2, h3, h4 { scroll-margin-top: 72px; }
     display: block;
   }
 
-  #article-reading-mode.mode-article #article-pane {
+  #article-reading-mode.mode-article .article-column {
     max-width: min(100%, 92rem);
     margin: 0 auto;
   }
@@ -1953,12 +1960,12 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   #article-reading-mode.mode-split #article-ppt-shell {
     display: grid;
     grid-template-columns: minmax(0, 1.06fr) minmax(540px, 0.94fr);
-    align-items: stretch;
+    align-items: start;
     column-gap: var(--reading-pane-gap);
     row-gap: var(--reading-pane-gap);
   }
 
-  #article-reading-mode.mode-split #article-pane,
+  #article-reading-mode.mode-split .article-column,
   #article-reading-mode.mode-split #ppt-pane {
     height: var(--reading-split-height);
     min-height: var(--reading-split-height);
@@ -1967,7 +1974,13 @@ h2, h3, h4 { scroll-margin-top: 72px; }
     overscroll-behavior: contain;
   }
 
+  #article-reading-mode.mode-split .article-column {
+    gap: 1rem;
+  }
+
   #article-reading-mode.mode-split #article-pane {
+    flex: 1 1 auto;
+    min-height: 0;
     overflow: auto;
     border-radius: calc(var(--radius) + 2px);
     border: 1px solid rgba(110, 150, 190, 0.14);
