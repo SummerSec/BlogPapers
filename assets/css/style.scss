@@ -1694,16 +1694,11 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   pointer-events: auto;
 }
 
-/* 桌面「并排」时放宽终端层 overflow，避免 #ppt-pane position:sticky 被裁成不可见（仅 :has 支持的浏览器） */
-@supports selector(:has(*)) {
-  @media (min-width: 768px) {
-    .terminal-window:has(#article-reading-mode.mode-split) {
-      overflow: visible;
-    }
-
-    .terminal-body:has(#article-reading-mode.mode-split) {
-      overflow: visible;
-    }
+/* 桌面「并排」时放宽终端层 overflow，避免 #ppt-pane 的 sticky 被祖先裁剪 */
+@media (min-width: 768px) {
+  body.reading-mode-split-active .terminal-window,
+  body.reading-mode-split-active .terminal-body {
+    overflow: visible;
   }
 }
 
