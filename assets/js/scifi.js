@@ -738,6 +738,7 @@
         if (!doc) return;
         var host = doc.head || doc.documentElement;
         if (!host) return;
+        var scrollRoot = doc.scrollingElement || doc.documentElement;
         var style = doc.getElementById('sumsec-ppt-scrollbar-skin');
         if (!style) {
           style = doc.createElement('style');
@@ -745,15 +746,27 @@
           host.appendChild(style);
         }
 
+        if (scrollRoot && scrollRoot.classList) scrollRoot.classList.add('sumsec-scroll-root');
+        if (doc.documentElement && doc.documentElement.classList) {
+          doc.documentElement.classList.add('sumsec-scroll-root');
+          doc.documentElement.style.scrollbarWidth = 'thin';
+          doc.documentElement.style.scrollbarColor = 'rgba(92, 219, 207, 0.25) #05060c';
+        }
+        if (doc.body) {
+          if (doc.body.classList) doc.body.classList.add('sumsec-scroll-root');
+          doc.body.style.scrollbarWidth = 'thin';
+          doc.body.style.scrollbarColor = 'rgba(92, 219, 207, 0.25) #05060c';
+        }
+
         style.textContent =
-          'html, body, main, section, div {' +
+          '.sumsec-scroll-root, html, body {' +
           'scrollbar-width: thin;' +
           'scrollbar-color: rgba(92, 219, 207, 0.25) #05060c;' +
           '}' +
-          '*::-webkit-scrollbar { width: 8px; height: 8px; }' +
-          '*::-webkit-scrollbar-track { background: #05060c; }' +
-          '*::-webkit-scrollbar-thumb { background: rgba(92, 219, 207, 0.25); border-radius: 4px; }' +
-          '*::-webkit-scrollbar-thumb:hover { background: rgba(92, 219, 207, 0.45); }';
+          '.sumsec-scroll-root::-webkit-scrollbar, html::-webkit-scrollbar, body::-webkit-scrollbar { width: 8px; height: 8px; }' +
+          '.sumsec-scroll-root::-webkit-scrollbar-track, html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { background: #05060c; }' +
+          '.sumsec-scroll-root::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background: rgba(92, 219, 207, 0.25); border-radius: 4px; }' +
+          '.sumsec-scroll-root::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { background: rgba(92, 219, 207, 0.45); }';
       } catch (eSkin) {
         /* ignore same-origin iframe styling failures */
       }
@@ -919,7 +932,11 @@
     }
 
     if (frame) {
-      frame.addEventListener('load', syncPptScrollbarSkin);
+      frame.addEventListener('load', function () {
+        syncPptScrollbarSkin();
+        window.setTimeout(syncPptScrollbarSkin, 120);
+        window.setTimeout(syncPptScrollbarSkin, 600);
+      });
       window.setTimeout(syncPptScrollbarSkin, 0);
     }
 
