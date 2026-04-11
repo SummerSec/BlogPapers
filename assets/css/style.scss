@@ -1124,6 +1124,18 @@ table {
   overflow-wrap: anywhere;
 }
 
+@media (max-width: 900px) {
+  .terminal-body table {
+    table-layout: auto;
+  }
+
+  .terminal-body table :is(th, td) {
+    width: auto !important;
+    min-width: 0 !important;
+    white-space: normal;
+  }
+}
+
 thead tr {
   background: linear-gradient(180deg, rgba(92, 219, 207, 0.1), rgba(92, 219, 207, 0.04));
   border-bottom: 1px solid rgba(120, 200, 210, 0.25);
