@@ -689,6 +689,226 @@
     });
   }
 
+  // --- 文章 + 配套 PPT：阅读模式切换、断点默认、同源轻量探测 ---
+  function initArticleReadingMode() {
+    var readingRoot = document.getElementById('article-reading-mode');
+    if (!readingRoot) return;
+
+    var switcher = document.getElementById('reading-mode-switcher');
+    var frame = document.getElementById('article-ppt-frame');
+    var standalone = document.getElementById('ppt-standalone-link');
+    var pptUrlAttr = readingRoot.getAttribute('data-ppt-url') || '';
+
+    var userChosen = false;
+    var pptOk = true;
+    var mq = typeof window.matchMedia === 'function'
+      ? window.matchMedia('(min-width: 768px)')
+      : null;
+
+    function normalizeMode(m) {
+      m = String(m || '').toLowerCase().trim();
+      if (m === 'split' || m === 'article' || m === 'ppt') return m;
+      return 'article';
+    }
+
+    function defaultModeFromData() {
+      var isDesktop = mq ? mq.matches : (window.innerWidth >= 768);
+      var d = readingRoot.dataset || {};
+      var desk = normalizeMode(d.readingDefaultDesktop || 'split');
+      var mob = normalizeMode(d.readingDefaultMobile || 'article');
+      var pick = isDesktop ? desk : mob;
+      if (!pptOk && (pick === 'split' || pick === 'ppt')) return 'article';
+      return pick;
+    }
+
+    function resolvePptUrl() {
+      if (!pptUrlAttr || !String(pptUrlAttr).trim()) return null;
+      try {
+        return new URL(pptUrlAttr, window.location.href);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    var pptResolved = resolvePptUrl();
+
+    function getMode() {
+      if (readingRoot.classList.contains('mode-split')) return 'split';
+      if (readingRoot.classList.contains('mode-ppt')) return 'ppt';
+      if (readingRoot.classList.contains('mode-article')) return 'article';
+      return '';
+    }
+
+    function syncAria(mode) {
+      var buttons = readingRoot.querySelectorAll(
+        '#reading-mode-switcher .reading-mode-switcher__btn[data-reading-mode]'
+      );
+      buttons.forEach(function (btn) {
+        var m = btn.getAttribute('data-reading-mode');
+        if (btn.style.display === 'none') {
+          btn.setAttribute('aria-pressed', 'false');
+          return;
+        }
+        btn.setAttribute('aria-pressed', m === mode ? 'true' : 'false');
+      });
+    }
+
+    function setMode(mode, opts) {
+      opts = opts || {};
+      mode = normalizeMode(mode);
+      if (!pptOk && (mode === 'split' || mode === 'ppt')) mode = 'article';
+      readingRoot.classList.remove('mode-split', 'mode-article', 'mode-ppt');
+      readingRoot.classList.add('mode-' + mode);
+      syncAria(mode);
+      if (opts.fromUser) userChosen = true;
+    }
+
+    function applyViewportDefault() {
+      if (userChosen) return;
+      setMode(defaultModeFromData(), { fromUser: false });
+    }
+
+    function onReadingMqChange() {
+      applyViewportDefault();
+    }
+
+    function applyPptUnavailable() {
+      pptOk = false;
+      readingRoot.setAttribute('data-ppt-probe', 'fail');
+
+      if (frame) {
+        try {
+          frame.removeAttribute('src');
+          frame.setAttribute('src', 'about:blank');
+        } catch (eF) { /* ignore */ }
+      }
+      if (standalone) standalone.style.display = 'none';
+
+      var buttons = readingRoot.querySelectorAll(
+        '#reading-mode-switcher .reading-mode-switcher__btn[data-reading-mode]'
+      );
+      buttons.forEach(function (btn) {
+        var m = btn.getAttribute('data-reading-mode');
+        if (m === 'split' || m === 'ppt') {
+          btn.style.display = 'none';
+          btn.setAttribute('aria-hidden', 'true');
+          btn.setAttribute('tabindex', '-1');
+        } else {
+          btn.style.display = '';
+          btn.removeAttribute('aria-hidden');
+          btn.removeAttribute('tabindex');
+        }
+      });
+
+      var cur = getMode();
+      if (cur === 'split' || cur === 'ppt' || !cur) {
+        setMode('article', { fromUser: false });
+      } else {
+        syncAria(getMode());
+      }
+    }
+
+    function runSameOriginProbe() {
+      if (!pptResolved || pptResolved.origin !== window.location.origin) return;
+
+      if (typeof fetch !== 'function') {
+        readingRoot.setAttribute('data-ppt-probe', 'skip-no-fetch');
+        return;
+      }
+
+      var href = pptResolved.href;
+      var ac = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var to = 0;
+      if (ac) {
+        to = window.setTimeout(function () {
+          try {
+            ac.abort();
+          } catch (eA) { /* ignore */ }
+        }, 8000);
+      }
+
+      function clearTo() {
+        if (to) window.clearTimeout(to);
+      }
+
+      function tryGet() {
+        return fetch(href, {
+          method: 'GET',
+          cache: 'no-store',
+          credentials: 'same-origin',
+          signal: ac ? ac.signal : undefined,
+          headers: { Range: 'bytes=0-0' }
+        }).then(function (r) {
+          return r.ok || r.status === 206;
+        });
+      }
+
+      function tryHead() {
+        return fetch(href, {
+          method: 'HEAD',
+          cache: 'no-store',
+          credentials: 'same-origin',
+          signal: ac ? ac.signal : undefined
+        }).then(function (r) {
+          if (r.ok) return true;
+          return tryGet();
+        }).catch(function () {
+          return tryGet();
+        });
+      }
+
+      tryHead()
+        .then(function (ok) {
+          clearTo();
+          if (ok) {
+            readingRoot.setAttribute('data-ppt-probe', 'ok');
+            return;
+          }
+          applyPptUnavailable();
+        })
+        .catch(function () {
+          clearTo();
+          applyPptUnavailable();
+        });
+    }
+
+    setMode(defaultModeFromData(), { fromUser: false });
+
+    if (switcher) {
+      switcher.addEventListener('click', function (e) {
+        var btn = e.target && e.target.closest &&
+          e.target.closest('.reading-mode-switcher__btn[data-reading-mode]');
+        if (!btn || !readingRoot.contains(btn)) return;
+        if (btn.style.display === 'none') return;
+        var m = normalizeMode(btn.getAttribute('data-reading-mode'));
+        setMode(m, { fromUser: true });
+      });
+    }
+
+    if (mq) {
+      if (mq.addEventListener) mq.addEventListener('change', onReadingMqChange);
+      else if (mq.addListener) mq.addListener(onReadingMqChange);
+    }
+
+    if (!pptResolved) {
+      applyPptUnavailable();
+    } else if (pptResolved.origin !== window.location.origin) {
+      /* 跨域：不因 CORS 误判，不在此发 fetch；由 iframe / 独立页承担加载结果 */
+      readingRoot.setAttribute('data-ppt-probe', 'skip-cross-origin');
+    } else {
+      runSameOriginProbe();
+    }
+  }
+
+  function runInitArticleReadingMode() {
+    initArticleReadingMode();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runInitArticleReadingMode);
+  } else {
+    runInitArticleReadingMode();
+  }
+
   // --- Tag：按标签文字哈希自动配色，无需改 JS；新文章只要在表格末列写 甲/乙/丙 ---
   var TAG_PALETTE = [
     '45, 212, 191',

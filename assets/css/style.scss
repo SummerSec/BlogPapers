@@ -1694,6 +1694,212 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   pointer-events: auto;
 }
 
+/* 桌面「并排」时放宽终端层 overflow，避免 #ppt-pane position:sticky 被裁成不可见（仅 :has 支持的浏览器） */
+@supports selector(:has(*)) {
+  @media (min-width: 768px) {
+    .terminal-window:has(#article-reading-mode.mode-split) {
+      overflow: visible;
+    }
+
+    .terminal-body:has(#article-reading-mode.mode-split) {
+      overflow: visible;
+    }
+  }
+}
+
+/* =============================================
+   文章 + 配套 PPT 阅读模式（双栏 / 单列，仅含 #article-reading-mode 的页面）
+   ============================================= */
+#article-reading-mode {
+  --reading-switcher-gap: 8px;
+  --reading-pane-gap: clamp(14px, 2.2vw, 26px);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin-top: 0.5rem;
+  box-sizing: border-box;
+}
+
+#article-reading-mode #reading-mode-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--reading-switcher-gap);
+  row-gap: 10px;
+  margin: 0 0 1rem;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(100, 140, 180, 0.14);
+  background: linear-gradient(105deg, rgba(12, 14, 24, 0.55), rgba(16, 20, 32, 0.42));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+#article-reading-mode .reading-mode-switcher__btn {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  padding: 8px 14px;
+  min-height: 40px;
+  font-family: var(--font-hdr);
+  font-size: clamp(11px, calc(0.62rem + 0.2vw), 12px);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(200, 210, 228, 0.88);
+  background: rgba(92, 219, 207, 0.05);
+  border: 1px solid rgba(120, 175, 200, 0.2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.14s ease;
+}
+
+#article-reading-mode .reading-mode-switcher__btn:hover {
+  color: #f0f4fa;
+  background: rgba(92, 219, 207, 0.1);
+  border-color: rgba(92, 219, 207, 0.32);
+  box-shadow: 0 0 14px rgba(92, 219, 207, 0.08);
+}
+
+#article-reading-mode .reading-mode-switcher__btn:focus-visible {
+  outline: none;
+  color: var(--accent);
+  border-color: rgba(92, 219, 207, 0.45);
+  box-shadow:
+    0 0 0 2px rgba(92, 219, 207, 0.25),
+    0 0 18px rgba(92, 219, 207, 0.12);
+}
+
+#article-reading-mode .reading-mode-switcher__btn:active {
+  transform: scale(0.98);
+  background: rgba(92, 219, 207, 0.14);
+}
+
+/* 父级 mode 与按钮 data-reading-mode 对应时的高亮（不依赖额外类名） */
+#article-reading-mode.mode-split .reading-mode-switcher__btn[data-reading-mode="split"],
+#article-reading-mode.mode-article .reading-mode-switcher__btn[data-reading-mode="article"],
+#article-reading-mode.mode-ppt .reading-mode-switcher__btn[data-reading-mode="ppt"] {
+  color: #f6fffe;
+  background: rgba(92, 219, 207, 0.14);
+  border-color: rgba(92, 219, 207, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 16px rgba(92, 219, 207, 0.12);
+}
+
+#article-reading-mode #article-ppt-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--reading-pane-gap);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+#article-reading-mode #article-pane,
+#article-reading-mode #ppt-pane {
+  min-width: 0;
+  max-width: 100%;
+}
+
+#article-reading-mode #article-pane {
+  flex: 1 1 auto;
+}
+
+#article-reading-mode #ppt-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 0 1 auto;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(110, 150, 190, 0.12);
+  background: rgba(8, 10, 18, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  min-height: min(52vh, 420px);
+}
+
+#article-reading-mode .ppt-standalone-link {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: clamp(11px, calc(0.65rem + 0.12vw), 12px);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--magenta);
+  border-bottom: 1px solid rgba(148, 168, 232, 0.35);
+  padding-bottom: 1px;
+  text-decoration: none;
+}
+
+#article-reading-mode .ppt-standalone-link:hover {
+  color: #e8ecff;
+  border-bottom-color: rgba(148, 168, 232, 0.55);
+}
+
+#article-reading-mode #article-ppt-frame {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: min(68vh, 640px);
+  min-height: 320px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: rgba(4, 6, 12, 0.65);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* 桌面：并排 — 文章列更宽（grid 比例约 65% / 35%） */
+@media (min-width: 768px) {
+  #article-reading-mode.mode-split #article-ppt-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.78fr);
+    align-items: start;
+    column-gap: var(--reading-pane-gap);
+    row-gap: var(--reading-pane-gap);
+  }
+
+  #article-reading-mode.mode-split #ppt-pane {
+    position: sticky;
+    top: max(12px, env(safe-area-inset-top, 0px));
+    max-height: min(calc(100vh - 48px), 920px);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #article-reading-mode.mode-split #article-ppt-frame {
+    min-height: min(52vh, 560px);
+    height: min(62vh, 600px);
+  }
+}
+
+/* 只看文章：隐藏 PPT 栏 */
+#article-reading-mode.mode-article #ppt-pane {
+  display: none !important;
+}
+
+/* 只看 PPT：隐藏正文栏 */
+#article-reading-mode.mode-ppt #article-pane {
+  display: none !important;
+}
+
+#article-reading-mode.mode-ppt #ppt-pane {
+  min-height: min(60vh, 520px);
+}
+
+#article-reading-mode.mode-ppt #article-ppt-frame {
+  height: min(78vh, 820px);
+  min-height: min(56vh, 480px);
+}
+
 @media (max-width: 700px) {
   .site-header { padding: 14px 16px 0; }
   .header-inner { gap: 10px; }

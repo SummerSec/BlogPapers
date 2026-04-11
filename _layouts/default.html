@@ -22,6 +22,68 @@
 {% elsif page.url == _root_path %}
   {% assign page_is_home = true %}
 {% endif %}
+{% comment %} ---------- Article + PPT：布局元数据（仅 Liquid；无配套 PPT 不输出阅读模式壳层） ---------- {% endcomment %}
+{% assign ppt_explicit_raw = '' %}
+{% assign ppt_candidate_rel = '' %}
+{% assign ppt_resolved_rel = '' %}
+{% assign page_has_ppt = false %}
+{% assign page_is_markdown_article = false %}
+{% assign _ppt_src = page.path | default: '' %}
+{% assign _ppt_src_ext = _ppt_src | split: '.' | last %}
+{% if _ppt_src_ext == 'md' or _ppt_src_ext == 'markdown' %}
+  {% unless _ppt_src == 'README.md' or _ppt_src contains 'resources/' %}
+    {% assign page_is_markdown_article = true %}
+  {% endunless %}
+{% endif %}
+{% if page_is_markdown_article %}
+  {% assign ppt_explicit_raw = page.ppt | default: '' | strip %}
+  {% assign _ppt_dir = page.dir | default: '/' %}
+  {% if _ppt_dir == '' %}
+    {% assign _ppt_dir = '/' %}
+  {% endif %}
+  {% assign _ppt_fname = page.name | default: '' %}
+  {% assign _ppt_stem = _ppt_fname %}
+  {% if _ppt_fname contains '.markdown' %}
+    {% assign _ppt_stem = _ppt_fname | remove: '.markdown' %}
+  {% elsif _ppt_fname contains '.md' %}
+    {% assign _ppt_stem = _ppt_fname | remove: '.md' %}
+  {% endif %}
+  {% if _ppt_stem != '' %}
+    {% assign ppt_candidate_rel = _ppt_dir | append: _ppt_stem | append: '.html' | replace: '//', '/' %}
+  {% endif %}
+  {% assign _ppt_exp_resolved = '' %}
+  {% if ppt_explicit_raw != '' %}
+    {% if ppt_explicit_raw contains '://' %}
+      {% assign _ppt_exp_resolved = ppt_explicit_raw %}
+    {% else %}
+      {% assign _ppt_exp0 = ppt_explicit_raw | slice: 0, 1 %}
+      {% if _ppt_exp0 == '/' %}
+        {% assign _ppt_exp_resolved = ppt_explicit_raw %}
+      {% else %}
+        {% assign _ppt_exp_head2 = ppt_explicit_raw | slice: 0, 2 %}
+        {% assign _ppt_exp_tail = ppt_explicit_raw %}
+        {% if _ppt_exp_head2 == './' %}
+          {% assign _ppt_exp_tail = ppt_explicit_raw | slice: 2, 4096 %}
+        {% endif %}
+        {% assign _ppt_exp_resolved = _ppt_dir | append: _ppt_exp_tail | replace: '//', '/' %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+  {% if ppt_explicit_raw != '' %}
+    {% assign ppt_resolved_rel = _ppt_exp_resolved %}
+  {% else %}
+    {% assign ppt_resolved_rel = ppt_candidate_rel %}
+  {% endif %}
+  {% assign _ppt_page_u = page.url | split: '?' | first | split: '#' | first %}
+  {% assign _ppt_target_u = ppt_resolved_rel | split: '?' | first | split: '#' | first %}
+  {% capture _ppt_canon_page_c %}{{ _ppt_page_u | relative_url }}{% endcapture %}
+  {% assign _ppt_canon_page = _ppt_canon_page_c | strip %}
+  {% capture _ppt_canon_target_c %}{% if _ppt_target_u contains '://' %}{{ _ppt_target_u }}{% else %}{{ _ppt_target_u | relative_url }}{% endif %}{% endcapture %}
+  {% assign _ppt_canon_target = _ppt_canon_target_c | strip %}
+  {% if _ppt_canon_target != '' and _ppt_canon_target != _ppt_canon_page %}
+    {% assign page_has_ppt = true %}
+  {% endif %}
+{% endif %}
 <!DOCTYPE html>
 <html lang="zh-CN"{% if tlen > thr %} data-title-marquee-at="{{ thr }}"{% endif %}>
 <head>
@@ -159,8 +221,50 @@
             <span class="view-stats__sparkline" id="stat-sparkline" aria-hidden="true"></span>
           </div>
           {% endif %}
-          {{ content }}
           {% assign ut = site.utterances %}
+          {% if page_is_markdown_article and page_has_ppt %}
+          {% capture _ppt_href_buf %}{% if ppt_resolved_rel contains '://' %}{{ ppt_resolved_rel }}{% else %}{{ ppt_resolved_rel | relative_url }}{% endif %}{% endcapture %}
+          {% assign ppt_href = _ppt_href_buf | strip %}
+          <div
+            id="article-reading-mode"
+            class="article-reading-mode"
+            data-ppt-explicit="{{ ppt_explicit_raw | xml_escape }}"
+            data-ppt-candidate="{{ ppt_candidate_rel | xml_escape }}"
+            data-ppt-url="{{ ppt_href | xml_escape }}"
+            data-reading-default-desktop="split"
+            data-reading-default-mobile="article">
+            <div id="reading-mode-switcher" class="reading-mode-switcher" role="toolbar" aria-label="阅读模式切换">
+              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="split">并排阅读</button>
+              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="article">只看文章</button>
+              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="ppt">只看 PPT</button>
+            </div>
+            <div id="article-ppt-shell" class="article-ppt-shell">
+              <div id="article-pane" class="article-pane">
+                {{ content }}
+                {% unless page_is_home %}
+                {% if ut.repo and page.comments != false %}
+                <section class="comments-section" id="comments" aria-labelledby="comments-heading">
+                  <h2 class="comments-section__title" id="comments-heading">评论</h2>
+                  <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
+                  <script src="https://utteranc.es/client.js"
+                    repo="{{ ut.repo }}"
+                    issue-term="{{ ut.issue_term | default: 'pathname' }}"
+                    theme="{{ ut.theme | default: 'github-dark' }}"
+                    {% if ut.label %}label="{{ ut.label }}"{% endif %}
+                    crossorigin="anonymous"
+                    async></script>
+                </section>
+                {% endif %}
+                {% endunless %}
+              </div>
+              <div id="ppt-pane" class="ppt-pane">
+                <a id="ppt-standalone-link" class="ppt-standalone-link" href="{{ ppt_href }}" target="_blank" rel="noopener noreferrer">打开独立 PPT 页面</a>
+                <iframe id="article-ppt-frame" class="article-ppt-frame" src="{{ ppt_href }}" title="本文配套 PPT"></iframe>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          {{ content }}
           {% unless page_is_home %}
           {% if ut.repo and page.comments != false %}
           <section class="comments-section" id="comments" aria-labelledby="comments-heading">
@@ -176,6 +280,7 @@
           </section>
           {% endif %}
           {% endunless %}
+          {% endif %}
         </div>
       </div>
     </div>

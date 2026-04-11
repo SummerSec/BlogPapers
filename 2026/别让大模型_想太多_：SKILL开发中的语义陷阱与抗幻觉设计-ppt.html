@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#05060c">
+  <title>别让大模型想太多 · 语义陷阱网页版 PPT</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05060c;
+      --surface: rgba(16, 19, 31, 0.88);
+      --surface-strong: rgba(11, 15, 26, 0.94);
+      --accent: #5cdbcf;
+      --accent-muted: rgba(92, 219, 207, 0.16);
+      --magenta: #94a8e8;
+      --green: #7dd79a;
+      --amber: #d4b04a;
+      --danger: #e0a050;
+      --text: #e8ecf4;
+      --text-muted: #8b95ab;
+      --text-dim: #656d82;
+      --border: rgba(110, 150, 200, 0.14);
+      --border-strong: rgba(130, 175, 220, 0.24);
+      --shadow-panel: 0 28px 64px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(130, 185, 220, 0.12);
+      --font-hdr: "Exo 2", "Noto Sans SC", system-ui, sans-serif;
+      --font-body: "JetBrains Mono", "Noto Sans SC", "Microsoft YaHei UI", monospace;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --max-width: min(1200px, calc(100vw - 72px));
+      --transition: 260ms ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(92, 219, 207, 0.08), transparent 28%),
+        radial-gradient(circle at 80% 0%, rgba(148, 168, 232, 0.09), transparent 26%),
+        linear-gradient(180deg, #05060c 0%, #070913 42%, #06070d 100%);
+      background-color: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: var(--font-body);
+      background: transparent;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(100, 150, 200, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(100, 150, 200, 0.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, black 28%, transparent 88%);
+    }
+
+    body::after {
+      opacity: 0.09;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(0, 0, 0, 0.18) 3px,
+          rgba(0, 0, 0, 0.18) 4px
+        );
+    }
+
+    a {
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .deck-shell {
+      position: relative;
+      z-index: 1;
+    }
+
+    .deck-hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      padding: 14px 18px 0;
+      pointer-events: none;
+    }
+
+    .hud-row {
+      width: min(1300px, calc(100vw - 36px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 18px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(6, 8, 14, 0.74);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+      pointer-events: auto;
+    }
+
+    .hud-brand,
+    .hud-meta,
+    .hud-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .hud-brand {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    .hud-brand strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .hud-current {
+      max-width: 36ch;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .hud-counter {
+      font-size: 13px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .hud-nav button {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(14, 18, 28, 0.8);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font: inherit;
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
+    }
+
+    .hud-nav button:hover,
+    .hud-nav button:focus-visible {
+      border-color: rgba(92, 219, 207, 0.42);
+      background: rgba(92, 219, 207, 0.12);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .progress-track {
+      width: min(1300px, calc(100vw - 36px));
+      height: 4px;
+      margin: 10px auto 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--magenta));
+      box-shadow: 0 0 24px rgba(92, 219, 207, 0.4);
+      transition: width 240ms ease;
+    }
+
+    main {
+      padding: 108px 0 52px;
+    }
+
+    .slide {
+      min-height: 100svh;
+      padding: 40px 0;
+      display: grid;
+      place-items: center;
+      scroll-snap-align: start;
+    }
+
+    .slide-inner {
+      width: var(--max-width);
+      min-height: min(78svh, 860px);
+      padding: clamp(28px, 4vw, 48px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 24%),
+        var(--surface);
+      box-shadow: var(--shadow-panel);
+      display: grid;
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .slide-inner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top right, rgba(92, 219, 207, 0.08), transparent 28%),
+        radial-gradient(circle at left center, rgba(148, 168, 232, 0.08), transparent 34%);
+      z-index: -1;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: var(--font-hdr);
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: clamp(2.9rem, 6vw, 5.8rem);
+      line-height: 0.96;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 1.02;
+    }
+
+    h3 {
+      font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+      line-height: 1.25;
+    }
+
+    p,
+    li {
+      margin: 0;
+      color: var(--text-muted);
+      line-height: 1.78;
+      font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 1.2em;
+      display: grid;
+      gap: 10px;
+    }
+
+    .lead {
+      max-width: 72ch;
+      font-size: clamp(1.05rem, 1.28vw, 1.16rem);
+    }
+
+    .accent {
+      color: var(--accent);
+    }
+
+    .hero-grid,
+    .split-grid,
+    .triple-grid,
+    .quad-grid,
+    .stat-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .hero-grid,
+    .split-grid {
+      grid-template-columns: 1.12fr 0.88fr;
+      align-items: stretch;
+    }
+
+    .triple-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .quad-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .stat-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .panel,
+    .stat-card,
+    .mini-card,
+    .quote-card,
+    .code-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(7, 10, 18, 0.74);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .stat-card {
+      display: grid;
+      gap: 8px;
+      align-content: start;
+      min-height: 200px;
+    }
+
+    .stat-number {
+      font-family: var(--font-hdr);
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 0.92;
+      color: var(--text);
+    }
+
+    .stat-number.good {
+      color: var(--green);
+    }
+
+    .stat-number.bad {
+      color: var(--danger);
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .stat-delta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      width: fit-content;
+      background: rgba(224, 160, 80, 0.12);
+      color: #f0c17d;
+      font-size: 14px;
+    }
+
+    .pillars .mini-card,
+    .error-types .mini-card {
+      min-height: 220px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .mini-card strong {
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .mini-card .symbol {
+      font-size: 28px;
+      font-family: var(--font-hdr);
+      color: var(--accent);
+    }
+
+    .two-tone {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .judge-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+      background: rgba(8, 12, 21, 0.88);
+    }
+
+    .judge-card.good {
+      border-color: rgba(125, 215, 154, 0.24);
+      box-shadow: inset 0 0 0 1px rgba(125, 215, 154, 0.06);
+    }
+
+    .judge-card.bad {
+      border-color: rgba(224, 160, 80, 0.24);
+      box-shadow: inset 0 0 0 1px rgba(224, 160, 80, 0.06);
+    }
+
+    .judge-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .judge-badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .code-card code,
+    .judge-card code {
+      display: block;
+      white-space: pre-wrap;
+      color: #c9f9f3;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .visual {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(6, 9, 16, 0.9);
+      min-height: 280px;
+      display: grid;
+      place-items: center;
+    }
+
+    .visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .matrix-box {
+      border: 1px solid var(--border-strong);
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 20%),
+        rgba(7, 10, 18, 0.9);
+      padding: 26px;
+      display: grid;
+      gap: 16px;
+      min-height: 440px;
+    }
+
+    .matrix-grid {
+      position: relative;
+      min-height: 340px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 49.5%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 50.5%),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.05) 49.5%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.05) 50.5%),
+        rgba(9, 13, 22, 0.9);
+      background-size: 100% 100%, 100% 100%, auto;
+    }
+
+    .zone {
+      position: absolute;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      color: var(--text);
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.24);
+    }
+
+    .zone.safe {
+      top: 18px;
+      left: 18px;
+      background: rgba(125, 215, 154, 0.12);
+      border-color: rgba(125, 215, 154, 0.26);
+    }
+
+    .zone.danger {
+      right: 18px;
+      bottom: 18px;
+      background: rgba(224, 160, 80, 0.14);
+      border-color: rgba(224, 160, 80, 0.28);
+    }
+
+    .token {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      background: rgba(9, 13, 22, 0.96);
+      white-space: nowrap;
+    }
+
+    .token.safe {
+      color: #d2f7de;
+      border-color: rgba(125, 215, 154, 0.28);
+    }
+
+    .token.warn {
+      color: #ffe0ae;
+      border-color: rgba(224, 160, 80, 0.34);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 16px;
+    }
+
+    .timeline-step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .timeline-no {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-hdr);
+      color: var(--accent);
+      border: 1px solid rgba(92, 219, 207, 0.34);
+      background: rgba(92, 219, 207, 0.08);
+      flex-shrink: 0;
+    }
+
+    .kpi-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .kpi {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .quote-card {
+      display: grid;
+      gap: 12px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .quote-card blockquote {
+      margin: 0;
+      font-family: var(--font-hdr);
+      font-size: clamp(1.15rem, 1.8vw, 1.65rem);
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .legend span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 13px;
+    }
+
+    .footer-note {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .cover {
+      align-content: space-between;
+    }
+
+    .cover-top {
+      display: grid;
+      gap: 18px;
+      max-width: 78ch;
+    }
+
+    .cover-kicker {
+      display: inline-flex;
+      width: fit-content;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .cover-bottom {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .cover-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: rgba(8, 11, 20, 0.82);
+      display: grid;
+      gap: 8px;
+    }
+
+    .cover-card strong {
+      font-family: var(--font-hdr);
+      font-size: 1.8rem;
+      color: var(--text);
+    }
+
+    .cover-card:nth-child(1) strong {
+      color: var(--green);
+    }
+
+    .cover-card:nth-child(2) strong {
+      color: var(--danger);
+    }
+
+    .cover-card:nth-child(3) strong {
+      color: var(--accent);
+    }
+
+    .slide.is-active .slide-inner {
+      border-color: rgba(92, 219, 207, 0.28);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .split-grid,
+      .triple-grid,
+      .quad-grid,
+      .stat-grid,
+      .two-tone,
+      .cover-bottom {
+        grid-template-columns: 1fr;
+      }
+
+      .hud-row {
+        flex-wrap: wrap;
+        border-radius: 20px;
+      }
+
+      .hud-current {
+        max-width: 100%;
+      }
+
+      main {
+        padding-top: 132px;
+      }
+
+      .slide {
+        min-height: auto;
+        padding: 18px 0;
+      }
+
+      .slide-inner {
+        min-height: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-shell">
+    <header class="deck-hud">
+      <div class="hud-row">
+        <div class="hud-brand">
+          <span>SUMSEC</span>
+          <strong>WEB PPT</strong>
+        </div>
+        <div class="hud-meta">
+          <span class="hud-current" id="hud-current">封面</span>
+          <span class="hud-counter" id="hud-counter">1 / 1</span>
+        </div>
+        <div class="hud-nav">
+          <button type="button" id="prev-btn" aria-label="上一页">Prev</button>
+          <button type="button" id="next-btn" aria-label="下一页">Next</button>
+        </div>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </header>
+
+    <main id="deck">
+      <section class="slide" data-title="封面">
+        <div class="slide-inner cover">
+          <div class="cover-top">
+            <div class="cover-kicker">
+              <span>网页版演讲稿</span>
+              <span>独立 HTML</span>
+              <span>长版展开</span>
+            </div>
+            <div class="eyebrow">Semantic Trap / Skill Design / Anti-Hallucination</div>
+            <h1>别让大模型<br>“想太多”</h1>
+            <p class="lead">SKILL 开发中的语义陷阱与抗幻觉设计。不是流程不够严，而是某些关键词在模型语义空间里，天生就更容易把边界撑开。</p>
+          </div>
+          <div class="cover-bottom">
+            <div class="cover-card">
+              <span class="stat-label">漏洞版正确率</span>
+              <strong>89.3%</strong>
+              <p>语义边界更窄，约束更容易落地。</p>
+            </div>
+            <div class="cover-card">
+              <span class="stat-label">风险版正确率</span>
+              <strong>62.1%</strong>
+              <p>仅替换一个词，就出现大规模越界输出。</p>
+            </div>
+            <div class="cover-card">
+              <span class="stat-label">核心结论</span>
+              <strong>27pt</strong>
+              <p>Prompt 的边界，不只由规则决定，也由词义宽度决定。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="破题">
+        <div class="slide-inner">
+          <div class="eyebrow">Problem Statement</div>
+          <h2>一个词，为什么能拉开 27 个百分点？</h2>
+          <div class="stat-grid">
+            <div class="stat-card">
+              <span class="stat-label">共同前提</span>
+              <h3>两套 Skill 的流程、文件结构、工具链完全一致</h3>
+              <p>唯一差异只是核心术语：一个写“漏洞”，一个写“风险”。</p>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">实验样本</span>
+              <div class="stat-number">56</div>
+              <p>同一批营销接口、同一模型环境、同一审计目标。</p>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">引发的问题</span>
+              <h3>明明约束写清了，模型为何还会“自由发挥”？</h3>
+              <p>这不是个别失误，而是一个可重复出现的系统性现象。</p>
+            </div>
+          </div>
+          <div class="quote-card">
+            <blockquote>抗幻觉不只是“把规则写得更细”，还包括“把关键词选得更窄”。</blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="结果对比">
+        <div class="slide-inner">
+          <div class="eyebrow">Experiment Result</div>
+          <h2>同一任务，不同术语，输出质量骤变</h2>
+          <div class="hero-grid">
+            <div class="panel">
+              <div class="kpi-row">
+                <span class="kpi">Claude Code</span>
+                <span class="kpi">DeepSeek V3.2</span>
+                <span class="kpi">营销接口测试集</span>
+              </div>
+              <div class="two-tone" style="margin-top: 20px;">
+                <div class="stat-card">
+                  <span class="stat-label">biz-vul-security</span>
+                  <div class="stat-number good">89.3%</div>
+                  <p>关键词是“漏洞”，模型聚焦于定义内的漏洞类别。</p>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-label">biz-risk-security</span>
+                  <div class="stat-number bad">62.1%</div>
+                  <p>关键词换成“风险”，模型开始输出更多定义外的内容。</p>
+                </div>
+              </div>
+              <div class="stat-delta" style="margin-top: 18px;">差值：27 个百分点</div>
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/02-accuracy-dashboard.png" alt="准确率对比仪表盘">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="任务背景">
+        <div class="slide-inner">
+          <div class="eyebrow">Task Context</div>
+          <h2>案例本身并不复杂，复杂的是模型如何理解边界</h2>
+          <div class="split-grid">
+            <div class="panel">
+              <h3>业务场景</h3>
+              <ul>
+                <li>目标接口是一个“端外券领取”接口：<code>outflow/voucher/receive</code>。</li>
+                <li>用户点击“领券”后，系统会调用该接口发放营销奖励。</li>
+                <li>审计核心是：攻击者能否改参数，越权领取不属于自己的奖品。</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <h3>正确答案</h3>
+              <ul>
+                <li><code>campId</code> 这类关键营销参数来自服务端配置，不由请求传入。</li>
+                <li>用户可控参数与营销活动绑定关系不直接相关。</li>
+                <li>因此结论应为：<span class="accent">无安全隐患 / 无漏洞</span>。</li>
+              </ul>
+            </div>
+          </div>
+          <p class="lead">也就是说，问题并不在“代码太难懂”，而在“模型会不会忠实待在定义好的审计边界里”。</p>
+        </div>
+      </section>
+
+      <section class="slide" data-title="漏洞版报告">
+        <div class="slide-inner">
+          <div class="eyebrow">Report A</div>
+          <h2>“漏洞”版：逻辑链条收敛，判定边界清晰</h2>
+          <div class="two-tone">
+            <div class="judge-card good">
+              <div class="judge-title">
+                <h3>biz-vul-security</h3>
+                <span class="judge-badge">核心词：漏洞</span>
+              </div>
+              <code>是否为营销接口：是
+任意发奖漏洞判定结果：无漏洞
+1. campId 从配置获取
+2. 非外部可控
+3. 结论：无漏洞</code>
+            </div>
+            <div class="panel">
+              <h3>为什么它表现稳定</h3>
+              <ul>
+                <li>它严格围绕“漏洞定义文件”中的判定标准执行。</li>
+                <li>输出是一个窄边界的“是/否 + 依据”过程。</li>
+                <li>即使看到别的代码瑕疵，也不会主动扩展评估范围。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="风险版报告">
+        <div class="slide-inner">
+          <div class="eyebrow">Report B</div>
+          <h2>“风险”版：不是算错，而是开始越界思考</h2>
+          <div class="two-tone">
+            <div class="judge-card bad">
+              <div class="judge-title">
+                <h3>biz-risk-security</h3>
+                <span class="judge-badge">核心词：风险</span>
+              </div>
+              <code>是否为营销接口：否
+接口风险等级：低风险
+1. 代码逻辑错误
+2. 参数校验不足
+3. 权限控制缺失</code>
+            </div>
+            <div class="panel">
+              <h3>偏移点</h3>
+              <ul>
+                <li>先把营销接口识别错了。</li>
+                <li>再发明出定义文件里根本不存在的问题类别。</li>
+                <li>这些内容并非完全胡编，但它们不属于当前 Skill 定义的审计目标。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="visual">
+            <img src="./pic/llm/03-report-comparison.png" alt="两份报告对比图">
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="排除误解">
+        <div class="slide-inner">
+          <div class="eyebrow">False Lead</div>
+          <h2>不是“风险版写得差”，而是机械替换后仍然失控</h2>
+          <div class="split-grid">
+            <div class="quote-card">
+              <blockquote>我们对两个 Skill 的全部文件做了 diff，确认没有结构性差异。</blockquote>
+              <p>主文件、定义文件、示例文件、步骤框架全部只是做了术语替换：<code>vulnerability -&gt; risk</code>。</p>
+            </div>
+            <div class="panel">
+              <h3>这一步排除了什么</h3>
+              <ul>
+                <li>不是漏写规则。</li>
+                <li>不是工具链不同。</li>
+                <li>不是 Few-shot 示例数量不同。</li>
+                <li>不是执行步骤不一致。</li>
+              </ul>
+            </div>
+          </div>
+          <p class="lead">当所有“工程差异”都被排除后，唯一剩下的解释，只能落在词汇本身的语义边界上。</p>
+        </div>
+      </section>
+
+      <section class="slide" data-title="四大支柱">
+        <div class="slide-inner pillars">
+          <div class="eyebrow">Methodology</div>
+          <h2>高质量 Skill，本来已经有一套很强的约束体系</h2>
+          <div class="quad-grid">
+            <div class="mini-card">
+              <div class="symbol">01</div>
+              <strong>结构化工作流</strong>
+              <p>把任务拆成不可跳过、不可乱序的步骤跑道。</p>
+            </div>
+            <div class="mini-card">
+              <div class="symbol">02</div>
+              <strong>校验-执行-验证</strong>
+              <p>每一步都写状态、回读状态，降低遗忘与偷工减料。</p>
+            </div>
+            <div class="mini-card">
+              <div class="symbol">03</div>
+              <strong>定义文件 + 示例</strong>
+              <p>用穷举边界和反误判案例，把解释空间压到最小。</p>
+            </div>
+            <div class="mini-card">
+              <div class="symbol">04</div>
+              <strong>领域定制工具</strong>
+              <p>减少模型面对通用工具时的选择噪声。</p>
+            </div>
+          </div>
+          <div class="visual">
+            <img src="./pic/llm/08-four-pillars.png" alt="四大核心支柱图">
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="六步工作流">
+        <div class="slide-inner">
+          <div class="eyebrow">Workflow</div>
+          <h2>第一根支柱：把任务变成确定性的执行跑道</h2>
+          <div class="timeline">
+            <div class="timeline-step"><div class="timeline-no">1</div><div><h3>Progress 文件创建</h3><p>先建立外部状态，后续每一步都能回看。</p></div></div>
+            <div class="timeline-step"><div class="timeline-no">2</div><div><h3>链路追踪分析</h3><p>识别接口入口与核心防御机制。</p></div></div>
+            <div class="timeline-step"><div class="timeline-no">3</div><div><h3>参数流向分析</h3><p>追踪关键参数是否可被外部控制。</p></div></div>
+            <div class="timeline-step"><div class="timeline-no">4</div><div><h3>接口分析</h3><p>识别是否属于营销接口场景。</p></div></div>
+            <div class="timeline-step"><div class="timeline-no">5</div><div><h3>漏洞评估判定</h3><p>只能按定义文件中的漏洞类型做判断。</p></div></div>
+            <div class="timeline-step"><div class="timeline-no">6</div><div><h3>Final Answer 报告</h3><p>输出结构化结论，而不是开放式作文。</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="校验循环">
+        <div class="slide-inner">
+          <div class="eyebrow">Validation Loop</div>
+          <h2>第二根支柱：校验 → 执行 → 验证，强迫模型“回头看”</h2>
+          <div class="hero-grid">
+            <div class="panel">
+              <ul>
+                <li><span class="accent">前置校验</span>：读取进度文件，确认前一步已完成。</li>
+                <li><span class="accent">执行过程</span>：记录将执行的动作与中间结果。</li>
+                <li><span class="accent">后置校验</span>：再次回读状态，验证结果确实被写入。</li>
+              </ul>
+              <p style="margin-top: 16px;">这相当于给大模型外挂了一层“外部记忆”，不再完全依赖上下文窗口里的隐式记忆。</p>
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/05-validation-cycle.png" alt="校验执行验证循环图">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="定义文件">
+        <div class="slide-inner">
+          <div class="eyebrow">Definition File</div>
+          <h2>第三根支柱：穷举边界，纠正常见误判</h2>
+          <div class="split-grid">
+            <div class="panel">
+              <h3>定义文件做什么</h3>
+              <ul>
+                <li>明确“什么算漏洞，什么不算漏洞”。</li>
+                <li>罗列无漏洞场景，减少模型自行脑补。</li>
+                <li>把容易误判的场景提前写成反例。</li>
+              </ul>
+            </div>
+            <div class="code-card">
+              <code>参数从配置获取
+campId / prizeId 来自可信配置
+不从请求参数传入
+=&gt; 非外部可控
+=&gt; 无漏洞</code>
+            </div>
+          </div>
+          <div class="visual">
+            <img src="./pic/llm/06-definition-structure.png" alt="定义文件结构图">
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="工具链">
+        <div class="slide-inner">
+          <div class="eyebrow">Custom Tooling</div>
+          <h2>第四根支柱：领域定制工具，不给模型太多犹豫空间</h2>
+          <div class="hero-grid">
+            <div class="panel">
+              <h3>通用工具的问题</h3>
+              <ul>
+                <li>能搜、能读、能执行，但不告诉模型什么时候用、为什么用、怎么用。</li>
+                <li>模型很容易在工具选择上反复摇摆，甚至挑错入口。</li>
+              </ul>
+              <h3 style="margin-top: 18px;">领域工具的价值</h3>
+              <ul>
+                <li>把“使用时机”和“参数形态”提前编码进 Skill。</li>
+                <li>模型只需沿着预设路径执行，探索空间显著缩小。</li>
+              </ul>
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/07-custom-toolchain.png" alt="领域定制工具链图">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="过渡">
+        <div class="slide-inner">
+          <div class="eyebrow">Transition</div>
+          <h2>问题来了：四大支柱都在，为什么换成“风险”就失灵？</h2>
+          <div class="quote-card">
+            <blockquote>同样的流程、同样的校验、同样的定义、同样的工具，换了一个词之后，模型仍然能把边界撑开。</blockquote>
+          </div>
+          <p class="lead">这说明失控不只发生在“执行层”，还发生在更底层的“语义激活层”。</p>
+        </div>
+      </section>
+
+      <section class="slide" data-title="语义陷阱定义">
+        <div class="slide-inner">
+          <div class="eyebrow">Semantic Trap</div>
+          <h2>什么是“语义陷阱”</h2>
+          <div class="quote-card">
+            <blockquote>在人类看来意思相近的词，在大模型的语义空间里，可能激活出完全不同宽度的联想网络。</blockquote>
+          </div>
+          <div class="split-grid">
+            <div class="panel">
+              <h3>它和普通“提示词不够清晰”不同</h3>
+              <p>这里不是让指令从模糊变清楚，而是在已经写得很清楚的前提下，某个关键词仍然悄悄扩大了认知范围。</p>
+            </div>
+            <div class="panel">
+              <h3>核心症状</h3>
+              <ul>
+                <li>模型开始考虑定义外的内容。</li>
+                <li>约束条款看似还在，实际约束力下降。</li>
+                <li>输出不是随机错误，而是“有理由地越界”。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="漏洞与风险">
+        <div class="slide-inner">
+          <div class="eyebrow">Word Boundary</div>
+          <h2>“漏洞”与“风险”，在模型里并不是等价近义词</h2>
+          <div class="two-tone">
+            <div class="judge-card good">
+              <div class="judge-title">
+                <h3>漏洞 / Vulnerability</h3>
+                <span class="judge-badge">窄边界</span>
+              </div>
+              <ul>
+                <li>具体、可利用、可验证。</li>
+                <li>天然适合“有 / 无”的二元判断。</li>
+                <li>注意力容易收束到定义文件中的少数具体类型。</li>
+              </ul>
+            </div>
+            <div class="judge-card bad">
+              <div class="judge-title">
+                <h3>风险 / Risk</h3>
+                <span class="judge-badge">宽边界</span>
+              </div>
+              <ul>
+                <li>偏可能性、趋势与程度。</li>
+                <li>天然带有“未来可能发生什么”的展望性。</li>
+                <li>容易把代码质量、权限设计、参数充分性一起卷进来。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="two-tone">
+            <div class="visual">
+              <img src="./pic/llm/09-semantic-vulnerability.png" alt="漏洞的紧凑语义空间">
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/10-semantic-risk.png" alt="风险的发散语义空间">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="错误模式总览">
+        <div class="slide-inner error-types">
+          <div class="eyebrow">Error Pattern</div>
+          <h2>风险版的错误，不是一个点，而是三种稳定模式</h2>
+          <div class="hero-grid">
+            <div class="quad-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+              <div class="mini-card">
+                <div class="symbol">68%</div>
+                <strong>范围溢出</strong>
+                <p>输出定义文件中根本不存在的风险类型。</p>
+              </div>
+              <div class="mini-card">
+                <div class="symbol">24%</div>
+                <strong>等级虚高</strong>
+                <p>把本应“无风险”的情况说成“低风险”。</p>
+              </div>
+              <div class="mini-card">
+                <div class="symbol">8%</div>
+                <strong>逻辑偏移</strong>
+                <p>分析路径本身被宽词带偏，先把业务场景理解错。</p>
+              </div>
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/11-error-patterns.png" alt="错误模式分布图">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="错误模式拆解">
+        <div class="slide-inner">
+          <div class="eyebrow">Pattern Breakdown</div>
+          <h2>关键特征：它不是在框架内算错，而是在框架外思考</h2>
+          <div class="triple-grid">
+            <div class="mini-card">
+              <strong>范围溢出</strong>
+              <ul>
+                <li>参数校验不充分风险</li>
+                <li>权限控制缺失风险</li>
+                <li>代码逻辑错误风险</li>
+                <li>配置变更风险</li>
+              </ul>
+            </div>
+            <div class="mini-card">
+              <strong>等级虚高</strong>
+              <p>只要看到“不够完美”的实现细节，就倾向于归类为低风险，即便它并不命中任何定义条目。</p>
+            </div>
+            <div class="mini-card">
+              <strong>逻辑偏移</strong>
+              <p>同一段代码里，“漏洞”版能识别为营销接口，而“风险”版先把场景理解错，后续判断自然全部偏移。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="仓库类比">
+        <div class="slide-inner">
+          <div class="eyebrow">Analogy</div>
+          <h2>“破损”与“有问题”的差别，就是“漏洞”与“风险”的差别</h2>
+          <div class="hero-grid">
+            <div class="panel">
+              <h3>给实习生两份指令</h3>
+              <ul>
+                <li>版本 A：检查仓库里是否有“破损”的货物。</li>
+                <li>版本 B：检查仓库里是否有“有问题”的货物。</li>
+              </ul>
+              <p style="margin-top: 16px;">如果清单完全一样，A 会集中找物理破损，B 却可能顺手报告标签不齐、货架积灰、摆放不规范。</p>
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/12-warehouse-analogy.png" alt="仓库类比图">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="常见词对">
+        <div class="slide-inner">
+          <div class="eyebrow">Common Trap Pairs</div>
+          <h2>这不是个案，很多近义词都会触发类似问题</h2>
+          <div class="triple-grid">
+            <div class="mini-card">
+              <strong>检查 → 审查</strong>
+              <p>从客观判定，滑向主观评价。</p>
+            </div>
+            <div class="mini-card">
+              <strong>列出 → 描述</strong>
+              <p>从结构化输出，滑向解释性发挥。</p>
+            </div>
+            <div class="mini-card">
+              <strong>缺陷 → 问题</strong>
+              <p>从具体缺陷，滑向泛化改进意见。</p>
+            </div>
+            <div class="mini-card">
+              <strong>总结 → 分析</strong>
+              <p>从提炼已有信息，滑向推理与假设。</p>
+            </div>
+            <div class="mini-card">
+              <strong>要求 → 建议</strong>
+              <p>从明确边界，滑向开放联想空间。</p>
+            </div>
+            <div class="mini-card">
+              <strong>错误 → 异常</strong>
+              <p>从明确错误，滑向模糊偏差与轻微波动。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="语义敏感度矩阵">
+        <div class="slide-inner">
+          <div class="eyebrow">LLM Semantic Matrix</div>
+          <h2>一个实用判断法：语义边界越窄，输出越可控</h2>
+          <div class="matrix-box">
+            <div class="legend">
+              <span>横轴：边界清晰度</span>
+              <span>纵轴：发散倾向</span>
+              <span>左上更安全，右下更危险</span>
+            </div>
+            <div class="matrix-grid">
+              <div class="zone safe">安全区</div>
+              <div class="zone danger">危险区</div>
+              <div class="token safe" style="left: 16%; top: 20%;">漏洞</div>
+              <div class="token safe" style="left: 26%; top: 22%;">缺陷</div>
+              <div class="token safe" style="left: 36%; top: 24%;">错误</div>
+              <div class="token safe" style="left: 18%; top: 36%;">检查</div>
+              <div class="token safe" style="left: 29%; top: 39%;">列出</div>
+              <div class="token safe" style="left: 40%; top: 42%;">要求</div>
+              <div class="token warn" style="left: 62%; top: 58%;">总结</div>
+              <div class="token warn" style="left: 74%; top: 61%;">问题</div>
+              <div class="token warn" style="left: 84%; top: 57%;">审查</div>
+              <div class="token warn" style="left: 62%; top: 74%;">建议</div>
+              <div class="token warn" style="left: 74%; top: 78%;">分析</div>
+              <div class="token warn" style="left: 86%; top: 82%;">风险</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="理论升华">
+        <div class="slide-inner">
+          <div class="eyebrow">Why This Matters</div>
+          <h2>传统 Prompt 工程是在砌围墙，语义边界控制是在检查砖会不会膨胀</h2>
+          <div class="hero-grid">
+            <div class="panel">
+              <ul>
+                <li>格式约束、角色设定、Few-shot，本质上都在加强“围墙”。</li>
+                <li>但如果关键词自身语义宽度过大，它就像会膨胀的砖。</li>
+                <li>围墙再严，只要砖自己向外长，边界还是会被撑裂。</li>
+              </ul>
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/14-expanding-bricks.png" alt="围墙与砖块图">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="选词原则">
+        <div class="slide-inner">
+          <div class="eyebrow">Practical Principle</div>
+          <h2>实战原则：在表意准确的前提下，始终优先窄边界词</h2>
+          <div class="triple-grid">
+            <div class="mini-card">
+              <strong>优先名词目标</strong>
+              <p>“检测安全漏洞”通常优于“评估安全性”。</p>
+            </div>
+            <div class="mini-card">
+              <strong>优先动宾结构</strong>
+              <p>“列出未处理异常”通常优于“分析异常处理情况”。</p>
+            </div>
+            <div class="mini-card">
+              <strong>先测同义词宽度</strong>
+              <p>把候选词放进统一句式里，看看它会诱发多少种合理输出。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="测试方法">
+        <div class="slide-inner">
+          <div class="eyebrow">Semantic Drift Tests</div>
+          <h2>写完 Skill 后，至少做三类漂移测试</h2>
+          <div class="hero-grid">
+            <div class="timeline">
+              <div class="timeline-step"><div class="timeline-no">1</div><div><h3>排除测试</h3><p>问模型：除了定义内条目，还有哪些也算 X？如果它能轻易说出很多额外内容，说明词太宽。</p></div></div>
+              <div class="timeline-step"><div class="timeline-no">2</div><div><h3>最小对比测试</h3><p>挑一个你确定无问题的样例，看输出是否仍夹带“定义外”附加判断。</p></div></div>
+              <div class="timeline-step"><div class="timeline-no">3</div><div><h3>换词对照测试</h3><p>把核心词换成更窄的同义词，在同样测试集上重新跑，看结果怎么变。</p></div></div>
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/15-testing-methods.png" alt="测试方法图">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="锚定策略">
+        <div class="slide-inner">
+          <div class="eyebrow">Boundary Anchoring</div>
+          <h2>如果业务上必须使用宽词，就给它补三道锚</h2>
+          <div class="triple-grid">
+            <div class="mini-card">
+              <strong>前置否定清单</strong>
+              <p>直接写出“哪些虽然通常也算风险，但本 Skill 一律不评估”。</p>
+            </div>
+            <div class="mini-card">
+              <strong>输出格式硬约束</strong>
+              <p>把输出做成枚举字段和填空式结构，不给“额外发现”留口子。</p>
+            </div>
+            <div class="mini-card">
+              <strong>反例强化</strong>
+              <p>把“看起来像，但其实不算”的场景写进 Few-shot 里，给模型画红线。</p>
+            </div>
+          </div>
+          <div class="visual">
+            <img src="./pic/llm/16-anchoring-strategies.png" alt="边界锚定策略图">
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="自检清单">
+        <div class="slide-inner">
+          <div class="eyebrow">Checklist</div>
+          <h2>一个 Skill 完成后，至少问自己这 8 个问题</h2>
+          <div class="split-grid">
+            <div class="panel">
+              <ul>
+                <li>核心术语是不是最窄边界？</li>
+                <li>排除测试能不能稳住？</li>
+                <li>有没有明确的“不包括”清单？</li>
+                <li>输出是结构化填空，还是开放作文？</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <ul>
+                <li>有没有“表面像但实际上不算”的反例？</li>
+                <li>最小对比测试会不会冒出额外内容？</li>
+                <li>有没有外部状态来对抗遗忘？</li>
+                <li>工具有没有足够领域化，帮助模型收敛？</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="检测器引入">
+        <div class="slide-inner">
+          <div class="eyebrow">Tooling Up</div>
+          <h2>从理论走向工具：语义陷阱检测器</h2>
+          <div class="split-grid">
+            <div class="panel">
+              <h3>为什么需要它</h3>
+              <p>当 Skill 变长、引用文件变多、术语埋得更深时，靠人工逐词巡检既慢又容易漏。</p>
+            </div>
+            <div class="panel">
+              <h3>它做什么</h3>
+              <ul>
+                <li>把高危词对固化成词典。</li>
+                <li>把排查过程变成确定性步骤。</li>
+                <li>不仅指出问题，还给替换和锚定建议。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="检测流程">
+        <div class="slide-inner">
+          <div class="eyebrow">Detector Workflow</div>
+          <h2>检测器把“语感判断”变成可重复执行的四步流程</h2>
+          <div class="hero-grid">
+            <div class="timeline">
+              <div class="timeline-step"><div class="timeline-no">1</div><div><h3>加载词典</h3><p>读取已知语义陷阱词汇对与边界锚定知识。</p></div></div>
+              <div class="timeline-step"><div class="timeline-no">2</div><div><h3>提取关键词</h3><p>核心术语、动作指令、约束词、输出描述词。</p></div></div>
+              <div class="timeline-step"><div class="timeline-no">3</div><div><h3>匹配与上下文分析</h3><p>既看词本身，也看它在句子里扮演什么角色。</p></div></div>
+              <div class="timeline-step"><div class="timeline-no">4</div><div><h3>输出报告</h3><p>给出风险等级、替换建议和边界锚定方案。</p></div></div>
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/17-detector-workflow.png" alt="检测器工作流图">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="检测示例">
+        <div class="slide-inner">
+          <div class="eyebrow">Example</div>
+          <h2>最小示例：两次替换，就能把句子从危险区拉回安全区</h2>
+          <div class="two-tone">
+            <div class="code-card">
+              <h3>原句</h3>
+              <code>请审查这段代码中的安全问题，
+只关注定义文件中的问题类型。</code>
+            </div>
+            <div class="code-card">
+              <h3>替换后</h3>
+              <code>请检查这段代码中的安全漏洞，
+只关注定义文件中的漏洞类型。</code>
+            </div>
+          </div>
+          <div class="split-grid">
+            <div class="panel">
+              <h3>为什么“审查”危险</h3>
+              <p>它更容易触发主观评价和额外意见，而不是通过 / 不通过式检查。</p>
+            </div>
+            <div class="panel">
+              <h3>为什么“问题”危险</h3>
+              <p>它的范围极宽，改进建议、代码风格、设计缺陷都可能被包进去。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="流程接入">
+        <div class="slide-inner">
+          <div class="eyebrow">Process Integration</div>
+          <h2>最佳落点：把语义检测做成 Skill 开发流程里的标准环节</h2>
+          <div class="hero-grid">
+            <div class="panel">
+              <div class="kpi-row">
+                <span class="kpi">Skill 编写</span>
+                <span class="kpi">语义陷阱检测</span>
+                <span class="kpi">修复 / 锚定</span>
+                <span class="kpi">功能测试</span>
+                <span class="kpi">发布</span>
+              </div>
+              <p style="margin-top: 18px;">它相当于给 Prompt / Skill 增加了一层“语义级别的静态分析”，把原本依赖经验的语感判断流程化。</p>
+            </div>
+            <div class="visual">
+              <img src="./pic/llm/18-cicd-pipeline.png" alt="语义检测接入流程图">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="结语">
+        <div class="slide-inner">
+          <div class="eyebrow">Takeaway</div>
+          <h2>先审词，再调流程</h2>
+          <div class="quote-card">
+            <blockquote>89.3% 对 62.1%，差别不在模型突然变笨，也不在流程突然失效，而在于“风险”这个词比你以为的更宽。</blockquote>
+          </div>
+          <div class="triple-grid">
+            <div class="mini-card">
+              <strong>流程仍然重要</strong>
+              <p>步骤、定义、示例、工具，都是必要的约束层。</p>
+            </div>
+            <div class="mini-card">
+              <strong>但词更底层</strong>
+              <p>关键词决定模型会激活多大的认知空间。</p>
+            </div>
+            <div class="mini-card">
+              <strong>行动建议</strong>
+              <p>下次写 Skill 时，先问一句：这个词在模型眼里，真的和我想的一样窄吗？</p>
+            </div>
+          </div>
+          <p class="footer-note">操作提示：支持方向键、空格、PageUp / PageDown 和滚轮切换章节；移动端可直接纵向滑动阅读。</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const currentEl = document.getElementById("hud-current");
+      const counterEl = document.getElementById("hud-counter");
+      const progressBar = document.getElementById("progress-bar");
+      const prevBtn = document.getElementById("prev-btn");
+      const nextBtn = document.getElementById("next-btn");
+      let activeIndex = 0;
+      let wheelLocked = false;
+
+      function clampIndex(index) {
+        return Math.max(0, Math.min(slides.length - 1, index));
+      }
+
+      function updateHud(index) {
+        activeIndex = clampIndex(index);
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("is-active", i === activeIndex);
+        });
+        currentEl.textContent = slides[activeIndex].dataset.title || ("第 " + (activeIndex + 1) + " 页");
+        counterEl.textContent = (activeIndex + 1) + " / " + slides.length;
+        progressBar.style.width = ((activeIndex + 1) / slides.length) * 100 + "%";
+      }
+
+      function goTo(index) {
+        const nextIndex = clampIndex(index);
+        const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+        slides[nextIndex].scrollIntoView({ behavior, block: "start" });
+        updateHud(nextIndex);
+      }
+
+      function goBy(delta) {
+        goTo(activeIndex + delta);
+      }
+
+      prevBtn.addEventListener("click", () => goBy(-1));
+      nextBtn.addEventListener("click", () => goBy(1));
+
+      window.addEventListener("keydown", (event) => {
+        if (["ArrowDown", "ArrowRight", "PageDown", " ", "Enter"].includes(event.key)) {
+          event.preventDefault();
+          goBy(1);
+        } else if (["ArrowUp", "ArrowLeft", "PageUp"].includes(event.key)) {
+          event.preventDefault();
+          goBy(-1);
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          goTo(0);
+        } else if (event.key === "End") {
+          event.preventDefault();
+          goTo(slides.length - 1);
+        }
+      }, { passive: false });
+
+      window.addEventListener("wheel", (event) => {
+        if (window.innerWidth < 981) return;
+        if (Math.abs(event.deltaY) < 22) return;
+        if (wheelLocked) return;
+        wheelLocked = true;
+        goBy(event.deltaY > 0 ? 1 : -1);
+        window.setTimeout(() => {
+          wheelLocked = false;
+        }, 650);
+      }, { passive: true });
+
+      const observer = new IntersectionObserver((entries) => {
+        let best = null;
+        for (const entry of entries) {
+          if (!best || entry.intersectionRatio > best.intersectionRatio) {
+            best = entry;
+          }
+        }
+        if (best && best.isIntersecting) {
+          const index = slides.indexOf(best.target);
+          if (index !== -1) updateHud(index);
+        }
+      }, {
+        threshold: [0.35, 0.55, 0.75]
+      });
+
+      slides.forEach((slide) => observer.observe(slide));
+      updateHud(0);
+    })();
+  </script>
+</body>
+</html>

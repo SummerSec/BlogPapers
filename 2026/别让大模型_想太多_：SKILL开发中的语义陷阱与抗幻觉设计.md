@@ -1,6 +1,7 @@
 ---
 tags:
 - blog-comments
+ppt: ./别让大模型_想太多_：SKILL开发中的语义陷阱与抗幻觉设计-ppt.html
 ---
 # 🔍 别让大模型"想太多"：SKILL开发中的语义陷阱与抗幻觉设计
 
