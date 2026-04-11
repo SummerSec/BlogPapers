@@ -753,18 +753,12 @@
       });
     }
 
-    function syncSplitOverflowClass(mode) {
-      if (!document.body || !document.body.classList) return;
-      document.body.classList.toggle('reading-mode-split-active', mode === 'split');
-    }
-
     function setMode(mode, opts) {
       opts = opts || {};
       mode = normalizeMode(mode);
       if (!pptOk && (mode === 'split' || mode === 'ppt')) mode = 'article';
       readingRoot.classList.remove('mode-split', 'mode-article', 'mode-ppt');
       readingRoot.classList.add('mode-' + mode);
-      syncSplitOverflowClass(mode);
       syncAria(mode);
       if (opts.fromUser) userChosen = true;
     }
