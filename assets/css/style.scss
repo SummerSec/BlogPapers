@@ -1077,12 +1077,12 @@ table {
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-/* 正文内所有表格：全宽 + 固定布局；三列 / 两列按表头列数统一列比（首页时间轴与各文章一致） */
+/* 正文内所有表格：跟随容器宽度自适应，不再强制固定列比 */
 .terminal-body table {
   display: table;
-  table-layout: fixed;
+  table-layout: auto;
   width: 100%;
-  min-width: 100%;
+  min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
   overflow-x: visible;
@@ -1090,50 +1090,42 @@ table {
   margin-right: 0;
 }
 
-/* 三列表：表头行恰为 3 格 → 9% / 63% / 28% */
+/* 单元格统一允许按内容自然分配宽度 */
+.terminal-body table :is(th, td) {
+  width: auto;
+  min-width: 0;
+  white-space: normal;
+}
+
+/* 三列表：中列允许长文本自然换行 */
 .terminal-body table thead tr :is(th, td):first-child:nth-last-child(3),
 .terminal-body table tbody tr :is(th, td):first-child:nth-last-child(3) {
-  width: 9%;
-  min-width: 5rem;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .terminal-body table thead tr :is(th, td):nth-child(2):nth-last-child(2),
 .terminal-body table tbody tr :is(th, td):nth-child(2):nth-last-child(2) {
-  width: 63%;
   word-break: break-word;
   overflow-wrap: anywhere;
 }
 
 .terminal-body table thead tr :is(th, td):nth-child(3):nth-last-child(1),
 .terminal-body table tbody tr :is(th, td):nth-child(3):nth-last-child(1) {
-  width: 28%;
-  min-width: 0;
   white-space: normal;
 }
 
-/* 两列表：首列固定宽，次列占满 */
+/* 两列表：不再固定首列宽度 */
 .terminal-body table thead tr :is(th, td):first-child:nth-last-child(2),
 .terminal-body table tbody tr :is(th, td):first-child:nth-last-child(2) {
-  width: 9rem;
-}
-
-.terminal-body table thead tr :is(th, td):nth-child(2):nth-last-child(1),
-.terminal-body table tbody tr :is(th, td):nth-child(2):nth-last-child(1) {
-  width: auto;
   word-break: break-word;
   overflow-wrap: anywhere;
 }
 
-@media (max-width: 900px) {
-  .terminal-body table {
-    table-layout: auto;
-  }
-
-  .terminal-body table :is(th, td) {
-    width: auto !important;
-    min-width: 0 !important;
-    white-space: normal;
-  }
+.terminal-body table thead tr :is(th, td):nth-child(2):nth-last-child(1),
+.terminal-body table tbody tr :is(th, td):nth-child(2):nth-last-child(1) {
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 thead tr {
