@@ -2018,23 +2018,30 @@ h2, h3, h4 { scroll-margin-top: 72px; }
 }
 
 /* 只看 PPT：隐藏正文栏 */
-#article-reading-mode.mode-ppt #article-pane {
+#article-reading-mode.mode-ppt #article-ppt-shell {
+  display: block;
+  width: 100%;
+}
+
+#article-reading-mode.mode-ppt .article-column {
   display: none !important;
 }
 
 #article-reading-mode.mode-ppt #ppt-pane {
-  max-width: min(100%, 110rem);
-  margin: 0 auto;
-  min-height: min(70vh, 720px);
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  min-height: clamp(720px, calc(100vh - 210px), 1320px);
 }
 
 #article-reading-mode.mode-ppt .ppt-pane__stage {
-  min-height: min(72vh, 760px);
+  min-height: clamp(720px, calc(100vh - 210px), 1320px);
+  height: clamp(720px, calc(100vh - 210px), 1320px);
 }
 
 #article-reading-mode.mode-ppt #article-ppt-frame {
-  height: min(78vh, 860px);
-  min-height: min(56vh, 520px);
+  height: 100%;
+  min-height: 0;
 }
 
 @media (min-width: 768px) {
