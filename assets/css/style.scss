@@ -1737,6 +1737,8 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   row-gap: 10px;
   max-width: 100%;
   margin: 0;
+  position: relative;
+  top: -4px;
   padding: 10px 12px;
   border-radius: 999px;
   border: 1px solid rgba(100, 140, 180, 0.18);
