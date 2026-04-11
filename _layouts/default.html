@@ -84,6 +84,7 @@
     {% assign page_has_ppt = true %}
   {% endif %}
 {% endif %}
+{% assign asset_rev = site.github.build_revision | default: site.time | date: "%s" %}
 <!DOCTYPE html>
 <html lang="zh-CN"{% if tlen > thr %} data-title-marquee-at="{{ thr }}"{% endif %}>
 <head>
@@ -103,7 +104,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ asset_rev }}">
 </head>
 {% assign _stats_ep_body = site.stats_endpoint | default: "" | strip %}
 <body class="theme-hud{% if page_is_home %} page-front{% endif %}"{% if _stats_ep_body != "" %} data-stats-endpoint="{{ _stats_ep_body | xml_escape }}"{% endif %}>
@@ -313,6 +314,6 @@
   {% if _stats_ep_body != "" %}
   <script>window.__BLOG_STATS_EP={{ _stats_ep_body | jsonify }};</script>
   {% endif %}
-  <script src="{{ '/assets/js/scifi.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/scifi.js' | relative_url }}?v={{ asset_rev }}"></script>
 </body>
 </html>
