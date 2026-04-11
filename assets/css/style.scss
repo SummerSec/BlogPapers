@@ -557,6 +557,10 @@ header, main, footer, nav { position: relative; z-index: 10; }
   box-sizing: border-box;
 }
 
+.main-content--with-ppt {
+  width: min(100%, calc(100vw - 2 * var(--layout-gutter)));
+}
+
 .terminal-window-wrap {
   position: relative;
   border-radius: var(--radius);
@@ -646,6 +650,10 @@ header, main, footer, nav { position: relative; z-index: 10; }
   background:
     radial-gradient(ellipse 100% 70% at 50% 0%, rgba(92, 219, 207, 0.04), transparent 58%),
     radial-gradient(ellipse 55% 40% at 90% 20%, rgba(148, 168, 232, 0.03), transparent 50%);
+}
+
+.terminal-body--with-ppt {
+  padding: clamp(22px, 2vw, 34px) clamp(18px, 1.8vw, 28px);
 }
 
 /* --- 浏览量 HUD（CountAPI，见 scifi.js；默认可见，避免 API 挂起时整块消失） --- */
@@ -1699,27 +1707,30 @@ h2, h3, h4 { scroll-margin-top: 72px; }
    ============================================= */
 #article-reading-mode {
   --reading-switcher-gap: 8px;
-  --reading-pane-gap: clamp(14px, 2.2vw, 26px);
-  --reading-split-height: clamp(560px, calc(100vh - 220px), 920px);
+  --reading-pane-gap: clamp(16px, 1.8vw, 30px);
+  --reading-split-height: clamp(680px, calc(100vh - 190px), 1080px);
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  margin-top: 0.5rem;
+  margin-top: 0.35rem;
   box-sizing: border-box;
 }
 
 #article-reading-mode #reading-mode-switcher {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--reading-switcher-gap);
   row-gap: 10px;
-  margin: 0 0 1rem;
+  max-width: 100%;
+  margin: 0 0 1.2rem;
   padding: 10px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(100, 140, 180, 0.14);
-  background: linear-gradient(105deg, rgba(12, 14, 24, 0.55), rgba(16, 20, 32, 0.42));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+  border: 1px solid rgba(100, 140, 180, 0.18);
+  background: linear-gradient(105deg, rgba(12, 14, 24, 0.82), rgba(16, 20, 32, 0.68));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
 #article-reading-mode .reading-mode-switcher__btn {
@@ -1796,6 +1807,10 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   max-width: 100%;
 }
 
+#article-reading-mode .article-pane__inner {
+  min-width: 0;
+}
+
 #article-reading-mode #article-pane {
   flex: 1 1 auto;
 }
@@ -1803,14 +1818,44 @@ h2, h3, h4 { scroll-margin-top: 72px; }
 #article-reading-mode #ppt-pane {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
   flex: 0 1 auto;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(110, 150, 190, 0.12);
-  background: rgba(8, 10, 18, 0.35);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
   min-height: min(52vh, 420px);
+}
+
+#article-reading-mode .ppt-pane__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+#article-reading-mode .ppt-pane__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+#article-reading-mode .ppt-pane__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(92, 219, 207, 0.72);
+}
+
+#article-reading-mode .ppt-pane__title {
+  font-family: var(--font-hdr);
+  font-size: clamp(18px, calc(1rem + 0.35vw), 24px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(242, 247, 255, 0.96);
 }
 
 #article-reading-mode .ppt-standalone-link {
@@ -1830,6 +1875,33 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   border-bottom-color: rgba(148, 168, 232, 0.55);
 }
 
+#article-reading-mode .ppt-pane__stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: min(56vh, 520px);
+  padding: clamp(10px, 0.9vw, 16px);
+  border-radius: calc(var(--radius) + 6px);
+  border: 1px solid rgba(148, 168, 232, 0.16);
+  background:
+    radial-gradient(circle at top, rgba(92, 219, 207, 0.08), transparent 48%),
+    linear-gradient(180deg, rgba(2, 4, 10, 0.98), rgba(7, 10, 18, 0.96) 58%, rgba(4, 6, 12, 0.98));
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 0 0 1px rgba(92, 219, 207, 0.04);
+  overflow: hidden;
+}
+
+#article-reading-mode .ppt-pane__stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 18%),
+    radial-gradient(circle at top, rgba(148, 168, 232, 0.1), transparent 38%);
+  pointer-events: none;
+}
+
 #article-reading-mode #article-ppt-frame {
   display: block;
   width: 100%;
@@ -1840,16 +1912,47 @@ h2, h3, h4 { scroll-margin-top: 72px; }
   margin: 0;
   padding: 0;
   border: none;
-  border-radius: calc(var(--radius-sm) - 2px);
-  background: rgba(4, 6, 12, 0.65);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  border-radius: calc(var(--radius) + 1px);
+  background: rgba(3, 5, 10, 0.92);
+  box-shadow:
+    0 14px 42px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
-/* 桌面：并排 — 文章列更宽（grid 比例约 65% / 35%） */
+@media (min-width: 1200px) {
+  .main-content--with-ppt {
+    width: min(98vw, 150rem);
+  }
+
+  .terminal-window-wrap--with-ppt {
+    border-radius: 16px;
+  }
+
+  .terminal-window-wrap--with-ppt::before {
+    width: 3px;
+  }
+}
+
+/* 桌面：带 PPT 时进入更接近全屏的阅读舞台 */
 @media (min-width: 768px) {
+  #article-reading-mode.mode-article #article-ppt-shell {
+    display: block;
+  }
+
+  #article-reading-mode.mode-article #article-pane {
+    max-width: min(100%, 92rem);
+    margin: 0 auto;
+  }
+
+  #article-reading-mode.mode-article #article-pane .article-pane__inner {
+    max-width: 84ch;
+    margin: 0 auto;
+    padding: clamp(10px, 1.4vw, 18px) clamp(6px, 0.6vw, 12px) 0;
+  }
+
   #article-reading-mode.mode-split #article-ppt-shell {
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.92fr);
+    grid-template-columns: minmax(0, 1.06fr) minmax(540px, 0.94fr);
     align-items: stretch;
     column-gap: var(--reading-pane-gap);
     row-gap: var(--reading-pane-gap);
@@ -1860,32 +1963,44 @@ h2, h3, h4 { scroll-margin-top: 72px; }
     height: var(--reading-split-height);
     min-height: var(--reading-split-height);
     max-height: var(--reading-split-height);
-    border-radius: var(--radius-sm);
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    border: 1px solid rgba(110, 150, 190, 0.14);
-    background: linear-gradient(180deg, rgba(9, 11, 18, 0.74), rgba(11, 14, 24, 0.58));
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 12px 28px rgba(0, 0, 0, 0.18);
   }
 
   #article-reading-mode.mode-split #article-pane {
     overflow: auto;
-    padding: 18px 20px 22px;
+    border-radius: calc(var(--radius) + 2px);
+    border: 1px solid rgba(110, 150, 190, 0.14);
+    background:
+      linear-gradient(180deg, rgba(11, 14, 24, 0.94), rgba(10, 13, 22, 0.86)),
+      radial-gradient(circle at top left, rgba(92, 219, 207, 0.05), transparent 30%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 16px 34px rgba(0, 0, 0, 0.22);
+  }
+
+  #article-reading-mode.mode-split #article-pane .article-pane__inner {
+    width: min(100%, 86ch);
+    margin: 0 auto;
+    padding: clamp(28px, 2.4vw, 42px) clamp(24px, 2vw, 34px) clamp(34px, 2.8vw, 48px);
   }
 
   #article-reading-mode.mode-split #ppt-pane {
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
-    overflow: hidden;
-    padding: 14px 14px 12px;
+    align-content: stretch;
+    overflow: visible;
+    padding: 0;
+  }
+
+  #article-reading-mode.mode-split .ppt-pane__stage {
+    min-height: 0;
+    height: 100%;
   }
 
   #article-reading-mode.mode-split #article-ppt-frame {
     height: 100%;
     min-height: 0;
-    box-shadow: none;
   }
 }
 
@@ -1900,12 +2015,18 @@ h2, h3, h4 { scroll-margin-top: 72px; }
 }
 
 #article-reading-mode.mode-ppt #ppt-pane {
-  min-height: min(60vh, 520px);
+  max-width: min(100%, 110rem);
+  margin: 0 auto;
+  min-height: min(70vh, 720px);
+}
+
+#article-reading-mode.mode-ppt .ppt-pane__stage {
+  min-height: min(72vh, 760px);
 }
 
 #article-reading-mode.mode-ppt #article-ppt-frame {
-  height: min(78vh, 820px);
-  min-height: min(56vh, 480px);
+  height: min(78vh, 860px);
+  min-height: min(56vh, 520px);
 }
 
 @media (min-width: 768px) {

@@ -188,16 +188,16 @@
     </nav>
   </header>
 
-  <main class="main-content" id="main-content">
-    <div class="terminal-window-wrap">
-      <div class="terminal-window">
+  <main class="main-content{% if page_is_markdown_article and page_has_ppt %} main-content--with-ppt{% endif %}" id="main-content">
+    <div class="terminal-window-wrap{% if page_is_markdown_article and page_has_ppt %} terminal-window-wrap--with-ppt{% endif %}">
+      <div class="terminal-window{% if page_is_markdown_article and page_has_ppt %} terminal-window--with-ppt{% endif %}">
         <div class="terminal-titlebar">
           <span class="tb-dot tb-red"></span>
           <span class="tb-dot tb-yellow"></span>
           <span class="tb-dot tb-green"></span>
           <span class="tb-title">session.log · public</span>
         </div>
-        <div class="terminal-body">
+        <div class="terminal-body{% if page_is_markdown_article and page_has_ppt %} terminal-body--with-ppt{% endif %}">
           {% assign _stats_banner_title = "使用 CountAPI；若长期为 — 可能是网络或广告拦截" %}
           {% assign _stats_tip_ep = site.stats_endpoint | default: "" | strip %}
           {% if _stats_tip_ep != "" %}
@@ -241,26 +241,36 @@
             </div>
             <div id="article-ppt-shell" class="article-ppt-shell">
               <div id="article-pane" class="article-pane">
-                {{ content }}
-                {% unless page_is_home %}
-                {% if ut.repo and page.comments != false %}
-                <section class="comments-section" id="comments" aria-labelledby="comments-heading">
-                  <h2 class="comments-section__title" id="comments-heading">评论</h2>
-                  <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
-                  <script src="https://utteranc.es/client.js"
-                    repo="{{ ut.repo }}"
-                    issue-term="{{ ut.issue_term | default: 'pathname' }}"
-                    theme="{{ ut.theme | default: 'github-dark' }}"
-                    {% if ut.label %}label="{{ ut.label }}"{% endif %}
-                    crossorigin="anonymous"
-                    async></script>
-                </section>
-                {% endif %}
-                {% endunless %}
+                <div class="article-pane__inner">
+                  {{ content }}
+                  {% unless page_is_home %}
+                  {% if ut.repo and page.comments != false %}
+                  <section class="comments-section" id="comments" aria-labelledby="comments-heading">
+                    <h2 class="comments-section__title" id="comments-heading">评论</h2>
+                    <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
+                    <script src="https://utteranc.es/client.js"
+                      repo="{{ ut.repo }}"
+                      issue-term="{{ ut.issue_term | default: 'pathname' }}"
+                      theme="{{ ut.theme | default: 'github-dark' }}"
+                      {% if ut.label %}label="{{ ut.label }}"{% endif %}
+                      crossorigin="anonymous"
+                      async></script>
+                  </section>
+                  {% endif %}
+                  {% endunless %}
+                </div>
               </div>
               <div id="ppt-pane" class="ppt-pane">
-                <a id="ppt-standalone-link" class="ppt-standalone-link" href="{{ ppt_href }}" target="_blank" rel="noopener noreferrer">打开独立 PPT 页面</a>
-                <iframe id="article-ppt-frame" class="article-ppt-frame" src="{{ ppt_href }}" title="本文配套 PPT"></iframe>
+                <div class="ppt-pane__header">
+                  <div class="ppt-pane__meta">
+                    <span class="ppt-pane__eyebrow">Slide Stage</span>
+                    <strong class="ppt-pane__title">配套演示</strong>
+                  </div>
+                  <a id="ppt-standalone-link" class="ppt-standalone-link" href="{{ ppt_href }}" target="_blank" rel="noopener noreferrer">独立打开</a>
+                </div>
+                <div class="ppt-pane__stage">
+                  <iframe id="article-ppt-frame" class="article-ppt-frame" src="{{ ppt_href }}" title="本文配套 PPT"></iframe>
+                </div>
               </div>
             </div>
           </div>
