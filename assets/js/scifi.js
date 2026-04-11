@@ -732,6 +732,29 @@
 
     var pptResolved = resolvePptUrl();
 
+    function syncPptScrollbarSkin() {
+      if (!frame || !pptResolved || pptResolved.origin !== window.location.origin) return;
+      try {
+        var doc = frame.contentDocument;
+        if (!doc) return;
+        var host = doc.head || doc.documentElement;
+        if (!host) return;
+        if (doc.getElementById('sumsec-ppt-scrollbar-skin')) return;
+
+        var style = doc.createElement('style');
+        style.id = 'sumsec-ppt-scrollbar-skin';
+        style.textContent =
+          'html, body { scrollbar-width: thin; scrollbar-color: rgba(92, 219, 207, 0.25) #05060c; }' +
+          '::-webkit-scrollbar { width: 8px; height: 8px; }' +
+          '::-webkit-scrollbar-track { background: #05060c; }' +
+          '::-webkit-scrollbar-thumb { background: rgba(92, 219, 207, 0.25); border-radius: 4px; }' +
+          '::-webkit-scrollbar-thumb:hover { background: rgba(92, 219, 207, 0.45); }';
+        host.appendChild(style);
+      } catch (eSkin) {
+        /* ignore same-origin iframe styling failures */
+      }
+    }
+
     function getMode() {
       if (readingRoot.classList.contains('mode-split')) return 'split';
       if (readingRoot.classList.contains('mode-ppt')) return 'ppt';
@@ -887,6 +910,11 @@
     if (mq) {
       if (mq.addEventListener) mq.addEventListener('change', onReadingMqChange);
       else if (mq.addListener) mq.addListener(onReadingMqChange);
+    }
+
+    if (frame) {
+      frame.addEventListener('load', syncPptScrollbarSkin);
+      window.setTimeout(syncPptScrollbarSkin, 0);
     }
 
     if (!pptResolved) {
