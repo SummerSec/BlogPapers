@@ -2,6 +2,10 @@
 .claude/
 __pycache__/
 *.py[cod]
+.worktrees/
 
 # Cloudflare Wrangler 本地缓存（勿提交）
 **/.wrangler/
+output/**
+docs/**
+.cursor/**
