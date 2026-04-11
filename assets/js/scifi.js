@@ -738,17 +738,22 @@
         if (!doc) return;
         var host = doc.head || doc.documentElement;
         if (!host) return;
-        if (doc.getElementById('sumsec-ppt-scrollbar-skin')) return;
+        var style = doc.getElementById('sumsec-ppt-scrollbar-skin');
+        if (!style) {
+          style = doc.createElement('style');
+          style.id = 'sumsec-ppt-scrollbar-skin';
+          host.appendChild(style);
+        }
 
-        var style = doc.createElement('style');
-        style.id = 'sumsec-ppt-scrollbar-skin';
         style.textContent =
-          'html, body { scrollbar-width: thin; scrollbar-color: rgba(92, 219, 207, 0.25) #05060c; }' +
-          '::-webkit-scrollbar { width: 8px; height: 8px; }' +
-          '::-webkit-scrollbar-track { background: #05060c; }' +
-          '::-webkit-scrollbar-thumb { background: rgba(92, 219, 207, 0.25); border-radius: 4px; }' +
-          '::-webkit-scrollbar-thumb:hover { background: rgba(92, 219, 207, 0.45); }';
-        host.appendChild(style);
+          'html, body, main, section, div {' +
+          'scrollbar-width: thin;' +
+          'scrollbar-color: rgba(92, 219, 207, 0.25) #05060c;' +
+          '}' +
+          '*::-webkit-scrollbar { width: 8px; height: 8px; }' +
+          '*::-webkit-scrollbar-track { background: #05060c; }' +
+          '*::-webkit-scrollbar-thumb { background: rgba(92, 219, 207, 0.25); border-radius: 4px; }' +
+          '*::-webkit-scrollbar-thumb:hover { background: rgba(92, 219, 207, 0.45); }';
       } catch (eSkin) {
         /* ignore same-origin iframe styling failures */
       }
@@ -784,6 +789,7 @@
       if (document.body && document.body.classList) {
         document.body.classList.toggle('reading-mode-shell-article', mode === 'article');
       }
+      syncPptScrollbarSkin();
       syncAria(mode);
       if (opts.fromUser) userChosen = true;
     }
