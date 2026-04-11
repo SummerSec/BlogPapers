@@ -2006,6 +2006,11 @@ h2, h3, h4 { scroll-margin-top: 72px; }
     padding: 0;
   }
 
+  #article-reading-mode.mode-split .ppt-pane__header {
+    align-items: flex-start;
+    transform: translateY(-8px);
+  }
+
   #article-reading-mode.mode-split .ppt-pane__stage {
     min-height: 0;
     height: 100%;
