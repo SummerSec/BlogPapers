@@ -696,7 +696,6 @@
 
     var frame = document.getElementById('article-ppt-frame');
     var standalone = document.getElementById('ppt-standalone-link');
-    var rail = document.getElementById('ppt-pane-rail');
     var pptUrlAttr = readingRoot.getAttribute('data-ppt-url') || '';
 
     var userChosen = false;
@@ -764,7 +763,7 @@
 
     function syncAria(mode) {
       var buttons = readingRoot.querySelectorAll(
-        '.reading-mode-switcher__btn[data-reading-mode], .ppt-pane__rail-btn[data-reading-mode]'
+        '.reading-mode-switcher__btn[data-reading-mode]'
       );
       buttons.forEach(function (btn) {
         var m = btn.getAttribute('data-reading-mode');
@@ -806,10 +805,8 @@
         } catch (eF) { /* ignore */ }
       }
       if (standalone) standalone.style.display = 'none';
-      if (rail) rail.style.display = 'none';
-
       var buttons = readingRoot.querySelectorAll(
-        '.reading-mode-switcher__btn[data-reading-mode], .ppt-pane__rail-btn[data-reading-mode]'
+        '.reading-mode-switcher__btn[data-reading-mode]'
       );
       buttons.forEach(function (btn) {
         var m = btn.getAttribute('data-reading-mode');
@@ -900,7 +897,7 @@
 
     readingRoot.addEventListener('click', function (e) {
       var btn = e.target && e.target.closest &&
-        e.target.closest('.reading-mode-switcher__btn[data-reading-mode], .ppt-pane__rail-btn[data-reading-mode]');
+        e.target.closest('.reading-mode-switcher__btn[data-reading-mode]');
       if (!btn || !readingRoot.contains(btn)) return;
       if (btn.style.display === 'none') return;
       var m = normalizeMode(btn.getAttribute('data-reading-mode'));
