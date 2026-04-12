@@ -1,6 +1,7 @@
 ---
 tags:
 - blog-comments
+ppt: ./一篇博文，三种时间：网页幻灯与 Remotion 动效的交付逻辑-ppt.html
 ---
 # 一篇博文，三种时间：网页幻灯与 Remotion 动效的交付逻辑
 

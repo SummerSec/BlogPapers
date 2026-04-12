@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#05060c">
+  <title>三种时间 · 网页幻灯与 Remotion · 网页版 PPT</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;700;800&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05060c;
+      --accent: #5cdbcf;
+      --magenta: #94a8e8;
+      --green: #7dd79a;
+      --danger: #e0a050;
+      --text: #e8ecf4;
+      --text-muted: #8b95ab;
+      --border: rgba(110, 150, 200, 0.16);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --hud-height: 84px;
+      --page-gutter: clamp(14px, 2vw, 24px);
+      --frame-width: min(1280px, calc(100vw - 2 * var(--page-gutter)));
+      --frame-height: calc(100vh - var(--hud-height) - 32px);
+      --transition: 240ms ease;
+      --font-head: "Exo 2", "Noto Sans SC", system-ui, sans-serif;
+      --font-body: "JetBrains Mono", "Noto Sans SC", "Microsoft YaHei UI", monospace;
+    }
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      background: radial-gradient(circle at 18% 0%, rgba(92, 219, 207, 0.07), transparent 32%),
+        radial-gradient(circle at 88% 8%, rgba(148, 168, 232, 0.07), transparent 28%),
+        linear-gradient(180deg, #080b13, #05060c);
+      background-color: var(--bg);
+    }
+    body { margin: 0; min-height: 100vh; color: var(--text); font-family: var(--font-body); overflow-x: hidden; position: relative; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .deck-shell { position: relative; z-index: 1; min-height: 100vh; }
+    .deck-hud {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+      padding: 12px var(--page-gutter) 0; pointer-events: none;
+    }
+    .hud-row {
+      width: var(--frame-width); max-width: var(--frame-width); margin: 0 auto;
+      min-height: 70px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto;
+      align-items: center; gap: 16px; padding: 12px 16px; border-radius: 999px;
+      border: 1px solid var(--border); background: rgba(6, 9, 16, 0.78);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35); backdrop-filter: blur(16px); pointer-events: auto;
+    }
+    .hud-brand {
+      justify-self: start; padding: 8px 12px; border-radius: 999px;
+      border: 1px solid rgba(92, 219, 207, 0.2);
+      background: linear-gradient(135deg, rgba(92, 219, 207, 0.08), rgba(148, 168, 232, 0.05));
+      text-transform: uppercase; letter-spacing: 0.1em; font-size: 11px;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .hud-brand:hover, .hud-brand:focus-visible {
+      transform: translateY(-1px); border-color: rgba(92, 219, 207, 0.4); outline: none;
+    }
+    .hud-brand span { color: var(--text-muted); }
+    .hud-brand strong { color: var(--accent); font-weight: 700; margin-left: 6px; }
+    .hud-meta { justify-self: center; overflow: hidden; text-align: center; }
+    .hud-current { max-width: 36ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+    .hud-counter, .hud-progress-label { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+    .hud-progress {
+      flex: 0 0 clamp(88px, 10vw, 130px); height: 4px; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08); overflow: hidden;
+    }
+    .hud-progress-bar { width: 0; height: 100%; background: linear-gradient(90deg, var(--accent), var(--magenta)); transition: width 200ms ease; }
+    .hud-nav { justify-self: end; display: flex; gap: 8px; align-items: center; }
+    .hud-nav button {
+      appearance: none; border: 1px solid var(--border); border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04); color: var(--text); padding: 8px 12px;
+      font: inherit; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+    }
+    .hud-nav button:hover { border-color: rgba(92, 219, 207, 0.35); background: rgba(92, 219, 207, 0.08); }
+    .deck-fullscreen-toggle {
+      position: fixed; right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom));
+      z-index: 24; appearance: none; border: 1px solid rgba(92, 219, 207, 0.28); border-radius: 999px;
+      background: rgba(6, 9, 16, 0.85); color: var(--text); padding: 10px 14px; font: inherit; font-size: 11px;
+      letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(14px);
+    }
+    .deck-fullscreen-toggle[disabled] { opacity: 0.6; cursor: not-allowed; }
+    #deck {
+      width: 100%; padding: calc(var(--hud-height) + 16px) 0 28px; display: grid; gap: 16px;
+    }
+    .slide {
+      min-height: calc(100vh - var(--hud-height) - 16px); display: grid; place-items: center;
+      padding: 0 var(--page-gutter); scroll-snap-align: start;
+    }
+    .slide-inner {
+      width: var(--frame-width); max-width: var(--frame-width);
+      min-height: min(720px, var(--frame-height)); max-height: var(--frame-height);
+      overflow: auto; padding: clamp(18px, 2.2vw, 32px); border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(12, 17, 29, 0.96), rgba(8, 11, 20, 0.94));
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(110, 150, 200, 0.08);
+      display: grid; align-content: start; gap: 14px;
+    }
+    h1, h2, h3 { font-family: var(--font-head); margin: 0; line-height: 1.08; }
+    h1 { font-size: clamp(2rem, 4.5vw, 3.6rem); letter-spacing: -0.03em; }
+    h2 { font-size: clamp(1.45rem, 2.8vw, 2.35rem); color: var(--accent); letter-spacing: -0.02em; }
+    h3 { font-size: clamp(1rem, 1.4vw, 1.2rem); color: var(--text-muted); font-weight: 500; }
+    p, li { font-size: clamp(0.92rem, 1.05vw, 1.05rem); line-height: 1.65; color: var(--text); }
+    ul { margin: 0; padding-left: 1.2em; }
+    .eyebrow {
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; opacity: 0.85; }
+    .muted { color: var(--text-muted); }
+    .cols-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .cols-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .card {
+      border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.03); min-width: 0;
+    }
+    .card strong { display: block; font-family: var(--font-head); font-size: 1.05rem; margin-bottom: 6px; color: var(--text); }
+    table { width: 100%; border-collapse: collapse; font-size: clamp(0.78rem, 0.95vw, 0.88rem); }
+    th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: rgba(92, 219, 207, 0.08); color: var(--accent); font-weight: 600; }
+    code { font-family: var(--font-body); font-size: 0.88em; color: var(--magenta); }
+    .figure-wrap { display: grid; gap: 8px; width: 100%; }
+    .figure-frame {
+      width: 100%; max-width: 100%; max-height: min(46vh, calc(var(--frame-height) - 200px));
+      border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden;
+      background: rgba(0, 0, 0, 0.25); display: grid; place-items: center;
+    }
+    .figure-frame img { width: 100%; height: auto; max-height: min(46vh, calc(var(--frame-height) - 200px)); object-fit: contain; }
+    .figure-caption { font-size: 12px; color: var(--text-muted); }
+    .kbd { font-family: var(--font-body); padding: 2px 6px; border-radius: 6px; border: 1px solid var(--border); background: rgba(0, 0, 0, 0.25); font-size: 0.85em; }
+    @media (max-width: 860px), (max-height: 820px) {
+      .cols-3, .cols-2 { grid-template-columns: 1fr; }
+      .hud-row { grid-template-columns: 1fr; gap: 10px; border-radius: var(--radius-sm); }
+      .hud-nav { justify-self: stretch; justify-content: space-between; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-shell">
+    <header class="deck-hud">
+      <div class="hud-row">
+        <a class="hud-brand" href="https://sumsec.me/2026/一篇博文，三种时间：网页幻灯与 Remotion 动效的交付逻辑.html" aria-label="查看原文" rel="noopener noreferrer">
+          <span>SUMSEC</span><strong>WEB PPT</strong>
+        </a>
+        <div class="hud-meta">
+          <div class="hud-current" id="hud-current">封面</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px;justify-content:center;">
+            <span class="hud-counter" id="hud-counter">1 / 14</span>
+            <div class="hud-progress" aria-hidden="true"><div class="hud-progress-bar" id="hud-progress-bar"></div></div>
+            <span class="hud-progress-label" id="hud-progress-label">00%</span>
+          </div>
+        </div>
+        <div class="hud-nav">
+          <button type="button" id="prev-btn">上一页</button>
+          <button type="button" id="next-btn">下一页</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="deck">
+      <section class="slide" data-title="封面">
+        <div class="slide-inner">
+          <div class="eyebrow">SUMSEC · 2026</div>
+          <h1>一篇博文，三种时间</h1>
+          <h3>网页幻灯与 Remotion 动效的交付逻辑</h3>
+          <p class="muted" style="max-width:52ch;margin-top:8px;">同一套结论：深读、扫读、听讲三条时间线；Markdown 真源；网页 deck + Remotion + Jekyll 对照阅读。</p>
+        </div>
+      </section>
+
+      <section class="slide" data-title="三种履约">
+        <div class="slide-inner">
+          <div class="eyebrow">问题</div>
+          <h2>三种时间，三种履约</h2>
+          <div class="cols-3">
+            <div class="card"><strong>深读</strong><span class="muted">脚注、代码、可追溯与引用</span></div>
+            <div class="card"><strong>扫读</strong><span class="muted">结构、标题、图块一眼懂</span></div>
+            <div class="card"><strong>听讲</strong><span class="muted">节拍、留白、一页一命题</span></div>
+          </div>
+          <p>术语漂移、数字不一致、视觉像两个品牌 → 读者会问：<strong>我该信哪一版？</strong></p>
+        </div>
+      </section>
+
+      <section class="slide" data-title="仓库三条线">
+        <div class="slide-inner">
+          <div class="eyebrow">SUMSEC.ME</div>
+          <h2>三条线，可独立也可接上</h2>
+          <ol style="margin:0;padding-left:1.2em;display:grid;gap:10px;">
+            <li><strong>网页版 PPT</strong> — <code>creating-blog-web-ppt</code>：单文件 HTML，真源仍在 Markdown。</li>
+            <li><strong>Remotion 示意</strong> — <code>remotion-blog-motion-assets</code> + 子工程：<code>pic/</code> 下动效 / 静帧。</li>
+            <li><strong>站点对照阅读</strong> — <code>ppt</code> front matter：分栏、仅文、仅 PPT、独立打开。</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="slide" data-title="摩擦与笨路">
+        <div class="slide-inner">
+          <div class="eyebrow">真源之后</div>
+          <h2>衍生品是带利息的负债</h2>
+          <p>.pptx / 在线 slide / 泛用 HTML slides：版本脱嵌、域名与正文割裂、不像你的站。</p>
+          <p><strong>笨路</strong>：幻灯仍是网页，借站点 token；同目录、同管道归档。代价：没有 md→slide 魔法同步，只有可审计的派生物。</p>
+          <p class="muted">深读吃字，听讲吃节拍 — 别用写论文的肌肉硬塞一页 slide。</p>
+        </div>
+      </section>
+
+      <section class="slide" data-title="示意 · 三种时间">
+        <div class="slide-inner">
+          <div class="eyebrow">Remotion 示意</div>
+          <h2>深读 / 扫读 / 听讲</h2>
+          <div class="figure-wrap">
+            <div class="figure-frame"><img src="./pic/blog-ppt-remotion/dual-carrier.gif" alt="三种时间轮替高亮"></div>
+            <div class="figure-caption">与正文插图不同类；仅概念动效。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="两条 Skill">
+        <div class="slide-inner">
+          <div class="eyebrow">分工</div>
+          <h2>两条 Skill，两种失败模式</h2>
+          <table>
+            <thead><tr><th>产物</th><th>Skill</th><th>容易栽在哪</th></tr></thead>
+            <tbody>
+              <tr><td>网页幻灯</td><td>creating-blog-web-ppt</td><td>密度失控、画布溢出、品牌位链错</td></tr>
+              <tr><td>动效 / 静帧</td><td>remotion-blog-motion-assets</td><td>时间线乱拍、GIFW≠W、色板漂移</td></tr>
+            </tbody>
+          </table>
+          <p class="muted">写 Remotion 时协同加载本机 <code>remotion-best-practices</code>。</p>
+        </div>
+      </section>
+
+      <section class="slide" data-title="编辑权与五步">
+        <div class="slide-inner">
+          <div class="eyebrow">creating-blog-web-ppt</div>
+          <h2>先三句主张，再写 HTML</h2>
+          <p>拆页 = 编辑权；模型擅长压缩，不替你决定「这一页只留一句」该留什么。</p>
+          <ul>
+            <li>读 <code>style.scss</code> / <code>default.html</code> / references</li>
+            <li>visual / content / interaction 三句</li>
+            <li>单文件、画布钉在视口内</li>
+            <li><code>SUMSEC</code> → 博文<strong>公开 URL</strong></li>
+            <li>浏览器级验证</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="slide" data-title="示意 · token 与壳">
+        <div class="slide-inner">
+          <div class="eyebrow">Remotion 示意</div>
+          <h2>借 token，不搬整站壳</h2>
+          <div class="figure-wrap">
+            <div class="figure-frame"><img src="./pic/blog-ppt-remotion/same-origin-layers.gif" alt="deck 继承 token"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Remotion 管道">
+        <div class="slide-inner">
+          <div class="eyebrow">remotion-blog-motion-assets</div>
+          <h2>时间轴逼你承认在画什么</h2>
+          <p>MP4 像素 = 上限；GIF 256 色；正文关键动效优先 <span class="kbd">&lt;video&gt;</span>。</p>
+          <div class="cols-2">
+            <div class="card"><strong>色板</strong><br><code>#05060c</code> <code>#5cdbcf</code> <code>#94a8e8</code> <code>#7dd79a</code> <code>#e0a050</code></div>
+            <div class="card"><strong>命令</strong><br>子工程 <code>README.md</code>；<code>GIFW</code> = <code>W</code></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="ppt 路径">
+        <div class="slide-inner">
+          <div class="eyebrow">Jekyll</div>
+          <h2><code>ppt</code> 是开关，不是装饰链接</h2>
+          <table>
+            <thead><tr><th>策略</th><th>文件</th><th>front matter</th></tr></thead>
+            <tbody>
+              <tr><td>A 默认同名</td><td><code>foo.md</code> + <code>foo.html</code></td><td>可不写 <code>ppt</code></td></tr>
+              <tr><td>B <code>-ppt</code></td><td><code>foo-ppt.html</code></td><td><code>ppt: ./foo-ppt.html</code></td></tr>
+            </tbody>
+          </table>
+          <div class="figure-wrap" style="margin-top:8px;">
+            <div class="figure-frame"><img src="./pic/blog-ppt-remotion/path-strategy.gif" alt="ppt 策略示意"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="对照阅读">
+        <div class="slide-inner">
+          <div class="eyebrow">scifi.js</div>
+          <h2>分栏 · 仅正文 · 仅 PPT · 独立打开</h2>
+          <div class="figure-wrap">
+            <div class="figure-frame"><img src="./pic/blog-ppt-remotion/reading-modes.gif" alt="阅读模式"></div>
+            <div class="figure-caption">评论仍在正文列；utterances 不进 iframe。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="数据流">
+        <div class="slide-inner">
+          <div class="eyebrow">端到端</div>
+          <h2>Markdown → deck / <code>ppt</code> / Jekyll</h2>
+          <div class="figure-wrap">
+            <div class="figure-frame"><img src="./pic/blog-ppt-remotion/data-flow.gif" alt="数据流"></div>
+          </div>
+          <p class="muted">并行：Remotion → <code>pic/</code>，不经 <code>ppt</code>。</p>
+        </div>
+      </section>
+
+      <section class="slide" data-title="三条路与摩擦">
+        <div class="slide-inner">
+          <div class="eyebrow">Remotion 示意</div>
+          <h2>三条常见路径</h2>
+          <div class="figure-wrap">
+            <div class="figure-frame"><img src="./pic/blog-ppt-remotion/three-paths-friction.gif" alt="三条路摩擦"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="硬规矩与边界">
+        <div class="slide-inner">
+          <div class="eyebrow">可迁移</div>
+          <h2>五条硬规矩 + 边界</h2>
+          <ul>
+            <li>真源只认一份；幻灯 / 动效是投影，不是第二份胡写的副本。</li>
+            <li>视觉从站点样式继承；「可讲」用显式开关承诺。</li>
+            <li>别拿幻灯顶替站点 IA；deck 别进 <code>resources/</code>。</li>
+            <li>Skill 管底线，不管你是否值得被听。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="slide" data-title="结语">
+        <div class="slide-inner">
+          <div class="eyebrow">收束</div>
+          <h2>可讲性是税，不是功德</h2>
+          <p>短文可以没有第二载体。两头跑就要付维护税：工序固化、对照 UI 可选、视觉别分家。</p>
+          <p class="muted">deck 有了再在 front matter 补 <code>ppt</code>；动效见子工程 README。</p>
+        </div>
+      </section>
+    </main>
+
+    <button type="button" class="deck-fullscreen-toggle" id="deck-fullscreen-toggle" aria-label="切换全屏">全屏</button>
+  </div>
+
+  <script>
+    (() => {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const currentEl = document.getElementById("hud-current");
+      const counterEl = document.getElementById("hud-counter");
+      const progressEl = document.getElementById("hud-progress-bar");
+      const progressLabelEl = document.getElementById("hud-progress-label");
+      const prevBtn = document.getElementById("prev-btn");
+      const nextBtn = document.getElementById("next-btn");
+      const fullscreenBtn = document.getElementById("deck-fullscreen-toggle");
+      const fullscreenTarget = document.documentElement;
+      const total = slides.length;
+      let activeIndex = 0;
+      let wheelLocked = false;
+      let observer;
+
+      const isCompactMode = () => window.matchMedia("(max-width: 860px), (max-height: 820px)").matches;
+
+      function clampIndex(index) {
+        return Math.max(0, Math.min(total - 1, index));
+      }
+
+      function isFullscreenActive() {
+        return Boolean(document.fullscreenElement);
+      }
+
+      function updateFullscreenButton() {
+        if (!fullscreenBtn) return;
+        const supported = Boolean(fullscreenTarget.requestFullscreen && document.exitFullscreen);
+        if (!supported) {
+          fullscreenBtn.disabled = true;
+          fullscreenBtn.textContent = "不支持全屏";
+          fullscreenBtn.setAttribute("aria-label", "当前环境不支持全屏");
+          return;
+        }
+        fullscreenBtn.disabled = false;
+        const active = isFullscreenActive();
+        fullscreenBtn.textContent = active ? "退出全屏" : "全屏";
+        fullscreenBtn.setAttribute("aria-label", active ? "退出全屏" : "切换全屏");
+      }
+
+      function updateHud(index) {
+        activeIndex = clampIndex(index);
+        const slide = slides[activeIndex];
+        const title = slide?.dataset.title || "封面";
+        const progress = ((activeIndex + 1) / total) * 100;
+        currentEl.textContent = title;
+        counterEl.textContent = `${activeIndex + 1} / ${total}`;
+        progressEl.style.width = `${progress}%`;
+        progressLabelEl.textContent = `${String(Math.round(progress)).padStart(2, "0")}%`;
+        prevBtn.disabled = activeIndex === 0;
+        nextBtn.disabled = activeIndex === total - 1;
+      }
+
+      function goToSlide(index) {
+        const nextIndex = clampIndex(index);
+        const target = slides[nextIndex];
+        if (!target) return;
+        target.scrollIntoView({
+          block: "start",
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+        });
+        updateHud(nextIndex);
+      }
+
+      function handleDirectionalNav(direction) {
+        if (isCompactMode()) return;
+        goToSlide(activeIndex + direction);
+      }
+
+      prevBtn.addEventListener("click", () => goToSlide(activeIndex - 1));
+      nextBtn.addEventListener("click", () => goToSlide(activeIndex + 1));
+
+      if (fullscreenBtn) {
+        fullscreenBtn.addEventListener("click", async () => {
+          const supported = Boolean(fullscreenTarget.requestFullscreen && document.exitFullscreen);
+          if (!supported) {
+            updateFullscreenButton();
+            return;
+          }
+          try {
+            if (isFullscreenActive()) await document.exitFullscreen();
+            else await fullscreenTarget.requestFullscreen();
+          } catch (_e) {
+            updateFullscreenButton();
+          }
+        });
+      }
+
+      document.addEventListener("keydown", (event) => {
+        const tag = document.activeElement?.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || document.activeElement?.isContentEditable) return;
+        if (["ArrowRight", "PageDown", "Space"].includes(event.code)) {
+          event.preventDefault();
+          handleDirectionalNav(1);
+        }
+        if (["ArrowLeft", "PageUp"].includes(event.code)) {
+          event.preventDefault();
+          handleDirectionalNav(-1);
+        }
+        if (event.code === "Home") {
+          event.preventDefault();
+          goToSlide(0);
+        }
+        if (event.code === "End") {
+          event.preventDefault();
+          goToSlide(total - 1);
+        }
+      }, { passive: false });
+
+      window.addEventListener("wheel", (event) => {
+        if (isCompactMode()) return;
+        if (Math.abs(event.deltaY) < 24) return;
+        const slideInner = slides[activeIndex]?.querySelector(".slide-inner");
+        if (slideInner) {
+          const canScrollInside =
+            slideInner.scrollHeight > slideInner.clientHeight &&
+            ((event.deltaY > 0 && slideInner.scrollTop + slideInner.clientHeight < slideInner.scrollHeight - 2) ||
+              (event.deltaY < 0 && slideInner.scrollTop > 2));
+          if (canScrollInside) return;
+        }
+        if (wheelLocked) return;
+        wheelLocked = true;
+        handleDirectionalNav(event.deltaY > 0 ? 1 : -1);
+        window.setTimeout(() => { wheelLocked = false; }, 520);
+      }, { passive: true });
+
+      function setupObserver() {
+        if (observer) observer.disconnect();
+        observer = new IntersectionObserver((entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          if (!visible.length) return;
+          const nextIndex = slides.indexOf(visible[0].target);
+          if (nextIndex >= 0) updateHud(nextIndex);
+        }, { threshold: [0.25, 0.45, 0.65, 0.82], rootMargin: "-10% 0px -20% 0px" });
+        slides.forEach((slide) => observer.observe(slide));
+      }
+
+      updateHud(0);
+      updateFullscreenButton();
+      setupObserver();
+      window.addEventListener("resize", () => updateHud(activeIndex));
+      document.addEventListener("fullscreenchange", updateFullscreenButton);
+    })();
+  </script>
+</body>
+</html>
