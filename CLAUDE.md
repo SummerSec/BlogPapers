@@ -93,6 +93,16 @@ title: Post Title
 
 这类任务完成前必须做浏览器级验证，不能只做静态阅读或代码检查。
 
+## Remotion 博文配图与短视频
+
+当用户要求用 Remotion 为文章生成与站点风格一致的静帧、MP4 或（可选）GIF 时，优先阅读：
+
+- `.claude/skills/remotion-blog-motion-assets/SKILL.md`
+
+编写或调试 Remotion 代码时，还应协同使用本机 **remotion-best-practices** skill（通常在用户目录 `.claude/skills/remotion-best-practices/SKILL.md`，按需打开其 `rules/*.md`），与上一条仓库 skill 分工见该 `SKILL.md` 内「依赖」小节。
+
+实现与批量导出命令以 `_scripts/remotion-blog-ppt-article/README.md` 为准。
+
 ## 评论与页面统计
 
 - 评论系统使用 [utterances](https://utteranc.es/) 对接 GitHub Issues

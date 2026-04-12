@@ -1,14 +1,18 @@
 .DS_Store
-.claude/
 __pycache__/
 *.py[cod]
 .worktrees/
-
+**/node_modules/**
+_scripts/remotion-blog-ppt-article/__pycache__/**
 # Cloudflare Wrangler 本地缓存（勿提交）
 **/.wrangler/
 output/**
 docs/**
 .cursor/**
 .playwright-cli/**
+.jekyll-cache/**
+
+# Remotion 子项目依赖（源码见 _scripts/remotion-blog-ppt-article）
+_scripts/remotion-blog-ppt-article/node_modules/
 
 # Trigger Pages redeploy

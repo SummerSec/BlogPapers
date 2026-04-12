@@ -1,0 +1,21 @@
+{
+  "name": "remotion-blog-ppt-article",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio",
+    "build": "remotion bundle",
+    "render:three-times": "remotion render src/index.ts dual-carrier --codec=h264 --crf=16 ../../2026/pic/blog-ppt-remotion/dual-carrier.mp4 && remotion render src/index.ts three-paths-friction --codec=h264 --crf=16 ../../2026/pic/blog-ppt-remotion/three-paths-friction.mp4 && remotion render src/index.ts same-origin-layers --codec=h264 --crf=16 ../../2026/pic/blog-ppt-remotion/same-origin-layers.mp4 && remotion render src/index.ts path-strategy --codec=h264 --crf=16 ../../2026/pic/blog-ppt-remotion/path-strategy.mp4 && remotion render src/index.ts reading-modes --codec=h264 --crf=16 ../../2026/pic/blog-ppt-remotion/reading-modes.mp4 && remotion render src/index.ts data-flow --codec=h264 --crf=16 ../../2026/pic/blog-ppt-remotion/data-flow.mp4",
+    "gif:three-times": "node scripts/to-gif.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.272",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.272"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "ffmpeg-static": "^5.3.0",
+    "typescript": "^5.6.3"
+  }
+}
