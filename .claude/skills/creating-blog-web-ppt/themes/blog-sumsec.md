@@ -1,13 +1,13 @@
-# 博客站点主题 `blog-sumsec`（与 slide-writer 企业主题并存）
+# 博客站点主题 `blog-sumsec`（slide-writer 增补主题 ID）
 
 与 `sumsec.me` 博客一致的深色、克制科幻感，配色与字体约定对齐 `references/visual-system.md` 与 `assets/css/style.scss`。
 
-这是本仓库在合并 slide-writer 时**新增**的一条主题分支，用于「像本站一样」的演示；**不替代** `vendor/slide-writer/themes/` 下各企业主题文件。企业主题的全表与选用条件见 [`_index.md`](_index.md) 第二节。
+本文件定义主题 ID **`blog-sumsec`**，与 slide-writer 自带的 `ant-group`、`tencent` 等**并列**；选用条件与 Phase 0 顺序见 [`_index.md`](_index.md)（先企业识别，未命中再判断博客关键词，否则 **`ant-group`**）。
 
 本主题用于：
 
-- **博客默认轨道**：自研单文件 deck（`references/html-template.md`）时，将下列 CSS 变量与渐变作为 `:root` / 关键页背景参考。
-- **Slide-Writer 引擎轨道**：当且仅当本次选定主题为 **`blog-sumsec`** 时，从 `vendor/slide-writer/_base.html` 复制出 HTML 后，把 `<!-- %%THEME_STYLE%% -->` 替换为下方 **CSS** 块，使 `slide-cover` / `slide-section` / `slide-qa` 与博客站色一致。若本次选定的是 `vendor/slide-writer/themes/tencent.md` 等**企业主题**，则应粘贴**该文件**内的 CSS 与 Logo 规则，而不是本文件的色板。
+- **自研 HUD 轨道**：当 Phase 0 选定主题为 **`blog-sumsec`** 时，将下列 CSS 变量与渐变写入单文件 HTML 的 `:root` / 关键页背景。
+- **Slide-Writer `_base.html` 轨道**：当且仅当本次选定主题为 **`blog-sumsec`** 时，把 `<!-- %%THEME_STYLE%% -->` 替换为下方 **CSS** 块。若主题为某企业 `[id]`，则应粘贴 `vendor/slide-writer/themes/[id].md` 内的 CSS 与 Logo 规则，而不是本文件。
 
 ## Logo（仅当选用本主题 `blog-sumsec` 时）
 

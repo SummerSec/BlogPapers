@@ -10,14 +10,13 @@
 2. 高可读性
 3. 克制的仓库科幻质感
 
-## 主题体系（合并 Slide-Writer 后）
+## 主题体系（与 slide-writer 一致 + 增补 blog-sumsec）
 
-本 skill **同时保留**两套视觉来源，详见 [`themes/_index.md`](../themes/_index.md)：
+主题识别与**未识别企业时的默认 `ant-group`**，以 `vendor/slide-writer/themes/_index.md` 与 `vendor/slide-writer/SKILL.md` Phase 0 为准。
 
-1. **博客站补充主题 `blog-sumsec`**（[`themes/blog-sumsec.md`](../themes/blog-sumsec.md)）：在「博文转 PPT、且未指定/未命中企业主题」时作为**缺省**色板，取代上游「未识别品牌 → 蚂蚁蓝」。
-2. **slide-writer 全量企业主题**：`vendor/slide-writer/themes/` 下各 `[id].md` 与 `themes/_index.md` **一律保留**，用户指定、内容命中品牌或要求上游企业默认时，**须**使用对应文件，不得用博客色覆盖。
+本 skill **仅增补**主题 ID **`blog-sumsec`**（[`themes/blog-sumsec.md`](../themes/blog-sumsec.md)）：在未命中任何企业主题时，若命中 [`themes/_index.md`](../themes/_index.md) 所列博客站关键词则用博客色；否则仍为 **`ant-group`**（与 slide-writer 完全一致）。
 
-本节下列 **颜色 token** 主要服务 **`blog-sumsec` 与自研 HUD 轨道**；若当前稿已选用某企业 `[id].md`，以该文件内 CSS 变量为准。
+本节下列 **颜色 token** 描述 **`blog-sumsec`** 的推荐值；若当前稿为企业 `[id]`，以 `vendor/slide-writer/themes/[id].md` 为准。
 
 ## 颜色 token
 

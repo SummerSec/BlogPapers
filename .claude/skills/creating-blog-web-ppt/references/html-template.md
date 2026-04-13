@@ -2,11 +2,13 @@
 
 默认生成一个内联 CSS 和 JS 的单文件 HTML deck。
 
-## 与 Slide-Writer 的关系（合并版）
+## 与 Slide-Writer 的关系（对齐 + 增补博客主题）
 
-本仓库**并行保留**博客站主题与 slide-writer 全量企业主题（见 [`themes/_index.md`](../themes/_index.md)）。下方「最小结构」一节是自研 **博客默认轨道** 的基线；缺省主题色来自 [`themes/blog-sumsec.md`](../themes/blog-sumsec.md)，若用户指定或命中企业分支则改用 `vendor/slide-writer/themes/[id].md` 的色板与 Logo 规则。
+主题流程与 slide-writer 一致（`vendor/slide-writer/SKILL.md` Phase 0 + `vendor/slide-writer/themes/_index.md`），**仅多一个**主题 ID **`blog-sumsec`**（见 [`themes/_index.md`](../themes/_index.md)）。未命中企业且未命中博客关键词时，默认 **`ant-group`**，与上游相同。
 
-若用户明确要求使用 slide-writer 的 `_base.html` 引擎，则进入 **Slide-Writer 引擎轨道**：从 `vendor/slide-writer/_base.html` 复制到输出路径后按上游占位符填充；`<!-- %%THEME_STYLE%% -->` 内粘贴**本次选定**主题的 CSS——**可以是** `blog-sumsec`，**也可以是**任一 `vendor/slide-writer/themes/[id].md`——并自行补齐本文件列出的 HUD / SUMSEC 回原文 / 全屏等博客硬约束（细则见 [slide-writer-merge.md](slide-writer-merge.md)）。
+下方「最小结构」一节是自研 **HUD 轨道** 的基线；**色板**由 Phase 0 选定的主题 ID 决定：可能是 [`themes/blog-sumsec.md`](../themes/blog-sumsec.md)，也可能是 `vendor/slide-writer/themes/[id].md`（含 `ant-group`）。
+
+若使用 slide-writer 的 `_base.html` 引擎：从 `vendor/slide-writer/_base.html` 复制后按上游占位符填充；`<!-- %%THEME_STYLE%% -->` 粘贴**当前主题 ID** 对应 CSS，并自行补齐 HUD / SUMSEC 回原文 / 全屏等博客硬约束（细则见 [slide-writer-merge.md](slide-writer-merge.md)）。
 
 需要复用上游组件 HTML 时，按需查阅 `vendor/slide-writer/components.md`，不必通读。
 

@@ -11,15 +11,16 @@
 期望执行：
 
 1. 读取源 Markdown
-2. 读取主题索引与默认主题：
-   - `themes/_index.md`
-   - `themes/blog-sumsec.md`
+2. 读取主题规则（slide-writer Phase 0 + 增补）：
+   - `vendor/slide-writer/themes/_index.md`
+   - `themes/_index.md`（博客 `blog-sumsec` 增补与回退顺序）
+   - 若主题为 `blog-sumsec`：`themes/blog-sumsec.md`；若为企业 `[id]`：`vendor/slide-writer/themes/[id].md`；未命中企业与博客关键词时默认 `ant-group`
 3. 读取仓库视觉参考：
    - `assets/css/style.scss`
    - `_layouts/default.html`
 4. 阅读 `references/slide-writer-merge.md`，在写 HTML 前完成演示结构规划（吸收 slide-writer Phase 2 要点）
 5. 写出 `visual thesis`、`content plan`、`interaction thesis`
-6. 生成同目录、同 basename 的 HTML（主题按 `themes/_index.md`：博文缺省用 **blog-sumsec**，否则用指定的 `vendor/slide-writer/themes/[id].md`）
+6. 生成同目录、同 basename 的 HTML（主题按 slide-writer Phase 0 + `themes/_index.md`：命中博客增补关键词用 **blog-sumsec**，命中企业用对应 `[id]`，否则 **ant-group**）
 7. 保持文章图片相对路径可用
 8. 做浏览器级验证
 
