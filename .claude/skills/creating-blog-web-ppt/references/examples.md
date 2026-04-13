@@ -19,7 +19,7 @@
    - `_layouts/default.html`
 4. 阅读 `references/slide-writer-merge.md`，在写 HTML 前完成演示结构规划（吸收 slide-writer Phase 2 要点）
 5. 写出 `visual thesis`、`content plan`、`interaction thesis`
-6. 生成同目录、同 basename 的 HTML（默认应用 **blog-sumsec** 色板）
+6. 生成同目录、同 basename 的 HTML（主题按 `themes/_index.md`：博文缺省用 **blog-sumsec**，否则用指定的 `vendor/slide-writer/themes/[id].md`）
 7. 保持文章图片相对路径可用
 8. 做浏览器级验证
 

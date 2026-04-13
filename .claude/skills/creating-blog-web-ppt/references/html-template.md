@@ -4,9 +4,9 @@
 
 ## 与 Slide-Writer 的关系（合并版）
 
-本仓库优先使用**博客默认轨道**：下方「最小结构」一节是自研 deck 的基线，主题色默认来自 [`themes/blog-sumsec.md`](../themes/blog-sumsec.md)。
+本仓库**并行保留**博客站主题与 slide-writer 全量企业主题（见 [`themes/_index.md`](../themes/_index.md)）。下方「最小结构」一节是自研 **博客默认轨道** 的基线；缺省主题色来自 [`themes/blog-sumsec.md`](../themes/blog-sumsec.md)，若用户指定或命中企业分支则改用 `vendor/slide-writer/themes/[id].md` 的色板与 Logo 规则。
 
-若用户明确要求使用 slide-writer 的 `_base.html` 引擎，则进入 **Slide-Writer 引擎轨道**：从 `vendor/slide-writer/_base.html` 复制到输出路径后按上游占位符填充；**默认仍把 `blog-sumsec` 的 CSS 块**贴入 `<!-- %%THEME_STYLE%% -->`，并自行补齐本文件列出的 HUD / SUMSEC 回原文 / 全屏等博客硬约束（细则见 [slide-writer-merge.md](slide-writer-merge.md)）。
+若用户明确要求使用 slide-writer 的 `_base.html` 引擎，则进入 **Slide-Writer 引擎轨道**：从 `vendor/slide-writer/_base.html` 复制到输出路径后按上游占位符填充；`<!-- %%THEME_STYLE%% -->` 内粘贴**本次选定**主题的 CSS——**可以是** `blog-sumsec`，**也可以是**任一 `vendor/slide-writer/themes/[id].md`——并自行补齐本文件列出的 HUD / SUMSEC 回原文 / 全屏等博客硬约束（细则见 [slide-writer-merge.md](slide-writer-merge.md)）。
 
 需要复用上游组件 HTML 时，按需查阅 `vendor/slide-writer/components.md`，不必通读。
 

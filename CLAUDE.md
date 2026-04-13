@@ -75,7 +75,7 @@ title: Post Title
 - 输出默认是同目录、同 basename 的 `YYYY/post-name.html`
 - 产物应为独立单文件 HTML，不依赖 Jekyll layout
 - 保持文章目录内原有相对图片路径可用，例如 `./pic/...`
-- 该 skill 已合并 [FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer) 工作流快照（`vendor/slide-writer/`），**默认主题**为博客站深色科幻风：`themes/blog-sumsec.md`
+- 该 skill 已合并 [FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer) 工作流快照（`vendor/slide-writer/`）：**全量企业主题**保留在 `vendor/slide-writer/themes/`；另增博客站主题 `themes/blog-sumsec.md`，仅在博文缺省场景作为默认色板（详见 `themes/_index.md`）
 
 执行这类任务时，通常需要读取：
 

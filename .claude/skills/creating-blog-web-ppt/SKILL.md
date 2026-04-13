@@ -1,6 +1,6 @@
 ---
 name: creating-blog-web-ppt
-description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PPT、HTML slides、演讲稿页面或独立演示页，尤其希望输出与原文同目录、同 basename 时使用。已合并 FeeiCN/slide-writer 的结构化演示工作流，默认主题为博客站深色科幻风 blog-sumsec。
+description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PPT、HTML slides、演讲稿页面或独立演示页，尤其希望输出与原文同目录、同 basename 时使用。已合并 FeeiCN/slide-writer：结构化工作流 + 全量企业主题文件（vendor/slide-writer/themes）；另增博客站主题 blog-sumsec，仅在博文缺省场景作为默认色板。
 ---
 
 # 创建文章网页版 PPT（合并 Slide-Writer）
@@ -9,7 +9,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 
 这是一个绑定 `BlogPapers` 仓库的专用 skill，用来把文章型 Markdown 转成独立的网页版 PPT。
 
-合并来源：[FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer)（MIT，快照于 `vendor/slide-writer/`，见 `vendor/slide-writer/UPSTREAM.md`）。上游擅长「想法 / 大纲 / 长文 → 结构化 HTML 演示」；本 skill 保留博客仓库的落盘路径、品牌回链、视口与图片约束，并把**默认视觉**固定为 **`blog-sumsec` 博客主题**（[`themes/blog-sumsec.md`](themes/blog-sumsec.md)）。
+合并来源：[FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer)（MIT，快照于 `vendor/slide-writer/`，见 `vendor/slide-writer/UPSTREAM.md`）。上游的**全部企业主题 CSS**（`vendor/slide-writer/themes/*.md`）、**主题识别索引**（`vendor/slide-writer/themes/_index.md`）、**组件与 `_base.html` 引擎**均在仓库内保留可用。另增 **`blog-sumsec`** 博客站补充主题（[`themes/blog-sumsec.md`](themes/blog-sumsec.md)）：仅在「博文转 PPT、且未指定/未命中企业主题」时作为**缺省**色板，取代上游「未识别品牌 → 蚂蚁蓝」；**不得**在用户已选企业主题时强行改用博客色。本 skill 同时保留博客仓库的落盘路径、品牌回链、视口与图片约束。
 
 主 `SKILL.md` 只负责：
 
@@ -55,7 +55,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - deck 主画布不得超过当前视口，必须具备自适应缩放或响应式重排能力
 - 小屏下优先保证可读性与不裁切，必要时允许退化为纵向滚动阅读
 - 不改首页、归档、站点导航
-- **默认主题**：一律先按 [`themes/_index.md`](themes/_index.md) 解析为 **`blog-sumsec`**，并读取 [`themes/blog-sumsec.md`](themes/blog-sumsec.md) 作为色板与渐变来源（除非用户触发企业主题分支，见该索引文件）
+- **主题选择**：先读 [`themes/_index.md`](themes/_index.md)。**并行保留**博客主题与 slide-writer 全量企业主题：命中企业分支或用户指定时读 `vendor/slide-writer/themes/[id].md`；否则在博文缺省场景使用 **`blog-sumsec`**，并读 [`themes/blog-sumsec.md`](themes/blog-sumsec.md)
 
 ## 读取策略
 
@@ -67,7 +67,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - HTML 最小结构和交互基线：读 [references/html-template.md](references/html-template.md)
 - 完成前的验证动作：必读 [references/verification-checklist.md](references/verification-checklist.md)
 - 需要类比案例时：读 [references/examples.md](references/examples.md)
-- 主题解析：读 [`themes/_index.md`](themes/_index.md)；默认主题细节：读 [`themes/blog-sumsec.md`](themes/blog-sumsec.md)
+- 主题解析：读 [`themes/_index.md`](themes/_index.md)；博客缺省色板：[`themes/blog-sumsec.md`](themes/blog-sumsec.md)；企业主题：按需读 `vendor/slide-writer/themes/_index.md` 与匹配到的 `vendor/slide-writer/themes/[id].md`
 - 采用 Slide-Writer 引擎轨道或借鉴其组件 HTML 时：按需读 `vendor/slide-writer/components.md`、`vendor/slide-writer/SKILL.md`（仅 Phase 2–3 相关小节）
 
 ## 执行清单
@@ -91,8 +91,9 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 
 读取主题与色板：
 
-- [`themes/_index.md`](themes/_index.md)：确认默认 `blog-sumsec` 或可选企业主题分支
-- [`themes/blog-sumsec.md`](themes/blog-sumsec.md)：默认 CSS 变量与渐变（博客站风格）
+- [`themes/_index.md`](themes/_index.md)：判定本次用 **blog-sumsec** 还是 **slide-writer 某一 `themes/[id].md`**
+- [`themes/blog-sumsec.md`](themes/blog-sumsec.md)：仅在选用博客缺省主题时读取
+- `vendor/slide-writer/themes/_index.md` 与对应 `vendor/slide-writer/themes/[id].md`：在选用或命中企业主题时读取
 
 同时读取：
 
@@ -115,7 +116,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 默认基调：
 
 - 正式技术演讲稿优先
-- **`blog-sumsec` 深色科幻站色**作为主色板（不再默认使用上游蚂蚁蓝）
+- **色板**：若本次为博文缺省且未走企业分支，用 **`blog-sumsec` 深色科幻站色**；若用户指定或命中 slide-writer 企业主题，则**完整使用**对应 `vendor/slide-writer/themes/[id].md`（含蚂蚁蓝等上游设计），不得混用两套主色
 - 长文允许做成长版 deck，不强压页数
 
 结构规划阶段吸收 slide-writer 的「长文 → 演示结构」原则：一页一判断、先骨架后填字、控制信息密度与布局多样性。细则见 [references/slide-writer-merge.md](references/slide-writer-merge.md) 与按需查阅的 `vendor/slide-writer/SKILL.md`。
@@ -126,8 +127,8 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 
 **轨道选择**（见 [references/slide-writer-merge.md](references/slide-writer-merge.md)）：
 
-- **默认**：自研单文件 deck，内联 CSS/JS，结构与交互以 [references/html-template.md](references/html-template.md) 为准；主题色来自 `themes/blog-sumsec.md`。
-- **可选**：用户明确要求采用 slide-writer `_base.html` 引擎时，从 `vendor/slide-writer/_base.html` 复制到输出路径并按上游占位符填充；**主题样式默认仍使用 `blog-sumsec.md` 的 CSS**，除非 `themes/_index.md` 触发企业主题并改读 `vendor/slide-writer/themes/[id].md`。无论哪条轨道，都必须满足本仓库关于 SUMSEC、全屏、视口与图片的硬约束。
+- **默认**：自研单文件 deck，内联 CSS/JS，结构与交互以 [references/html-template.md](references/html-template.md) 为准；主题色按 `themes/_index.md`：缺省为 `blog-sumsec.md`，否则为选定的 `vendor/slide-writer/themes/[id].md`。
+- **可选**：用户明确要求采用 slide-writer `_base.html` 引擎时，从 `vendor/slide-writer/_base.html` 复制到输出路径并按上游占位符填充；`<!-- %%THEME_STYLE%% -->` 填入**本次选定**主题的 CSS（`blog-sumsec.md` **或** 任一企业 `themes/[id].md`）。无论哪条轨道，都必须满足本仓库关于 SUMSEC、全屏、视口与图片的硬约束。
 
 生成时额外强制满足：
 
@@ -177,7 +178,8 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - 不要对内容图默认使用会裁切关键信息的铺满策略；原文配图默认优先完整可见
 - 不要为了保住固定比例而让小屏内容溢出、裁切或出现横向滚动
 - 不要没开浏览器就声称完成
-- **不要忘记默认主题是 `blog-sumsec`**，不要默认套用上游蚂蚁蓝或其他企业色，除非 `themes/_index.md` 已触发企业主题分支且用户接受缺少 Logo 时的降级策略
+- **不要在应使用 slide-writer 企业主题时强行改成 `blog-sumsec`**（用户指定、关键词命中或要求上游企业默认时，须用对应 `vendor/slide-writer/themes/[id].md`）
+- **不要在博文缺省场景默认套用上游蚂蚁蓝或其他企业色**：未命中企业分支时应使用 `blog-sumsec`（见 `themes/_index.md`）
 
 ## 参考文件
 
@@ -189,12 +191,12 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - [references/examples.md](references/examples.md)
 - [`themes/_index.md`](themes/_index.md)
 - [`themes/blog-sumsec.md`](themes/blog-sumsec.md)
-- `vendor/slide-writer/`（上游快照：`SKILL.md`、`components.md`、`_base.html`、`themes/*.md`）
+- `vendor/slide-writer/`（上游快照：`SKILL.md`、`components.md`、`_base.html`、**完整** `themes/*.md` 企业主题族）
 
 ## 最终规则
 
 在这个仓库里，文章转网页版 PPT 的默认标准是：
 
-`同目录 + 同 basename + 单文件 HTML + 默认 blog-sumsec 主题 + SUMSEC 可跳原文 + 画布不超视口且可自适应 + 原文图片不撑破固定舞台 + 仓库风格一致 + 浏览器验证通过`
+`同目录 + 同 basename + 单文件 HTML + 主题按 themes/_index 在 blog-sumsec 与 slide-writer 企业主题间二选一（缺省博文用前者）+ SUMSEC 可跳原文 + 画布不超视口且可自适应 + 原文图片不撑破固定舞台 + slide-writer 风格文件在 vendor 内完整保留可选用 + 浏览器验证通过`
 
-可选地叠加 slide-writer 的结构化演示与组件能力，但不得牺牲上述默认标准。
+slide-writer 的结构化演示、组件与**全部企业主题**均为一等能力；仅「博文且未指定企业」时缺省到博客色板。

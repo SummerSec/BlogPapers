@@ -1,6 +1,6 @@
 # slide-writer 上游快照
 
-本目录为 [FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer) 的精简快照，供 `creating-blog-web-ppt` 在「可选企业引擎轨道」下读取 `_base.html`、`components.md` 与 `themes/*.md`。
+本目录为 [FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer) 的精简快照，供 `creating-blog-web-ppt` 读取 `_base.html`、`components.md` 与**完整** `themes/*.md`（含 `themes/_index.md` 与各企业 `[id].md`）。博客站补充主题见 skill 根目录 `themes/blog-sumsec.md`，与下列企业主题族**并行保留**、由 `themes/_index.md`（skill 内）统一调度。
 
 - **快照提交**：`fed00af0904b7c879d584dc47df1fecb3c614070`（以当时 `origin/main` 为准）
 - **许可证**：上游 README 声明为 **MIT**；使用与再分发请遵守上游条款并保留署名。

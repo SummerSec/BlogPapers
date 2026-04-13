@@ -10,11 +10,14 @@
 2. 高可读性
 3. 克制的仓库科幻质感
 
-## 默认主题（合并 Slide-Writer 后）
+## 主题体系（合并 Slide-Writer 后）
 
-生成网页版 PPT 时，**默认**使用本 skill 的 **`blog-sumsec`** 主题（见 [`themes/blog-sumsec.md`](../themes/blog-sumsec.md) 与 [`themes/_index.md`](../themes/_index.md)），而不是 slide-writer 上游的蚂蚁蓝默认。
+本 skill **同时保留**两套视觉来源，详见 [`themes/_index.md`](../themes/_index.md)：
 
-仅在用户明确要求企业/品牌汇报风，或 `themes/_index.md` 判定进入企业分支时，才读取 `vendor/slide-writer/themes/[id].md` 作为色板与 Logo 规则来源。
+1. **博客站补充主题 `blog-sumsec`**（[`themes/blog-sumsec.md`](../themes/blog-sumsec.md)）：在「博文转 PPT、且未指定/未命中企业主题」时作为**缺省**色板，取代上游「未识别品牌 → 蚂蚁蓝」。
+2. **slide-writer 全量企业主题**：`vendor/slide-writer/themes/` 下各 `[id].md` 与 `themes/_index.md` **一律保留**，用户指定、内容命中品牌或要求上游企业默认时，**须**使用对应文件，不得用博客色覆盖。
+
+本节下列 **颜色 token** 主要服务 **`blog-sumsec` 与自研 HUD 轨道**；若当前稿已选用某企业 `[id].md`，以该文件内 CSS 变量为准。
 
 ## 颜色 token
 
