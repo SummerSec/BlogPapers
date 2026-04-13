@@ -1,17 +1,17 @@
 # 博客站点主题 `blog-sumsec`（slide-writer 增补主题 ID）
 
-与 `sumsec.me` 博客一致的深色、克制科幻感，配色与字体约定对齐 `references/visual-system.md` 与 `assets/css/style.scss`。
+与 `sumsec.me` 博客一致的深色、克制科幻感，配色与字体约定对齐 [`../../references/visual-system.md`](../../references/visual-system.md) 与 `assets/css/style.scss`（仓库根目录）。
 
-本文件定义主题 ID **`blog-sumsec`**，与 slide-writer 自带的 `ant-group`、`tencent` 等**并列**；选用条件与 Phase 0 顺序见 [`_index.md`](_index.md)（先企业识别，未命中再判断博客关键词，否则 **`ant-group`**）。
+本文件定义主题 ID **`blog-sumsec`**，与本目录下 `ant-group`、`tencent` 等主题文件**并列**；选用条件与 Phase 0 顺序见 [`_index.md`](_index.md) 文首「BlogPapers Phase 0 增补顺序」。
 
 本主题用于：
 
 - **自研 HUD 轨道**：当 Phase 0 选定主题为 **`blog-sumsec`** 时，将下列 CSS 变量与渐变写入单文件 HTML 的 `:root` / 关键页背景。
-- **Slide-Writer `_base.html` 轨道**：当且仅当本次选定主题为 **`blog-sumsec`** 时，把 `<!-- %%THEME_STYLE%% -->` 替换为下方 **CSS** 块。若主题为某企业 `[id]`，则应粘贴 `vendor/slide-writer/themes/[id].md` 内的 CSS 与 Logo 规则，而不是本文件。
+- **Slide-Writer `_base.html` 轨道**：当且仅当本次选定主题为 **`blog-sumsec`** 时，把 `<!-- %%THEME_STYLE%% -->` 替换为下方 **CSS** 块。若主题为某企业 `[id]`，则应粘贴**同目录** `[id].md`（如 `tencent.md`）内的 CSS 与 Logo 规则，而不是本文件。
 
 ## Logo（仅当选用本主题 `blog-sumsec` 时）
 
-- **本主题不依赖** `vendor/slide-writer/logos/*.png`。
+- **本主题不依赖** `../logos/*.png`（相对 `_base.html` 所在目录的 `logos/`，若快照未带 PNG 则隐藏 Logo 即可）。
 - **Slide-Writer `_base.html` 轨道 + 选用 blog-sumsec**：
   - `%%LOGO_GROUP%%`：可用隐藏占位，避免引用不存在的 PNG：
 
@@ -19,9 +19,9 @@
 <div id="globalLogoGroup" class="logo-group-single" style="display:none" aria-hidden="true"></div>
 ```
 
-  - 封面 / 章节 / 结尾等深色页：可**省略**整个 `.fixed-logo-dark`；品牌与回链交给外层 HUD 的 `SUMSEC` 可点击链接（见 `references/html-template.md`）。
+  - 封面 / 章节 / 结尾等深色页：可**省略**整个 `.fixed-logo-dark`；品牌与回链交给外层 HUD 的 `SUMSEC` 可点击链接（见 [`../../references/html-template.md`](../../references/html-template.md)）。
 
-- **若选用 slide-writer 某一企业主题**：Logo、双 Logo、深色/白底页写法**一律**以对应 `vendor/slide-writer/themes/[id].md` 与 `vendor/slide-writer/themes/_index.md` 为准，并处理好 `logos/` 资源是否已复制到输出 HTML 同目录。
+- **若选用 slide-writer 某一企业主题**：Logo、双 Logo、深色/白底页写法**一律**以对应同目录 `[id].md` 与 [`_index.md`](_index.md) 为准，并处理好 `logos/` 资源是否已复制到输出 HTML 同目录。
 
 - **自研 deck 轨道**：HUD 内 `SUMSEC` / `sumsec` 品牌位必须可点击跳转到**原文公开地址**，不得使用纯文本冒充链接。
 
@@ -68,4 +68,4 @@
 
 - 同目录、同 basename 单文件 HTML（除非用户明确覆盖）
 - 右下角全屏按钮、`SUMSEC` 链到原文、主画布不超视口、原文图片不撑破舞台
-- 生成后浏览器级验证（`references/verification-checklist.md`）
+- 生成后浏览器级验证（[`../../references/verification-checklist.md`](../../references/verification-checklist.md)）

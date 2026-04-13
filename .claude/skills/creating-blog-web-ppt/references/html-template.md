@@ -4,9 +4,9 @@
 
 ## 与 Slide-Writer 的关系（对齐 + 增补博客主题）
 
-主题流程与 slide-writer 一致（`vendor/slide-writer/SKILL.md` Phase 0 + `vendor/slide-writer/themes/_index.md`），**仅多一个**主题 ID **`blog-sumsec`**（见 [`themes/_index.md`](../themes/_index.md)）。未命中企业且未命中博客关键词时，默认 **`ant-group`**，与上游相同。
+主题流程与 slide-writer 一致（`vendor/slide-writer/SKILL.md` Phase 0 + `vendor/slide-writer/themes/_index.md`），**仅多一个**主题文件 **`blog-sumsec.md`**（与同目录企业主题并列）。未命中企业且未命中博客关键词时，默认 **`ant-group`**，与上游相同。
 
-下方「最小结构」一节是自研 **HUD 轨道** 的基线；**色板**由 Phase 0 选定的主题 ID 决定：可能是 [`themes/blog-sumsec.md`](../themes/blog-sumsec.md)，也可能是 `vendor/slide-writer/themes/[id].md`（含 `ant-group`）。
+下方「最小结构」一节是自研 **HUD 轨道** 的基线；**色板**由 Phase 0 选定的主题 ID 决定：可能是 [`vendor/slide-writer/themes/blog-sumsec.md`](../vendor/slide-writer/themes/blog-sumsec.md)，也可能是 `vendor/slide-writer/themes/<id>.md`（含 `ant-group`）。
 
 若使用 slide-writer 的 `_base.html` 引擎：从 `vendor/slide-writer/_base.html` 复制后按上游占位符填充；`<!-- %%THEME_STYLE%% -->` 粘贴**当前主题 ID** 对应 CSS，并自行补齐 HUD / SUMSEC 回原文 / 全屏等博客硬约束（细则见 [slide-writer-merge.md](slide-writer-merge.md)）。
 

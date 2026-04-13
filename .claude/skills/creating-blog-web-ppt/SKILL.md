@@ -1,6 +1,6 @@
 ---
 name: creating-blog-web-ppt
-description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PPT、HTML slides、演讲稿页面或独立演示页，尤其希望输出与原文同目录、同 basename 时使用。主题与工作流对齐 FeeiCN/slide-writer，并仅增补博客站主题 blog-sumsec（见 themes/_index.md）。
+description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PPT、HTML slides、演讲稿页面或独立演示页，尤其希望输出与原文同目录、同 basename 时使用。主题与工作流对齐 FeeiCN/slide-writer；博客站主题见 vendor/slide-writer/themes/blog-sumsec.md（与上游主题同目录）。
 ---
 
 # 创建文章网页版 PPT（slide-writer 对齐 + 博客主题增补）
@@ -11,7 +11,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 
 **与 [FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer) 的关系**：Phase 0～4、`_base.html` 占位符、`components.md`、企业主题识别与**未识别时默认 `ant-group`**，均以 `vendor/slide-writer/` 快照为准（见 `vendor/slide-writer/UPSTREAM.md`）。本 skill **不改写**上游默认主题逻辑。
 
-**唯一增补**：在本仓库增加主题 ID **`blog-sumsec`**（[`themes/blog-sumsec.md`](themes/blog-sumsec.md)），并在 [`themes/_index.md`](themes/_index.md) 中规定：仅当未匹配到任何企业主题、且命中「博客站 / sumsec」等关键词时选用；否则与上游一样落 **`ant-group`**。
+**唯一增补**：在 `vendor/slide-writer/themes/` 增加主题文件 **`blog-sumsec.md`**（与 `ant-group.md` 等并列），并在同目录 [`vendor/slide-writer/themes/_index.md`](vendor/slide-writer/themes/_index.md) 文首规定 Phase 0 增补顺序：仅当未匹配到任何企业主题、且命中「博客站 / sumsec」等关键词时选用 **`blog-sumsec`**；否则与上游一样落 **`ant-group`**。
 
 本 skill 另保留 BlogPapers 的落盘路径、SUMSEC 回原文、全屏、视口与图片等仓库硬约束（见 `references/`）。
 
@@ -19,7 +19,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 
 - 判断是否该触发
 - 规定不可跳过的执行顺序
-- 指向 `references/` 与 `themes/` 中的细节文件
+- 指向 `references/` 与 `vendor/slide-writer/themes/` 中的细节文件
 
 细节不要堆回主文件；需要时再读对应 reference。
 
@@ -59,7 +59,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - deck 主画布不得超过当前视口，必须具备自适应缩放或响应式重排能力
 - 小屏下优先保证可读性与不裁切，必要时允许退化为纵向滚动阅读
 - 不改首页、归档、站点导航
-- **主题**：按 slide-writer Phase 0 + [`themes/_index.md`](themes/_index.md) 增补规则选择 `blog-sumsec` 或 `vendor/slide-writer/themes/[id].md`（未命中企业与博客关键词时为 **`ant-group`**，与上游一致）
+- **主题**：按 [`vendor/slide-writer/themes/_index.md`](vendor/slide-writer/themes/_index.md)（含 BlogPapers 增补与企业识别全文）选择 `blog-sumsec` 或企业 `<id>`，读取同目录对应 `*.md`（未命中企业与博客关键词时为 **`ant-group`**，与上游一致）
 
 ## 读取策略
 
@@ -71,7 +71,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - HTML 最小结构和交互基线：读 [references/html-template.md](references/html-template.md)
 - 完成前的验证动作：必读 [references/verification-checklist.md](references/verification-checklist.md)
 - 需要类比案例时：读 [references/examples.md](references/examples.md)
-- **主题**：先 [`themes/_index.md`](themes/_index.md)；企业规则 [`vendor/slide-writer/themes/_index.md`](vendor/slide-writer/themes/_index.md)；选用 `blog-sumsec` 时读 [`themes/blog-sumsec.md`](themes/blog-sumsec.md)；选用企业 `[id]` 时读 `vendor/slide-writer/themes/[id].md`
+- **主题**：读 [`vendor/slide-writer/themes/_index.md`](vendor/slide-writer/themes/_index.md)；再按需读同目录 `blog-sumsec.md` 或 `<id>.md`
 - 结构/组件与 `_base.html` 填充：按需读 `vendor/slide-writer/SKILL.md`、`vendor/slide-writer/components.md`
 
 ## 执行清单
@@ -80,7 +80,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 
 ```text
 生成进度：
-- [ ] 步骤 1：读取原文；按 slide-writer Phase 0 + themes/_index 增补确定主题 ID
+- [ ] 步骤 1：读取原文；按 `vendor/slide-writer/themes/_index.md`（含增补顺序）确定主题 ID
 - [ ] 步骤 2：写出三句前置主张，并做演示结构规划（slide-writer Phase 2）
 - [ ] 步骤 3：选择生成轨道（自研 HUD / slide-writer _base.html）并生成单文件 HTML
 - [ ] 步骤 4：核对路径与仓库约定
@@ -93,15 +93,15 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 
 先读 Markdown，提取叙事主线、章节层级、可复用图片和适合拆页的观点组。
 
-**主题（与 slide-writer 一致，仅多 blog-sumsec）**：
+**主题（与 slide-writer 一致，仅多 `blog-sumsec.md`）**：
 
-1. 执行 `vendor/slide-writer/SKILL.md` Phase 0 的企业识别，权威索引为 `vendor/slide-writer/themes/_index.md`。
-2. 再读 [`themes/_index.md`](themes/_index.md)，应用其中 **「博客站主题」增补** 与最终回退顺序（未命中企业且未命中博客关键词 → **`ant-group`**）。
+1. 完整阅读 [`vendor/slide-writer/themes/_index.md`](vendor/slide-writer/themes/_index.md)：先按文首 **「BlogPapers Phase 0 增补顺序」**（企业识别 → blog-sumsec 关键词 → `ant-group`），再按需查阅下文各企业表。
+2. 对照 `vendor/slide-writer/SKILL.md` Phase 0 的进度与输出习惯（可选）。
 
-按需读取色板文件：
+按需读取色板文件（均在 `vendor/slide-writer/themes/`）：
 
-- `blog-sumsec` → [`themes/blog-sumsec.md`](themes/blog-sumsec.md)
-- 企业 `[id]` → `vendor/slide-writer/themes/[id].md`
+- 主题 ID `blog-sumsec` → [`vendor/slide-writer/themes/blog-sumsec.md`](vendor/slide-writer/themes/blog-sumsec.md)
+- 企业或其它 ID → 同目录 `<id>.md`（如 `ant-group.md`）
 
 同时读取：
 
@@ -135,7 +135,7 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 
 **轨道选择**（见 [references/slide-writer-merge.md](references/slide-writer-merge.md)）：
 
-- **自研 HUD 轨道**：结构与交互以 [references/html-template.md](references/html-template.md) 为准；**主题色**来自步骤 1 选定的 `blog-sumsec.md` 或 `vendor/slide-writer/themes/[id].md`。
+- **自研 HUD 轨道**：结构与交互以 [references/html-template.md](references/html-template.md) 为准；**主题色**来自步骤 1 选定的 `vendor/slide-writer/themes/<id>.md`（含 `blog-sumsec.md`）。
 - **Slide-Writer `_base.html` 轨道**：从 `vendor/slide-writer/_base.html` 复制到输出路径（用户要求或你判断需要该引擎时），按上游 Phase 3 替换占位符；`<!-- %%THEME_STYLE%% -->` 使用**当前主题 ID** 对应文件的 CSS。
 
 无论哪条轨道，都必须满足本仓库关于 SUMSEC、全屏、视口与图片的硬约束。
@@ -199,8 +199,8 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - [references/html-template.md](references/html-template.md)
 - [references/verification-checklist.md](references/verification-checklist.md)
 - [references/examples.md](references/examples.md)
-- [`themes/_index.md`](themes/_index.md)
-- [`themes/blog-sumsec.md`](themes/blog-sumsec.md)
+- [`vendor/slide-writer/themes/_index.md`](vendor/slide-writer/themes/_index.md)（唯一主题索引；含 BlogPapers 增补）
+- [`vendor/slide-writer/themes/blog-sumsec.md`](vendor/slide-writer/themes/blog-sumsec.md)（选用 `blog-sumsec` 时）
 - `vendor/slide-writer/`（`SKILL.md`、`components.md`、`_base.html`、`themes/*.md`）
 
 ## 最终规则

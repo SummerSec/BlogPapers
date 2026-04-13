@@ -23,7 +23,7 @@
 ## 主题：与上游一致，仅增补 `blog-sumsec`
 
 - **企业识别、子品牌、多品牌冲突、默认未识别 → `ant-group`**：完全以 `vendor/slide-writer/themes/_index.md` 与 `vendor/slide-writer/SKILL.md` Phase 0 为准，**不改动**。
-- **增补**：在未匹配到任何企业主题 ID 的前提下，若命中 [`themes/_index.md`](../themes/_index.md) 所列「博客站 / sumsec」关键词，则主题 ID 为 **`blog-sumsec`**，读 [`themes/blog-sumsec.md`](../themes/blog-sumsec.md)；否则仍为 **`ant-group`**（与 slide-writer 默认一致）。
+- **增补**：在未匹配到任何企业主题 ID 的前提下，若命中 [`vendor/slide-writer/themes/_index.md`](../vendor/slide-writer/themes/_index.md) 文首所列「blog-sumsec 关键词」，则主题 ID 为 **`blog-sumsec`**，读 [`vendor/slide-writer/themes/blog-sumsec.md`](../vendor/slide-writer/themes/blog-sumsec.md)；否则仍为 **`ant-group`**（与 slide-writer 默认一致）。
 
 ## 建议吸收的上游能力（Phase 2 结构规划）
 
@@ -43,7 +43,7 @@
 ### A. 自研 HUD 轨道（本仓库常用）
 
 - 结构与交互以 `references/html-template.md` 为准。
-- **视觉**：主题 ID 由 Phase 0 + [`themes/_index.md`](../themes/_index.md) 决定；CSS 来自 `themes/blog-sumsec.md` 或 `vendor/slide-writer/themes/[id].md`（在自研 HTML 的 `:root` 中落地）。
+- **视觉**：主题 ID 由 Phase 0 + [`vendor/slide-writer/themes/_index.md`](../vendor/slide-writer/themes/_index.md) 决定；CSS 来自 `vendor/slide-writer/themes/blog-sumsec.md` 或同目录 `<id>.md`（在自研 HTML 的 `:root` 中落地）。
 - 可借用 `components.md` 的**版式思想**（卡片、步骤、对比），类名不必与上游完全一致，但需保持可读与可维护。
 
 ### B. Slide-Writer `_base.html` 轨道
@@ -51,8 +51,8 @@
 当用户明确要求或判断需要 slide-writer 引擎时：
 
 1. 将 `vendor/slide-writer/_base.html` **复制**到目标输出路径（仍优先满足同目录、同 basename 规则），再按上游 `SKILL.md` Phase 3 替换 `%%TITLE%%`、`<!-- %%THEME_STYLE%% -->`、`%%LOGO_GROUP%%`、`%%FOOTNOTE%%`、`<!-- %%SLIDES%% -->`。
-2. **主题样式**：`<!-- %%THEME_STYLE%% -->` 内粘贴**当前主题 ID** 对应文件的完整 CSS —— `blog-sumsec` 或任意企业 `vendor/slide-writer/themes/[id].md`（含 `ant-group`），由主题 Phase 0 判定。
-3. **Logo**：`blog-sumsec` 按 `blog-sumsec.md`；企业主题按上游 `themes/[id].md` 与 `themes/_index.md`，并处理好 `logos/` 是否已复制到输出目录或按无 Logo 降级。
+2. **主题样式**：`<!-- %%THEME_STYLE%% -->` 内粘贴**当前主题 ID** 对应文件的完整 CSS —— `blog-sumsec` 或任意企业 `vendor/slide-writer/themes/<id>.md`（含 `ant-group`），由主题 Phase 0 判定。
+3. **Logo**：`blog-sumsec` 按 `vendor/slide-writer/themes/blog-sumsec.md`；企业主题按同目录 `<id>.md` 与 `_index.md`，并处理好 `logos/` 是否已复制到输出目录或按无 Logo 降级。
 4. **仓库硬约束的补全**：`_base.html` 未必自带「SUMSEC 回原文」「博客 favicon 相对路径」——必须通过额外内联 HUD、在封面外增加链接块、或生成后在同文件内追加最小补丁等方式满足 `html-template` / `repo-conventions` 中的硬要求，**不得**因为套了上游壳子而跳过。
 
 ## 进度通知（可选）

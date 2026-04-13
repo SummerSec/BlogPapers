@@ -14,9 +14,9 @@
 
 主题识别与**未识别企业时的默认 `ant-group`**，以 `vendor/slide-writer/themes/_index.md` 与 `vendor/slide-writer/SKILL.md` Phase 0 为准。
 
-本 skill **仅增补**主题 ID **`blog-sumsec`**（[`themes/blog-sumsec.md`](../themes/blog-sumsec.md)）：在未命中任何企业主题时，若命中 [`themes/_index.md`](../themes/_index.md) 所列博客站关键词则用博客色；否则仍为 **`ant-group`**（与 slide-writer 完全一致）。
+本 skill **仅增补**主题 ID **`blog-sumsec`**（[`../vendor/slide-writer/themes/blog-sumsec.md`](../vendor/slide-writer/themes/blog-sumsec.md)）：在未命中任何企业主题时，若命中 [`../vendor/slide-writer/themes/_index.md`](../vendor/slide-writer/themes/_index.md) 文首「BlogPapers Phase 0 增补顺序」所列博客站关键词则用博客色；否则仍为 **`ant-group`**（与 slide-writer 完全一致）。
 
-本节下列 **颜色 token** 描述 **`blog-sumsec`** 的推荐值；若当前稿为企业 `[id]`，以 `vendor/slide-writer/themes/[id].md` 为准。
+本节下列 **颜色 token** 描述 **`blog-sumsec`** 的推荐值；若当前稿为企业 `[id]`，以 `vendor/slide-writer/themes/<id>.md` 为准。
 
 ## 颜色 token
 

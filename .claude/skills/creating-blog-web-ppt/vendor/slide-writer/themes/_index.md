@@ -1,6 +1,20 @@
 # Theme Index — Slide-Writer
 
-Phase 0 主题识别用。确定公司后，Phase 4 只需读取 `themes/[id].md`。
+Phase 0 主题识别用。确定公司后，Phase 4 只需读取本目录下 `<id>.md`（在 BlogPapers 仓库中路径为 `vendor/slide-writer/themes/<id>.md`）。
+
+**BlogPapers 合并说明**：`creating-blog-web-ppt` 的**全部**主题文件（含上游企业主题与增补 **`blog-sumsec`**）均在本目录，**不再**使用 skill 根下单独的 `themes/` 文件夹。
+
+## BlogPapers Phase 0 增补顺序（与 slide-writer 默认衔接）
+
+1. 按下方「主题识别规则」与各表做企业/子品牌识别；若得到主题 ID → 读取**本目录** `<id>.md`（如 `tencent.md`）。
+2. 用户显式指定主题名或 `blog-sumsec` / 某公司名时，以用户为准（与上游「用户明确指定」优先级一致）。
+3. **仅当**第 1 步**没有**匹配到任何企业主题 ID 时，再检查 **blog-sumsec 关键词**；命中**任一**即可将主题 ID 设为 **`blog-sumsec`**，读取 [`blog-sumsec.md`](blog-sumsec.md)：
+   - `blog-sumsec`、`sumsec` 站色、`sumsec.me`、`SUMSEC` 站、与本站一致、博客站色、sumsec 博客风（及用户明确表达的同义说法）
+4. 若第 3 步也未命中博客关键词，主题 ID 为 **`ant-group`**，读取 [`ant-group.md`](ant-group.md) —— 与 slide-writer「未识别 → 蚂蚁蓝」默认一致。
+
+**不要**用泛词「博客」单独作为唯一触发条件，以免与普通技术文章混淆。
+
+**与两条生成轨道**：自研 HUD 或 `_base.html` 轨道的色板均以上述最终主题 ID 对应的本目录 `*.md` 为准。
 
 ---
 
