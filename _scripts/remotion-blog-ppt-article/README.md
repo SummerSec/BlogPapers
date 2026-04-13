@@ -60,5 +60,3 @@ npm run gif:three-times
 ## `scripts/` 目录
 
 - **`to-gif.mjs`**：与上文 `npm run gif:three-times` 等 GIF 流程相关。
-
-公众号侧 Markdown 排版见在线工具 [https://www.md2wechat.cn](https://www.md2wechat.cn)。

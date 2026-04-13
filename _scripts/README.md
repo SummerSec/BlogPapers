@@ -44,7 +44,3 @@ python _scripts/fetch_cloudflare_subdomains.py --write
 4. **Actions** 页选择 **Sync Cloudflare DNS (subdomain.md)** → **Run workflow** 手动运行；工作流也会按 cron **每天 UTC 0:00** 尝试同步（无变更则不会提交）。若要 **北京时间 0:00**，将 workflow 中 cron 改为 `0 16 * * *`。
 
 推送提交使用默认 `GITHUB_TOKEN`；若 `master` 有分支保护禁止 workflow 推送，需在保护规则中为「GitHub Actions」放行或改用 PAT（`PERSONAL_ACCESS_TOKEN` 等）——此处未内置 PAT，按仓库策略自行调整。
-
-## 微信公众号 Markdown 排版（在线）
-
-仓库不再内置 `md2wechat` CLI 与相关 skill。需要把 Markdown 转成公众号可用 HTML、多主题一键排版时，请使用在线编辑器：[https://www.md2wechat.cn](https://www.md2wechat.cn)（[微信公众号 Markdown 编辑器](https://www.md2wechat.cn)）。

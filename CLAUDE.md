@@ -107,9 +107,15 @@ title: Post Title
 
 实现与批量导出命令以 `_scripts/remotion-blog-ppt-article/README.md` 为准。
 
-## 微信公众号 Markdown 排版
+## 微信公众号发文
 
-仓库不维护 `md2wechat` CLI 或同名 skill。需要多主题排版、实时预览与复制粘贴到公众号后台时，使用在线编辑器 [https://www.md2wechat.cn](https://www.md2wechat.cn)。说明亦见 `_scripts/README.md`。
+当用户要把仓库中的 Markdown **发布到微信公众号**、排版成可发表文章/贴图、或提到「公众号 / 微信图文 / 贴图 / 文章」等需求时，优先使用本仓库 skill：
+
+- `.claude/skills/baoyu-post-to-wechat/SKILL.md`
+
+上游集合：[JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills)（skill 名 **`baoyu-post-to-wechat`**）。该 skill 通过脚本支持 **API** 或 **Chrome CDP** 等路径，具体前置条件、权限检查与命令以 `SKILL.md` 正文为准；执行脚本需要本机可用 **`bun`** 或按 skill 说明用 **`npx -y bun`**。
+
+**不要**把公众号 AppSecret、Cookie、Token 等敏感信息写入仓库或提交进 Git；仅放在本机环境变量或私有配置中。
 
 ## 评论与页面统计
 
