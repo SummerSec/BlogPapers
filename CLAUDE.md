@@ -107,6 +107,10 @@ title: Post Title
 
 实现与批量导出命令以 `_scripts/remotion-blog-ppt-article/README.md` 为准。
 
+## 微信公众号 Markdown 排版
+
+仓库不维护 `md2wechat` CLI 或同名 skill。需要多主题排版、实时预览与复制粘贴到公众号后台时，使用在线编辑器 [https://www.md2wechat.cn](https://www.md2wechat.cn)。说明亦见 `_scripts/README.md`。
+
 ## 评论与页面统计
 
 - 评论系统使用 [utterances](https://utteranc.es/) 对接 GitHub Issues

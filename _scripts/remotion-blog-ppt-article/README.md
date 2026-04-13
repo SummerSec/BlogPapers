@@ -56,3 +56,9 @@ npm run gif:three-times
 ```
 
 第二条用子工程内 `ffmpeg-static` 做两阶段 palette，**`GIFW` = 画布宽 1280**，无需本机安装 `ffmpeg`。若你本机已有 `ffmpeg`，也可用 README 前文 PowerShell 自行转换。
+
+## `scripts/` 目录
+
+- **`to-gif.mjs`**：与上文 `npm run gif:three-times` 等 GIF 流程相关。
+
+公众号侧 Markdown 排版见在线工具 [https://www.md2wechat.cn](https://www.md2wechat.cn)。
