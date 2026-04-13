@@ -75,11 +75,15 @@ title: Post Title
 - 输出默认是同目录、同 basename 的 `YYYY/post-name.html`
 - 产物应为独立单文件 HTML，不依赖 Jekyll layout
 - 保持文章目录内原有相对图片路径可用，例如 `./pic/...`
+- 该 skill 已合并 [FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer) 工作流快照（`vendor/slide-writer/`），**默认主题**为博客站深色科幻风：`themes/blog-sumsec.md`
 
 执行这类任务时，通常需要读取：
 
 - `assets/css/style.scss`
 - `_layouts/default.html`
+- `.claude/skills/creating-blog-web-ppt/references/slide-writer-merge.md`
+- `.claude/skills/creating-blog-web-ppt/themes/_index.md`
+- `.claude/skills/creating-blog-web-ppt/themes/blog-sumsec.md`
 - `.claude/skills/creating-blog-web-ppt/references/repo-conventions.md`
 - `.claude/skills/creating-blog-web-ppt/references/visual-system.md`
 - `.claude/skills/creating-blog-web-ppt/references/html-template.md`

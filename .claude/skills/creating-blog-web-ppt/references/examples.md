@@ -11,13 +11,17 @@
 期望执行：
 
 1. 读取源 Markdown
-2. 读取仓库视觉参考：
+2. 读取主题索引与默认主题：
+   - `themes/_index.md`
+   - `themes/blog-sumsec.md`
+3. 读取仓库视觉参考：
    - `assets/css/style.scss`
    - `_layouts/default.html`
-3. 写出 `visual thesis`、`content plan`、`interaction thesis`
-4. 生成同目录、同 basename 的 HTML
-5. 保持文章图片相对路径可用
-6. 做浏览器级验证
+4. 阅读 `references/slide-writer-merge.md`，在写 HTML 前完成演示结构规划（吸收 slide-writer Phase 2 要点）
+5. 写出 `visual thesis`、`content plan`、`interaction thesis`
+6. 生成同目录、同 basename 的 HTML（默认应用 **blog-sumsec** 色板）
+7. 保持文章图片相对路径可用
+8. 做浏览器级验证
 
 期望输出路径：
 

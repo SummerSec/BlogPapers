@@ -10,9 +10,15 @@
 2. 高可读性
 3. 克制的仓库科幻质感
 
+## 默认主题（合并 Slide-Writer 后）
+
+生成网页版 PPT 时，**默认**使用本 skill 的 **`blog-sumsec`** 主题（见 [`themes/blog-sumsec.md`](../themes/blog-sumsec.md) 与 [`themes/_index.md`](../themes/_index.md)），而不是 slide-writer 上游的蚂蚁蓝默认。
+
+仅在用户明确要求企业/品牌汇报风，或 `themes/_index.md` 判定进入企业分支时，才读取 `vendor/slide-writer/themes/[id].md` 作为色板与 Logo 规则来源。
+
 ## 颜色 token
 
-默认从 `assets/css/style.scss` 借用这组配色：
+默认从 `assets/css/style.scss` 借用这组配色（与 `blog-sumsec` 一致，可作为手写 deck 的 `:root`）：
 
 - `--bg: #05060c`
 - `--accent: #5cdbcf`

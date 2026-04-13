@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slide Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   MINI TEMPLATE
+   Primary reusable template for generation.
+   Keep key CSS/JS behavior: progress, nav, fullscreen,
+   dark-slide logo switching, reveal, keyboard/touch nav.
+   ============================================= */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --primary: #1677FF;
+    --primary-dark: #0950D9;
+    --primary-light: #4096FF;
+    --primary-pale: #E6F4FF;
+    --primary-dim: rgba(22, 119, 255, 0.12);
+    --cover-bg: linear-gradient(125deg, #0A3DA8 0%, #1263EA 35%, #2B8FFF 65%, #5AB6FF 100%);
+    --section-bg: linear-gradient(135deg, #0A3DA8 0%, #1263EA 50%, #2B8FFF 100%);
+    --red: #E8380D;
+    --green: #52C41A;
+    --orange: #FA8C16;
+    --text-1: #141414;
+    --text-2: #434343;
+    --text-3: #8C8C8C;
+    --bg-white: #FFFFFF;
+    --bg-page: #F5F7FA;
+    --border: #E4E8EF;
+    --font: 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    --title-size: clamp(1.5rem, 5vw, 4rem);
+    --h2-size: clamp(1.25rem, 3.5vw, 2.5rem);
+    --body-size: clamp(0.75rem, 1.5vw, 1.05rem);
+    --small-size: clamp(0.65rem, 1vw, 0.875rem);
+    --slide-padding: clamp(1rem, 4vw, 4rem);
+    --content-gap: clamp(0.5rem, 2vw, 2rem);
+    --element-gap: clamp(0.25rem, 1vw, 1rem);
+    --deck-base-width: 1600;
+    --deck-safe-width: min(100vw, calc(100dvh * 1.6));
+    --deck-safe-side-gap: max(0px, calc((100vw - var(--deck-safe-width)) / 2));
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    font-family: var(--font);
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    background: var(--bg-page);
+}
+
+body.on-blue #globalLogoGroup {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.slide-white {
+    background: linear-gradient(180deg, #FAFBFD 0%, #F3F6FB 100%);
+    color: var(--text-1);
+}
+
+.slide-cover,
+.slide-section,
+.slide-qa {
+    color: #fff;
+    background: var(--cover-bg);
+}
+
+.slide-section {
+    background: var(--section-bg);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.slide-qa {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.slide-content,
+.slide-cover,
+.slide-section,
+.slide-qa {
+    padding: var(--slide-padding);
+}
+
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: 100%;
+    overflow: hidden;
+    gap: var(--content-gap);
+    width: min(100%, var(--deck-safe-width));
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 var(--slide-padding) clamp(0.65rem, 1.5vh, 1.2rem);
+}
+
+.slide-body {
+    flex: 1;
+    padding: clamp(0.45rem, 1.15vh, 0.95rem) var(--slide-padding) clamp(0.65rem, 1.5vh, 1.2rem);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.35rem, 1vh, 0.85rem);
+    width: min(100%, var(--deck-safe-width));
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slide-content > :not(.slide-header) {
+    width: 100%;
+}
+
+.cover-top,
+.slide-header {
+    display: flex;
+    align-items: center;
+}
+
+.cover-top {
+    justify-content: space-between;
+}
+
+.cover-arcs {
+    position: absolute;
+    right: calc(-1 * clamp(4rem, 12vw, 14rem));
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(28rem, 65vw, 70rem);
+    height: clamp(28rem, 65vw, 70rem);
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.arc {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.13);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.arc-1 { width: 100%; height: 100%; }
+.arc-2 { width: 78%; height: 78%; border-color: rgba(255,255,255,0.1); }
+.arc-3 { width: 55%; height: 55%; border-color: rgba(255,255,255,0.08); }
+
+.cover-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(0.8rem, 2vh, 1.4rem);
+    max-width: min(72%, 1100px);
+}
+
+.cover-title {
+    font-size: clamp(2.5rem, 7.5vw, 6.5rem);
+    line-height: 1.03;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+}
+
+.cover-subtitle {
+    font-size: clamp(0.95rem, 1.7vw, 1.25rem);
+    color: rgba(255,255,255,0.82);
+    max-width: 48ch;
+    line-height: 1.55;
+}
+
+.cover-date {
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+    color: rgba(255,255,255,0.75);
+}
+
+.cover-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    z-index: 2;
+}
+
+.cover-speaker {
+    text-align: right;
+}
+
+.cover-speaker-name {
+    font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+    font-weight: 700;
+    color: #fff;
+}
+
+.cover-speaker-role {
+    margin-top: 2px;
+    font-size: clamp(0.65rem, 1vw, 0.8rem);
+    color: rgba(255,255,255,0.65);
+}
+
+.slide-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: clamp(0.2rem, 0.5vh, 0.4rem);
+    width: min(100%, var(--deck-safe-width));
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    padding: clamp(2.2rem, 5vh, 3.4rem) var(--slide-padding) clamp(0.3rem, 0.8vh, 0.6rem);
+}
+
+.header-mark {
+    display: none;
+}
+
+.header-title {
+    font-size: clamp(1.48rem, 3vw, 2.45rem);
+    font-weight: 900;
+    color: var(--text-1);
+    text-align: left;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.header-sub {
+    min-height: 1.4em;
+    color: var(--primary);
+    font-size: clamp(1.02rem, 1.8vw, 1.32rem);
+    line-height: 1.32;
+}
+
+.slide-subtitle {
+    font-size: clamp(0.84rem, 1.55vw, 1.12rem);
+    font-weight: 500;
+    color: var(--primary);
+    line-height: 1.32;
+}
+
+.section-num {
+    font-size: clamp(0.78rem, 1vw, 0.92rem);
+    letter-spacing: 0.18em;
+    opacity: 0.72;
+}
+
+.section-title {
+    font-size: clamp(2rem, 6vw, 4.8rem);
+    font-weight: 900;
+    line-height: 1.04;
+    margin-top: 0.7rem;
+}
+
+.section-desc,
+.qa-sub {
+    margin-top: 0.8rem;
+    font-size: clamp(0.85rem, 1.4vw, 1rem);
+    color: rgba(255,255,255,0.8);
+    max-width: 56ch;
+}
+
+.qa-title {
+    font-size: clamp(2.4rem, 7vw, 5.6rem);
+    font-weight: 900;
+    line-height: 1;
+}
+
+.grid-2,
+.grid-3,
+.grid-4 {
+    display: grid;
+    gap: clamp(0.75rem, 1.5vw, 1rem);
+}
+
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.card,
+.stat-block,
+.quote-box,
+.step-card,
+.agenda-item {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+.card,
+.step-card,
+.quote-box,
+.agenda-item {
+    padding: clamp(0.8rem, 1.6vw, 1.2rem);
+}
+
+.card-title,
+.step-title {
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    font-weight: 800;
+}
+
+.card-body,
+.step-desc,
+.mini-list li {
+    font-size: var(--body-size);
+    line-height: 1.6;
+    color: var(--text-2);
+}
+
+.quote-box {
+    background: linear-gradient(180deg, #F9FCFF 0%, #EDF5FF 100%);
+}
+
+.quote-box strong {
+    color: var(--primary-dark);
+}
+
+.stat-block {
+    padding: 1rem;
+    text-align: center;
+}
+
+.stat-num {
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.stat-label {
+    margin-top: 0.55rem;
+    color: var(--text-2);
+    font-size: clamp(0.78rem, 1vw, 0.92rem);
+}
+
+.mini-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-top: 0.6rem;
+}
+
+.mini-list li {
+    position: relative;
+    padding-left: 1rem;
+}
+
+.mini-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.58em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+.agenda-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    width: min(900px, 100%);
+    margin: 0 auto;
+}
+
+.agenda-item {
+    display: grid;
+    grid-template-columns: 56px 1fr 110px;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.agenda-num {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+.agenda-text {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.agenda-tag {
+    justify-self: end;
+    border-radius: 999px;
+    padding: 0.32rem 0.7rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: var(--primary-pale);
+    color: var(--primary-dark);
+}
+
+.two-col,
+.three-col {
+    display: grid;
+    gap: clamp(0.8rem, 1.6vw, 1.1rem);
+}
+
+.two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.three-col { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.goal-card,
+.info-card,
+.support-card,
+.role-card,
+.highlight-box,
+.level-row {
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--bg-white);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+.goal-card {
+    padding: clamp(0.9rem, 1.8vw, 1.3rem);
+    background: linear-gradient(180deg, #FFFFFF 0%, #F6FAFF 100%);
+}
+
+.goal-num-big {
+    font-size: clamp(2.1rem, 4.5vw, 3.8rem);
+    line-height: 1;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+.goal-num-big .unit {
+    font-size: 0.45em;
+    margin-left: 0.1em;
+}
+
+.goal-label {
+    margin-top: 0.7rem;
+    font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+    font-weight: 800;
+    color: var(--text-1);
+}
+
+.goal-sublabel {
+    margin-top: 0.35rem;
+    font-size: var(--small-size);
+    color: var(--text-3);
+}
+
+.info-card {
+    position: relative;
+    padding: 1rem 1rem 1rem 1.1rem;
+    background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFF 100%);
+}
+
+.info-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 14px;
+    bottom: 14px;
+    width: 5px;
+    border-radius: 999px;
+    background: var(--primary);
+}
+
+.info-card.red::before { background: var(--red); }
+.info-card.green::before { background: var(--green); }
+.info-card.orange::before { background: var(--orange); }
+
+.step-card {
+    min-height: 150px;
+}
+
+.step-card-1 { background: linear-gradient(180deg, #F8FBFF 0%, #EBF4FF 100%); }
+.step-card-2 { background: linear-gradient(180deg, #F7F8FF 0%, #EEF0FF 100%); }
+.step-card-3 { background: linear-gradient(180deg, #FBF7FF 0%, #F3ECFF 100%); }
+.step-card-4 { background: linear-gradient(180deg, #FFF8F1 0%, #FFF0DE 100%); }
+
+.step-num {
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.support-card,
+.role-card {
+    padding: 1rem;
+}
+
+.support-icon,
+.role-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.support-title,
+.role-name {
+    margin-top: 0.7rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-1);
+}
+
+.support-items {
+    list-style: none;
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.support-items li,
+.role-arrow,
+.role-evolution {
+    color: var(--text-2);
+    font-size: var(--body-size);
+    line-height: 1.55;
+}
+
+.role-arrow {
+    margin-top: 0.55rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.role-evolution {
+    margin-top: 0.45rem;
+}
+
+.highlight-box {
+    padding: 0.95rem 1rem 0.95rem 1.1rem;
+    border-left: 5px solid var(--primary);
+    background: linear-gradient(180deg, #F9FCFF 0%, #EDF5FF 100%);
+    color: var(--text-2);
+    font-size: var(--body-size);
+    line-height: 1.7;
+}
+
+.highlight-box strong { color: var(--primary-dark); }
+
+.highlight-box.red-box {
+    border-left-color: var(--red);
+    background: linear-gradient(180deg, #FFF8F7 0%, #FFF1F0 100%);
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    font-size: var(--small-size);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.tag-blue { background: #E6F4FF; color: #1677FF; }
+.tag-red { background: #FFF1F0; color: #E8380D; }
+.tag-green { background: #F6FFED; color: #52C41A; }
+.tag-dark { background: #1F1F1F; color: #fff; }
+
+.styled-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.styled-list li {
+    position: relative;
+    padding-left: 1rem;
+    color: var(--text-2);
+    font-size: var(--body-size);
+    line-height: 1.65;
+}
+
+.styled-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.58em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+.insight {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+    background: rgba(22, 119, 255, 0.06);
+}
+
+.insight-dot {
+    width: 10px;
+    height: 10px;
+    margin-top: 0.45rem;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+}
+
+.level-row {
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr) 22px;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 0.95rem;
+}
+
+.level-row.active {
+    border-color: rgba(22, 119, 255, 0.22);
+    background: linear-gradient(180deg, #F7FBFF 0%, #EEF5FF 100%);
+}
+
+.level-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 34px;
+    border-radius: 999px;
+    background: var(--primary-pale);
+    color: var(--primary-dark);
+    font-weight: 900;
+    font-size: 0.85rem;
+}
+
+.level-title {
+    font-size: 0.96rem;
+    font-weight: 800;
+    color: var(--text-1);
+}
+
+.level-desc {
+    margin-top: 0.2rem;
+    font-size: var(--small-size);
+    color: var(--text-2);
+    line-height: 1.5;
+}
+
+.level-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #D9D9D9;
+}
+
+.level-row.active .level-dot {
+    background: var(--primary);
+    box-shadow: 0 0 0 5px rgba(22, 119, 255, 0.12);
+}
+
+.step-flow-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr) 36px minmax(0, 1fr) 36px minmax(0, 1fr);
+    gap: 0.45rem;
+    align-items: center;
+}
+
+.step-flow-arrow {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+.step-flow-top {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: clamp(0.45rem, 1vw, 0.9rem);
+    align-items: stretch;
+}
+
+.step-flow-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(0.65rem, 1.4vw, 1rem);
+    align-items: stretch;
+}
+
+.step-flow-bridge {
+    display: flex;
+    justify-content: center;
+    margin: clamp(0.45rem, 1vh, 0.75rem) 0;
+}
+
+.step-flow-bridge span {
+    font-size: clamp(0.7rem, 1.1vw, 0.84rem);
+    font-weight: 700;
+    color: var(--text-3);
+    letter-spacing: 0.04em;
+    padding: 0.38em 0.9em;
+    border-radius: 999px;
+    background: rgba(22,119,255,0.06);
+    border: 1px solid rgba(22,119,255,0.08);
+}
+
+.support-board {
+    width: 100%;
+    background: linear-gradient(180deg, #F9FBFF 0%, #F4F8FE 100%);
+    border: 1.5px solid rgba(22,119,255,0.16);
+    border-radius: 26px;
+    padding: clamp(1rem, 2.2vw, 1.5rem);
+}
+
+.support-board-title {
+    font-size: clamp(0.78rem, 1.25vw, 0.96rem);
+    font-weight: 800;
+    color: var(--text-2);
+    letter-spacing: 0.02em;
+}
+
+.support-board-main {
+    font-size: clamp(1.15rem, 2.2vw, 1.9rem);
+    font-weight: 900;
+    color: var(--text-1);
+    margin-top: 0.15rem;
+}
+
+.support-board-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(0.7rem, 1.4vw, 1rem);
+    margin-top: clamp(0.8rem, 1.8vh, 1.1rem);
+}
+
+.support-board-col {
+    background: rgba(255,255,255,0.5);
+    border-radius: 18px;
+    padding: clamp(0.8rem, 1.6vw, 1.1rem);
+}
+
+.support-board-col-title {
+    font-size: clamp(0.92rem, 1.55vw, 1.2rem);
+    font-weight: 800;
+    color: var(--text-1);
+    margin-bottom: clamp(0.55rem, 1vh, 0.8rem);
+}
+
+.support-board-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(0.55rem, 1vw, 0.8rem);
+}
+
+.support-mini-card {
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 16px;
+    padding: clamp(0.62rem, 1.1vw, 0.82rem);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    min-height: 88px;
+}
+
+.support-mini-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    font-size: clamp(0.8rem, 1.3vw, 1rem);
+    font-weight: 800;
+    color: var(--text-1);
+    line-height: 1.35;
+}
+
+.support-owner {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.18em 0.55em;
+    border-radius: 999px;
+    background: #F3F4F6;
+    color: #8C8C8C;
+    font-size: clamp(0.55rem, 0.85vw, 0.68rem);
+    font-weight: 700;
+}
+
+.support-mini-card-body {
+    margin-top: 0.35rem;
+    font-size: clamp(0.68rem, 1.02vw, 0.82rem);
+    color: var(--text-3);
+    line-height: 1.6;
+}
+
+.demand-flow {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.4rem, 0.9vh, 0.7rem);
+}
+
+.demand-flow-board {
+    position: relative;
+    width: 100%;
+    min-height: min(33vh, 250px);
+    border-radius: 24px;
+    border: 1px solid rgba(22,119,255,0.1);
+    background: #fff;
+    overflow: hidden;
+}
+
+.demand-flow-stage-head {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: clamp(0.35rem, 0.8vh, 0.5rem);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 0 clamp(1rem, 2vw, 1.4rem);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.demand-flow-stage-head span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.28rem;
+    text-align: center;
+    font-size: clamp(0.86rem, 1.4vw, 1.08rem);
+    font-weight: 800;
+    color: rgba(0,0,0,0.58);
+}
+
+.demand-flow-stage-role {
+    font-size: clamp(0.52rem, 0.9vw, 0.68rem);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: rgba(0,0,0,0.38);
+    white-space: nowrap;
+}
+
+.demand-flow-stage-grid {
+    position: absolute;
+    inset: clamp(2.5rem, 5vh, 3.4rem) 0 auto 0;
+    height: clamp(3rem, 6vh, 4.2rem);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.demand-flow-stage-grid span {
+    position: relative;
+}
+
+.demand-flow-stage-grid span::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    height: 100%;
+    border-left: 2px dashed rgba(0,0,0,0.12);
+}
+
+.demand-flow-lines {
+    position: absolute;
+    inset: clamp(4.4rem, 9vh, 5.6rem) clamp(0.75rem, 1.2vw, 1rem) clamp(0.9rem, 1.5vw, 1rem);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.demand-flow-track {
+    position: absolute;
+    inset: clamp(4.4rem, 9vh, 5.6rem) clamp(0.75rem, 1.2vw, 1rem) clamp(0.9rem, 1.5vw, 1rem);
+    overflow: hidden;
+    z-index: 2;
+}
+
+.demand-dot {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.slide-white.decorated-world::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 700'><defs><pattern id='dp' x='0' y='0' width='11' height='11' patternUnits='userSpaceOnUse'><circle cx='5.5' cy='5.5' r='1.6' fill='%23C8C8C8'/></pattern></defs><path d='M160,50 L190,38 L240,36 L285,42 L318,58 L342,84 L355,115 L348,150 L326,174 L304,190 L275,202 L250,218 L228,248 L208,260 L190,252 L170,236 L150,210 L142,178 L140,145 L145,105 L150,72 Z' fill='url(%23dp)'/><path d='M218,272 L274,266 L300,288 L312,326 L306,372 L288,418 L264,448 L238,456 L212,438 L198,402 L194,358 L200,308 L208,280 Z' fill='url(%23dp)'/><path d='M638,52 L684,44 L726,50 L748,72 L742,98 L720,116 L688,122 L658,112 L638,90 L635,68 Z' fill='url(%23dp)'/><path d='M638,148 L694,140 L736,148 L760,178 L764,224 L752,280 L730,336 L700,378 L668,398 L642,388 L622,356 L612,304 L612,244 L620,192 L630,164 Z' fill='url(%23dp)'/><path d='M754,40 L860,32 L974,40 L1070,56 L1140,82 L1188,114 L1204,150 L1188,180 L1152,200 L1102,214 L1040,220 L978,230 L918,238 L870,244 L828,258 L790,250 L756,232 L734,206 L730,170 L736,132 L744,86 Z' fill='url(%23dp)'/><path d='M1082,372 L1164,356 L1228,368 L1258,398 L1252,438 L1216,462 L1158,468 L1098,452 L1068,422 L1066,392 Z' fill='url(%23dp)'/></svg>") center 42% / 82% auto no-repeat;
+    opacity: 0.45;
+}
+
+.slide-white.decorated-world::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 55%;
+    height: 38%;
+    z-index: 0;
+    pointer-events: none;
+    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 720 300'><path d='M720,0 C600,60 460,200 60,300' fill='none' stroke='%231677FF' stroke-width='1.5' opacity='0.35'/><path d='M720,80 C650,140 540,240 200,300' fill='none' stroke='%231677FF' stroke-width='1.5' opacity='0.28'/></svg>") bottom right / 100% 100% no-repeat;
+}
+
+.slide-white.decorated-world .slide-header,
+.slide-white.decorated-world .slide-body {
+    position: relative;
+    z-index: 1;
+}
+
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.slide.visible .reveal-left {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* --- fixed UI primitives --- */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: var(--primary);
+    z-index: 999;
+    transition: width 0.25s ease;
+}
+
+.nav-dots {
+    position: fixed;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 998;
+}
+
+.nav-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.18);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.nav-dot.active {
+    background: var(--primary);
+    transform: scale(1.2);
+}
+
+#globalLogoGroup {
+    position: fixed;
+    top: clamp(1.15rem, 2.8vh, 1.9rem);
+    right: calc(var(--deck-safe-side-gap) + clamp(0.9rem, 2vw, 1.6rem));
+    z-index: 998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.5rem, 1vw, 0.9rem);
+    width: clamp(8.5rem, 15vw, 11.5rem);
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    opacity: 1;
+}
+
+#globalLogoGroup img {
+    height: clamp(1.4rem, 2.8vw, 2.2rem);
+    max-height: 36px;
+    max-width: clamp(5.5rem, 11vw, 9rem);
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+#globalLogoGroup .logo-divider {
+    width: 1.5px;
+    height: clamp(1.4rem, 2.8vw, 2.2rem);
+    flex-shrink: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.18) 28%, rgba(0,0,0,0.32) 50%, rgba(0,0,0,0.18) 72%, transparent 100%);
+}
+
+.logo-img-cover {
+    height: clamp(1.4rem, 2.8vw, 2.2rem);
+    max-height: 36px;
+    max-width: clamp(5.5rem, 11vw, 9rem);
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.fixed-logo-dark .logo-img-cover {
+    filter: brightness(0) invert(1);
+}
+
+#globalLogoGroup.logo-group-single img,
+.fixed-logo-dark.logo-group-single .logo-img-cover {
+    height: clamp(2.1rem, 3.8vw, 3rem);
+    max-height: 52px;
+    max-width: clamp(8rem, 16vw, 13rem);
+}
+
+.fixed-logo-dark {
+    position: absolute;
+    top: clamp(1.15rem, 2.8vh, 1.9rem);
+    right: calc(var(--deck-safe-side-gap) + clamp(0.9rem, 2vw, 1.6rem));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.5rem, 1vw, 0.9rem);
+    width: clamp(8.5rem, 15vw, 11.5rem);
+}
+
+#fullscreenBtn {
+    position: fixed;
+    right: 10px;
+    bottom: clamp(0.6rem, 1.5vh, 1rem);
+    z-index: 999;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    background: rgba(0,0,0,0.12);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.5;
+    transition: background 0.2s, opacity 0.2s;
+}
+
+#footnote {
+    position: fixed;
+    bottom: clamp(0.6rem, 1.5vh, 1rem);
+    left: clamp(1rem, 3vw, 2.5rem);
+    font-size: clamp(0.5rem, 0.75vw, 0.65rem);
+    color: #ABABAB;
+    z-index: 997;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+/* --- reveal animation --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.slide.visible .reveal {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide.visible .reveal:nth-child(2) { transition-delay: 0.08s; }
+.slide.visible .reveal:nth-child(3) { transition-delay: 0.16s; }
+.slide.visible .reveal:nth-child(4) { transition-delay: 0.24s; }
+
+@media (max-width: 900px) {
+    .grid-2, .grid-3, .grid-4, .two-col, .three-col, .step-flow-grid, .step-flow-top, .step-flow-bottom, .support-board-grid, .support-board-items { grid-template-columns: 1fr; }
+    .cover-main { max-width: 100%; }
+    .slide-header { padding-right: 0; }
+    .header-sub { display: none; }
+    .agenda-item { grid-template-columns: 48px 1fr; }
+    .agenda-tag { justify-self: start; }
+    .nav-dots { display: none; }
+    #globalLogoGroup { display: none; }
+    .fixed-logo-dark { right: clamp(1rem, 4vw, 1.4rem); width: 8rem; }
+    .step-flow-arrow { display: none; }
+    .cover-bottom { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+    html { scroll-behavior: auto; }
+}
+
+#pageCounter {
+    position: fixed;
+    bottom: clamp(0.6rem, 1.5vh, 1rem);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(0.5rem, 0.75vw, 0.65rem);
+    color: #ABABAB;
+    font-family: var(--font);
+    z-index: 997;
+    pointer-events: none;
+    transition: opacity 0.4s ease, color 0.4s ease;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- 白底内容页右上角 logo -->
+<div id="globalLogoGroup" class="logo-group-single">
+    <img src="./logos/slide-writer.png" alt="Slide-Writer">
+</div>
+
+<nav class="nav-dots" id="navDots" aria-label="幻灯片导航"></nav>
+
+<button id="fullscreenBtn" title="全屏播放 (F)">
+    <svg id="fsIconExpand" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#333;">
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+    </svg>
+    <svg id="fsIconCompress" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#fff;display:none;">
+        <polyline points="4 14 10 14 10 20"></polyline>
+        <polyline points="20 10 14 10 14 4"></polyline>
+        <line x1="10" y1="14" x2="3" y2="21"></line>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+    </svg>
+</button>
+
+<div id="footnote">* 内部演示模板，可按场景替换页脚说明。</div>
+<div id="pageCounter" style="opacity:0;">1 / 1</div>
+
+<!-- SLIDE 1: COVER -->
+<section class="slide slide-cover" id="slide-1">
+    <div class="cover-arcs" aria-hidden="true">
+        <div class="arc arc-1"></div>
+        <div class="arc arc-2"></div>
+        <div class="arc arc-3"></div>
+    </div>
+    <div class="cover-top reveal">
+        <span style="color:rgba(255,255,255,0.65);font-size:clamp(0.65rem,1.1vw,0.85rem);">GitHub@FeeiCN/slide-writer</span>
+    </div>
+    <div class="fixed-logo-dark logo-group-single">
+        <img src="./logos/slide-writer.png" alt="Slide-Writer" class="logo-img-cover">
+    </div>
+    <div class="cover-main">
+        <h1 class="cover-title reveal">Slide-Writer Skill</h1>
+        <p class="cover-subtitle reveal">您只需专注目标、观点与判断，Slide-Writer 负责结构、写作、优化与呈现。</p>
+        <div class="cover-speaker reveal" style="text-align:left;">
+            <div class="cover-speaker-name">Feei</div>
+            <div class="cover-speaker-role">Slide-Writer Creator</div>
+        </div>
+    </div>
+    <div class="cover-bottom">
+        <div class="cover-date reveal">2026.04.12</div>
+    </div>
+</section>
+
+<!-- SLIDE 2: AGENDA -->
+<section class="slide slide-white" id="slide-2">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">模板总览</h2>
+        <p class="header-sub">从基础布局、信息组件，到图文混排、数据图表和表格，全部给出可复用页面。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="agenda-wrap">
+            <div class="agenda-item reveal"><span class="agenda-num">01</span><span class="agenda-text">布局容器与基础数字组件</span><span class="agenda-tag">布局</span></div>
+            <div class="agenda-item reveal"><span class="agenda-num">02</span><span class="agenda-text">信息卡片与角色表达</span><span class="agenda-tag">卡片</span></div>
+            <div class="agenda-item reveal"><span class="agenda-num">03</span><span class="agenda-text">文字组件、层级评分与流程</span><span class="agenda-tag">文本</span></div>
+            <div class="agenda-item reveal"><span class="agenda-num">04</span><span class="agenda-text">图文混排与轻量可视化</span><span class="agenda-tag">图文</span></div>
+            <div class="agenda-item reveal"><span class="agenda-num">05</span><span class="agenda-text">表格与 SVG 图表</span><span class="agenda-tag">图表</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 3 -->
+<section class="slide slide-white" id="slide-3">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">分栏布局</h2>
+        <p class="header-sub">这一页演示 `two-col` 和 `three-col` 两种布局容器的用法。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="two-col">
+            <div class="card reveal-left">
+                <div class="card-title">`two-col`</div>
+                <div class="card-body">适合做“左观点右解释”“左图右文”“A / B 对比”等双栏结构。单栏内容更完整，适合两个平级块。</div>
+            </div>
+            <div class="card reveal">
+                <div class="card-title">使用建议</div>
+                <ul class="mini-list">
+                    <li>优先承载两个平行模块。</li>
+                    <li>每栏内部结构保持一致更稳。</li>
+                    <li>避免左右内容量差距过大。</li>
+                </ul>
+            </div>
+        </div>
+        <div class="three-col">
+            <div class="card reveal"><div class="card-title">列 1</div><div class="card-body">适合放概念、阶段或分类。</div></div>
+            <div class="card reveal"><div class="card-title">列 2</div><div class="card-body">三列适合密度更轻、更并列的表达。</div></div>
+            <div class="card reveal"><div class="card-title">列 3</div><div class="card-body">用于能力矩阵、策略分层、优势拆分。</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 4 -->
+<section class="slide slide-white" id="slide-4">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">数字组件</h2>
+        <p class="header-sub">一页里的重心先给数字，再给目标或说明，能快速建立视觉抓手。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="grid-3">
+            <div class="stat-block reveal">
+                <div class="stat-num">85%</div>
+                <div class="stat-label">代码生成采纳率</div>
+            </div>
+            <div class="stat-block reveal">
+                <div class="stat-num">12 天</div>
+                <div class="stat-label">需求到首版交付周期</div>
+            </div>
+            <div class="stat-block reveal">
+                <div class="stat-num"><span class="stat-num red" style="color:var(--red);font-size:inherit;">-40%</span></div>
+                <div class="stat-label">重复排版时间</div>
+            </div>
+        </div>
+        <div class="two-col">
+            <div class="goal-card reveal">
+                <div class="goal-num-big">85<span class="unit">%</span></div>
+                <div class="goal-label">AI 生成页占比目标</div>
+                <div class="goal-sublabel">2026 年底前达成</div>
+            </div>
+            <div class="goal-card reveal">
+                <div class="goal-num-big">3<span class="unit">秒</span></div>
+                <div class="goal-label">单页可读理解时间</div>
+                <div class="goal-sublabel">演讲型 deck 的内容密度上限</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 5 -->
+<section class="slide slide-white" id="slide-5">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">信息卡片</h2>
+        <p class="header-sub">这类组件适合替代长段正文，控制每张卡只讲一个点。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="grid-2">
+            <div class="info-card reveal">
+                <div class="card-title">默认蓝色</div>
+                <div class="card-body">适合放主要能力、价值点或默认重点信息。</div>
+            </div>
+            <div class="info-card red reveal">
+                <div class="card-title">红色变体</div>
+                <div class="card-body">适合放风险、阻塞项或需要优先处理的问题。</div>
+            </div>
+            <div class="info-card green reveal">
+                <div class="card-title">绿色变体</div>
+                <div class="card-body">适合展示成果、达标项、正向变化或已收敛事项。</div>
+            </div>
+            <div class="info-card orange reveal">
+                <div class="card-title">橙色变体</div>
+                <div class="card-body">适合放机会点、行动项或需要持续推进的方向。</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 6 -->
+<section class="slide slide-white" id="slide-6">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">阶段与角色</h2>
+        <p class="header-sub">这三类卡片分别解决“流程怎么走”“支撑靠什么”“角色如何演进”。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="grid-4">
+            <div class="step-card step-card-1 reveal">
+                <div class="step-num">STEP 01</div>
+                <div class="step-title">启动阶段</div>
+                <div class="step-desc">先明确目标、受众与判断。</div>
+            </div>
+            <div class="step-card step-card-2 reveal">
+                <div class="step-num">STEP 02</div>
+                <div class="step-title">内容收集</div>
+                <div class="step-desc">收拢大纲、草稿与关键数据。</div>
+            </div>
+            <div class="step-card step-card-3 reveal">
+                <div class="step-num">STEP 03</div>
+                <div class="step-title">结构改写</div>
+                <div class="step-desc">拆成适合演讲的页面节奏。</div>
+            </div>
+            <div class="step-card step-card-4 reveal">
+                <div class="step-num">STEP 04</div>
+                <div class="step-title">生成交付</div>
+                <div class="step-desc">输出可直接播放的单文件 HTML。</div>
+            </div>
+        </div>
+        <div class="two-col">
+            <div class="support-card reveal">
+                <div class="support-icon">🛡️</div>
+                <div class="support-title">支撑体系示例</div>
+                <ul class="support-items">
+                    <li>统一模板引擎</li>
+                    <li>品牌主题库</li>
+                    <li>人工验收清单</li>
+                </ul>
+            </div>
+            <div class="role-card reveal">
+                <div class="role-icon">👨‍💻</div>
+                <div class="role-name">角色演进示例</div>
+                <div class="role-arrow">传统写稿 → AI 协同演示</div>
+                <div class="role-evolution">表达者保留判断，系统负责结构化、润色和页面呈现。</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 7: SECTION -->
+<section class="slide slide-section" id="slide-7">
+    <div class="fixed-logo-dark logo-group-single">
+        <img src="./logos/slide-writer.png" alt="Slide-Writer" class="logo-img-cover">
+    </div>
+    <p class="section-num reveal">PART 02</p>
+    <h2 class="section-title reveal">文字与流程</h2>
+    <p class="section-desc reveal">一页里要有判断、有层级、有扫读感，文本组件和流程组件是最稳的基础设施。</p>
+</section>
+
+<!-- SLIDE 8 -->
+<section class="slide slide-white" id="slide-8">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">文字组件</h2>
+        <p class="header-sub">它们能显著提升扫读效率，比普通段落更像演示稿。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="highlight-box reveal">
+            <strong>核心判断：</strong>标题负责给结论，组件负责给结构，页面才能在几秒内被看懂。
+        </div>
+        <div class="highlight-box red-box reveal">风险提示：如果一页同时堆太多组件，再好的组件库也救不了信息过载。</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" class="reveal">
+            <span class="tag tag-blue">蓝色标签</span>
+            <span class="tag tag-red">红色标签</span>
+            <span class="tag tag-green">绿色标签</span>
+            <span class="tag tag-dark">深色标签</span>
+        </div>
+        <div class="two-col">
+            <ul class="styled-list reveal">
+                <li>要点列表适合放 3 到 5 个短句。</li>
+                <li><strong>关键词加粗</strong>可以提升扫读效率。</li>
+                <li>不要把完整段落直接塞进列表。</li>
+            </ul>
+            <div class="insight reveal">
+                <span class="insight-dot"></span>
+                <span>洞察组件适合图表或数据块下方的一句解释，帮助观众快速理解“这组信息意味着什么”。</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 9 -->
+<section class="slide slide-white" id="slide-9">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">层级与流程</h2>
+        <p class="header-sub">一个强调“当前在哪一级”，一个强调“接下来如何推进”。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="two-col">
+            <div style="display:flex;flex-direction:column;gap:0.45rem;">
+                <div class="level-row reveal">
+                    <span class="level-badge">L1</span>
+                    <div class="level-main">
+                        <div class="level-title">工具使用</div>
+                        <div class="level-desc">会使用模板、组件和基础提示词完成简单页面。</div>
+                    </div>
+                    <span class="level-dot"></span>
+                </div>
+                <div class="level-row active reveal">
+                    <span class="level-badge">L2</span>
+                    <div class="level-main">
+                        <div class="level-title">场景驱动</div>
+                        <div class="level-desc">能根据不同受众和主题设计结构，并独立生成完整 deck。</div>
+                    </div>
+                    <span class="level-dot"></span>
+                </div>
+                <div class="level-row reveal">
+                    <span class="level-badge">L3</span>
+                    <div class="level-main">
+                        <div class="level-title">表达系统化</div>
+                        <div class="level-desc">能沉淀主题、组件、模板和团队级演示规范。</div>
+                    </div>
+                    <span class="level-dot"></span>
+                </div>
+            </div>
+            <div class="step-flow-grid reveal">
+                <div class="step-card step-card-1">
+                    <div class="step-num">STEP 01</div>
+                    <div class="step-title">输入</div>
+                </div>
+                <div class="step-flow-arrow">→</div>
+                <div class="step-card step-card-2">
+                    <div class="step-num">STEP 02</div>
+                    <div class="step-title">拆解</div>
+                </div>
+                <div class="step-flow-arrow">→</div>
+                <div class="step-card step-card-3">
+                    <div class="step-num">STEP 03</div>
+                    <div class="step-title">生成</div>
+                </div>
+                <div class="step-flow-arrow">→</div>
+                <div class="step-card step-card-4">
+                    <div class="step-num">STEP 04</div>
+                    <div class="step-title">验收</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 10 -->
+<section class="slide slide-white" id="slide-10">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">左图右文</h2>
+        <p class="header-sub">这一页单独演示“左图右文”，避免两种版式挤在一页里。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;align-items:center;" class="reveal">
+            <div style="border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:var(--primary-pale);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:var(--small-size);font-weight:700;">左图右文示意</div>
+            <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                <h3 style="font-size:clamp(1rem,1.4vw,1.15rem);font-weight:800;color:var(--text-1);">左图右文</h3>
+                <p style="font-size:var(--body-size);color:var(--text-2);line-height:1.65;">适合先给视觉锚点，再用右侧两三句话解释图像或图表想表达的重点。</p>
+                <ul class="mini-list">
+                    <li>适合产品截图、界面原型、柱状图。</li>
+                    <li>右侧尽量保留 2 到 3 个支撑点。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 10B -->
+<section class="slide slide-white" id="slide-10b">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">右图左文</h2>
+        <p class="header-sub">当文字是主结论、图像是辅助证据时，这种布局更稳。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;align-items:center;" class="reveal">
+            <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                <h3 style="font-size:clamp(1rem,1.4vw,1.15rem);font-weight:800;color:var(--text-1);">右图左文</h3>
+                <p style="font-size:var(--body-size);color:var(--text-2);line-height:1.65;">适合让文字先建立判断，再用右侧图像承接论据或视觉化结果。</p>
+                <ul class="mini-list">
+                    <li>适合流程图、关系图、对比图。</li>
+                    <li>用于拉开页面节奏也很有效。</li>
+                </ul>
+            </div>
+            <div style="border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(135deg,#EAF3FF 0%,#D6E8FF 100%);display:flex;align-items:center;justify-content:center;color:var(--primary-dark);font-size:var(--small-size);font-weight:700;">右图左文示意</div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 11 -->
+<section class="slide slide-white" id="slide-11">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">轻量可视化</h2>
+        <p class="header-sub">这类结构适合表达相对大小、热度分布和业务重心。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="two-col">
+            <div style="display:flex;flex-direction:column;gap:0.6rem;" class="reveal">
+                <div style="display:flex;align-items:center;gap:0.6rem;">
+                    <span style="font-size:var(--small-size);font-weight:900;color:var(--red);min-width:2.8em;">~200</span>
+                    <div style="flex:1;height:7px;border-radius:3px;background:linear-gradient(90deg,var(--red),#FFCDD2);"></div>
+                    <span style="font-size:var(--small-size);color:var(--text-2);white-space:nowrap;">传统制作</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.6rem;">
+                    <span style="font-size:var(--small-size);font-weight:900;color:var(--primary);min-width:2.8em;">~80</span>
+                    <div style="flex:1;height:7px;border-radius:3px;background:linear-gradient(90deg,var(--primary),#BAE0FF);width:40%;"></div>
+                    <span style="font-size:var(--small-size);color:var(--text-2);white-space:nowrap;">Slide-Writer</span>
+                </div>
+                <div class="insight">
+                    <span class="insight-dot"></span>
+                    <span>进度条适合表达“相对差距”，不用额外引入坐标系。</span>
+                </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:0.5rem 0.7rem;" class="reveal">
+                <span class="tag tag-blue" style="font-size:clamp(1rem,2vw,1.4rem);font-weight:800;">核心业务</span>
+                <span class="tag tag-blue" style="font-size:clamp(0.9rem,1.6vw,1.1rem);">演讲生成</span>
+                <span class="tag tag-blue" style="font-size:clamp(0.84rem,1.35vw,0.98rem);">结构重写</span>
+                <span class="tag tag-blue" style="font-size:clamp(0.8rem,1.2vw,0.92rem);">品牌主题</span>
+                <span class="tag tag-blue" style="font-size:clamp(0.74rem,1.1vw,0.86rem);">数据图表</span>
+                <span class="tag tag-blue" style="font-size:clamp(0.72rem,1vw,0.82rem);">章节页</span>
+                <span class="tag tag-blue" style="font-size:clamp(0.7rem,0.95vw,0.8rem);">HTML 交付</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 12 -->
+<section class="slide slide-white" id="slide-12">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">表格页面</h2>
+        <p class="header-sub">重点是比较与差距，而不是全面罗列。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div style="overflow:hidden;border-radius:8px;border:1px solid var(--border);width:100%;" class="reveal">
+            <table style="width:100%;border-collapse:collapse;font-size:var(--small-size);">
+                <thead>
+                    <tr style="background:var(--primary);color:#fff;">
+                        <th style="padding:0.5rem 0.9rem;text-align:left;font-weight:600;">维度</th>
+                        <th style="padding:0.5rem 0.9rem;text-align:left;font-weight:600;">现状</th>
+                        <th style="padding:0.5rem 0.9rem;text-align:right;font-weight:600;">目标</th>
+                        <th style="padding:0.5rem 0.9rem;text-align:right;font-weight:600;">差距</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#fff;border-bottom:1px solid var(--border);">
+                        <td style="padding:0.45rem 0.9rem;font-weight:600;color:var(--text-1);">生成速度</td>
+                        <td style="padding:0.45rem 0.9rem;color:var(--text-2);">2 小时</td>
+                        <td style="padding:0.45rem 0.9rem;text-align:right;color:var(--text-2);">30 分钟</td>
+                        <td style="padding:0.45rem 0.9rem;text-align:right;font-weight:700;color:var(--red);">▲ 90 分钟</td>
+                    </tr>
+                    <tr style="background:var(--bg-page);border-bottom:1px solid var(--border);">
+                        <td style="padding:0.45rem 0.9rem;font-weight:600;color:var(--text-1);">结构完整度</td>
+                        <td style="padding:0.45rem 0.9rem;color:var(--text-2);">目录缺失</td>
+                        <td style="padding:0.45rem 0.9rem;text-align:right;color:var(--text-2);">完整章节</td>
+                        <td style="padding:0.45rem 0.9rem;text-align:right;font-weight:700;color:var(--orange);">待完善</td>
+                    </tr>
+                    <tr style="background:#fff;border-bottom:1px solid var(--border);">
+                        <td style="padding:0.45rem 0.9rem;font-weight:600;color:var(--text-1);">品牌一致性</td>
+                        <td style="padding:0.45rem 0.9rem;color:var(--text-2);">手工调整</td>
+                        <td style="padding:0.45rem 0.9rem;text-align:right;color:var(--text-2);">自动应用</td>
+                        <td style="padding:0.45rem 0.9rem;text-align:right;font-weight:700;color:var(--green);">▲ 已达标</td>
+                    </tr>
+                    <tr style="background:var(--bg-page);">
+                        <td style="padding:0.45rem 0.9rem;font-weight:600;color:var(--text-1);">交付形态</td>
+                        <td style="padding:0.45rem 0.9rem;color:var(--text-2);">多文件</td>
+                        <td style="padding:0.45rem 0.9rem;text-align:right;color:var(--text-2);">单 HTML</td>
+                        <td style="padding:0.45rem 0.9rem;text-align:right;font-weight:700;color:var(--green);">持平优化</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 13 -->
+<section class="slide slide-white" id="slide-13">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">SVG 图表</h2>
+        <p class="header-sub">无需外部图表库，颜色和字体自动跟随主题变量。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="two-col">
+            <svg viewBox="0 0 520 240" style="width:100%;max-width:520px;height:auto;display:block;margin:0 auto;" class="reveal">
+                <line x1="60" y1="20" x2="60" y2="190" stroke="var(--border,#E4E8EF)" stroke-width="1.5"/>
+                <line x1="60" y1="190" x2="500" y2="190" stroke="var(--border,#E4E8EF)" stroke-width="1.5"/>
+                <line x1="60" y1="130" x2="500" y2="130" stroke="var(--border,#E4E8EF)" stroke-width="1" stroke-dasharray="4,3"/>
+                <line x1="60" y1="70" x2="500" y2="70" stroke="var(--border,#E4E8EF)" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="52" y="194" text-anchor="end" style="fill:var(--text-3,#8C8C8C);font-size:11px;">0</text>
+                <text x="52" y="134" text-anchor="end" style="fill:var(--text-3,#8C8C8C);font-size:11px;">50%</text>
+                <text x="52" y="74" text-anchor="end" style="fill:var(--text-3,#8C8C8C);font-size:11px;">100%</text>
+                <rect x="90" y="70" width="55" height="120" style="fill:var(--primary,#1677FF);" rx="3" opacity="0.9"/>
+                <text x="117" y="65" text-anchor="middle" style="fill:var(--text-1,#141414);font-size:12px;font-weight:700;">100%</text>
+                <text x="117" y="208" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:11px;">Q1</text>
+                <rect x="200" y="100" width="55" height="90" style="fill:var(--primary,#1677FF);" rx="3" opacity="0.75"/>
+                <text x="227" y="95" text-anchor="middle" style="fill:var(--text-1,#141414);font-size:12px;font-weight:700;">75%</text>
+                <text x="227" y="208" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:11px;">Q2</text>
+                <rect x="310" y="88" width="55" height="102" style="fill:var(--primary,#1677FF);" rx="3" opacity="0.85"/>
+                <text x="337" y="83" text-anchor="middle" style="fill:var(--text-1,#141414);font-size:12px;font-weight:700;">85%</text>
+                <text x="337" y="208" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:11px;">Q3</text>
+                <rect x="420" y="50" width="55" height="140" style="fill:var(--primary-dark,#0950D9);" rx="3" opacity="0.9"/>
+                <text x="447" y="45" text-anchor="middle" style="fill:var(--text-1,#141414);font-size:12px;font-weight:700;">116%</text>
+                <text x="447" y="208" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:11px;">Q4</text>
+            </svg>
+            <svg viewBox="0 0 520 220" style="width:100%;max-width:520px;height:auto;display:block;margin:0 auto;" class="reveal">
+                <defs>
+                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#1677FF" stop-opacity="0.18"/>
+                        <stop offset="100%" stop-color="#1677FF" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <line x1="60" y1="20" x2="60" y2="170" stroke="var(--border,#E4E8EF)" stroke-width="1.5"/>
+                <line x1="60" y1="170" x2="500" y2="170" stroke="var(--border,#E4E8EF)" stroke-width="1.5"/>
+                <line x1="60" y1="110" x2="500" y2="110" stroke="var(--border,#E4E8EF)" stroke-width="1" stroke-dasharray="4,3"/>
+                <line x1="60" y1="50" x2="500" y2="50" stroke="var(--border,#E4E8EF)" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="52" y="174" text-anchor="end" style="fill:var(--text-3,#8C8C8C);font-size:11px;">0</text>
+                <text x="52" y="114" text-anchor="end" style="fill:var(--text-3,#8C8C8C);font-size:11px;">50</text>
+                <text x="52" y="54" text-anchor="end" style="fill:var(--text-3,#8C8C8C);font-size:11px;">100</text>
+                <path d="M100,140 L200,105 L300,75 L400,50 L480,62 L480,170 L100,170 Z" fill="url(#areaGrad)"/>
+                <polyline points="100,140 200,105 300,75 400,50 480,62" fill="none" style="stroke:var(--primary,#1677FF);" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+                <circle cx="100" cy="140" r="4" style="fill:var(--primary,#1677FF);" stroke="#fff" stroke-width="2"/>
+                <circle cx="200" cy="105" r="4" style="fill:var(--primary,#1677FF);" stroke="#fff" stroke-width="2"/>
+                <circle cx="300" cy="75" r="4" style="fill:var(--primary,#1677FF);" stroke="#fff" stroke-width="2"/>
+                <circle cx="400" cy="50" r="4" style="fill:var(--primary-dark,#0950D9);" stroke="#fff" stroke-width="2"/>
+                <circle cx="480" cy="62" r="4" style="fill:var(--primary,#1677FF);" stroke="#fff" stroke-width="2"/>
+                <text x="100" y="190" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:11px;">Jan</text>
+                <text x="200" y="190" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:11px;">Feb</text>
+                <text x="300" y="190" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:11px;">Mar</text>
+                <text x="400" y="190" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:11px;">Apr</text>
+                <text x="480" y="190" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:11px;">May</text>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 14 -->
+<section class="slide slide-white" id="slide-14">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">环形图</h2>
+        <p class="header-sub">适合用户结构、资源分配、业务构成等比例型信息。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div style="display:flex;align-items:center;justify-content:center;gap:2rem;" class="reveal">
+            <svg viewBox="0 0 200 200" style="width:clamp(140px,20vw,190px);flex-shrink:0;">
+                <circle cx="100" cy="100" r="70" fill="none" stroke="var(--bg-page,#F5F7FA)" stroke-width="30"/>
+                <circle cx="100" cy="100" r="70" fill="none" style="stroke:var(--primary,#1677FF);" stroke-width="30" stroke-dasharray="198 242" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+                <circle cx="100" cy="100" r="70" fill="none" style="stroke:var(--primary-light,#4096FF);" stroke-width="30" stroke-dasharray="132 308" stroke-dashoffset="-198" transform="rotate(-90 100 100)"/>
+                <circle cx="100" cy="100" r="70" fill="none" style="stroke:var(--primary-pale,#E6F4FF);" stroke-width="30" stroke-dasharray="110 330" stroke-dashoffset="-330" transform="rotate(-90 100 100)"/>
+                <text x="100" y="96" text-anchor="middle" style="fill:var(--text-1,#141414);font-size:18px;font-weight:900;">75%</text>
+                <text x="100" y="113" text-anchor="middle" style="fill:var(--text-3,#8C8C8C);font-size:10px;">核心指标</text>
+            </svg>
+            <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="width:12px;height:12px;border-radius:3px;background:var(--primary,#1677FF);flex-shrink:0;"></span>
+                    <span style="font-size:var(--small-size);color:var(--text-2);">类别 A <strong style="color:var(--text-1);">45%</strong></span>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="width:12px;height:12px;border-radius:3px;background:var(--primary-light,#4096FF);flex-shrink:0;"></span>
+                    <span style="font-size:var(--small-size);color:var(--text-2);">类别 B <strong style="color:var(--text-1);">30%</strong></span>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="width:12px;height:12px;border-radius:3px;background:var(--primary-pale,#E6F4FF);flex-shrink:0;border:1px solid var(--border);"></span>
+                    <span style="font-size:var(--small-size);color:var(--text-2);">类别 C <strong style="color:var(--text-1);">25%</strong></span>
+                </div>
+                <div class="highlight-box" style="margin-top:0.6rem;">
+                    <strong>用法提示：</strong>环形图只适合讲占比关系，不适合承载太多维度，建议控制在 3 段以内。
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 15 -->
+<section class="slide slide-white decorated-world" id="slide-15">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">整页骨架</h2>
+        <p class="header-sub">这一页演示“Opening Hook + 2×2 信息面板 + 世界地图底纹”的布局组合。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;padding-top:clamp(0.8rem,2vh,1.4rem);">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(0.8rem,1.8vw,1.4rem);width:100%;" class="reveal">
+            <div class="info-card" style="padding:clamp(0.8rem,1.6vw,1.2rem);">
+                <div class="card-title" style="display:flex;align-items:center;gap:0.45em;"><span style="font-size:clamp(1.1rem,1.8vw,1.5rem);">🌐</span> 开场问题型页面</div>
+                <div style="font-size:clamp(1rem,1.7vw,1.35rem);font-weight:800;color:var(--primary);margin:clamp(0.3rem,0.8vh,0.6rem) 0;letter-spacing:0.02em;">先抛问题</div>
+                <div class="card-body">适合在开场直接抛一个挑战性判断，再用 2×2 卡片承接四个典型现象或案例。</div>
+            </div>
+            <div class="info-card" style="padding:clamp(0.8rem,1.6vw,1.2rem);">
+                <div class="card-title" style="display:flex;align-items:center;gap:0.45em;"><span style="font-size:clamp(1.1rem,1.8vw,1.5rem);">📦</span> 模块化信息承接</div>
+                <div style="font-size:clamp(1rem,1.7vw,1.35rem);font-weight:800;color:var(--primary);margin:clamp(0.3rem,0.8vh,0.6rem) 0;letter-spacing:0.02em;">四象限</div>
+                <div class="card-body">每块卡片只承载一个例子或一个观察，形成开场后的“证据面”。</div>
+            </div>
+            <div class="info-card" style="padding:clamp(0.8rem,1.6vw,1.2rem);">
+                <div class="card-title" style="display:flex;align-items:center;gap:0.45em;"><span style="font-size:clamp(1.1rem,1.8vw,1.5rem);">🗺️</span> 背景装饰层</div>
+                <div style="font-size:clamp(1rem,1.7vw,1.35rem);font-weight:800;color:var(--primary);margin:clamp(0.3rem,0.8vh,0.6rem) 0;letter-spacing:0.02em;">弱存在感</div>
+                <div class="card-body">世界地图与弧线更适合作为内容页底纹，不应抢过正文，只做“高级感”增强。</div>
+            </div>
+            <div class="info-card" style="padding:clamp(0.8rem,1.6vw,1.2rem);">
+                <div class="card-title" style="display:flex;align-items:center;gap:0.45em;"><span style="font-size:clamp(1.1rem,1.8vw,1.5rem);">🎯</span> 用途</div>
+                <div style="font-size:clamp(1rem,1.7vw,1.35rem);font-weight:800;color:var(--primary);margin:clamp(0.3rem,0.8vh,0.6rem) 0;letter-spacing:0.02em;">很适合第一页正文</div>
+                <div class="card-body">用于“为什么必须行动”“外部变化”“用户痛点综述”等高势能开场页。</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 16 -->
+<section class="slide slide-white" id="slide-16">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">分组目录</h2>
+        <p class="header-sub">保留阶段分组，减少条目数量，让观众更快抓到整体结构。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;gap:clamp(0.55rem,1.2vh,0.9rem);max-width:72%;margin:0 auto;">
+        <div class="reveal" style="font-size:clamp(0.6rem,0.9vw,0.75rem);font-weight:700;color:var(--text-3);letter-spacing:0.1em;padding-left:clamp(0.7rem,1.45vw,1.05rem);text-transform:uppercase;">为什么</div>
+        <div class="agenda-item reveal"><span class="agenda-num">01</span><span class="agenda-text">业务变化带来的核心问题</span><span class="agenda-tag" style="background:#FFF1F0;color:#E8380D;">背景</span></div>
+        <div style="border-top:1.5px solid rgba(0,0,0,0.06);margin:clamp(0.25rem,0.6vh,0.45rem) 0;"></div>
+        <div class="reveal" style="font-size:clamp(0.6rem,0.9vw,0.75rem);font-weight:700;color:var(--text-3);letter-spacing:0.1em;padding-left:clamp(0.7rem,1.45vw,1.05rem);text-transform:uppercase;">做什么</div>
+        <div class="agenda-item reveal"><span class="agenda-num">02</span><span class="agenda-text">目标、原则与关键抓手</span><span class="agenda-tag" style="background:#E6F4FF;color:#1677FF;">策略</span></div>
+        <div style="border-top:1.5px solid rgba(0,0,0,0.06);margin:clamp(0.25rem,0.6vh,0.45rem) 0;"></div>
+        <div class="reveal" style="font-size:clamp(0.6rem,0.9vw,0.75rem);font-weight:700;color:var(--text-3);letter-spacing:0.1em;padding-left:clamp(0.7rem,1.45vw,1.05rem);text-transform:uppercase;">怎么做</div>
+        <div class="agenda-item reveal"><span class="agenda-num">03</span><span class="agenda-text">推进机制与验收动作</span><span class="agenda-tag" style="background:#F6FFED;color:#52C41A;">执行</span></div>
+    </div>
+</section>
+
+<!-- SLIDE 17 -->
+<section class="slide slide-white" id="slide-17">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">双阶段流程</h2>
+        <p class="header-sub">适合表达“先搭框架，再落地执行”的两段式推进逻辑。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;max-width:85%;margin:0 auto;">
+        <div class="step-flow-top reveal">
+            <div class="step-card step-card-1">
+                <div class="step-num">PHASE 01</div>
+                <div class="step-title">判断与规划</div>
+                <div class="step-desc">先明确目标、问题边界、优先级和章节结构。</div>
+            </div>
+            <div class="step-flow-arrow">→</div>
+            <div class="step-card step-card-2">
+                <div class="step-num">PHASE 02</div>
+                <div class="step-title">方案成型</div>
+                <div class="step-desc">把结构转成页面形态，建立统一表达骨架。</div>
+            </div>
+        </div>
+        <div class="step-flow-bridge reveal"><span>进入落地执行层</span></div>
+        <div class="step-flow-bottom reveal">
+            <div class="step-card step-card-3">
+                <div class="step-num">EXEC 01</div>
+                <div class="step-title">组件化填充</div>
+                <div class="step-desc">把数据、卡片、图文和流程图填入合适的页面结构。</div>
+            </div>
+            <div class="step-card step-card-4">
+                <div class="step-num">EXEC 02</div>
+                <div class="step-title">验收与修订</div>
+                <div class="step-desc">校验溢出、节奏、品牌与交互，完成最终交付。</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 18 -->
+<section class="slide slide-white" id="slide-18">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">横向支撑板</h2>
+        <p class="header-sub">这一页只保留 `support-board`，让结构更聚焦。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;gap:clamp(0.8rem,1.4vh,1rem);">
+        <div class="support-board reveal">
+            <div class="support-board-title">专项示例</div>
+            <div class="support-board-main">横向支撑板布局</div>
+            <div class="support-board-grid">
+                <div class="support-board-col" style="border-left:4px solid var(--primary);">
+                    <div class="support-board-col-title">🔧 基础保障</div>
+                    <div class="support-board-items">
+                        <div class="support-mini-card">
+                            <div class="support-mini-card-title">模板引擎 <span class="support-owner">平台</span></div>
+                            <div class="support-mini-card-body">统一页面骨架、交互能力和响应式策略。</div>
+                        </div>
+                        <div class="support-mini-card">
+                            <div class="support-mini-card-title">主题库 <span class="support-owner">设计</span></div>
+                            <div class="support-mini-card-body">统一品牌色、Logo 和视觉变量。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="support-board-col" style="border-left:4px solid var(--orange);">
+                    <div class="support-board-col-title">⚙️ 组织机制</div>
+                    <div class="support-board-items">
+                        <div class="support-mini-card">
+                            <div class="support-mini-card-title">组件规范 <span class="support-owner">内容</span></div>
+                            <div class="support-mini-card-body">把常见表达沉淀成可复用页面组件。</div>
+                        </div>
+                        <div class="support-mini-card">
+                            <div class="support-mini-card-title">验收清单 <span class="support-owner">质量</span></div>
+                            <div class="support-mini-card-body">控制溢出、节奏、交互和品牌一致性。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="support-board-col" style="border-left:4px solid var(--green);">
+                    <div class="support-board-col-title">📣 推进落地</div>
+                    <div class="support-board-items">
+                        <div class="support-mini-card">
+                            <div class="support-mini-card-title">场景沉淀 <span class="support-owner">业务</span></div>
+                            <div class="support-mini-card-body">把高频演讲和汇报场景抽成模板样例。</div>
+                        </div>
+                        <div class="support-mini-card">
+                            <div class="support-mini-card-title">持续迭代 <span class="support-owner">共建</span></div>
+                            <div class="support-mini-card-body">从真实 deck 中反向补齐缺失布局结构。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 18B -->
+<section class="slide slide-white" id="slide-18b">
+    <div class="slide-header center-stack">
+        <span class="header-mark"></span>
+        <h2 class="header-title">流转看板</h2>
+        <p class="header-sub">这一页单独演示 `demand-flow-board`，避免和支撑板挤在一起。</p>
+    </div>
+    <div class="slide-body" style="justify-content:center;">
+        <div class="demand-flow reveal">
+            <div class="demand-flow-board">
+                <div class="demand-flow-stage-head">
+                    <span>提出<span class="demand-flow-stage-role">业务方</span></span>
+                    <span>拆解<span class="demand-flow-stage-role">策划</span></span>
+                    <span>生成<span class="demand-flow-stage-role">系统</span></span>
+                    <span>审校<span class="demand-flow-stage-role">专家</span></span>
+                    <span>交付<span class="demand-flow-stage-role">演讲者</span></span>
+                </div>
+                <div class="demand-flow-stage-grid">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <svg class="demand-flow-lines" viewBox="0 0 1000 240" preserveAspectRatio="none">
+                    <path d="M60,40 C150,40 170,90 260,90 S370,140 460,140 590,80 700,80 820,150 940,150" fill="none" stroke="rgba(22,119,255,0.18)" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M60,120 C150,120 180,170 260,170 S370,110 460,110 590,180 700,180 820,110 940,110" fill="none" stroke="rgba(82,196,26,0.16)" stroke-width="6" stroke-linecap="round"/>
+                </svg>
+                <div class="demand-flow-track">
+                    <span class="demand-dot" style="left:8%;top:18%;width:12px;height:12px;background:var(--primary);"></span>
+                    <span class="demand-dot" style="left:25%;top:38%;width:10px;height:10px;background:var(--primary-light);"></span>
+                    <span class="demand-dot" style="left:44%;top:58%;width:12px;height:12px;background:var(--orange);"></span>
+                    <span class="demand-dot" style="left:72%;top:30%;width:10px;height:10px;background:var(--green);"></span>
+                    <span class="demand-dot" style="left:92%;top:62%;width:12px;height:12px;background:var(--red);"></span>
+                    <span class="demand-dot" style="left:14%;top:62%;width:10px;height:10px;background:var(--green);"></span>
+                    <span class="demand-dot" style="left:38%;top:44%;width:10px;height:10px;background:var(--primary);"></span>
+                    <span class="demand-dot" style="left:61%;top:74%;width:12px;height:12px;background:var(--primary-light);"></span>
+                    <span class="demand-dot" style="left:86%;top:42%;width:10px;height:10px;background:var(--orange);"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 19: END -->
+<section class="slide slide-qa" id="slide-19">
+    <div class="fixed-logo-dark logo-group-single">
+        <img src="./logos/slide-writer.png" alt="Slide-Writer" class="logo-img-cover">
+    </div>
+    <h2 class="qa-title reveal">Q&amp;A</h2>
+    <p class="qa-sub reveal">这份 `index.html` 现在同时包含组件级示例和从旧模板沉淀出的整页布局骨架，可直接作为生成时的参考模板。</p>
+</section>
+
+<script>
+class MiniSlidePresentation {
+    constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.totalSlides = this.slides.length;
+        this.currentIndex = 0;
+        this.isScrolling = false;
+        this.scrollTimeout = null;
+        this.lastHash = '';
+
+        this.progressBar = document.getElementById('progressBar');
+        this.navDotsContainer = document.getElementById('navDots');
+        this.fsBtn = document.getElementById('fullscreenBtn');
+        this.fsExpand = document.getElementById('fsIconExpand');
+        this.fsCompress = document.getElementById('fsIconCompress');
+
+        this.setupNavDots();
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupFullscreen();
+        this.updateProgress(0);
+        this.restoreFromHash();
+    }
+
+    setupNavDots() {
+        this.slides.forEach((_, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'nav-dot' + (i === 0 ? ' active' : '');
+            btn.setAttribute('aria-label', `跳到第 ${i + 1} 张`);
+            btn.addEventListener('click', () => this.goTo(i));
+            this.navDotsContainer.appendChild(btn);
+        });
+    }
+
+    updateNavDots(index) {
+        const dots = this.navDotsContainer.querySelectorAll('.nav-dot');
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
+
+    setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                const idx = this.slides.indexOf(entry.target);
+                if (idx === -1) return;
+
+                this.currentIndex = idx;
+                this.updateProgress(idx);
+                this.updateNavDots(idx);
+                this.updateHash(idx);
+
+                const fn = document.getElementById('footnote');
+                if (fn) fn.style.opacity = idx === 0 ? '0' : '1';
+
+                const isBlueSide = entry.target.classList.contains('slide-cover') ||
+                    entry.target.classList.contains('slide-section') ||
+                    entry.target.classList.contains('slide-qa');
+                document.body.classList.toggle('on-blue', isBlueSide);
+            });
+        }, { threshold: 0.55 });
+
+        this.slides.forEach(slide => observer.observe(slide));
+    }
+
+    updateProgress(index) {
+        const pct = this.totalSlides > 1 ? (index / (this.totalSlides - 1)) * 100 : 100;
+        this.progressBar.style.width = pct + '%';
+        const isBlue = this.slides[index] &&
+            (this.slides[index].classList.contains('slide-cover') ||
+             this.slides[index].classList.contains('slide-section') ||
+             this.slides[index].classList.contains('slide-qa'));
+        this.progressBar.style.background = isBlue ? 'rgba(255,255,255,0.7)' : 'var(--primary)';
+        const counter = document.getElementById('pageCounter');
+        if (counter) {
+            counter.textContent = `${index + 1} / ${this.totalSlides}`;
+            counter.style.opacity = index === 0 ? '0' : '1';
+            counter.style.color = isBlue ? 'rgba(255,255,255,0.55)' : '#ABABAB';
+        }
+    }
+
+    updateHash(index) {
+        const slide = this.slides[index];
+        if (!slide || !slide.id || this.lastHash === slide.id) return;
+        this.lastHash = slide.id;
+        history.replaceState(null, '', `#${slide.id}`);
+    }
+
+    restoreFromHash() {
+        const hash = window.location.hash.replace('#', '');
+        if (!hash) return;
+        const index = this.slides.findIndex(slide => slide.id === hash);
+        if (index === -1) return;
+        this.currentIndex = index;
+        this.updateProgress(index);
+        this.updateNavDots(index);
+        this.lastHash = hash;
+        requestAnimationFrame(() => {
+            this.slides[index].scrollIntoView({ behavior: 'auto', block: 'start' });
+        });
+    }
+
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                this.goTo(this.currentIndex + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                this.goTo(this.currentIndex - 1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                this.goTo(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                this.goTo(this.totalSlides - 1);
+            } else if (e.key === 'f' || e.key === 'F') {
+                this.fsBtn.click();
+            }
+        });
+    }
+
+    setupTouchNav() {
+        let startY = 0;
+        let startX = 0;
+        document.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+        document.addEventListener('touchend', (e) => {
+            const dy = startY - e.changedTouches[0].clientY;
+            const dx = startX - e.changedTouches[0].clientX;
+            if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40) {
+                this.goTo(this.currentIndex + (dy > 0 ? 1 : -1));
+            }
+        }, { passive: true });
+    }
+
+    setupWheelNav() {
+        document.addEventListener('wheel', (e) => {
+            if (this.isScrolling) return;
+            this.isScrolling = true;
+            clearTimeout(this.scrollTimeout);
+            if (e.deltaY > 10) this.goTo(this.currentIndex + 1);
+            else if (e.deltaY < -10) this.goTo(this.currentIndex - 1);
+            this.scrollTimeout = setTimeout(() => { this.isScrolling = false; }, 800);
+        }, { passive: true });
+    }
+
+    goTo(index) {
+        index = Math.max(0, Math.min(this.totalSlides - 1, index));
+        if (index === this.currentIndex) return;
+        this.currentIndex = index;
+        this.slides[index].scrollIntoView({ behavior: 'smooth' });
+    }
+
+    setupFullscreen() {
+        const updateFsIcon = () => {
+            const isFs = !!document.fullscreenElement;
+            this.fsExpand.style.display = isFs ? 'none' : 'block';
+            this.fsCompress.style.display = isFs ? 'block' : 'none';
+            this.fsBtn.style.background = isFs ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
+        };
+
+        this.fsBtn.addEventListener('mouseenter', () => { this.fsBtn.style.opacity = '1'; });
+        this.fsBtn.addEventListener('mouseleave', () => { this.fsBtn.style.opacity = '0.5'; });
+        this.fsBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+            else document.exitFullscreen();
+        });
+
+        document.addEventListener('fullscreenchange', updateFsIcon);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    function tuneLogoImage(img, groupSize) {
+        if (!img) return;
+
+        const apply = () => {
+            if (!img.naturalWidth || !img.naturalHeight) return;
+
+            img.style.height = '';
+            img.style.maxWidth = '';
+
+            const ratio = img.naturalWidth / img.naturalHeight;
+            const baseHeight = parseFloat(getComputedStyle(img).height) || 32;
+            let scale = 1;
+            let maxWidth = 160;
+
+            if (ratio >= 5) {
+                scale = 0.74;
+                maxWidth = 132;
+            } else if (ratio >= 4) {
+                scale = 0.82;
+                maxWidth = 144;
+            } else if (ratio >= 3) {
+                scale = 0.9;
+                maxWidth = 156;
+            } else if (ratio <= 1.4) {
+                scale = 1.08;
+                maxWidth = 72;
+            } else if (ratio <= 1.8) {
+                scale = 1.04;
+                maxWidth = 92;
+            }
+
+            if (groupSize === 1) {
+                scale *= ratio >= 3 ? 1.08 : 1.16;
+                maxWidth += ratio <= 2.2 ? 18 : 8;
+            } else {
+                scale *= 0.96;
+            }
+
+            img.style.height = `${Math.round(baseHeight * scale)}px`;
+            img.style.maxWidth = `${maxWidth}px`;
+        };
+
+        if (img.complete) apply();
+        else img.addEventListener('load', apply, { once: true });
+    }
+
+    function tuneLogoGroups() {
+        document.querySelectorAll('#globalLogoGroup, .fixed-logo-dark').forEach(group => {
+            const imgs = Array.from(group.querySelectorAll('img'));
+            imgs.forEach(img => tuneLogoImage(img, imgs.length));
+
+            requestAnimationFrame(() => {
+                const heights = imgs
+                    .map(img => img.getBoundingClientRect().height)
+                    .filter(Boolean);
+                const divider = group.querySelector('.logo-divider, span');
+                if (!divider || !heights.length) return;
+                divider.style.height = `${Math.round(Math.max(...heights) * 0.88)}px`;
+            });
+        });
+    }
+
+    new MiniSlidePresentation();
+    tuneLogoGroups();
+    window.addEventListener('resize', tuneLogoGroups);
+});
+</script>
+</body>
+</html>

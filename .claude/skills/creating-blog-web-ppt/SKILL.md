@@ -1,19 +1,21 @@
 ---
 name: creating-blog-web-ppt
-description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PPT、HTML slides、演讲稿页面或独立演示页，尤其希望输出与原文同目录、同 basename 时使用。
+description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PPT、HTML slides、演讲稿页面或独立演示页，尤其希望输出与原文同目录、同 basename 时使用。已合并 FeeiCN/slide-writer 的结构化演示工作流，默认主题为博客站深色科幻风 blog-sumsec。
 ---
 
-# 创建文章网页版 PPT
+# 创建文章网页版 PPT（合并 Slide-Writer）
 
 ## 这个 skill 做什么
 
 这是一个绑定 `BlogPapers` 仓库的专用 skill，用来把文章型 Markdown 转成独立的网页版 PPT。
 
-主 `SKILL.md` 只负责三件事：
+合并来源：[FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer)（MIT，快照于 `vendor/slide-writer/`，见 `vendor/slide-writer/UPSTREAM.md`）。上游擅长「想法 / 大纲 / 长文 → 结构化 HTML 演示」；本 skill 保留博客仓库的落盘路径、品牌回链、视口与图片约束，并把**默认视觉**固定为 **`blog-sumsec` 博客主题**（[`themes/blog-sumsec.md`](themes/blog-sumsec.md)）。
+
+主 `SKILL.md` 只负责：
 
 - 判断是否该触发
 - 规定不可跳过的执行顺序
-- 指向 `references/` 中的细节文件
+- 指向 `references/` 与 `themes/` 中的细节文件
 
 细节不要堆回主文件；需要时再读对应 reference。
 
@@ -53,16 +55,20 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - deck 主画布不得超过当前视口，必须具备自适应缩放或响应式重排能力
 - 小屏下优先保证可读性与不裁切，必要时允许退化为纵向滚动阅读
 - 不改首页、归档、站点导航
+- **默认主题**：一律先按 [`themes/_index.md`](themes/_index.md) 解析为 **`blog-sumsec`**，并读取 [`themes/blog-sumsec.md`](themes/blog-sumsec.md) 作为色板与渐变来源（除非用户触发企业主题分支，见该索引文件）
 
 ## 读取策略
 
 默认按下面方式读取参考文件：
 
+- 与 Slide-Writer 的分工、双轨道说明：**必读** [references/slide-writer-merge.md](references/slide-writer-merge.md)
 - 路径、落盘位置、禁止改动项：读 [references/repo-conventions.md](references/repo-conventions.md)
 - 视觉方向、版式原则、反 AI 味规则：读 [references/visual-system.md](references/visual-system.md)
 - HTML 最小结构和交互基线：读 [references/html-template.md](references/html-template.md)
 - 完成前的验证动作：必读 [references/verification-checklist.md](references/verification-checklist.md)
 - 需要类比案例时：读 [references/examples.md](references/examples.md)
+- 主题解析：读 [`themes/_index.md`](themes/_index.md)；默认主题细节：读 [`themes/blog-sumsec.md`](themes/blog-sumsec.md)
+- 采用 Slide-Writer 引擎轨道或借鉴其组件 HTML 时：按需读 `vendor/slide-writer/components.md`、`vendor/slide-writer/SKILL.md`（仅 Phase 2–3 相关小节）
 
 ## 执行清单
 
@@ -70,18 +76,23 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 
 ```text
 生成进度：
-- [ ] 步骤 1：读取原文与仓库视觉参考
-- [ ] 步骤 2：写出三句前置主张
-- [ ] 步骤 3：生成单文件 HTML
+- [ ] 步骤 1：读取原文、主题索引与仓库视觉参考
+- [ ] 步骤 2：写出三句前置主张，并做演示结构规划（吸收 slide-writer Phase 2）
+- [ ] 步骤 3：选择生成轨道（博客默认 / Slide-Writer 引擎）并生成单文件 HTML
 - [ ] 步骤 4：核对路径与仓库约定
 - [ ] 步骤 5：完成浏览器级验证
 ```
 
 ## 工作流
 
-### 步骤 1：读取原文与参考
+### 步骤 1：读取原文、主题与参考
 
 先读 Markdown，提取叙事主线、章节层级、可复用图片和适合拆页的观点组。
+
+读取主题与色板：
+
+- [`themes/_index.md`](themes/_index.md)：确认默认 `blog-sumsec` 或可选企业主题分支
+- [`themes/blog-sumsec.md`](themes/blog-sumsec.md)：默认 CSS 变量与渐变（博客站风格）
 
 同时读取：
 
@@ -89,10 +100,11 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - `_layouts/default.html`
 - [references/repo-conventions.md](references/repo-conventions.md)
 - [references/visual-system.md](references/visual-system.md)
+- [references/slide-writer-merge.md](references/slide-writer-merge.md)
 
 只借用视觉 token、字体和氛围，不复用整站壳子。
 
-### 步骤 2：先写三句话
+### 步骤 2：先写三句话 + 结构规划
 
 在开始生成 HTML 前，先在自己的推理里写出：
 
@@ -103,16 +115,19 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 默认基调：
 
 - 正式技术演讲稿优先
-- 仓库的深色科幻感作为辅助
+- **`blog-sumsec` 深色科幻站色**作为主色板（不再默认使用上游蚂蚁蓝）
 - 长文允许做成长版 deck，不强压页数
 
-这一步不能省略。先有三句主张，再开始写 HTML。
+结构规划阶段吸收 slide-writer 的「长文 → 演示结构」原则：一页一判断、先骨架后填字、控制信息密度与布局多样性。细则见 [references/slide-writer-merge.md](references/slide-writer-merge.md) 与按需查阅的 `vendor/slide-writer/SKILL.md`。
+
+这一步不能省略。先有三句主张与清晰页级结构，再开始写 HTML。
 
 ### 步骤 3：生成独立 HTML
 
-使用内联 CSS 和 JS 的单文件 HTML。
+**轨道选择**（见 [references/slide-writer-merge.md](references/slide-writer-merge.md)）：
 
-最小结构、交互基线和内容映射要求见 [references/html-template.md](references/html-template.md)。
+- **默认**：自研单文件 deck，内联 CSS/JS，结构与交互以 [references/html-template.md](references/html-template.md) 为准；主题色来自 `themes/blog-sumsec.md`。
+- **可选**：用户明确要求采用 slide-writer `_base.html` 引擎时，从 `vendor/slide-writer/_base.html` 复制到输出路径并按上游占位符填充；**主题样式默认仍使用 `blog-sumsec.md` 的 CSS**，除非 `themes/_index.md` 触发企业主题并改读 `vendor/slide-writer/themes/[id].md`。无论哪条轨道，都必须满足本仓库关于 SUMSEC、全屏、视口与图片的硬约束。
 
 生成时额外强制满足：
 
@@ -162,17 +177,24 @@ description: 当用户要求把本仓库中的 Markdown 文章转成网页版 PP
 - 不要对内容图默认使用会裁切关键信息的铺满策略；原文配图默认优先完整可见
 - 不要为了保住固定比例而让小屏内容溢出、裁切或出现横向滚动
 - 不要没开浏览器就声称完成
+- **不要忘记默认主题是 `blog-sumsec`**，不要默认套用上游蚂蚁蓝或其他企业色，除非 `themes/_index.md` 已触发企业主题分支且用户接受缺少 Logo 时的降级策略
 
 ## 参考文件
 
+- [references/slide-writer-merge.md](references/slide-writer-merge.md)
 - [references/repo-conventions.md](references/repo-conventions.md)
 - [references/visual-system.md](references/visual-system.md)
 - [references/html-template.md](references/html-template.md)
 - [references/verification-checklist.md](references/verification-checklist.md)
 - [references/examples.md](references/examples.md)
+- [`themes/_index.md`](themes/_index.md)
+- [`themes/blog-sumsec.md`](themes/blog-sumsec.md)
+- `vendor/slide-writer/`（上游快照：`SKILL.md`、`components.md`、`_base.html`、`themes/*.md`）
 
 ## 最终规则
 
 在这个仓库里，文章转网页版 PPT 的默认标准是：
 
-`同目录 + 同 basename + 单文件 HTML + SUMSEC 可跳原文 + 画布不超视口且可自适应 + 原文图片不撑破固定舞台 + 仓库风格一致 + 浏览器验证通过`
+`同目录 + 同 basename + 单文件 HTML + 默认 blog-sumsec 主题 + SUMSEC 可跳原文 + 画布不超视口且可自适应 + 原文图片不撑破固定舞台 + 仓库风格一致 + 浏览器验证通过`
+
+可选地叠加 slide-writer 的结构化演示与组件能力，但不得牺牲上述默认标准。
