@@ -44,9 +44,7 @@ AI Inner OS 是一个面向 AI Coding Agent 的开源插件，适用于任何支
 <details>
 <summary>Watch demo video</summary>
 
-<video controls playsinline preload="metadata" width="100%" style="max-width:720px" src="https://sumsec.me/resources/video.mp4"></video>
-
-If the player does not load here, open the file directly: [demo (MP4)](https://sumsec.me/resources/video.mp4)
+<video controls playsinline preload="metadata" width="100%" style="max-width:1980px" src="https://sumsec.me/resources/video.mp4"></video>
 </details>
 
 ---
