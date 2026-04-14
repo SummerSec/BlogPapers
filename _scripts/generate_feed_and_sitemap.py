@@ -7,6 +7,10 @@
 Archives.md 所在目录），即把 <段> 视为仓库根下的一层归档目录（如 2026、PL）。新增年份时
 只需编辑 Archives.md，不必改本脚本。
 
+sitemap 顺序：站点根 → 文章 URL（四位年份目录优先按年份降序，同年份内按 Git 时间降序；
+非四位目录如 PL 排在所有年份之后）→ 导航类静态页 → resources 下其余 md → 各归档
+README.html（同年份规则）→ 最后为 resources/README.html。不包含 *-ppt.html。
+
 依赖：Python 3.10+ 标准库；可选 git 用于每篇文章的最近提交时间。
 """
 
@@ -32,12 +36,10 @@ ARCHIVES_MD = RESOURCES / "Archives.md"
 # Archives 未配置任何归档链接时的回退（避免 CI 直接失败）
 _FALLBACK_POST_ROOTS = ("2021", "2022", "2023", "2026", "PL")
 
-# 固定收录的站内页（与旧 sitemap 中「导航/说明」一致，不含杂项静态文件）
+# 固定收录的导航类页面（不含首页与 resources/README，二者在 sitemap 中单独插入顺序）
 STATIC_SITEMAP_PATHS = (
-    "/",
     "/resources/Archives.html",
     "/resources/AboutMe.html",
-    "/resources/README.html",
     "/resources/Advertisements.html",
     "/resources/subdomain.html",
     "/resources/rss.xml",
@@ -118,6 +120,24 @@ def discover_post_roots() -> tuple[str, ...]:
     return tuple(order)
 
 
+def _archive_segment_sort_key(segment: str) -> tuple:
+    """四位年份降序在前；其余目录（如 PL）在后，按名字排序。"""
+    if segment.isdigit() and len(segment) == 4:
+        return (0, -int(segment))
+    return (1, segment)
+
+
+def _post_sitemap_sort_key(item: tuple[Path, str, datetime]) -> tuple:
+    """文章 URL 排序：年份降序 → 同年内时间降序。"""
+    path, _rel, dt = item
+    parts = path.relative_to(REPO_ROOT).parts
+    seg = parts[0] if parts else ""
+    tier, y = _archive_segment_sort_key(seg)
+    if tier == 0:
+        return (0, y, -dt.timestamp())
+    return (1, y, -dt.timestamp())  # y 为 segment 字符串
+
+
 def url_for_md(rel: Path) -> str:
     """Jekyll 默认：2026/foo.md -> https://sumsec.me/2026/foo.html"""
     parts = rel.as_posix().split("/")
@@ -151,38 +171,38 @@ def collect_posts(post_roots: tuple[str, ...]) -> list[tuple[Path, str, datetime
 def collect_sitemap_urls(
     posts: list[tuple[Path, str, datetime]], post_roots: tuple[str, ...]
 ) -> list[str]:
-    urls: list[str] = []
-    for p in STATIC_SITEMAP_PATHS:
-        urls.append(SITE.rstrip("/") + p)
-
-    # 各归档目录 README（与 Archives 中列出的根一致）
-    for root_name in post_roots:
-        readme = REPO_ROOT / root_name / "README.md"
-        if readme.is_file():
-            urls.append(url_for_md(readme.relative_to(REPO_ROOT)))
-
-    # resources 下说明向 md
-    if RESOURCES.is_dir():
-        for path in sorted(RESOURCES.glob("*.md")):
-            rel = path.relative_to(REPO_ROOT)
-            urls.append(url_for_md(rel))
-
-    for path, _, _ in posts:
-        rel = path.relative_to(REPO_ROOT)
-        urls.append(url_for_md(rel))
-        # 同目录同名 -ppt.html 等独立页
-        for extra in path.parent.glob(f"{path.stem}-*.html"):
-            rel_html = extra.relative_to(REPO_ROOT)
-            segs = [quote(s, safe="") for s in rel_html.as_posix().split("/")]
-            urls.append(SITE + "/" + "/".join(segs))
-
-    # 去重保持顺序
     seen: set[str] = set()
     out: list[str] = []
-    for u in urls:
+
+    def add(u: str) -> None:
         if u not in seen:
             seen.add(u)
             out.append(u)
+
+    add(SITE + "/")
+
+    for item in sorted(posts, key=_post_sitemap_sort_key):
+        path, _, _ = item
+        add(url_for_md(path.relative_to(REPO_ROOT)))
+
+    for p in STATIC_SITEMAP_PATHS:
+        add(SITE.rstrip("/") + p)
+
+    if RESOURCES.is_dir():
+        for path in sorted(RESOURCES.glob("*.md")):
+            if path.name == "README.md":
+                continue
+            add(url_for_md(path.relative_to(REPO_ROOT)))
+
+    for root_name in sorted(post_roots, key=_archive_segment_sort_key):
+        readme = REPO_ROOT / root_name / "README.md"
+        if readme.is_file():
+            add(url_for_md(readme.relative_to(REPO_ROOT)))
+
+    readme_res = RESOURCES / "README.md"
+    if readme_res.is_file():
+        add(url_for_md(readme_res.relative_to(REPO_ROOT)))
+
     return out
 
 
