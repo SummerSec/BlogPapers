@@ -14,20 +14,20 @@ on:
   push:
     branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# A workflow run is made up of one or more jobs that will be executed as part of the workflow
 jobs:
   # This workflow contains a single job called "build"
   build:
+    permissions:
+      contents: write
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -38,26 +38,12 @@ jobs:
           wget -O /home/runner/work/BlogPapers/BlogPapers/resources/os.gif  https://raw.githubusercontent.com/SummerSec/SummerSec/master/os.gif
           wget -O /home/runner/work/BlogPapers/BlogPapers/resources/Hi.gif https://raw.githubusercontent.com/SummerSec/SummerSec/master/Hi.gif
           wget  -O  /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md https://raw.githubusercontent.com/SummerSec/SummerSec/master/README.md 
-          wget -O /home/runner/work/BlogPapers/BlogPapers/resources/atom.xml https://raw.githubusercontent.com/SummerSec/blog-rss/main/atom.xml
-          wget -O  /home/runner/work/BlogPapers/BlogPapers/resources/rss.xml   https://raw.githubusercontent.com/SummerSec/blog-rss/main/rss.xml
-#       - name: Commit updated AboutMe
-#         uses: stefanzweifel/git-auto-commit-action@v4
-#         with:
-#           branch: ${{ github.event.release.target_commitish }}
-#           commit_message: Update AboutMe
-#           file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install, build and test
-        run: npm install -S sitemap-generator
-      - name: Sitemap Generator
-        run: node /home/runner/work/BlogPapers/BlogPapers/resources/SitemapGenerator.js
+      - name: Generate RSS, Atom, Sitemap from repo Markdown
+        run: python3 _scripts/generate_feed_and_sitemap.py
       - name: Commit updated Sitemap
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          branch: ${{ github.event.release.target_commitish }}
+          branch: master
           commit_message:  🍭Update Sitemap && AboutMe && Git Svg
           file_pattern: /home/runner/work/BlogPapers/BlogPapers/resources/AboutMe.md /home/runner/work/BlogPapers/BlogPapers/resources/sitemap.xml /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake-dark.svg /home/runner/work/BlogPapers/BlogPapers/resources/dist/ocean.gif /home/runner/work/BlogPapers/BlogPapers/resources/os.gif /home/runner/work/BlogPapers/BlogPapers/resources/Hi.gif /home/runner/work/BlogPapers/BlogPapers/resources/dist/github-snake.svg /home/runner/work/BlogPapers/BlogPapers/resources/atom.xml /home/runner/work/BlogPapers/BlogPapers/resources/rss.xml  
 

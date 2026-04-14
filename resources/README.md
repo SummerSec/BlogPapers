@@ -29,7 +29,7 @@ tags:
 | 1644461078948.yml | [1644461078948.yml](./1644461078948.yml) |
 | urls.txt | [urls.txt](./urls.txt) |
 | JPATHRceBean.xml | [JPATHRceBean.xml](./JPATHRceBean.xml) |
-| SitemapGenerator.js | [SitemapGenerator.js](./SitemapGenerator.js) |
+| generate_feed_and_sitemap.py | [生成 RSS / Atom / Sitemap](../_scripts/generate_feed_and_sitemap.py) |
 | spring-framework-rce.zip | [spring-framework-rce.zip](./spring-framework-rce.zip) |
 | chrome/js.svg | [chrome/js.svg](./chrome/js.svg) |
 | chrome/r.php | [chrome/r.php](./chrome/r.php) |

@@ -140,8 +140,7 @@ GitHub Pages 应使用：
 
 当前仓库有多条工作流会自动更新内容，包括：
 
-- `AboutMe`：同步 `AboutMe.md`、`rss.xml`、`atom.xml` 与 `dist/` SVG 资源
-- `SitemapGenerator`：重新生成 `resources/sitemap.xml` 与 `resources/rss.xml`
+- `AboutMe`：同步 `AboutMe.md`、`dist/` SVG 资源，并用 `_scripts/generate_feed_and_sitemap.py` 根据仓库内 Markdown 生成 `resources/rss.xml`、`resources/atom.xml`、`resources/sitemap.xml`（仅此工作流负责 feed / sitemap，可 `workflow_dispatch` 手动重跑）。脚本从 `resources/Archives.md` 里所有 `(../某目录/README.md)` 链接自动收集「归档根目录」，新增年份时维护 Archives 即可，无需改脚本常量。
 - `Update images`：批量把旧图片地址改写到 CDN
 
 这些文件不要手工长期维护，因为会被 CI 覆盖：
