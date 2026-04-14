@@ -16,3 +16,6 @@ docs/**
 _scripts/remotion-blog-ppt-article/node_modules/
 
 # Trigger Pages redeploy
+
+# 微信公众号 API 凭据（baoyu-post-to-wechat）
+.baoyu-skills/.env
