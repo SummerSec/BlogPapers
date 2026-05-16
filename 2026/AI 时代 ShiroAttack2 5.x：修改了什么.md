@@ -153,7 +153,7 @@ Key 替换 ── 用内存马机制改掉 Shiro 的 AES Key
            六条注入路径适配不同部署环境
 ```
 
-![](./PIC/shiro-attack2/020.png)
+![](./pic/shiro-attack2/020.png)
 
 下面挑几个有意思的点细说。
 
@@ -469,7 +469,7 @@ ConsoleTextArea 的做法让我觉得比较舒服——不重构 1000+ 行的核
 
 ---
 
-![](./PIC/shiro-attack2/060.png)
+![](./pic/shiro-attack2/060.png)
 
 
 *基于 ShiroAttack2 v5.1.0。代码在 [github.com/SummerSec/ShiroAttack2](https://github.com/SummerSec/ShiroAttack2)。只用于授权安全测试。*
