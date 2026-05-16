@@ -435,6 +435,7 @@ user=<Base64(字节码)>&p=<密码>&path=<路径>
 改目标 Shiro Key 本质上是注入一个 Filter，这个 Filter 能找到 `CookieRememberMeManager` 然后把 `cipherKey` 改掉。不同部署环境找这个引用的路径不一样。
 
 标准 Spring 环境走 `ApplicationContext → shiroFilterFactoryBean → filterConfigs → RememberMeManager`。Bean 名对不上就降级到扫描 FilterChain 里名字含 "shiro" 的。再不行就模糊匹配类名和配置里含 `rememberMeManager` 字段的。最后一条路是遍历所有 Filter，有多少改多少——标记为高风险，因为集群里可能存在多个 RememberMeManager 实例。
+
 ![Key 替换六条路径](./pic/shiro-attack2/06.png)
 
 注入完之后，工具自动拿新 Key 和旧 Key 各验证一次，确认新 Key 能用、旧 Key 失效。
@@ -469,5 +470,6 @@ ConsoleTextArea 的做法让我觉得比较舒服——不重构 1000+ 行的核
 ---
 
 ![](./PIC/shiro-attack2/060.png)
+
 
 *基于 ShiroAttack2 v5.1.0。代码在 [github.com/SummerSec/ShiroAttack2](https://github.com/SummerSec/ShiroAttack2)。只用于授权安全测试。*
