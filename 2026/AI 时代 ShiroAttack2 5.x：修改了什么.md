@@ -472,4 +472,5 @@ ConsoleTextArea 的做法让我觉得比较舒服——不重构 1000+ 行的核
 ![](./pic/shiro-attack2/060.png)
 
 
+
 *基于 ShiroAttack2 v5.1.0。代码在 [github.com/SummerSec/ShiroAttack2](https://github.com/SummerSec/ShiroAttack2)。只用于授权安全测试。*
