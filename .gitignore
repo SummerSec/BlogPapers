@@ -11,7 +11,7 @@ docs/**
 .cursor/**
 .playwright-cli/**
 .jekyll-cache/**
-
+.agents/**
 # Remotion 子项目依赖（源码见 _scripts/remotion-blog-ppt-article）
 _scripts/remotion-blog-ppt-article/node_modules/
 
@@ -19,3 +19,4 @@ _scripts/remotion-blog-ppt-article/node_modules/
 
 # 微信公众号 API 凭据（baoyu-post-to-wechat）
 .baoyu-skills/.env
+.claude/settings.local.json
