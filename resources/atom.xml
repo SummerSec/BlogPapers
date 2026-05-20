@@ -2,22 +2,22 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-05-20T14:20:29Z</updated>
+  <updated>2026-05-20T14:24:03Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
   <subtitle>像清水一般清澈透明</subtitle>
   <entry>
+    <id>https://sumsec.me/2026/why-personal-agent-skills-repo.html</id>
+    <title>模型人人都能用，什么才是你能带走的？我的答案是一个可进化的SKILL库</title>
+    <updated>2026-05-20T14:22:36Z</updated>
+    <link href="https://sumsec.me/2026/why-personal-agent-skills-repo.html" rel="alternate" />
+  </entry>
+  <entry>
     <id>https://sumsec.me/2026/why-personal-agent-skills-repo-v2.html</id>
     <title>模型人人都能用，什么才是你能带走的？我的答案是一个可进化的Skill库</title>
     <updated>2026-05-20T14:18:51Z</updated>
     <link href="https://sumsec.me/2026/why-personal-agent-skills-repo-v2.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2026/why-personal-agent-skills-repo.html</id>
-    <title>模型人人都能用，什么才是你能带走的？我的答案是一个可进化的SKILL库</title>
-    <updated>2026-05-20T14:18:51Z</updated>
-    <link href="https://sumsec.me/2026/why-personal-agent-skills-repo.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2026/AI%20%E6%97%B6%E4%BB%A3%20ShiroAttack2%205.x%EF%BC%9A%E4%BF%AE%E6%94%B9%E4%BA%86%E4%BB%80%E4%B9%88.html</id>
