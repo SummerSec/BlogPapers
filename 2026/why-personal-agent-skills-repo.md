@@ -19,16 +19,18 @@ A developer sitting at a desk with multiple AI agent interfaces floating around 
 
 ## 先聊一个不舒服的现实
 
+
+
+AI 时代有一个残酷的事实：**谁也无法保证你明天还在这家公司。**
+
+当 AI 能完成越来越多的工作，团队在缩编，岗位在重组。你今天在 A 公司用 Cursor 写代码，明天可能在 B 公司用 Claude Code，后天可能自己出来单干。
+
 <!-- 
 插图 prompt:
 A developer standing at a crossroads/fork in the road, looking uncertain. Behind them, a fading office building with a "company" sign dissolving into particles. In front of them, multiple diverging paths leading to different destinations (startup, freelance, new company). The developer carries only a small glowing backpack (representing portable skills). Around the paths, AI tool logos float like road signs changing rapidly. Style: slightly melancholic but hopeful atmosphere, muted colors with the glowing backpack as focal point, editorial illustration style, metaphorical.
 -->
 
 ![不确定的现实](./images/uncertain-reality.png)
-
-AI 时代有一个残酷的事实：**谁也无法保证你明天还在这家公司。**
-
-当 AI 能完成越来越多的工作，团队在缩编，岗位在重组。你今天在 A 公司用 Cursor 写代码，明天可能在 B 公司用 Claude Code，后天可能自己出来单干。
 
 在这种不确定性下，什么是你真正能带走的？
 
