@@ -244,7 +244,7 @@ SumSec-Skills/
 A timeline/river flowing from left to right. On the river are floating documents labeled "official spec v1", "v2", "v3" (representing upstream updates). A bridge connects the river to a personal island/garden where custom skills grow as plants. The bridge is labeled "git submodule". New nutrients flow from the river through the bridge to feed the garden. Style: metaphorical illustration, nature meets tech, watercolor-digital hybrid, warm and organic feeling.
 -->
 
-![Submodule 同步机制](./images/submodule-sync.png)
+![Submodule 同步机制](./images/submodule-syn.png)
 
 AI Agent 平台的规范在快速演进。技能库如果是一座孤岛，很快就会和官方脱节。
 
