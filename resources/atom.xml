@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-05-25T04:53:53Z</updated>
+  <updated>2026-05-25T05:22:18Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
@@ -10,7 +10,7 @@
   <entry>
     <id>https://sumsec.me/2026/why-personal-agent-skills-repo.html</id>
     <title>模型人人都能用，什么才是你能带走的？我的答案是一个可进化的SKILL库</title>
-    <updated>2026-05-21T02:02:36Z</updated>
+    <updated>2026-05-25T05:21:30Z</updated>
     <link href="https://sumsec.me/2026/why-personal-agent-skills-repo.html" rel="alternate" />
   </entry>
   <entry>
