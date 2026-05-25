@@ -592,6 +592,7 @@ SumSec-Skills 的尝试指向一个方向：
 
 - 仓库地址：[github.com/SummerSec/SumSec-Skills](https://github.com/SummerSec/SumSec-Skills)
 - 许可证：Apache-2.0（自由使用、修改、分发）
+- Skill规范：[Claude Skills](https://code.claude.com/docs/en/skills)
 
 ---
 
