@@ -38,7 +38,7 @@ tags:
 
 <!--CLOUDFLARE_DNS_SYNC_BEGIN-->
 
-> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **70** 条原始记录，**58** 个主机名）。TXT 等内容已截断。
+> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **71** 条原始记录，**59** 个主机名）。TXT 等内容已截断。
 
 | 主机名 | 类型 | 内容（节选） | Proxied |
 | ------ | ---- | ------------ | ------- |
@@ -71,6 +71,7 @@ tags:
 | [life.sumsec.me](https://life.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [linux.sumsec.me](https://linux.sumsec.me/) | CNAME | CNAME: sumsec.me | 是 |
 | [loader.sumsec.me](https://loader.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
+| [lof.sumsec.me](https://lof.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [love.sumsec.me](https://love.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [mac.sumsec.me](https://mac.sumsec.me/) | CNAME | CNAME: 85d9e87f-3dcd-4c1f-b6a3-84e72ebc896d.cfargotunn… | 是 |
 | [mailchannels._domainkey.sumsec.me](https://mailchannels._domainkey.sumsec.me/) | TXT | TXT: v=DKIM1;p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBC… | 否 |
