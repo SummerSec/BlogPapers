@@ -100,8 +100,8 @@
   {% endif %}
   <title>{{ doc_title_static }}</title>
   {% if tlen > thr %}<meta name="doc-title-full" content="{{ doc_title | xml_escape }}">{% endif %}
-  <link rel="icon" href="{{ '/assets/sumsec-icon.png' | relative_url }}" type="image/png" sizes="32x32">
-  <link rel="apple-touch-icon" href="{{ '/assets/sumsec-icon.png' | relative_url }}">
+  <link rel="icon" href="{{ '/assets/sumsec-icon.png' | relative_url }}?v={{ asset_rev }}" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="{{ '/assets/sumsec-icon.png' | relative_url }}?v={{ asset_rev }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -125,7 +125,7 @@
   <header class="site-header">
     <div class="navbar">
       <a href="{{ '/' | relative_url }}" class="navbar-brand">
-        <img src="{{ '/assets/sumsec-icon.png' | relative_url }}" alt="" class="navbar-logo" width="28" height="28">
+        <img src="{{ '/assets/sumsec-icon.png' | relative_url }}?v={{ asset_rev }}" alt="" class="navbar-logo" width="28" height="28">
         <span class="navbar-title">{{ brand }}</span>
       </a>
       <nav class="site-nav" aria-label="主导航">
