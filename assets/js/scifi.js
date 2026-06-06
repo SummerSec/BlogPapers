@@ -381,197 +381,254 @@
     runViewStats();
   }
 
-  // --- Matrix rain ---
-  var canvas = document.getElementById('matrix-canvas');
-  if (canvas && !reduceMotion) {
-    var ctx = canvas.getContext('2d');
-    var W, H, cols, drops;
-    var CHARS = '01ABCDEFΣ◇▣⟨⟩∴×÷アイウエオカキクケコサシスセソタチツテト';
-
-    function resizeCanvas() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-      cols = Math.floor(W / 16);
-      drops = [];
-      for (var i = 0; i < cols; i++) drops[i] = Math.random() * -H;
+  // --- Theme toggle (feei.cn style) ---
+  function applyTheme(theme) {
+    var root = document.documentElement;
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+      if (meta) meta.setAttribute('content', '#1b1b1d');
+    } else {
+      root.removeAttribute('data-theme');
+      if (meta) meta.setAttribute('content', '#fafafa');
     }
-
-    var NEON = [
-      'rgba(92, 219, 207, 0.22)',
-      'rgba(148, 168, 232, 0.2)',
-      'rgba(125, 215, 160, 0.18)',
-      'rgba(140, 180, 220, 0.16)'
-    ];
-
-    function drawMatrix() {
-      ctx.fillStyle = 'rgba(5, 6, 12, 0.055)';
-      ctx.fillRect(0, 0, W, H);
-      ctx.font = '14px "JetBrains Mono", "Noto Sans SC", monospace';
-      for (var i = 0; i < cols; i++) {
-        ctx.fillStyle = NEON[i % NEON.length];
-        var ch = CHARS[Math.floor(Math.random() * CHARS.length)];
-        ctx.fillText(ch, i * 16, drops[i]);
-        if (drops[i] > H && Math.random() > 0.97) drops[i] = 0;
-        drops[i] += 16;
-      }
-    }
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    setInterval(drawMatrix, 60);
-  } else if (canvas && reduceMotion) {
-    canvas.style.opacity = '0.12';
+    try {
+      localStorage.setItem('sumsec-theme', theme);
+    } catch (eStore) { /* ignore */ }
   }
 
-  // --- 侧栏 HUD 信号槽彩蛋（chan + code 竖排展示，点击底部广播条） ---
-  var EGG_POOL = [
-    { chan: 'NET', code: 'UPLINK', msg: '链路稳定。带宽易得，清醒难得。' },
-    { chan: 'SYS', code: 'SYN_OK', msg: '握手完成。你正在正确的时区阅读。' },
-    { chan: 'SEC', code: 'AES256', msg: '有些内容值得用最笨、最稳的锁。' },
-    { chan: 'OPS', code: 'LOSS0', msg: '零丢包是理想；零幻觉是底线。' },
-    { chan: 'MEM', code: 'CAFE', msg: '0xCAFEBABE — 魔数对齐，直觉也要对齐。' },
-    { chan: 'FW', code: 'CLR', msg: '今日无告警。无事发生，往往是好事。' },
-    { chan: 'TRACE', code: 'LOOP', msg: '127.0.0.1：追到最后，常是自己。' },
-    { chan: 'PROC', code: '1337', msg: 'PID 体面，进程也要体面地活着。' },
-    { chan: 'CHK', code: 'PASS', msg: '校验通过。写下来，比记在脑子里安全。' },
-    { chan: 'ROOT', code: 'SUDO', msg: '权限够了，咖啡可能还不够。' },
-    { chan: 'HTTP', code: '404Z', msg: 'sleep.exe 未找到：缺觉不算漏洞，算债。' },
-    { chan: 'CODE', code: 'LIVE', msg: 'while(alive) 里别忘了 break 去晒太阳。' },
-    { chan: 'CVE', code: 'COFF', msg: 'CVSS 不高，但咖啡因严重度是 Critical。' },
-    { chan: 'DEV', code: 'NULL', msg: '/dev/null 收好疑虑，stdout 留给结论。' },
-    { chan: 'FS', code: 'RMRF', msg: '递归删除犹豫前，先 git status 一下人生。' },
-    { chan: 'VCS', code: 'SLEEP', msg: 'commit 了 sleep，但忘了 push 到枕头。' },
-    { chan: 'HEAP', code: '64P', msg: '堆还有余量。脑子也是，别塞满缓存。' },
-    { chan: 'LAT', code: '3MS', msg: '延迟够低，说明你还在场。' },
-    { chan: 'RAD', code: '7G', msg: '扇区扫完。留白处往往最诚实。' },
-    { chan: 'TCP', code: 'ACK', msg: 'ACK 收到。下一步：动手验证。' },
-    { chan: 'IP', code: 'TTL', msg: 'TTL 还够跳几跳。别在每一跳都停下来内耗。' },
-    { chan: 'TLS', code: '443', msg: '443 在听。明文情绪请线下消化。' },
-    { chan: 'RNG', code: 'HIGH', msg: '熵够高才好玩；写文也是。' },
-    { chan: 'IO', code: 'EOF', msg: '文件还没结束，你的故事同理。' },
-    { chan: 'AUD', code: 'TRUST', msg: 'Trust but verify — 对链接、对结论、对自己。' },
-    { chan: 'LOG', code: 'NOTE', msg: '没有后门，只有复盘与勘误表。' },
-  ];
-
-  function shuffleArray(arr) {
-    for (var i = arr.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-    }
-    return arr;
+  var themeBtn = document.getElementById('theme-toggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      applyTheme(isDark ? 'light' : 'dark');
+      refreshLetterGlitchColors();
+    });
   }
 
-  /** 从池里无放回取前 n 条（用于两侧 6 个槽位互不重复） */
-  function sampleUniqueEggs(n) {
-    if (n <= 0) return [];
-    var copy = EGG_POOL.slice();
-    shuffleArray(copy);
-    return copy.slice(0, Math.min(n, copy.length));
-  }
-
-  /** 单次随机一条（点击播报用，可与槽位展示不同） */
-  function pickRandomEgg() {
-    if (!EGG_POOL.length) return { chan: 'SIG', code: '\u2014', msg: '' };
-    return EGG_POOL[Math.floor(Math.random() * EGG_POOL.length)];
-  }
-
-  function buildEggButton(el, entry) {
-    while (el.firstChild) el.removeChild(el.firstChild);
-    var inner = document.createElement('span');
-    inner.className = 'side-egg__inner';
-    var led = document.createElement('span');
-    led.className = 'side-egg__led';
-    led.setAttribute('aria-hidden', 'true');
-    var codeEl = document.createElement('span');
-    codeEl.className = 'side-egg__code';
-    codeEl.textContent = entry.code;
-    inner.appendChild(led);
-    inner.appendChild(codeEl);
-    el.appendChild(inner);
-    el.setAttribute('title', entry.msg);
-    el.setAttribute('data-egg-msg', entry.msg);
-    el.setAttribute('aria-label', '播报信号 ' + entry.chan + '/' + entry.code + '：' + entry.msg);
-  }
-
-  function initSideEggs() {
-    var root = document.querySelector('.side-eggs');
-    if (!root || root.getAttribute('data-egg-ready') === '1') return;
-    var eggs = root.querySelectorAll('.side-egg');
-    if (!eggs.length) return;
-    root.setAttribute('data-egg-ready', '1');
-    var picked = sampleUniqueEggs(eggs.length);
-    eggs.forEach(function (el, i) {
-      var entry = picked[i] || pickRandomEgg();
-      buildEggButton(el, entry);
-      el.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        showHudToast(pickRandomEgg());
+  // --- Mobile nav toggle ---
+  var navToggle = document.getElementById('nav-toggle');
+  var siteNav = document.querySelector('.site-nav');
+  if (navToggle && siteNav) {
+    navToggle.addEventListener('click', function () {
+      var open = siteNav.classList.toggle('is-open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    siteNav.querySelectorAll('.nav-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        siteNav.classList.remove('is-open');
+        navToggle.setAttribute('aria-expanded', 'false');
       });
     });
   }
 
-  function showHudToast(entry) {
-    var toast = document.getElementById('hud-toast');
-    if (!toast) return;
-    var meta = toast.querySelector('.hud-toast__meta');
-    var body = toast.querySelector('.hud-toast__body');
-    var line = '[' + (entry.chan || 'SIG') + '] \u00b7 ' + (entry.code || '\u2014') + ' \u00b7 BROADCAST';
-    if (meta && body) {
-      meta.textContent = line;
-      body.textContent = entry.msg || '';
-    } else {
-      toast.textContent = '\u25b6 ' + line + ' \u2014 ' + (entry.msg || '');
+  // --- Letter glitch hero background (ported from FEEI.CN) ---
+  var glitchCanvas = document.getElementById('letter-glitch-canvas');
+  var glitchHost = document.getElementById('letter-glitch-host');
+  var glitchAnim = 0;
+  var glitchLetters = [];
+  var glitchGrid = { columns: 0, rows: 0 };
+  var glitchCtx = null;
+  var glitchLast = Date.now();
+  var GLITCH_FONT = 16;
+  var GLITCH_CHAR_W = 10;
+  var GLITCH_CHAR_H = 20;
+  var GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>.,0123456789';
+
+  function glitchPalette() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return dark
+      ? ['#1a0800', '#ff5b1f', '#7a2e0a']
+      : ['#2b4539', '#61dca3', '#61b3dc'];
+  }
+
+  function refreshLetterGlitchColors() {
+    if (!glitchLetters.length) return;
+    var colors = glitchPalette();
+    glitchLetters.forEach(function (letter) {
+      letter.color = colors[Math.floor(Math.random() * colors.length)];
+      letter.targetColor = colors[Math.floor(Math.random() * colors.length)];
+      letter.colorProgress = 1;
+    });
+    drawGlitchLetters();
+  }
+
+  function glitchRandomChar() {
+    return GLITCH_CHARS.charAt(Math.floor(Math.random() * GLITCH_CHARS.length));
+  }
+
+  function glitchRandomColor(colors) {
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  function glitchHexToRgb(hex) {
+    var shorthand = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthand, function (_, r, g, b) { return r + r + g + g + b + b; });
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) }
+      : null;
+  }
+
+  function glitchLerpColor(start, end, factor) {
+    return 'rgb(' +
+      Math.round(start.r + (end.r - start.r) * factor) + ',' +
+      Math.round(start.g + (end.g - start.g) * factor) + ',' +
+      Math.round(start.b + (end.b - start.b) * factor) + ')';
+  }
+
+  function initGlitchLetters(columns, rows) {
+    var colors = glitchPalette();
+    glitchGrid = { columns: columns, rows: rows };
+    glitchLetters = [];
+    for (var i = 0; i < columns * rows; i++) {
+      glitchLetters.push({
+        char: glitchRandomChar(),
+        color: glitchRandomColor(colors),
+        targetColor: glitchRandomColor(colors),
+        colorProgress: 1
+      });
     }
-    toast.classList.add('visible');
-    if (toast._timer) clearTimeout(toast._timer);
-    toast._timer = setTimeout(function () {
-      toast.classList.remove('visible');
-    }, 4200);
   }
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key !== 'Escape') return;
-    var toast = document.getElementById('hud-toast');
-    if (!toast || !toast.classList.contains('visible')) return;
-    toast.classList.remove('visible');
-    if (toast._timer) clearTimeout(toast._timer);
-  });
-
-  function runInitSideEggs() {
-    initSideEggs();
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', runInitSideEggs);
-  } else {
-    runInitSideEggs();
-  }
-  window.addEventListener('load', runInitSideEggs);
-
-  // --- Glitch effect on site title hover ---
-  var titleEl = document.querySelector('.title-main');
-  if (titleEl && !reduceMotion) {
-    var glitchTimer = null;
-    titleEl.addEventListener('mouseenter', function () {
-      titleEl.classList.add('glitch-active');
-      clearTimeout(glitchTimer);
-      glitchTimer = setTimeout(function () {
-        titleEl.classList.remove('glitch-active');
-      }, 600);
+  function drawGlitchLetters() {
+    if (!glitchCtx || !glitchCanvas || !glitchLetters.length) return;
+    var rect = glitchCanvas.getBoundingClientRect();
+    glitchCtx.clearRect(0, 0, rect.width, rect.height);
+    glitchCtx.font = GLITCH_FONT + 'px monospace';
+    glitchCtx.textBaseline = 'top';
+    glitchLetters.forEach(function (letter, index) {
+      var x = (index % glitchGrid.columns) * GLITCH_CHAR_W;
+      var y = Math.floor(index / glitchGrid.columns) * GLITCH_CHAR_H;
+      glitchCtx.fillStyle = letter.color;
+      glitchCtx.fillText(letter.char, x, y);
     });
   }
 
-  // --- Typewriter on terminal prompt ---
-  var promptEl = document.querySelector('.terminal-prompt');
-  if (promptEl && !reduceMotion) {
-    var fullText = promptEl.textContent;
-    promptEl.textContent = '';
-    var idx = 0;
-    var tw = setInterval(function () {
-      promptEl.textContent += fullText[idx];
-      idx++;
-      if (idx >= fullText.length) clearInterval(tw);
-    }, 60);
+  function updateGlitchLetters() {
+    if (!glitchLetters.length) return;
+    var colors = glitchPalette();
+    var count = Math.max(1, Math.floor(glitchLetters.length * 0.05));
+    for (var i = 0; i < count; i++) {
+      var index = Math.floor(Math.random() * glitchLetters.length);
+      var letter = glitchLetters[index];
+      if (!letter) continue;
+      letter.char = glitchRandomChar();
+      letter.targetColor = glitchRandomColor(colors);
+      letter.colorProgress = 0;
+    }
+  }
+
+  function smoothGlitchTransitions() {
+    var needsRedraw = false;
+    glitchLetters.forEach(function (letter) {
+      if (letter.colorProgress < 1) {
+        letter.colorProgress += 0.05;
+        if (letter.colorProgress > 1) letter.colorProgress = 1;
+        var startRgb = glitchHexToRgb(letter.color);
+        var endRgb = glitchHexToRgb(letter.targetColor);
+        if (startRgb && endRgb) {
+          letter.color = glitchLerpColor(startRgb, endRgb, letter.colorProgress);
+          needsRedraw = true;
+        }
+      }
+    });
+    if (needsRedraw) drawGlitchLetters();
+  }
+
+  function resizeGlitchCanvas() {
+    if (!glitchCanvas || !glitchHost) return;
+    var dpr = window.devicePixelRatio || 1;
+    var rect = glitchHost.getBoundingClientRect();
+    glitchCanvas.width = rect.width * dpr;
+    glitchCanvas.height = rect.height * dpr;
+    glitchCanvas.style.width = rect.width + 'px';
+    glitchCanvas.style.height = rect.height + 'px';
+    if (glitchCtx) glitchCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var columns = Math.ceil(rect.width / GLITCH_CHAR_W);
+    var rows = Math.ceil(rect.height / GLITCH_CHAR_H);
+    initGlitchLetters(columns, rows);
+    drawGlitchLetters();
+  }
+
+  function runGlitchLoop() {
+    var now = Date.now();
+    if (now - glitchLast >= 50) {
+      updateGlitchLetters();
+      drawGlitchLetters();
+      glitchLast = now;
+    }
+    smoothGlitchTransitions();
+    glitchAnim = requestAnimationFrame(runGlitchLoop);
+  }
+
+  if (glitchCanvas && glitchHost && !reduceMotion) {
+    glitchCtx = glitchCanvas.getContext('2d');
+    resizeGlitchCanvas();
+    runGlitchLoop();
+    var glitchResizeTimer = 0;
+    window.addEventListener('resize', function () {
+      clearTimeout(glitchResizeTimer);
+      glitchResizeTimer = setTimeout(function () {
+        cancelAnimationFrame(glitchAnim);
+        resizeGlitchCanvas();
+        runGlitchLoop();
+      }, 100);
+    });
+  }
+
+  // --- Hero typewriter (feei.cn TextType, vanilla) ---
+  function initHeroTypewriter() {
+    var el = document.getElementById('hero-typewriter');
+    if (!el || reduceMotion) return;
+    var raw = el.getAttribute('data-typewriter');
+    var texts = [];
+    try {
+      texts = JSON.parse(raw || '[]');
+    } catch (eParse) {
+      texts = [el.textContent || ''];
+    }
+    if (!texts.length) return;
+    var textIndex = 0;
+    var charIndex = 0;
+    var deleting = false;
+    var cursor = document.createElement('span');
+    cursor.className = 'type-cursor';
+    cursor.textContent = '_';
+    el.textContent = '';
+
+    function tick() {
+      var current = texts[textIndex] || '';
+      if (!deleting) {
+        el.textContent = current.slice(0, charIndex + 1);
+        charIndex++;
+        if (charIndex >= current.length) {
+          deleting = true;
+          setTimeout(tick, 1500);
+          return;
+        }
+        setTimeout(tick, 75);
+      } else {
+        el.textContent = current.slice(0, charIndex - 1);
+        charIndex--;
+        if (charIndex <= 0) {
+          deleting = false;
+          textIndex = (textIndex + 1) % texts.length;
+          setTimeout(tick, 400);
+          return;
+        }
+        setTimeout(tick, 50);
+      }
+      el.appendChild(cursor);
+    }
+
+    tick();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHeroTypewriter);
+  } else {
+    initHeroTypewriter();
   }
 
   // --- Nav link active state ---
@@ -587,81 +644,6 @@
       }
     } catch (err) { /* ignore */ }
   });
-
-  // --- 文章页：鼠标所在「视觉行」高亮（按 line-height 分行，非首页） ---
-  function getLineHeightPx(el) {
-    var cs = getComputedStyle(el);
-    var lh = cs.lineHeight;
-    if (lh === 'normal') {
-      var fs = parseFloat(cs.fontSize);
-      if (isNaN(fs)) fs = 16;
-      return fs * 1.55;
-    }
-    var n = parseFloat(lh);
-    return isNaN(n) ? parseFloat(cs.fontSize) * 1.55 : n;
-  }
-
-  function skipArticleLineHover(el) {
-    if (!el || !el.closest) return true;
-    if (el.closest('pre, table, .view-stats')) return true;
-    return false;
-  }
-
-  function paintLineHover(el, e) {
-    var lh = getLineHeightPx(el);
-    var rect = el.getBoundingClientRect();
-    var padTop = parseFloat(getComputedStyle(el).paddingTop) || 0;
-    var y = e.clientY - rect.top - padTop;
-    if (y < 0) y = 0;
-    var idx = Math.floor(y / lh);
-    el.style.setProperty('--article-lh', lh + 'px');
-    el.style.setProperty('--hover-line', String(idx));
-    el.style.setProperty('--line-active', '1');
-    el.classList.add('article-line-hover--active');
-  }
-
-  function initArticleLineHover() {
-    if (typeof document.body.classList !== 'undefined' && document.body.classList.contains('page-front')) return;
-    /* 许多触控笔记本会报 (hover: none)，但仍可用鼠标；仅在「主要输入为粗指针」时跳过 */
-    if (typeof window.matchMedia === 'function') {
-      var mqNoHover = window.matchMedia('(hover: none)');
-      var mqCoarse = window.matchMedia('(pointer: coarse)');
-      if (mqNoHover.matches && mqCoarse.matches) return;
-    }
-    var root = document.querySelector('.terminal-body');
-    if (!root) return;
-
-    var sel = 'p, li, h1, h2, h3, h4, h5, h6';
-    root.querySelectorAll(sel).forEach(function (el) {
-      if (skipArticleLineHover(el)) return;
-      el.classList.add('article-line-hover-target');
-      var raf = 0;
-      var pendingEv = null;
-      function flushLineHover() {
-        raf = 0;
-        var ev = pendingEv;
-        pendingEv = null;
-        if (ev) paintLineHover(el, ev);
-      }
-      el.addEventListener('mousemove', function (e) {
-        pendingEv = e;
-        if (!raf) raf = requestAnimationFrame(flushLineHover);
-      });
-      el.addEventListener('mouseleave', function () {
-        pendingEv = null;
-        if (raf) cancelAnimationFrame(raf);
-        raf = 0;
-        el.style.setProperty('--line-active', '0');
-        el.classList.remove('article-line-hover--active');
-      });
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initArticleLineHover);
-  } else {
-    initArticleLineHover();
-  }
 
   // --- Reading progress bar ---
   var progressBar = document.getElementById('read-progress');
@@ -750,23 +732,23 @@
         if (doc.documentElement && doc.documentElement.classList) {
           doc.documentElement.classList.add('sumsec-scroll-root');
           doc.documentElement.style.scrollbarWidth = 'thin';
-          doc.documentElement.style.scrollbarColor = 'rgba(92, 219, 207, 0.25) #05060c';
+          doc.documentElement.style.scrollbarColor = 'rgba(46, 133, 85, 0.35) #fafafa';
         }
         if (doc.body) {
           if (doc.body.classList) doc.body.classList.add('sumsec-scroll-root');
           doc.body.style.scrollbarWidth = 'thin';
-          doc.body.style.scrollbarColor = 'rgba(92, 219, 207, 0.25) #05060c';
+          doc.body.style.scrollbarColor = 'rgba(46, 133, 85, 0.35) #fafafa';
         }
 
         style.textContent =
           '.sumsec-scroll-root, html, body {' +
           'scrollbar-width: thin;' +
-          'scrollbar-color: rgba(92, 219, 207, 0.25) #05060c;' +
+          'scrollbar-color: rgba(46, 133, 85, 0.35) #fafafa;' +
           '}' +
           '.sumsec-scroll-root::-webkit-scrollbar, html::-webkit-scrollbar, body::-webkit-scrollbar { width: 8px; height: 8px; }' +
-          '.sumsec-scroll-root::-webkit-scrollbar-track, html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { background: #05060c; }' +
-          '.sumsec-scroll-root::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background: rgba(92, 219, 207, 0.25); border-radius: 4px; }' +
-          '.sumsec-scroll-root::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { background: rgba(92, 219, 207, 0.45); }';
+          '.sumsec-scroll-root::-webkit-scrollbar-track, html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { background: #fafafa; }' +
+          '.sumsec-scroll-root::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb { background: rgba(46, 133, 85, 0.35); border-radius: 4px; }' +
+          '.sumsec-scroll-root::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover { background: rgba(46, 133, 85, 0.55); }';
       } catch (eSkin) {
         /* ignore same-origin iframe styling failures */
       }
@@ -1014,7 +996,7 @@
     }
   }
 
-  var bodyTables = document.querySelectorAll('.terminal-body table');
+  var bodyTables = document.querySelectorAll('.page-body table');
   bodyTables.forEach(function (table) {
     var rows = table.querySelectorAll('tbody tr');
     if (!rows.length) {

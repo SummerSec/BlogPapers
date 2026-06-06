@@ -22,7 +22,7 @@
 {% elsif page.url == _root_path %}
   {% assign page_is_home = true %}
 {% endif %}
-{% comment %} ---------- Article + PPT：布局元数据（仅 Liquid；无配套 PPT 不输出阅读模式壳层） ---------- {% endcomment %}
+{% comment %} ---------- Article + PPT ---------- {% endcomment %}
 {% assign ppt_explicit_raw = '' %}
 {% assign ppt_candidate_rel = '' %}
 {% assign ppt_resolved_rel = '' %}
@@ -91,8 +91,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{{ page.description | default: site.description | default: 'SummerSec · 安全研究' }}">
-  <meta name="theme-color" content="#05060c">
-  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#fafafa">
+  <meta name="color-scheme" content="light dark">
   <meta name="stats-namespace" content="sumsecme">
   {% assign _stats_ep = site.stats_endpoint | default: "" | strip %}
   {% if _stats_ep != "" %}
@@ -103,220 +103,175 @@
   <link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml" sizes="any">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ asset_rev }}">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('sumsec-theme');
+        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1b1b1d');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 {% assign _stats_ep_body = site.stats_endpoint | default: "" | strip %}
-<body class="theme-hud{% if page_is_home %} page-front{% endif %}"{% if _stats_ep_body != "" %} data-stats-endpoint="{{ _stats_ep_body | xml_escape }}"{% endif %}>
-  <div id="read-progress"></div>
-  <div class="vignette" aria-hidden="true"></div>
-  <div class="side-eggs" role="region" aria-label="侧栏趣味信号（可点击播报）">
-    <div class="side-egg-rail side-egg-rail--left">
-      <button type="button" class="side-egg"></button>
-      <button type="button" class="side-egg"></button>
-      <button type="button" class="side-egg"></button>
-    </div>
-    <div class="side-egg-rail side-egg-rail--right">
-      <button type="button" class="side-egg"></button>
-      <button type="button" class="side-egg"></button>
-      <button type="button" class="side-egg"></button>
-    </div>
-  </div>
-  <div class="hud-toast" id="hud-toast" role="status" aria-live="polite" aria-atomic="true">
-    <span class="hud-toast__rail" aria-hidden="true"></span>
-    <div class="hud-toast__content">
-      <div class="hud-toast__meta"></div>
-      <div class="hud-toast__body"></div>
-    </div>
-  </div>
-  <div class="ambient-glow" aria-hidden="true"></div>
-  <div class="scanlines" aria-hidden="true"></div>
-  <div class="grid-bg" aria-hidden="true"></div>
-  <div class="hex-mesh" aria-hidden="true"></div>
+<body class="wiki-theme{% if page_is_home %} page-front{% endif %}{% if page_is_markdown_article and page_has_ppt %} page-with-ppt{% endif %}"{% if _stats_ep_body != "" %} data-stats-endpoint="{{ _stats_ep_body | xml_escape }}"{% endif %}>
+  <div id="read-progress" aria-hidden="true"></div>
 
   <header class="site-header">
-    <div class="header-inner">
-      <div class="header-brand-lock" aria-hidden="true" title="SEC">
-        <svg class="icon-shield" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
-          <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-          <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="terminal-prompt">root@sumsec:~$</div>
-      <a href="{{ '/' | relative_url }}" class="site-title">
-        <span class="title-main">SUMSEC.ME</span><span class="title-sep">&nbsp;//&nbsp;</span><span class="title-sub">SEC_RESEARCH_TERMINAL</span>
+    <div class="navbar">
+      <a href="{{ '/' | relative_url }}" class="navbar-brand">
+        <img src="{{ '/assets/favicon.svg' | relative_url }}" alt="" class="navbar-logo" width="28" height="28">
+        <span class="navbar-title">{{ brand }}</span>
       </a>
-      <div class="header-meta">
-        <span class="threat-strip" aria-hidden="true"><span class="threat-label">THREAT</span><span class="threat-level">L2</span></span>
-        <span class="blink-cursor">&#x25AE;</span>
-        <span class="sys-status">SYS:ONLINE</span>
+      <nav class="site-nav" aria-label="主导航">
+        <a href="{{ '/' | relative_url }}" class="nav-link nav-link--home">首页</a>
+        <a href="{{ '/resources/Archives.html' | relative_url }}" class="nav-link nav-link--archives">归档</a>
+        <a href="{{ '/resources/AboutMe.html' | relative_url }}" class="nav-link nav-link--about">关于</a>
+        <a href="{{ '/resources/README.html' | relative_url }}" class="nav-link nav-link--resources">资源</a>
+        <a href="https://github.com/{{ site.repository }}" class="nav-link nav-link--github" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://old.sumsec.me" class="nav-link nav-link--legacy" target="_blank" rel="noopener">旧站</a>
+        <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link nav-link--rss">RSS</a>
+      </nav>
+      <div class="navbar-actions">
+        <button type="button" id="theme-toggle" class="theme-toggle" aria-label="切换深浅色模式">
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button type="button" class="nav-toggle" id="nav-toggle" aria-label="打开导航" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
       </div>
     </div>
-    <nav class="site-nav" aria-label="主导航">
-      <a href="{{ '/' | relative_url }}" class="nav-link nav-link--home" aria-label="首页">
-        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-        <span>HOME</span>
-      </a>
-      <a href="{{ '/resources/Archives.html' | relative_url }}" class="nav-link nav-link--archives" aria-label="归档">
-        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span>
-        <span>ARCHIVES</span>
-      </a>
-      <a href="{{ '/resources/AboutMe.html' | relative_url }}" class="nav-link nav-link--about" aria-label="关于">
-        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-        <span>ABOUT</span>
-      </a>
-      <a href="{{ '/resources/README.html' | relative_url }}" class="nav-link nav-link--resources" aria-label="资源文件目录">
-        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
-        <span>RESOURCES</span>
-      </a>
-      <a href="https://github.com/{{ site.repository }}" class="nav-link nav-link--github" target="_blank" rel="noopener noreferrer" aria-label="本博客 GitHub 源码仓库（新标签页）">
-        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg></span>
-        <span>GITHUB</span>
-      </a>
-      <a href="https://old.sumsec.me" class="nav-link nav-link--legacy" target="_blank" rel="noopener" aria-label="另一站点（新标签页）">
-        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
-        <span>NOTEBOOK</span>
-      </a>
-      <a href="{{ '/resources/sitemap.xml' | relative_url }}" class="nav-link nav-link--sitemap" aria-label="站点地图">
-        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
-        <span>SITEMAP</span>
-      </a>
-      <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link nav-link--rss" aria-label="RSS">
-        <span class="nav-icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></span>
-        <span>RSS</span>
-      </a>
-    </nav>
   </header>
 
+  {% if page_is_home %}
+  <section class="home-hero" id="home-hero" aria-label="站点介绍">
+    <div class="home-hero__bg" id="letter-glitch-host" aria-hidden="true">
+      <canvas id="letter-glitch-canvas"></canvas>
+      <div class="home-hero__vignette home-hero__vignette--outer"></div>
+      <div class="home-hero__vignette home-hero__vignette--center"></div>
+      <div class="home-hero__rays" aria-hidden="true"></div>
+    </div>
+    <div class="home-hero__content">
+      <p class="home-hero__label">{{ brand }} · 安全研究</p>
+      <h1 class="home-hero__title" id="hero-typewriter" data-typewriter='["安全研究","像清水一般清澈透明","漏洞分析与工程实践","CodeQL 与攻防探索"]'></h1>
+      <p class="home-hero__tagline">{{ motto }}</p>
+      <a href="#main-content" class="home-hero__cta">
+        <span>浏览文章</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+      </a>
+    </div>
+  </section>
+  {% endif %}
+
   <main class="main-content{% if page_is_markdown_article and page_has_ppt %} main-content--with-ppt{% endif %}" id="main-content">
-    <div class="terminal-window-wrap{% if page_is_markdown_article and page_has_ppt %} terminal-window-wrap--with-ppt{% endif %}">
-      <div class="terminal-window{% if page_is_markdown_article and page_has_ppt %} terminal-window--with-ppt{% endif %}">
-        <div class="terminal-titlebar">
-          <span class="tb-dot tb-red"></span>
-          <span class="tb-dot tb-yellow"></span>
-          <span class="tb-dot tb-green"></span>
-          <span class="tb-title">session.log · public</span>
-        </div>
-        <div class="terminal-body{% if page_is_markdown_article and page_has_ppt %} terminal-body--with-ppt{% endif %}">
-          {% assign _stats_banner_title = "使用 CountAPI；若长期为 — 可能是网络或广告拦截" %}
-          {% assign _stats_tip_ep = site.stats_endpoint | default: "" | strip %}
-          {% if _stats_tip_ep != "" %}
-            {% assign _stats_banner_title = "优先 Cloudflare Worker，失败回退 CountAPI；若长期为 — 检查 Worker、ALLOW_ORIGINS 与网络" %}
-          {% endif %}
-          {% if page_is_home %}
-          <div class="view-stats view-stats--site" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
-            <span class="view-stats__icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-7"/></svg>
-            </span>
-            <span class="view-stats__label">全站访问</span>
-            <span class="view-stats__value view-stats__value--loading" id="stat-site-total">…</span>
-            <span class="view-stats__sparkline" id="stat-sparkline" aria-hidden="true"></span>
+    <div class="page-wrap{% if page_is_markdown_article and page_has_ppt %} page-wrap--with-ppt{% endif %}">
+      {% assign _stats_banner_title = "使用 CountAPI；若长期为 — 可能是网络或广告拦截" %}
+      {% assign _stats_tip_ep = site.stats_endpoint | default: "" | strip %}
+      {% if _stats_tip_ep != "" %}
+        {% assign _stats_banner_title = "优先 Cloudflare Worker，失败回退 CountAPI；若长期为 — 检查 Worker、ALLOW_ORIGINS 与网络" %}
+      {% endif %}
+      {% if page_is_home %}
+      <div class="view-stats view-stats--site" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
+        <span class="view-stats__label">全站访问</span>
+        <span class="view-stats__value view-stats__value--loading" id="stat-site-total">…</span>
+      </div>
+      {% else %}
+      <div class="view-stats view-stats--page" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
+        <span class="view-stats__label">本文浏览</span>
+        <span class="view-stats__value view-stats__value--loading" id="stat-page-views">…</span>
+      </div>
+      {% endif %}
+
+      <div class="page-body{% if page_is_markdown_article and page_has_ppt %} page-body--with-ppt{% endif %}">
+        {% assign ut = site.utterances %}
+        {% if page_is_markdown_article and page_has_ppt %}
+        {% capture _ppt_href_buf %}{% if ppt_resolved_rel contains '://' %}{{ ppt_resolved_rel }}{% else %}{{ ppt_resolved_rel | relative_url }}{% endif %}{% endcapture %}
+        {% assign ppt_href = _ppt_href_buf | strip %}
+        <div
+          id="article-reading-mode"
+          class="article-reading-mode"
+          data-ppt-explicit="{{ ppt_explicit_raw | xml_escape }}"
+          data-ppt-candidate="{{ ppt_candidate_rel | xml_escape }}"
+          data-ppt-url="{{ ppt_href | xml_escape }}"
+          data-reading-default-desktop="split"
+          data-reading-default-mobile="article">
+          <div id="reading-mode-switcher" class="reading-mode-switcher" role="toolbar" aria-label="阅读模式切换">
+            <button type="button" class="reading-mode-switcher__btn" data-reading-mode="split">开启 PPT 框</button>
+            <button type="button" class="reading-mode-switcher__btn" data-reading-mode="article">关闭 PPT 框</button>
+            <button type="button" class="reading-mode-switcher__btn" data-reading-mode="ppt">仅看 PPT</button>
+            <a id="ppt-standalone-link" class="reading-mode-switcher__btn reading-mode-switcher__link" href="{{ ppt_href }}" target="_blank" rel="noopener noreferrer">独立打开</a>
           </div>
-          {% else %}
-          <div class="view-stats view-stats--page" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
-            <span class="view-stats__icon" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </span>
-            <span class="view-stats__label">本文浏览</span>
-            <span class="view-stats__value view-stats__value--loading" id="stat-page-views">…</span>
-            <span class="view-stats__sparkline" id="stat-sparkline" aria-hidden="true"></span>
-          </div>
-          {% endif %}
-          {% assign ut = site.utterances %}
-          {% if page_is_markdown_article and page_has_ppt %}
-          {% capture _ppt_href_buf %}{% if ppt_resolved_rel contains '://' %}{{ ppt_resolved_rel }}{% else %}{{ ppt_resolved_rel | relative_url }}{% endif %}{% endcapture %}
-          {% assign ppt_href = _ppt_href_buf | strip %}
-          <div
-            id="article-reading-mode"
-            class="article-reading-mode"
-            data-ppt-explicit="{{ ppt_explicit_raw | xml_escape }}"
-            data-ppt-candidate="{{ ppt_candidate_rel | xml_escape }}"
-            data-ppt-url="{{ ppt_href | xml_escape }}"
-            data-reading-default-desktop="split"
-            data-reading-default-mobile="article">
-            <div id="reading-mode-switcher" class="reading-mode-switcher" role="toolbar" aria-label="阅读模式切换">
-              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="split">开启 PPT 框</button>
-              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="article">关闭 PPT 框</button>
-              <button type="button" class="reading-mode-switcher__btn" data-reading-mode="ppt">仅看 PPT</button>
-              <a id="ppt-standalone-link" class="reading-mode-switcher__btn reading-mode-switcher__link" href="{{ ppt_href }}" target="_blank" rel="noopener noreferrer">独立打开</a>
-            </div>
-            <div id="article-ppt-shell" class="article-ppt-shell">
-              <div class="article-column">
-                <div id="article-pane" class="article-pane">
-                  <div class="article-pane__inner">
-                    {{ content }}
-                    {% unless page_is_home %}
-                    {% if ut.repo and page.comments != false %}
-                    <section class="comments-section" id="comments" aria-labelledby="comments-heading">
-                      <h2 class="comments-section__title" id="comments-heading">评论</h2>
-                      <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
-                      <script src="https://utteranc.es/client.js"
-                        repo="{{ ut.repo }}"
-                        issue-term="{{ ut.issue_term | default: 'pathname' }}"
-                        theme="{{ ut.theme | default: 'github-dark' }}"
-                        {% if ut.label %}label="{{ ut.label }}"{% endif %}
-                        crossorigin="anonymous"
-                        async></script>
-                    </section>
-                    {% endif %}
-                    {% endunless %}
-                  </div>
-                </div>
-              </div>
-              <div id="ppt-pane" class="ppt-pane">
-                <div class="ppt-pane__stage">
-                  <iframe id="article-ppt-frame" class="article-ppt-frame" src="{{ ppt_href }}" title="本文配套 PPT"></iframe>
+          <div id="article-ppt-shell" class="article-ppt-shell">
+            <div class="article-column">
+              <div id="article-pane" class="article-pane">
+                <div class="article-pane__inner">
+                  {{ content }}
+                  {% unless page_is_home %}
+                  {% if ut.repo and page.comments != false %}
+                  <section class="comments-section" id="comments" aria-labelledby="comments-heading">
+                    <h2 class="comments-section__title" id="comments-heading">评论</h2>
+                    <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
+                    <script src="https://utteranc.es/client.js"
+                      repo="{{ ut.repo }}"
+                      issue-term="{{ ut.issue_term | default: 'pathname' }}"
+                      theme="{{ ut.theme | default: 'github-dark' }}"
+                      {% if ut.label %}label="{{ ut.label }}"{% endif %}
+                      crossorigin="anonymous"
+                      async></script>
+                  </section>
+                  {% endif %}
+                  {% endunless %}
                 </div>
               </div>
             </div>
+            <div id="ppt-pane" class="ppt-pane">
+              <div class="ppt-pane__stage">
+                <iframe id="article-ppt-frame" class="article-ppt-frame" src="{{ ppt_href }}" title="本文配套 PPT"></iframe>
+              </div>
+            </div>
           </div>
-          {% else %}
-          {{ content }}
-          {% unless page_is_home %}
-          {% if ut.repo and page.comments != false %}
-          <section class="comments-section" id="comments" aria-labelledby="comments-heading">
-            <h2 class="comments-section__title" id="comments-heading">评论</h2>
-            <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
-            <script src="https://utteranc.es/client.js"
-              repo="{{ ut.repo }}"
-              issue-term="{{ ut.issue_term | default: 'pathname' }}"
-              theme="{{ ut.theme | default: 'github-dark' }}"
-              {% if ut.label %}label="{{ ut.label }}"{% endif %}
-              crossorigin="anonymous"
-              async></script>
-          </section>
-          {% endif %}
-          {% endunless %}
-          {% endif %}
         </div>
+        {% else %}
+        {{ content }}
+        {% unless page_is_home %}
+        {% if ut.repo and page.comments != false %}
+        <section class="comments-section" id="comments" aria-labelledby="comments-heading">
+          <h2 class="comments-section__title" id="comments-heading">评论</h2>
+          <p class="comments-section__hint">使用 GitHub 账号留言，讨论将同步为仓库 <a href="https://github.com/{{ ut.repo }}/issues" target="_blank" rel="noopener">Issues</a>。</p>
+          <script src="https://utteranc.es/client.js"
+            repo="{{ ut.repo }}"
+            issue-term="{{ ut.issue_term | default: 'pathname' }}"
+            theme="{{ ut.theme | default: 'github-dark' }}"
+            {% if ut.label %}label="{{ ut.label }}"{% endif %}
+            crossorigin="anonymous"
+            async></script>
+        </section>
+        {% endif %}
+        {% endunless %}
+        {% endif %}
       </div>
     </div>
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span class="footer-item">&#x25B6;&nbsp;SUMSEC.ME&nbsp;&#x25C0;</span>
-      <span class="footer-sep">&nbsp;|&nbsp;</span>
-      <span class="footer-item">SECURITY_RESEARCH</span>
-      <span class="footer-sep">&nbsp;|&nbsp;</span>
-      <a href="https://github.com/SummerSec" class="footer-link" target="_blank" rel="noopener">GITHUB</a>
-      <span class="footer-sep">&nbsp;|&nbsp;</span>
-      <span class="footer-item" id="footer-year">CYCLE_{{ site.time | date: "%Y" }}</span>
+      <span class="footer-copyright">© {{ site.time | date: "%Y" }} {{ brand }}</span>
+      <span class="footer-divider" aria-hidden="true"></span>
+      <span class="footer-meta">安全研究与笔记</span>
+      <span class="footer-divider" aria-hidden="true"></span>
+      <a href="https://github.com/SummerSec" class="footer-link" target="_blank" rel="noopener">GitHub</a>
     </div>
-    <div class="footer-coords">LAT:30.0°N // LON:120.0°E // TZ:CST+8</div>
   </footer>
 
-  <div class="cyber-sheen" aria-hidden="true"></div>
-  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
   <button type="button" id="back-to-top" class="back-to-top" aria-label="返回顶部">
-    <span class="back-to-top__ring" aria-hidden="true"></span>
-    <span class="back-to-top__inner">
-      <svg class="back-to-top__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-        <path d="M12 19V5M5 12l7-7 7 7"/>
-      </svg>
-      <span class="back-to-top__label">TOP</span>
-    </span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
   </button>
+
   {% if _stats_ep_body != "" %}
   <script>window.__BLOG_STATS_EP={{ _stats_ep_body | jsonify }};</script>
   {% endif %}
