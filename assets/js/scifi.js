@@ -434,8 +434,8 @@
   function signalPalette() {
     var dark = document.documentElement.getAttribute('data-theme') === 'dark';
     return dark
-      ? { line: 'rgba(255, 121, 72, 0.22)', dot: 'rgba(255, 174, 124, 0.72)', wave: 'rgba(255, 121, 72, 0.3)' }
-      : { line: 'rgba(64, 224, 202, 0.22)', dot: 'rgba(144, 255, 232, 0.76)', wave: 'rgba(96, 165, 250, 0.28)' };
+      ? { line: 'rgba(255, 121, 72, 0.18)', dot: 'rgba(255, 174, 124, 0.68)' }
+      : { line: 'rgba(64, 224, 202, 0.18)', dot: 'rgba(144, 255, 232, 0.72)' };
   }
 
   function refreshSignalFieldColors() {
@@ -489,36 +489,12 @@
     return rgba.replace(/rgba\(([^,]+),([^,]+),([^,]+),[^)]+\)/, 'rgba($1,$2,$3,' + alpha + ')');
   }
 
-  function drawSignalWave(t, palette) {
-    var w = signalSize.width;
-    var h = signalSize.height;
-    var base = h * 0.68;
-    signalCtx.save();
-    signalCtx.lineWidth = 1.4;
-    signalCtx.strokeStyle = palette.wave;
-    signalCtx.shadowColor = palette.wave;
-    signalCtx.shadowBlur = 14;
-    for (var band = 0; band < 3; band++) {
-      signalCtx.beginPath();
-      for (var x = 0; x <= w; x += 12) {
-        var y = base + band * 22 +
-          Math.sin((x * 0.012) + t * (0.8 + band * 0.18)) * (18 - band * 3) +
-          Math.cos((x * 0.021) - t * 0.55) * 7;
-        if (x === 0) signalCtx.moveTo(x, y);
-        else signalCtx.lineTo(x, y);
-      }
-      signalCtx.stroke();
-    }
-    signalCtx.restore();
-  }
-
   function drawSignalField(t) {
     if (!signalCtx || !signalCanvas) return;
     var w = signalSize.width;
     var h = signalSize.height;
     var palette = signalPalette();
     signalCtx.clearRect(0, 0, w, h);
-    drawSignalWave(t, palette);
 
     signalCtx.save();
     signalCtx.lineWidth = 1;

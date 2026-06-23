@@ -259,10 +259,10 @@ a:hover { color: var(--color-primary-dark); }
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(circle at 50% 52%, rgba(8, 34, 30, 0.34), transparent 31%),
-    radial-gradient(circle at 18% 22%, rgba(36, 194, 160, 0.16), transparent 30%),
-    radial-gradient(circle at 82% 18%, rgba(96, 165, 250, 0.12), transparent 32%),
-    linear-gradient(180deg, #03080a 0%, #050b0d 44%, #020304 100%);
+    radial-gradient(ellipse 70% 44% at 50% 45%, rgba(18, 72, 64, 0.3), transparent 65%),
+    radial-gradient(circle at 18% 20%, rgba(36, 194, 160, 0.13), transparent 34%),
+    radial-gradient(circle at 84% 18%, rgba(96, 165, 250, 0.09), transparent 34%),
+    linear-gradient(180deg, #03090a 0%, #061012 46%, #020304 100%);
 }
 
 #signal-field-canvas {
@@ -271,8 +271,7 @@ a:hover { color: var(--color-primary-dark); }
   height: 100%;
 }
 
-.home-hero__grid,
-.home-hero__scan {
+.home-hero__grid {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -280,36 +279,10 @@ a:hover { color: var(--color-primary-dark); }
 
 .home-hero__grid {
   background:
-    linear-gradient(rgba(68, 231, 205, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(68, 231, 205, 0.055) 1px, transparent 1px),
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 80px 80px, 80px 80px, 20px 20px;
-  mask-image: radial-gradient(ellipse 78% 68% at 50% 52%, #000 18%, transparent 82%);
-  opacity: 0.52;
-}
-
-.home-hero__scan {
-  background:
-    linear-gradient(180deg, transparent 0%, rgba(52, 211, 153, 0.12) 49%, rgba(52, 211, 153, 0.2) 50%, transparent 54%),
-    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 6px);
-  background-size: 100% 38%, 100% 6px;
+    linear-gradient(115deg, transparent 0%, rgba(68, 231, 205, 0.06) 38%, transparent 64%),
+    linear-gradient(245deg, transparent 8%, rgba(96, 165, 250, 0.045) 42%, transparent 68%);
   mix-blend-mode: screen;
-  opacity: 0.28;
-  animation: hero-scan-drift 8s linear infinite;
-}
-
-.home-hero__vignette {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.home-hero__vignette--outer {
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 44%, rgba(0, 0, 0, 0.7) 86%, rgba(0, 0, 0, 0.96) 100%);
-}
-
-.home-hero__vignette--center {
-  background: radial-gradient(ellipse 44% 28% at 50% 53%, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.18) 48%, rgba(0, 0, 0, 0) 72%);
+  opacity: 0.45;
 }
 
 .home-hero__rays {
@@ -322,9 +295,18 @@ a:hover { color: var(--color-primary-dark); }
   opacity: 0.9;
 }
 
-@keyframes hero-scan-drift {
-  from { background-position: 0 -42vh, 0 0; }
-  to { background-position: 0 105vh, 0 0; }
+.home-hero__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.home-hero__vignette--outer {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 44%, rgba(0, 0, 0, 0.72) 86%, rgba(0, 0, 0, 0.96) 100%);
+}
+
+.home-hero__vignette--center {
+  background: radial-gradient(ellipse 44% 28% at 50% 53%, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.18) 48%, rgba(0, 0, 0, 0) 72%);
 }
 
 .home-hero__content {
@@ -360,12 +342,6 @@ a:hover { color: var(--color-primary-dark); }
 
 @keyframes cursor-blink {
   50% { opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-hero__scan {
-    animation: none;
-  }
 }
 
 .home-hero__tagline {
