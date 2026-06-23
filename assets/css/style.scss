@@ -250,7 +250,7 @@ a:hover { color: var(--color-primary-dark); }
   justify-content: center;
   padding: 5rem 2rem 3.5rem;
   text-align: center;
-  background: #000;
+  background: #020607;
   overflow: hidden;
 }
 
@@ -258,13 +258,44 @@ a:hover { color: var(--color-primary-dark); }
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: #000;
+  background:
+    radial-gradient(circle at 50% 52%, rgba(8, 34, 30, 0.34), transparent 31%),
+    radial-gradient(circle at 18% 22%, rgba(36, 194, 160, 0.16), transparent 30%),
+    radial-gradient(circle at 82% 18%, rgba(96, 165, 250, 0.12), transparent 32%),
+    linear-gradient(180deg, #03080a 0%, #050b0d 44%, #020304 100%);
 }
 
-#letter-glitch-canvas {
+#signal-field-canvas {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+.home-hero__grid,
+.home-hero__scan {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.home-hero__grid {
+  background:
+    linear-gradient(rgba(68, 231, 205, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(68, 231, 205, 0.055) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 20px 20px;
+  mask-image: radial-gradient(ellipse 78% 68% at 50% 52%, #000 18%, transparent 82%);
+  opacity: 0.52;
+}
+
+.home-hero__scan {
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(52, 211, 153, 0.12) 49%, rgba(52, 211, 153, 0.2) 50%, transparent 54%),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 6px);
+  background-size: 100% 38%, 100% 6px;
+  mix-blend-mode: screen;
+  opacity: 0.28;
+  animation: hero-scan-drift 8s linear infinite;
 }
 
 .home-hero__vignette {
@@ -274,11 +305,11 @@ a:hover { color: var(--color-primary-dark); }
 }
 
 .home-hero__vignette--outer {
-  background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 1) 100%);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 44%, rgba(0, 0, 0, 0.7) 86%, rgba(0, 0, 0, 0.96) 100%);
 }
 
 .home-hero__vignette--center {
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 60%);
+  background: radial-gradient(ellipse 44% 28% at 50% 53%, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.18) 48%, rgba(0, 0, 0, 0) 72%);
 }
 
 .home-hero__rays {
@@ -286,10 +317,14 @@ a:hover { color: var(--color-primary-dark); }
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 90% 55% at 50% -5%, rgba(255, 255, 255, 0.18), transparent 62%),
-    radial-gradient(ellipse 40% 30% at 30% 10%, rgba(97, 220, 163, 0.08), transparent 55%),
-    radial-gradient(ellipse 35% 28% at 70% 8%, rgba(97, 179, 220, 0.06), transparent 50%);
-  opacity: 0.85;
+    radial-gradient(ellipse 90% 44% at 50% -8%, rgba(170, 255, 232, 0.16), transparent 60%),
+    conic-gradient(from 210deg at 50% 110%, transparent 0deg, rgba(68, 231, 205, 0.08) 28deg, transparent 56deg, rgba(96, 165, 250, 0.065) 86deg, transparent 118deg);
+  opacity: 0.9;
+}
+
+@keyframes hero-scan-drift {
+  from { background-position: 0 -42vh, 0 0; }
+  to { background-position: 0 105vh, 0 0; }
 }
 
 .home-hero__content {
@@ -325,6 +360,12 @@ a:hover { color: var(--color-primary-dark); }
 
 @keyframes cursor-blink {
   50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__scan {
+    animation: none;
+  }
 }
 
 .home-hero__tagline {
@@ -568,6 +609,21 @@ body.page-front .page-body > h3:first-of-type {
 
 .view-stats__value--loading {
   animation: stats-pulse 1.1s ease-in-out infinite;
+}
+
+.home-hero .view-stats--hero {
+  justify-content: center;
+  margin: 1.5rem auto 0;
+  color: rgba(255, 255, 255, 0.64);
+  border-color: rgba(144, 255, 232, 0.18);
+  background: rgba(3, 10, 12, 0.44);
+  box-shadow: 0 0 18px rgba(64, 224, 202, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.home-hero .view-stats--hero .view-stats__value {
+  color: rgba(144, 255, 232, 0.92);
 }
 
 @keyframes stats-pulse {

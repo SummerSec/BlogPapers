@@ -151,8 +151,10 @@
 
   {% if page_is_home %}
   <section class="home-hero" id="home-hero" aria-label="站点介绍">
-    <div class="home-hero__bg" id="letter-glitch-host" aria-hidden="true">
-      <canvas id="letter-glitch-canvas"></canvas>
+    <div class="home-hero__bg" id="signal-field-host" aria-hidden="true">
+      <canvas id="signal-field-canvas"></canvas>
+      <div class="home-hero__grid"></div>
+      <div class="home-hero__scan"></div>
       <div class="home-hero__vignette home-hero__vignette--outer"></div>
       <div class="home-hero__vignette home-hero__vignette--center"></div>
       <div class="home-hero__rays" aria-hidden="true"></div>
@@ -165,6 +167,15 @@
         <span>浏览文章</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
       </a>
+      {% assign _stats_banner_title = "使用 CountAPI；若长期为 — 可能是网络或广告拦截" %}
+      {% assign _stats_tip_ep = site.stats_endpoint | default: "" | strip %}
+      {% if _stats_tip_ep != "" %}
+        {% assign _stats_banner_title = "优先 Cloudflare Worker，失败回退 CountAPI；若长期为 — 检查 Worker、ALLOW_ORIGINS 与网络" %}
+      {% endif %}
+      <div class="view-stats view-stats--site view-stats--hero" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
+        <span class="view-stats__label">全站访问</span>
+        <span class="view-stats__value view-stats__value--loading" id="stat-site-total">…</span>
+      </div>
     </div>
   </section>
   {% endif %}
@@ -176,17 +187,12 @@
       {% if _stats_tip_ep != "" %}
         {% assign _stats_banner_title = "优先 Cloudflare Worker，失败回退 CountAPI；若长期为 — 检查 Worker、ALLOW_ORIGINS 与网络" %}
       {% endif %}
-      {% if page_is_home %}
-      <div class="view-stats view-stats--site" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
-        <span class="view-stats__label">全站访问</span>
-        <span class="view-stats__value view-stats__value--loading" id="stat-site-total">…</span>
-      </div>
-      {% else %}
+      {% unless page_is_home %}
       <div class="view-stats view-stats--page" id="view-stats-banner" role="status" aria-live="polite" title="{{ _stats_banner_title | xml_escape }}">
         <span class="view-stats__label">本文浏览</span>
         <span class="view-stats__value view-stats__value--loading" id="stat-page-views">…</span>
       </div>
-      {% endif %}
+      {% endunless %}
 
       <div class="page-body{% if page_is_markdown_article and page_has_ppt %} page-body--with-ppt{% endif %}">
         {% assign ut = site.utterances %}

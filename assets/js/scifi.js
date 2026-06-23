@@ -402,7 +402,7 @@
     themeBtn.addEventListener('click', function () {
       var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       applyTheme(isDark ? 'light' : 'dark');
-      refreshLetterGlitchColors();
+      refreshSignalFieldColors();
     });
   }
 
@@ -422,157 +422,153 @@
     });
   }
 
-  // --- Letter glitch hero background (ported from FEEI.CN) ---
-  var glitchCanvas = document.getElementById('letter-glitch-canvas');
-  var glitchHost = document.getElementById('letter-glitch-host');
-  var glitchAnim = 0;
-  var glitchLetters = [];
-  var glitchGrid = { columns: 0, rows: 0 };
-  var glitchCtx = null;
-  var glitchLast = Date.now();
-  var GLITCH_FONT = 16;
-  var GLITCH_CHAR_W = 10;
-  var GLITCH_CHAR_H = 20;
-  var GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>.,0123456789';
+  // --- Signal field hero background ---
+  var signalCanvas = document.getElementById('signal-field-canvas');
+  var signalHost = document.getElementById('signal-field-host');
+  var signalCtx = null;
+  var signalAnim = 0;
+  var signalNodes = [];
+  var signalSize = { width: 0, height: 0 };
+  var signalStart = Date.now();
 
-  function glitchPalette() {
+  function signalPalette() {
     var dark = document.documentElement.getAttribute('data-theme') === 'dark';
     return dark
-      ? ['#1a0800', '#ff5b1f', '#7a2e0a']
-      : ['#2b4539', '#61dca3', '#61b3dc'];
+      ? { line: 'rgba(255, 121, 72, 0.22)', dot: 'rgba(255, 174, 124, 0.72)', wave: 'rgba(255, 121, 72, 0.3)' }
+      : { line: 'rgba(64, 224, 202, 0.22)', dot: 'rgba(144, 255, 232, 0.76)', wave: 'rgba(96, 165, 250, 0.28)' };
   }
 
-  function refreshLetterGlitchColors() {
-    if (!glitchLetters.length) return;
-    var colors = glitchPalette();
-    glitchLetters.forEach(function (letter) {
-      letter.color = colors[Math.floor(Math.random() * colors.length)];
-      letter.targetColor = colors[Math.floor(Math.random() * colors.length)];
-      letter.colorProgress = 1;
-    });
-    drawGlitchLetters();
+  function refreshSignalFieldColors() {
+    drawSignalField((Date.now() - signalStart) / 1000);
   }
 
-  function glitchRandomChar() {
-    return GLITCH_CHARS.charAt(Math.floor(Math.random() * GLITCH_CHARS.length));
-  }
-
-  function glitchRandomColor(colors) {
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
-
-  function glitchHexToRgb(hex) {
-    var shorthand = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthand, function (_, r, g, b) { return r + r + g + g + b + b; });
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) }
-      : null;
-  }
-
-  function glitchLerpColor(start, end, factor) {
-    return 'rgb(' +
-      Math.round(start.r + (end.r - start.r) * factor) + ',' +
-      Math.round(start.g + (end.g - start.g) * factor) + ',' +
-      Math.round(start.b + (end.b - start.b) * factor) + ')';
-  }
-
-  function initGlitchLetters(columns, rows) {
-    var colors = glitchPalette();
-    glitchGrid = { columns: columns, rows: rows };
-    glitchLetters = [];
-    for (var i = 0; i < columns * rows; i++) {
-      glitchLetters.push({
-        char: glitchRandomChar(),
-        color: glitchRandomColor(colors),
-        targetColor: glitchRandomColor(colors),
-        colorProgress: 1
+  function initSignalNodes() {
+    signalNodes = [];
+    var w = signalSize.width;
+    var h = signalSize.height;
+    var count = Math.max(24, Math.min(62, Math.round(w * h / 24000)));
+    for (var i = 0; i < count; i++) {
+      signalNodes.push({
+        x: Math.random() * w,
+        y: h * 0.12 + Math.random() * h * 0.72,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.12,
+        r: 1.2 + Math.random() * 1.9,
+        phase: Math.random() * Math.PI * 2
       });
     }
   }
 
-  function drawGlitchLetters() {
-    if (!glitchCtx || !glitchCanvas || !glitchLetters.length) return;
-    var rect = glitchCanvas.getBoundingClientRect();
-    glitchCtx.clearRect(0, 0, rect.width, rect.height);
-    glitchCtx.font = GLITCH_FONT + 'px monospace';
-    glitchCtx.textBaseline = 'top';
-    glitchLetters.forEach(function (letter, index) {
-      var x = (index % glitchGrid.columns) * GLITCH_CHAR_W;
-      var y = Math.floor(index / glitchGrid.columns) * GLITCH_CHAR_H;
-      glitchCtx.fillStyle = letter.color;
-      glitchCtx.fillText(letter.char, x, y);
-    });
-  }
-
-  function updateGlitchLetters() {
-    if (!glitchLetters.length) return;
-    var colors = glitchPalette();
-    var count = Math.max(1, Math.floor(glitchLetters.length * 0.05));
-    for (var i = 0; i < count; i++) {
-      var index = Math.floor(Math.random() * glitchLetters.length);
-      var letter = glitchLetters[index];
-      if (!letter) continue;
-      letter.char = glitchRandomChar();
-      letter.targetColor = glitchRandomColor(colors);
-      letter.colorProgress = 0;
-    }
-  }
-
-  function smoothGlitchTransitions() {
-    var needsRedraw = false;
-    glitchLetters.forEach(function (letter) {
-      if (letter.colorProgress < 1) {
-        letter.colorProgress += 0.05;
-        if (letter.colorProgress > 1) letter.colorProgress = 1;
-        var startRgb = glitchHexToRgb(letter.color);
-        var endRgb = glitchHexToRgb(letter.targetColor);
-        if (startRgb && endRgb) {
-          letter.color = glitchLerpColor(startRgb, endRgb, letter.colorProgress);
-          needsRedraw = true;
-        }
-      }
-    });
-    if (needsRedraw) drawGlitchLetters();
-  }
-
-  function resizeGlitchCanvas() {
-    if (!glitchCanvas || !glitchHost) return;
+  function resizeSignalCanvas() {
+    if (!signalCanvas || !signalHost) return;
     var dpr = window.devicePixelRatio || 1;
-    var rect = glitchHost.getBoundingClientRect();
-    glitchCanvas.width = rect.width * dpr;
-    glitchCanvas.height = rect.height * dpr;
-    glitchCanvas.style.width = rect.width + 'px';
-    glitchCanvas.style.height = rect.height + 'px';
-    if (glitchCtx) glitchCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var columns = Math.ceil(rect.width / GLITCH_CHAR_W);
-    var rows = Math.ceil(rect.height / GLITCH_CHAR_H);
-    initGlitchLetters(columns, rows);
-    drawGlitchLetters();
+    var rect = signalHost.getBoundingClientRect();
+    signalSize = { width: rect.width, height: rect.height };
+    signalCanvas.width = rect.width * dpr;
+    signalCanvas.height = rect.height * dpr;
+    signalCanvas.style.width = rect.width + 'px';
+    signalCanvas.style.height = rect.height + 'px';
+    if (signalCtx) signalCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    initSignalNodes();
+    drawSignalField(0);
   }
 
-  function runGlitchLoop() {
-    var now = Date.now();
-    if (now - glitchLast >= 50) {
-      updateGlitchLetters();
-      drawGlitchLetters();
-      glitchLast = now;
+  function updateSignalNodes() {
+    var w = signalSize.width;
+    var h = signalSize.height;
+    signalNodes.forEach(function (node) {
+      node.x += node.vx;
+      node.y += node.vy;
+      if (node.x < -20) node.x = w + 20;
+      if (node.x > w + 20) node.x = -20;
+      if (node.y < h * 0.08 || node.y > h * 0.86) node.vy *= -1;
+    });
+  }
+
+  function withAlpha(rgba, alpha) {
+    return rgba.replace(/rgba\(([^,]+),([^,]+),([^,]+),[^)]+\)/, 'rgba($1,$2,$3,' + alpha + ')');
+  }
+
+  function drawSignalWave(t, palette) {
+    var w = signalSize.width;
+    var h = signalSize.height;
+    var base = h * 0.68;
+    signalCtx.save();
+    signalCtx.lineWidth = 1.4;
+    signalCtx.strokeStyle = palette.wave;
+    signalCtx.shadowColor = palette.wave;
+    signalCtx.shadowBlur = 14;
+    for (var band = 0; band < 3; band++) {
+      signalCtx.beginPath();
+      for (var x = 0; x <= w; x += 12) {
+        var y = base + band * 22 +
+          Math.sin((x * 0.012) + t * (0.8 + band * 0.18)) * (18 - band * 3) +
+          Math.cos((x * 0.021) - t * 0.55) * 7;
+        if (x === 0) signalCtx.moveTo(x, y);
+        else signalCtx.lineTo(x, y);
+      }
+      signalCtx.stroke();
     }
-    smoothGlitchTransitions();
-    glitchAnim = requestAnimationFrame(runGlitchLoop);
+    signalCtx.restore();
   }
 
-  if (glitchCanvas && glitchHost && !reduceMotion) {
-    glitchCtx = glitchCanvas.getContext('2d');
-    resizeGlitchCanvas();
-    runGlitchLoop();
-    var glitchResizeTimer = 0;
+  function drawSignalField(t) {
+    if (!signalCtx || !signalCanvas) return;
+    var w = signalSize.width;
+    var h = signalSize.height;
+    var palette = signalPalette();
+    signalCtx.clearRect(0, 0, w, h);
+    drawSignalWave(t, palette);
+
+    signalCtx.save();
+    signalCtx.lineWidth = 1;
+    for (var i = 0; i < signalNodes.length; i++) {
+      for (var j = i + 1; j < signalNodes.length; j++) {
+        var a = signalNodes[i];
+        var b = signalNodes[j];
+        var dx = a.x - b.x;
+        var dy = a.y - b.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist > 148) continue;
+        var alpha = (1 - dist / 148) * 0.55;
+        signalCtx.strokeStyle = withAlpha(palette.line, alpha.toFixed(3));
+        signalCtx.beginPath();
+        signalCtx.moveTo(a.x, a.y);
+        signalCtx.lineTo(b.x, b.y);
+        signalCtx.stroke();
+      }
+    }
+
+    signalNodes.forEach(function (node) {
+      var pulse = 0.65 + Math.sin(t * 2.2 + node.phase) * 0.35;
+      signalCtx.fillStyle = palette.dot;
+      signalCtx.shadowColor = palette.dot;
+      signalCtx.shadowBlur = 10 * pulse;
+      signalCtx.beginPath();
+      signalCtx.arc(node.x, node.y, node.r + pulse * 0.8, 0, Math.PI * 2);
+      signalCtx.fill();
+    });
+    signalCtx.restore();
+  }
+
+  function runSignalLoop() {
+    var t = (Date.now() - signalStart) / 1000;
+    updateSignalNodes();
+    drawSignalField(t);
+    signalAnim = requestAnimationFrame(runSignalLoop);
+  }
+
+  if (signalCanvas && signalHost) {
+    signalCtx = signalCanvas.getContext('2d');
+    resizeSignalCanvas();
+    if (!reduceMotion) runSignalLoop();
+    var signalResizeTimer = 0;
     window.addEventListener('resize', function () {
-      clearTimeout(glitchResizeTimer);
-      glitchResizeTimer = setTimeout(function () {
-        cancelAnimationFrame(glitchAnim);
-        resizeGlitchCanvas();
-        runGlitchLoop();
+      clearTimeout(signalResizeTimer);
+      signalResizeTimer = setTimeout(function () {
+        cancelAnimationFrame(signalAnim);
+        resizeSignalCanvas();
+        if (!reduceMotion) runSignalLoop();
       }, 100);
     });
   }
