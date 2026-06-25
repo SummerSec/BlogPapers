@@ -30,6 +30,7 @@ utterances:
 stats_endpoint: "https://capi.sumsec.me"
 
 exclude:
+  - AGENTS.md
   - CLAUDE.md
   - _scripts
   - workers
