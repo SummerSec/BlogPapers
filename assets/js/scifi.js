@@ -651,12 +651,16 @@
       var isDesktop = context.conditions.isDesktop;
       var orbits = gsap.utils.toArray('[data-hero-orbit]');
       var pulses = gsap.utils.toArray('[data-hero-pulse]');
+      var consoleEl = document.querySelector('[data-gsap-console]');
+      var routes = gsap.utils.toArray('[data-route-line]');
+      var nodes = gsap.utils.toArray('[data-console-node]');
+      var packets = gsap.utils.toArray('[data-console-packet]');
       var contentItems = ['.home-hero__label', '.home-hero__title', '.home-hero__tagline', '.home-hero__actions > *', '.view-stats--hero'];
       var toolbar = document.querySelector('.home-index__toolbar');
       var rows = gsap.utils.toArray('.home-index tbody tr');
 
       if (reduce) {
-        gsap.set(contentItems.concat(orbits, pulses, ['.home-hero__bg', '.home-hero__grid', '.home-hero__signal']), { clearProps: 'all' });
+        gsap.set(contentItems.concat(orbits, pulses, routes, nodes, packets, ['.home-hero__bg', '.home-hero__grid', '.home-hero__signal', consoleEl]), { clearProps: 'all' });
         return;
       }
 
@@ -664,8 +668,17 @@
         var len = path.getTotalLength ? path.getTotalLength() : 600;
         gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
       });
+      routes.forEach(function (path) {
+        var len = path.getTotalLength ? path.getTotalLength() : 600;
+        gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+      });
       gsap.set(pulses, { autoAlpha: 0, transformOrigin: '50% 50%' });
       gsap.set('.home-hero__signal', { autoAlpha: 0, scale: 1.02, transformOrigin: '50% 50%' });
+      gsap.set(nodes, { scale: 0.72, autoAlpha: 0, transformOrigin: '50% 50%' });
+      gsap.set(packets, { autoAlpha: 0 });
+      if (consoleEl) {
+        gsap.set(consoleEl, { y: 24, rotationX: 4, autoAlpha: 0, transformPerspective: 900 });
+      }
 
       var intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
       intro
@@ -677,6 +690,14 @@
         .to('.home-hero__signal', { autoAlpha: 1, scale: 1, duration: 1.05 }, 0.08)
         .to(orbits, { strokeDashoffset: 0, duration: 1.7, stagger: 0.16, ease: 'power2.inOut' }, 0.22)
         .to(pulses, { autoAlpha: 1, duration: 0.22, stagger: 0.1 }, 0.62);
+
+      if (consoleEl) {
+        intro
+          .to(consoleEl, { y: 0, rotationX: 0, autoAlpha: 1, duration: 0.72 }, 0.28)
+          .to(routes, { strokeDashoffset: 0, duration: 1.25, stagger: 0.12, ease: 'power2.inOut' }, 0.48)
+          .to(nodes, { scale: 1, autoAlpha: 1, stagger: { amount: 0.58, from: 'random' }, duration: 0.58, ease: 'back.out(1.8)' }, 0.68)
+          .to(packets, { autoAlpha: 1, duration: 0.25 }, 0.92);
+      }
 
       if (orbits[0] && pulses[0] && MotionPathPlugin) {
         gsap.to(pulses[0], {
@@ -704,6 +725,23 @@
           motionPath: { path: orbits[2], align: orbits[2], alignOrigin: [0.5, 0.5] }
         });
       }
+      if (routes[0] && packets[0] && MotionPathPlugin) {
+        gsap.to(packets[0], {
+          duration: 4.4,
+          repeat: -1,
+          ease: 'none',
+          motionPath: { path: routes[0], align: routes[0], alignOrigin: [0.5, 0.5] }
+        });
+      }
+      if (routes[1] && packets[1] && MotionPathPlugin) {
+        gsap.to(packets[1], {
+          duration: 5.2,
+          repeat: -1,
+          delay: 0.8,
+          ease: 'none',
+          motionPath: { path: routes[1], align: routes[1], alignOrigin: [0.5, 0.5] }
+        });
+      }
 
       gsap.to(orbits, {
         strokeDashoffset: '-=80',
@@ -718,6 +756,15 @@
         yoyo: true,
         ease: 'sine.inOut'
       });
+      if (consoleEl) {
+        gsap.to(consoleEl, {
+          '--console-scan': '55%',
+          duration: 3.8,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut'
+        });
+      }
 
       if (isDesktop) {
         var bgX = gsap.quickTo('.home-hero__bg', '--hero-bg-x', { duration: 0.7, ease: 'power3.out' });
@@ -727,6 +774,9 @@
         var signalX = gsap.quickTo('.home-hero__signal', '--hero-signal-x', { duration: 0.55, ease: 'power3.out' });
         var signalY = gsap.quickTo('.home-hero__signal', '--hero-signal-y', { duration: 0.55, ease: 'power3.out' });
         var contentY = gsap.quickTo('.home-hero__content', 'y', { duration: 0.55, ease: 'power3.out' });
+        var consoleRotX = consoleEl ? gsap.quickTo(consoleEl, 'rotationX', { duration: 0.55, ease: 'power3.out' }) : null;
+        var consoleRotY = consoleEl ? gsap.quickTo(consoleEl, 'rotationY', { duration: 0.55, ease: 'power3.out' }) : null;
+        var consoleLift = consoleEl ? gsap.quickTo(consoleEl, 'y', { duration: 0.55, ease: 'power3.out' }) : null;
         hero.addEventListener('mousemove', function (e) {
           var rect = hero.getBoundingClientRect();
           var px = (e.clientX - rect.left) / rect.width - 0.5;
@@ -738,6 +788,11 @@
           signalX((px * 26).toFixed(2) + 'px');
           signalY((py * 18).toFixed(2) + 'px');
           contentY(py * -8);
+          if (consoleRotX && consoleRotY && consoleLift) {
+            consoleRotY(px * 8);
+            consoleRotX(py * -7);
+            consoleLift(py * -10);
+          }
         });
         hero.addEventListener('mouseleave', function () {
           bgX('0px');
@@ -747,20 +802,29 @@
           signalX('0px');
           signalY('0px');
           contentY(0);
+          if (consoleRotX && consoleRotY && consoleLift) {
+            consoleRotX(0);
+            consoleRotY(0);
+            consoleLift(0);
+          }
         });
       }
 
       if (ScrollTrigger) {
-        gsap.timeline({
+        var heroScroll = gsap.timeline({
           scrollTrigger: {
             trigger: hero,
             start: 'top top',
             end: 'bottom top',
             scrub: 0.7
           }
-        })
+        });
+        heroScroll
           .to('.home-hero__content', { y: -34, autoAlpha: 0.72, ease: 'none' }, 0)
           .to('.home-hero__signal', { y: -54, scale: 1.04, autoAlpha: 0.34, ease: 'none' }, 0);
+        if (consoleEl) {
+          heroScroll.to(consoleEl, { y: -40, scale: 0.94, autoAlpha: 0.64, ease: 'none' }, 0);
+        }
 
         if (toolbar) {
           gsap.from(toolbar, {

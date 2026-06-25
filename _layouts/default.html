@@ -210,6 +210,59 @@
           <span class="view-stats__spark" id="stat-sparkline" aria-hidden="true"></span>
         </div>
       </div>
+      <div class="home-console" data-gsap-console aria-label="SUMSEC 研究路径交互动画">
+        <div class="home-console__chrome">
+          <span></span><span></span><span></span>
+          <strong>SIGNAL-MAP</strong>
+        </div>
+        <svg class="home-console__map" viewBox="0 0 760 520" role="img" aria-label="安全研究路径图">
+          <defs>
+            <filter id="console-glow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <path class="console-route console-route--main" data-route-line d="M86 398 C170 280 215 278 304 224 S480 145 596 94"/>
+          <path class="console-route console-route--alt" data-route-line d="M104 126 C196 198 250 105 342 176 S438 292 626 258"/>
+          <path class="console-route console-route--low" data-route-line d="M142 446 C262 408 282 334 382 346 S510 430 666 370"/>
+          <g class="console-node console-node--primary" data-console-node transform="translate(86 398)">
+            <circle r="19"/><text y="5">入口</text>
+          </g>
+          <g class="console-node" data-console-node transform="translate(304 224)">
+            <circle r="17"/><text y="5">分析</text>
+          </g>
+          <g class="console-node" data-console-node transform="translate(596 94)">
+            <circle r="19"/><text y="5">结论</text>
+          </g>
+          <g class="console-node" data-console-node transform="translate(104 126)">
+            <circle r="15"/><text y="5">漏洞</text>
+          </g>
+          <g class="console-node" data-console-node transform="translate(342 176)">
+            <circle r="15"/><text y="5">CodeQL</text>
+          </g>
+          <g class="console-node" data-console-node transform="translate(626 258)">
+            <circle r="16"/><text y="5">工具</text>
+          </g>
+          <g class="console-node" data-console-node transform="translate(142 446)">
+            <circle r="15"/><text y="5">笔记</text>
+          </g>
+          <g class="console-node" data-console-node transform="translate(382 346)">
+            <circle r="16"/><text y="5">Agent</text>
+          </g>
+          <g class="console-node" data-console-node transform="translate(666 370)">
+            <circle r="15"/><text y="5">复盘</text>
+          </g>
+          <circle class="console-packet" data-console-packet r="6"/>
+          <circle class="console-packet console-packet--alt" data-console-packet r="5"/>
+        </svg>
+        <div class="home-console__readout">
+          <span>trace: live</span>
+          <span>hover / scroll</span>
+        </div>
+      </div>
     </div>
     <div class="home-hero__scroll" aria-hidden="true">SCROLL</div>
   </section>
