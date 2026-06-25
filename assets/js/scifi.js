@@ -623,6 +623,163 @@
     initHeroTypewriter();
   }
 
+  // --- GSAP homepage console animation ---
+  function initHomeGsapConsole() {
+    var hero = document.getElementById('home-hero');
+    var consoleEl = document.querySelector('[data-gsap-console]');
+    if (!hero || !consoleEl || typeof window.gsap === 'undefined') return;
+
+    var gsap = window.gsap;
+    var ScrollTrigger = window.ScrollTrigger;
+    var MotionPathPlugin = window.MotionPathPlugin;
+    if (ScrollTrigger && MotionPathPlugin) {
+      gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+    } else if (ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+    } else if (MotionPathPlugin) {
+      gsap.registerPlugin(MotionPathPlugin);
+    }
+
+    var mm = gsap.matchMedia();
+    mm.add({
+      reduceMotion: '(prefers-reduced-motion: reduce)',
+      isDesktop: '(min-width: 900px)'
+    }, function (context) {
+      var reduce = context.conditions.reduceMotion;
+      var isDesktop = context.conditions.isDesktop;
+      var routes = gsap.utils.toArray('[data-route-line]');
+      var nodes = gsap.utils.toArray('[data-console-node]');
+      var packets = gsap.utils.toArray('[data-console-packet]');
+      var toolbar = document.querySelector('.home-index__toolbar');
+      var rows = gsap.utils.toArray('.home-index tbody tr');
+
+      if (reduce) {
+        gsap.set([consoleEl, '.home-hero__label', '.home-hero__title', '.home-hero__tagline', '.home-hero__actions', '.view-stats--hero'], { clearProps: 'all' });
+        return;
+      }
+
+      routes.forEach(function (path) {
+        var len = path.getTotalLength ? path.getTotalLength() : 600;
+        gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+      });
+      gsap.set(nodes, { scale: 0.72, autoAlpha: 0, transformOrigin: '50% 50%' });
+      gsap.set(packets, { autoAlpha: 0 });
+      gsap.set(consoleEl, { y: 24, rotationX: 4, autoAlpha: 0, transformPerspective: 900 });
+
+      var intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      intro
+        .from('.home-hero__label', { y: 18, autoAlpha: 0, duration: 0.5 })
+        .from('.home-hero__title', { y: 36, autoAlpha: 0, duration: 0.7 }, '<0.08')
+        .from('.home-hero__tagline', { y: 18, autoAlpha: 0, duration: 0.55 }, '<0.18')
+        .from('.home-hero__actions > *', { y: 16, autoAlpha: 0, stagger: 0.08, duration: 0.45 }, '<0.12')
+        .from('.view-stats--hero', { y: 12, autoAlpha: 0, duration: 0.45 }, '<0.08')
+        .to(consoleEl, { y: 0, rotationX: 0, autoAlpha: 1, duration: 0.7 }, '<0.05')
+        .to(routes, { strokeDashoffset: 0, duration: 1.2, stagger: 0.12, ease: 'power2.inOut' }, '<0.18')
+        .to(nodes, { scale: 1, autoAlpha: 1, stagger: { amount: 0.58, from: 'random' }, duration: 0.58, ease: 'back.out(1.8)' }, '<0.25')
+        .to(packets, { autoAlpha: 1, duration: 0.25 }, '<0.25');
+
+      if (routes[0] && packets[0]) {
+        gsap.to(packets[0], {
+          duration: 4.4,
+          repeat: -1,
+          ease: 'none',
+          motionPath: { path: routes[0], align: routes[0], alignOrigin: [0.5, 0.5] }
+        });
+      }
+      if (routes[1] && packets[1]) {
+        gsap.to(packets[1], {
+          duration: 5.2,
+          repeat: -1,
+          delay: 0.8,
+          ease: 'none',
+          motionPath: { path: routes[1], align: routes[1], alignOrigin: [0.5, 0.5] }
+        });
+      }
+
+      gsap.to(consoleEl, {
+        '--console-scan': '55%',
+        duration: 3.8,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+
+      nodes.forEach(function (node) {
+        node.addEventListener('mouseenter', function () {
+          gsap.to(node, { scale: 1.16, duration: 0.22, ease: 'power2.out', overwrite: 'auto' });
+        });
+        node.addEventListener('mouseleave', function () {
+          gsap.to(node, { scale: 1, duration: 0.28, ease: 'power2.out', overwrite: 'auto' });
+        });
+      });
+
+      if (isDesktop) {
+        var rotX = gsap.quickTo(consoleEl, 'rotationX', { duration: 0.55, ease: 'power3.out' });
+        var rotY = gsap.quickTo(consoleEl, 'rotationY', { duration: 0.55, ease: 'power3.out' });
+        var lift = gsap.quickTo(consoleEl, 'y', { duration: 0.55, ease: 'power3.out' });
+        hero.addEventListener('mousemove', function (e) {
+          var rect = hero.getBoundingClientRect();
+          var px = (e.clientX - rect.left) / rect.width - 0.5;
+          var py = (e.clientY - rect.top) / rect.height - 0.5;
+          rotY(px * 8);
+          rotX(py * -7);
+          lift(py * -10);
+        });
+        hero.addEventListener('mouseleave', function () {
+          rotX(0);
+          rotY(0);
+          lift(0);
+        });
+      }
+
+      if (ScrollTrigger) {
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: hero,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 0.7
+          }
+        })
+          .to(consoleEl, { y: -40, scale: 0.94, autoAlpha: 0.64, ease: 'none' }, 0)
+          .to('.home-hero__content', { y: -28, autoAlpha: 0.72, ease: 'none' }, 0);
+
+        if (toolbar) {
+          gsap.from(toolbar, {
+            y: 28,
+            autoAlpha: 0,
+            duration: 0.7,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: toolbar,
+              start: 'top 84%',
+              toggleActions: 'play none none reverse'
+            }
+          });
+        }
+        if (rows.length) {
+          ScrollTrigger.batch(rows, {
+            start: 'top 88%',
+            interval: 0.08,
+            batchMax: 8,
+            onEnter: function (batch) {
+              gsap.fromTo(batch, { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.055, duration: 0.42, ease: 'power2.out', overwrite: true });
+            }
+          });
+        }
+      }
+    });
+  }
+
+  function runInitHomeGsapConsole() {
+    window.setTimeout(initHomeGsapConsole, 80);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runInitHomeGsapConsole);
+  } else {
+    runInitHomeGsapConsole();
+  }
+
   // --- Nav link active state ---
   var navLinks = document.querySelectorAll('.site-nav .nav-link');
   var path = normalizePathForNav(window.location.pathname);
