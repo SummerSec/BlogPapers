@@ -407,18 +407,38 @@
   }
 
   // --- Mobile nav toggle ---
+  var siteHeader = document.querySelector('[data-site-header]') || document.querySelector('.site-header');
   var navToggle = document.getElementById('nav-toggle');
   var siteNav = document.querySelector('.site-nav');
+  function syncHeaderScrolled() {
+    if (!siteHeader) return;
+    siteHeader.classList.toggle('is-scrolled', (window.scrollY || document.documentElement.scrollTop || 0) > 8);
+  }
+  syncHeaderScrolled();
+  window.addEventListener('scroll', syncHeaderScrolled, { passive: true });
+
   if (navToggle && siteNav) {
+    function closeSiteNav() {
+      siteNav.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+
     navToggle.addEventListener('click', function () {
       var open = siteNav.classList.toggle('is-open');
       navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
     siteNav.querySelectorAll('.nav-link').forEach(function (link) {
       link.addEventListener('click', function () {
-        siteNav.classList.remove('is-open');
-        navToggle.setAttribute('aria-expanded', 'false');
+        closeSiteNav();
       });
+    });
+    document.addEventListener('click', function (e) {
+      if (!siteNav.classList.contains('is-open')) return;
+      if (siteNav.contains(e.target) || navToggle.contains(e.target)) return;
+      closeSiteNav();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeSiteNav();
     });
   }
 
@@ -620,12 +640,15 @@
   // --- Reading progress bar ---
   var progressBar = document.getElementById('read-progress');
   if (progressBar) {
-    window.addEventListener('scroll', function () {
+    function syncReadProgress() {
       var scrollTop = window.scrollY || document.documentElement.scrollTop;
       var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       var pct = docHeight > 0 ? (scrollTop / docHeight * 100) : 0;
       progressBar.style.width = Math.min(pct, 100) + '%';
-    }, { passive: true });
+    }
+    syncReadProgress();
+    window.addEventListener('scroll', syncReadProgress, { passive: true });
+    window.addEventListener('resize', syncReadProgress);
   }
 
   // --- Back to top button ---
@@ -651,6 +674,7 @@
     var frame = document.getElementById('article-ppt-frame');
     var standalone = document.getElementById('ppt-standalone-link');
     var pptUrlAttr = readingRoot.getAttribute('data-ppt-url') || '';
+    var modeStorageKey = 'sumsec-reading-mode';
 
     var userChosen = false;
     var pptOk = true;
@@ -664,7 +688,31 @@
       return 'article';
     }
 
+    function readStoredMode() {
+      try {
+        var raw = localStorage.getItem(modeStorageKey);
+        return raw ? normalizeMode(raw) : '';
+      } catch (eRead) {
+        return '';
+      }
+    }
+
+    function storeMode(mode) {
+      try {
+        localStorage.setItem(modeStorageKey, normalizeMode(mode));
+      } catch (eStore) { /* ignore */ }
+    }
+
     function defaultModeFromData() {
+      var stored = readStoredMode();
+      if (stored) {
+        if (!pptOk && (stored === 'split' || stored === 'ppt')) return 'article';
+        if (stored === 'split') {
+          var storedDesktop = mq ? mq.matches : (window.innerWidth >= 768);
+          return storedDesktop ? 'split' : 'article';
+        }
+        return stored;
+      }
       var isDesktop = mq ? mq.matches : (window.innerWidth >= 768);
       var d = readingRoot.dataset || {};
       var desk = normalizeMode(d.readingDefaultDesktop || 'split');
@@ -753,12 +801,12 @@
       if (!pptOk && (mode === 'split' || mode === 'ppt')) mode = 'article';
       readingRoot.classList.remove('mode-split', 'mode-article', 'mode-ppt');
       readingRoot.classList.add('mode-' + mode);
-      if (document.body && document.body.classList) {
-        document.body.classList.toggle('reading-mode-shell-article', mode === 'article');
-      }
       syncPptScrollbarSkin();
       syncAria(mode);
-      if (opts.fromUser) userChosen = true;
+      if (opts.fromUser) {
+        userChosen = true;
+        storeMode(mode);
+      }
     }
 
     function applyViewportDefault() {
@@ -911,6 +959,135 @@
     document.addEventListener('DOMContentLoaded', runInitArticleReadingMode);
   } else {
     runInitArticleReadingMode();
+  }
+
+  // --- Article table of contents ---
+  function initArticleToc() {
+    var toc = document.getElementById('article-toc');
+    var article = document.querySelector('.article-pane__inner') || document.querySelector('.page-article .page-body');
+    if (!toc || !article) return;
+
+    var headings = Array.prototype.slice.call(article.querySelectorAll('h2, h3'))
+      .filter(function (h) { return h.textContent.trim(); })
+      .slice(0, 18);
+    if (!headings.length) return;
+
+    var title = document.createElement('div');
+    title.className = 'article-toc__title';
+    title.textContent = '目录';
+    toc.appendChild(title);
+
+    headings.forEach(function (h, idx) {
+      if (!h.id) h.id = 'section-' + (idx + 1);
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent.trim();
+      if (h.tagName.toLowerCase() === 'h3') a.style.paddingLeft = '0.8rem';
+      toc.appendChild(a);
+    });
+    toc.classList.add('has-items');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initArticleToc);
+  } else {
+    initArticleToc();
+  }
+
+  // --- Home index: search + year filter over the Markdown tables ---
+  function initHomeIndex() {
+    var root = document.querySelector('[data-home-index]');
+    if (!root) return;
+
+    var tables = Array.prototype.slice.call(root.querySelectorAll('table'));
+    if (!tables.length) return;
+
+    var yearHeadings = [];
+    tables.forEach(function (table) {
+      var heading = table.previousElementSibling;
+      while (heading && !/^H[34]$/i.test(heading.tagName)) {
+        heading = heading.previousElementSibling;
+      }
+      var yearText = heading ? heading.textContent.match(/\d{4}/) : null;
+      var year = yearText ? yearText[0] : '';
+      if (year && yearHeadings.indexOf(year) === -1) yearHeadings.push(year);
+      table.setAttribute('data-index-year', year);
+      if (heading && year) heading.setAttribute('data-index-heading-year', year);
+      Array.prototype.slice.call(table.querySelectorAll('tbody tr')).forEach(function (row) {
+        row.setAttribute('data-index-year', year);
+        row.setAttribute('data-index-text', row.textContent.toLowerCase());
+      });
+    });
+
+    var toolbar = document.createElement('div');
+    toolbar.className = 'home-index__toolbar';
+
+    var input = document.createElement('input');
+    input.className = 'home-index__search';
+    input.type = 'search';
+    input.placeholder = '搜索文章、标签或年份';
+    input.setAttribute('aria-label', '搜索文章');
+
+    var years = document.createElement('div');
+    years.className = 'home-index__years';
+
+    function makeYearButton(label, value) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'home-index__year';
+      btn.textContent = label;
+      btn.setAttribute('data-filter-year', value);
+      return btn;
+    }
+
+    years.appendChild(makeYearButton('全部', ''));
+    yearHeadings.forEach(function (year) {
+      years.appendChild(makeYearButton(year, year));
+    });
+
+    toolbar.appendChild(input);
+    toolbar.appendChild(years);
+    root.insertBefore(toolbar, root.firstElementChild);
+
+    var activeYear = '';
+
+    function applyHomeFilter() {
+      var q = input.value.trim().toLowerCase();
+      tables.forEach(function (table) {
+        var visibleRows = 0;
+        var year = table.getAttribute('data-index-year') || '';
+        Array.prototype.slice.call(table.querySelectorAll('tbody tr')).forEach(function (row) {
+          var rowYear = row.getAttribute('data-index-year') || '';
+          var text = row.getAttribute('data-index-text') || '';
+          var okYear = !activeYear || rowYear === activeYear;
+          var okText = !q || text.indexOf(q) !== -1;
+          var visible = okYear && okText;
+          row.classList.toggle('is-hidden', !visible);
+          if (visible) visibleRows++;
+        });
+        table.style.display = visibleRows ? '' : 'none';
+        var heading = year ? root.querySelector('[data-index-heading-year="' + year + '"]') : null;
+        if (heading) heading.style.display = visibleRows ? '' : 'none';
+      });
+      Array.prototype.slice.call(years.querySelectorAll('[data-filter-year]')).forEach(function (btn) {
+        btn.classList.toggle('is-active', (btn.getAttribute('data-filter-year') || '') === activeYear);
+      });
+    }
+
+    input.addEventListener('input', applyHomeFilter);
+    years.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest && e.target.closest('[data-filter-year]');
+      if (!btn) return;
+      activeYear = btn.getAttribute('data-filter-year') || '';
+      applyHomeFilter();
+    });
+    applyHomeFilter();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHomeIndex);
+  } else {
+    initHomeIndex();
   }
 
   // --- Tag：按标签文字哈希自动配色，无需改 JS；新文章只要在表格末列写 甲/乙/丙 ---
