@@ -1,6 +1,8 @@
-# CLAUDE.md
+# CLAUDE.md / AGENTS.md
 
-本文件用于说明 Claude Code 在本仓库中的默认工作方式、仓库约定与高频任务规则。
+本文件用于说明 Claude Code 与 Codex 在本仓库中的默认工作方式、仓库约定与高频任务规则。
+
+`AGENTS.md` 应作为指向本文件的软链接维护；需要更新代理/助手规则时，请修改本文件，避免两份说明漂移。
 
 ## 默认语言
 
@@ -68,6 +70,7 @@ title: Post Title
 当用户要求把仓库中的文章做成网页版 PPT、HTML 演讲稿、slide deck 或独立演示页时，优先使用本仓库 skill：
 
 - `.claude/skills/creating-blog-web-ppt/SKILL.md`
+- `.codex/skills/creating-blog-web-ppt/SKILL.md`（Codex 环境；若本地目录为 `.Codex/`，按实际路径读取）
 
 默认规则：
 
@@ -82,6 +85,7 @@ title: Post Title
 - `assets/css/style.scss`
 - `_layouts/default.html`
 - `.claude/skills/creating-blog-web-ppt/references/slide-writer-merge.md`
+- `.codex/skills/creating-blog-web-ppt/references/slide-writer-merge.md`（Codex 环境按实际路径择一）
 - `.claude/skills/creating-blog-web-ppt/vendor/slide-writer/themes/_index.md`（唯一主题索引：企业识别 + BlogPapers `blog-sumsec` 增补顺序）
 - `.claude/skills/creating-blog-web-ppt/vendor/slide-writer/themes/blog-sumsec.md`（选用 `blog-sumsec` 时）
 - `.claude/skills/creating-blog-web-ppt/references/repo-conventions.md`
@@ -102,8 +106,9 @@ title: Post Title
 当用户要求用 Remotion 为文章生成与站点风格一致的静帧、MP4 或（可选）GIF 时，优先阅读：
 
 - `.claude/skills/remotion-blog-motion-assets/SKILL.md`
+- `.codex/skills/remotion-blog-motion-assets/SKILL.md`（Codex 环境；若本地目录为 `.Codex/`，按实际路径读取）
 
-编写或调试 Remotion 代码时，还应协同使用本机 **remotion-best-practices** skill（通常在用户目录 `.claude/skills/remotion-best-practices/SKILL.md`，按需打开其 `rules/*.md`），与上一条仓库 skill 分工见该 `SKILL.md` 内「依赖」小节。
+编写或调试 Remotion 代码时，还应协同使用本机 **remotion-best-practices** skill（通常在用户目录 `.claude/skills/remotion-best-practices/SKILL.md` 或 `.codex/skills/remotion-best-practices/SKILL.md`，按需打开其 `rules/*.md`），与上一条仓库 skill 分工见该 `SKILL.md` 内「依赖」小节。
 
 实现与批量导出命令以 `_scripts/remotion-blog-ppt-article/README.md` 为准。
 
@@ -112,6 +117,7 @@ title: Post Title
 当用户要把仓库中的 Markdown **发布到微信公众号**、排版成可发表文章/贴图、或提到「公众号 / 微信图文 / 贴图 / 文章」等需求时，优先使用本仓库 skill：
 
 - `.claude/skills/baoyu-post-to-wechat/SKILL.md`
+- `.codex/skills/baoyu-post-to-wechat/SKILL.md`（Codex 环境；若本地目录为 `.Codex/`，按实际路径读取）
 
 上游集合：[JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills)（skill 名 **`baoyu-post-to-wechat`**）。该 skill 通过脚本支持 **API** 或 **Chrome CDP** 等路径，具体前置条件、权限检查与命令以 `SKILL.md` 正文为准；执行脚本需要本机可用 **`bun`** 或按 skill 说明用 **`npx -y bun`**。
 
@@ -160,7 +166,7 @@ GitHub Pages 应使用：
 
 - `.worktrees/` 仅用于本地开发隔离，不属于仓库正式内容
 - `.worktrees/` 不应提交到 Git 仓库
-- `.claude/` 目录下的本地 skill、agent 辅助文件也默认视为本地资产，不应直接作为常规站点内容维护
+- `.claude/`、`.codex/`、`.Codex/` 目录下的本地 skill、agent 辅助文件也默认视为本地资产，不应直接作为常规站点内容维护
 
 如果确实需要把被忽略目录中的某个文件纳入版本控制，必须明确确认该文件是“仓库资产”而不是“本地工具资产”，不要顺手批量提交整个目录。
 
@@ -168,7 +174,7 @@ GitHub Pages 应使用：
 
 若不希望在本地改 Markdown，且不需要 `tags: blog-comments`，可跳过本节。
 
-提交前，hook 可为暂存区中的 `.md` 自动写入或合并 `tags: blog-comments`，跳过 `resources/AboutMe.md` 与 `CLAUDE.md`。
+提交前，hook 可为暂存区中的 `.md` 自动写入或合并 `tags: blog-comments`，跳过 `resources/AboutMe.md`、`CLAUDE.md` 与 `AGENTS.md`。
 
 首次启用：
 
