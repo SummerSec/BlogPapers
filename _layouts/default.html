@@ -166,6 +166,23 @@
   <section class="home-hero" id="home-hero" aria-label="站点介绍">
     <div class="home-hero__bg" id="signal-field-host" aria-hidden="true">
       <canvas id="signal-field-canvas"></canvas>
+      <svg class="home-hero__signal" viewBox="0 0 1440 760" preserveAspectRatio="none">
+        <defs>
+          <filter id="signal-orbit-glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <path class="signal-orbit signal-orbit--one" data-hero-orbit d="M-40 492 C184 348 298 608 442 420 S705 294 884 354 S1188 534 1488 300"/>
+        <path class="signal-orbit signal-orbit--two" data-hero-orbit d="M92 176 C260 260 340 122 512 198 S780 384 968 208 S1240 88 1460 164"/>
+        <path class="signal-orbit signal-orbit--three" data-hero-orbit d="M-24 620 C222 684 318 514 536 570 S826 742 1048 584 S1244 394 1480 488"/>
+        <circle class="signal-pulse signal-pulse--amber" data-hero-pulse r="5"/>
+        <circle class="signal-pulse signal-pulse--mint" data-hero-pulse r="4"/>
+        <circle class="signal-pulse signal-pulse--blue" data-hero-pulse r="4"/>
+      </svg>
       <div class="home-hero__grid"></div>
       <div class="home-hero__rays"></div>
       <div class="home-hero__vignette home-hero__vignette--outer"></div>
@@ -173,15 +190,15 @@
     </div>
     <div class="home-hero__layout">
       <div class="home-hero__content">
-        <p class="home-hero__label">{{ brand }} · Security Research Console</p>
+        <p class="home-hero__label">{{ brand }} · 安全研究</p>
         <h1 class="home-hero__title" id="hero-typewriter" data-typewriter='["安全研究","漏洞复盘","CodeQL 路径追踪","Agent 工程笔记"]'>安全研究</h1>
-        <p class="home-hero__tagline">{{ motto }}。这里更像一张持续更新的研究台：漏洞、代码、工具、AI 协作，都被收束到可复盘的路径里。</p>
+        <p class="home-hero__tagline">{{ motto }}</p>
         <div class="home-hero__actions">
           <a href="#main-content" class="home-hero__cta">
-            <span>进入研究台</span>
+            <span>浏览文章</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
           </a>
-          <a href="{{ '/resources/Archives.html' | relative_url }}" class="home-hero__ghost">打开归档</a>
+          <a href="{{ '/resources/Archives.html' | relative_url }}" class="home-hero__ghost">查看归档</a>
         </div>
         {% assign _stats_banner_title = "使用 CountAPI；若长期为 — 可能是网络或广告拦截" %}
         {% if _stats_ep != "" %}
@@ -191,59 +208,6 @@
           <span class="view-stats__label">全站访问</span>
           <span class="view-stats__value view-stats__value--loading" id="stat-site-total">…</span>
           <span class="view-stats__spark" id="stat-sparkline" aria-hidden="true"></span>
-        </div>
-      </div>
-      <div class="home-console" data-gsap-console aria-label="SUMSEC 研究路径交互动画">
-        <div class="home-console__chrome">
-          <span></span><span></span><span></span>
-          <strong>signal-map</strong>
-        </div>
-        <svg class="home-console__map" viewBox="0 0 760 520" role="img" aria-label="安全研究路径图">
-          <defs>
-            <filter id="console-glow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="5" result="blur"/>
-              <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          <path class="console-route console-route--main" data-route-line d="M86 398 C170 280 215 278 304 224 S480 145 596 94"/>
-          <path class="console-route console-route--alt" data-route-line d="M104 126 C196 198 250 105 342 176 S438 292 626 258"/>
-          <path class="console-route console-route--low" data-route-line d="M142 446 C262 408 282 334 382 346 S510 430 666 370"/>
-          <g class="console-node console-node--primary" data-console-node transform="translate(86 398)">
-            <circle r="19"/><text y="5">入口</text>
-          </g>
-          <g class="console-node" data-console-node transform="translate(304 224)">
-            <circle r="17"/><text y="5">分析</text>
-          </g>
-          <g class="console-node" data-console-node transform="translate(596 94)">
-            <circle r="19"/><text y="5">结论</text>
-          </g>
-          <g class="console-node" data-console-node transform="translate(104 126)">
-            <circle r="15"/><text y="5">漏洞</text>
-          </g>
-          <g class="console-node" data-console-node transform="translate(342 176)">
-            <circle r="15"/><text y="5">CodeQL</text>
-          </g>
-          <g class="console-node" data-console-node transform="translate(626 258)">
-            <circle r="16"/><text y="5">工具</text>
-          </g>
-          <g class="console-node" data-console-node transform="translate(142 446)">
-            <circle r="15"/><text y="5">笔记</text>
-          </g>
-          <g class="console-node" data-console-node transform="translate(382 346)">
-            <circle r="16"/><text y="5">Agent</text>
-          </g>
-          <g class="console-node" data-console-node transform="translate(666 370)">
-            <circle r="15"/><text y="5">复盘</text>
-          </g>
-          <circle class="console-packet" data-console-packet r="6"/>
-          <circle class="console-packet console-packet--alt" data-console-packet r="5"/>
-        </svg>
-        <div class="home-console__readout">
-          <span>trace: live</span>
-          <span>hover / scroll</span>
         </div>
       </div>
     </div>

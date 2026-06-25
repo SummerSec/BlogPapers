@@ -483,11 +483,14 @@
     if (!signalCanvas || !signalHost) return;
     var dpr = window.devicePixelRatio || 1;
     var rect = signalHost.getBoundingClientRect();
-    signalSize = { width: rect.width, height: rect.height };
-    signalCanvas.width = rect.width * dpr;
-    signalCanvas.height = rect.height * dpr;
-    signalCanvas.style.width = rect.width + 'px';
-    signalCanvas.style.height = rect.height + 'px';
+    var isPageField = document.body.classList.contains('page-front');
+    var width = isPageField ? window.innerWidth : rect.width;
+    var height = isPageField ? window.innerHeight : rect.height;
+    signalSize = { width: width, height: height };
+    signalCanvas.width = width * dpr;
+    signalCanvas.height = height * dpr;
+    signalCanvas.style.width = width + 'px';
+    signalCanvas.style.height = height + 'px';
     if (signalCtx) signalCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
     initSignalNodes();
     drawSignalField(0);
@@ -623,11 +626,10 @@
     initHeroTypewriter();
   }
 
-  // --- GSAP homepage console animation ---
-  function initHomeGsapConsole() {
+  // --- GSAP homepage signal animation ---
+  function initHomeGsapSignal() {
     var hero = document.getElementById('home-hero');
-    var consoleEl = document.querySelector('[data-gsap-console]');
-    if (!hero || !consoleEl || typeof window.gsap === 'undefined') return;
+    if (!hero || typeof window.gsap === 'undefined') return;
 
     var gsap = window.gsap;
     var ScrollTrigger = window.ScrollTrigger;
@@ -647,88 +649,104 @@
     }, function (context) {
       var reduce = context.conditions.reduceMotion;
       var isDesktop = context.conditions.isDesktop;
-      var routes = gsap.utils.toArray('[data-route-line]');
-      var nodes = gsap.utils.toArray('[data-console-node]');
-      var packets = gsap.utils.toArray('[data-console-packet]');
+      var orbits = gsap.utils.toArray('[data-hero-orbit]');
+      var pulses = gsap.utils.toArray('[data-hero-pulse]');
+      var contentItems = ['.home-hero__label', '.home-hero__title', '.home-hero__tagline', '.home-hero__actions > *', '.view-stats--hero'];
       var toolbar = document.querySelector('.home-index__toolbar');
       var rows = gsap.utils.toArray('.home-index tbody tr');
 
       if (reduce) {
-        gsap.set([consoleEl, '.home-hero__label', '.home-hero__title', '.home-hero__tagline', '.home-hero__actions', '.view-stats--hero'], { clearProps: 'all' });
+        gsap.set(contentItems.concat(orbits, pulses, ['.home-hero__bg', '.home-hero__grid', '.home-hero__signal']), { clearProps: 'all' });
         return;
       }
 
-      routes.forEach(function (path) {
+      orbits.forEach(function (path) {
         var len = path.getTotalLength ? path.getTotalLength() : 600;
         gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
       });
-      gsap.set(nodes, { scale: 0.72, autoAlpha: 0, transformOrigin: '50% 50%' });
-      gsap.set(packets, { autoAlpha: 0 });
-      gsap.set(consoleEl, { y: 24, rotationX: 4, autoAlpha: 0, transformPerspective: 900 });
+      gsap.set(pulses, { autoAlpha: 0, transformOrigin: '50% 50%' });
+      gsap.set('.home-hero__signal', { autoAlpha: 0, scale: 1.02, transformOrigin: '50% 50%' });
 
       var intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
       intro
         .from('.home-hero__label', { y: 18, autoAlpha: 0, duration: 0.5 })
-        .from('.home-hero__title', { y: 36, autoAlpha: 0, duration: 0.7 }, '<0.08')
-        .from('.home-hero__tagline', { y: 18, autoAlpha: 0, duration: 0.55 }, '<0.18')
-        .from('.home-hero__actions > *', { y: 16, autoAlpha: 0, stagger: 0.08, duration: 0.45 }, '<0.12')
-        .from('.view-stats--hero', { y: 12, autoAlpha: 0, duration: 0.45 }, '<0.08')
-        .to(consoleEl, { y: 0, rotationX: 0, autoAlpha: 1, duration: 0.7 }, '<0.05')
-        .to(routes, { strokeDashoffset: 0, duration: 1.2, stagger: 0.12, ease: 'power2.inOut' }, '<0.18')
-        .to(nodes, { scale: 1, autoAlpha: 1, stagger: { amount: 0.58, from: 'random' }, duration: 0.58, ease: 'back.out(1.8)' }, '<0.25')
-        .to(packets, { autoAlpha: 1, duration: 0.25 }, '<0.25');
+        .from('.home-hero__title', { y: 34, scale: 0.98, autoAlpha: 0, duration: 0.72 }, '<0.08')
+        .from('.home-hero__tagline', { y: 16, autoAlpha: 0, duration: 0.52 }, '<0.2')
+        .from('.home-hero__actions > *', { y: 14, autoAlpha: 0, stagger: 0.08, duration: 0.42 }, '<0.12')
+        .from('.view-stats--hero', { y: 10, autoAlpha: 0, duration: 0.42 }, '<0.08')
+        .to('.home-hero__signal', { autoAlpha: 1, scale: 1, duration: 1.05 }, 0.08)
+        .to(orbits, { strokeDashoffset: 0, duration: 1.7, stagger: 0.16, ease: 'power2.inOut' }, 0.22)
+        .to(pulses, { autoAlpha: 1, duration: 0.22, stagger: 0.1 }, 0.62);
 
-      if (routes[0] && packets[0]) {
-        gsap.to(packets[0], {
-          duration: 4.4,
+      if (orbits[0] && pulses[0] && MotionPathPlugin) {
+        gsap.to(pulses[0], {
+          duration: 6.4,
           repeat: -1,
           ease: 'none',
-          motionPath: { path: routes[0], align: routes[0], alignOrigin: [0.5, 0.5] }
+          motionPath: { path: orbits[0], align: orbits[0], alignOrigin: [0.5, 0.5] }
         });
       }
-      if (routes[1] && packets[1]) {
-        gsap.to(packets[1], {
-          duration: 5.2,
+      if (orbits[1] && pulses[1] && MotionPathPlugin) {
+        gsap.to(pulses[1], {
+          duration: 7.2,
           repeat: -1,
-          delay: 0.8,
+          delay: 0.5,
           ease: 'none',
-          motionPath: { path: routes[1], align: routes[1], alignOrigin: [0.5, 0.5] }
+          motionPath: { path: orbits[1], align: orbits[1], alignOrigin: [0.5, 0.5] }
+        });
+      }
+      if (orbits[2] && pulses[2] && MotionPathPlugin) {
+        gsap.to(pulses[2], {
+          duration: 8.4,
+          repeat: -1,
+          delay: 1.1,
+          ease: 'none',
+          motionPath: { path: orbits[2], align: orbits[2], alignOrigin: [0.5, 0.5] }
         });
       }
 
-      gsap.to(consoleEl, {
-        '--console-scan': '55%',
-        duration: 3.8,
+      gsap.to(orbits, {
+        strokeDashoffset: '-=80',
+        duration: 9,
+        repeat: -1,
+        ease: 'none'
+      });
+      gsap.to('.home-hero__signal', {
+        y: -10,
+        duration: 5.5,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut'
       });
 
-      nodes.forEach(function (node) {
-        node.addEventListener('mouseenter', function () {
-          gsap.to(node, { scale: 1.16, duration: 0.22, ease: 'power2.out', overwrite: 'auto' });
-        });
-        node.addEventListener('mouseleave', function () {
-          gsap.to(node, { scale: 1, duration: 0.28, ease: 'power2.out', overwrite: 'auto' });
-        });
-      });
-
       if (isDesktop) {
-        var rotX = gsap.quickTo(consoleEl, 'rotationX', { duration: 0.55, ease: 'power3.out' });
-        var rotY = gsap.quickTo(consoleEl, 'rotationY', { duration: 0.55, ease: 'power3.out' });
-        var lift = gsap.quickTo(consoleEl, 'y', { duration: 0.55, ease: 'power3.out' });
+        var bgX = gsap.quickTo('.home-hero__bg', '--hero-bg-x', { duration: 0.7, ease: 'power3.out' });
+        var bgY = gsap.quickTo('.home-hero__bg', '--hero-bg-y', { duration: 0.7, ease: 'power3.out' });
+        var gridX = gsap.quickTo('.home-hero__grid', '--hero-grid-x', { duration: 0.65, ease: 'power3.out' });
+        var gridY = gsap.quickTo('.home-hero__grid', '--hero-grid-y', { duration: 0.65, ease: 'power3.out' });
+        var signalX = gsap.quickTo('.home-hero__signal', '--hero-signal-x', { duration: 0.55, ease: 'power3.out' });
+        var signalY = gsap.quickTo('.home-hero__signal', '--hero-signal-y', { duration: 0.55, ease: 'power3.out' });
+        var contentY = gsap.quickTo('.home-hero__content', 'y', { duration: 0.55, ease: 'power3.out' });
         hero.addEventListener('mousemove', function (e) {
           var rect = hero.getBoundingClientRect();
           var px = (e.clientX - rect.left) / rect.width - 0.5;
           var py = (e.clientY - rect.top) / rect.height - 0.5;
-          rotY(px * 8);
-          rotX(py * -7);
-          lift(py * -10);
+          bgX((px * -10).toFixed(2) + 'px');
+          bgY((py * -8).toFixed(2) + 'px');
+          gridX((px * -18).toFixed(2) + 'px');
+          gridY((py * -12).toFixed(2) + 'px');
+          signalX((px * 26).toFixed(2) + 'px');
+          signalY((py * 18).toFixed(2) + 'px');
+          contentY(py * -8);
         });
         hero.addEventListener('mouseleave', function () {
-          rotX(0);
-          rotY(0);
-          lift(0);
+          bgX('0px');
+          bgY('0px');
+          gridX('0px');
+          gridY('0px');
+          signalX('0px');
+          signalY('0px');
+          contentY(0);
         });
       }
 
@@ -741,8 +759,8 @@
             scrub: 0.7
           }
         })
-          .to(consoleEl, { y: -40, scale: 0.94, autoAlpha: 0.64, ease: 'none' }, 0)
-          .to('.home-hero__content', { y: -28, autoAlpha: 0.72, ease: 'none' }, 0);
+          .to('.home-hero__content', { y: -34, autoAlpha: 0.72, ease: 'none' }, 0)
+          .to('.home-hero__signal', { y: -54, scale: 1.04, autoAlpha: 0.34, ease: 'none' }, 0);
 
         if (toolbar) {
           gsap.from(toolbar, {
@@ -771,13 +789,13 @@
     });
   }
 
-  function runInitHomeGsapConsole() {
-    window.setTimeout(initHomeGsapConsole, 80);
+  function runInitHomeGsapSignal() {
+    window.setTimeout(initHomeGsapSignal, 80);
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', runInitHomeGsapConsole);
+    document.addEventListener('DOMContentLoaded', runInitHomeGsapSignal);
   } else {
-    runInitHomeGsapConsole();
+    runInitHomeGsapSignal();
   }
 
   // --- Nav link active state ---
