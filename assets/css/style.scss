@@ -1176,13 +1176,13 @@ body.page-front .home-index > p:first-of-type + p {
 }
 
 .article-title {
-  max-width: min(100%, 56rem);
+  max-width: var(--content-max);
   margin: 0;
   color: color-mix(in srgb, var(--text) 88%, #000 12%);
-  font-family: var(--font-body);
-  font-size: clamp(2rem, 3vw, 2.58rem);
-  font-weight: 700;
-  line-height: 1.24;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.05vw, 2.65rem);
+  font-weight: 760;
+  line-height: 1.18;
   letter-spacing: 0;
   text-wrap: balance;
   overflow-wrap: break-word;
@@ -1746,7 +1746,7 @@ body.page-front .home-index > p:first-of-type + p {
   .article-title {
     max-width: 100%;
     font-size: clamp(1.78rem, 7vw, 2.18rem);
-    line-height: 1.28;
+    line-height: 1.22;
   }
 
   .reader-toolbar__group {
