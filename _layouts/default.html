@@ -194,8 +194,8 @@
         <h1 class="home-hero__title" id="hero-typewriter" data-typewriter='["安全研究","漏洞复盘","CodeQL 路径追踪","Agent 工程笔记"]'>安全研究</h1>
         <p class="home-hero__tagline">{{ motto }}</p>
         <div class="home-hero__actions">
-          <a href="#main-content" class="home-hero__cta">
-            <span>浏览文章</span>
+          <a href="#home-timeline" class="home-hero__cta">
+            <span>进入研究台</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
           </a>
           <a href="{{ '/resources/Archives.html' | relative_url }}" class="home-hero__ghost">查看归档</a>
@@ -215,6 +215,9 @@
   </section>
   {% endif %}
 
+  {% if page_is_home %}
+  <span class="home-timeline-anchor" id="home-timeline" aria-hidden="true"></span>
+  {% endif %}
   <main class="main-content{% if page_is_markdown_article and page_has_ppt %} main-content--with-ppt{% endif %}" id="main-content">
     <div class="content-shell{% if page_is_home %} content-shell--home{% endif %}{% if page_is_markdown_article %} content-shell--article{% endif %}">
       {% assign _stats_banner_title = "使用 CountAPI；若长期为 — 可能是网络或广告拦截" %}

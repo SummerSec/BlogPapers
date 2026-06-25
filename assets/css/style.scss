@@ -326,14 +326,13 @@ body.page-front .site-header:not(.is-scrolled) .nav-link:hover {
 
 .home-hero {
   position: relative;
-  min-height: 640px;
-  height: calc(100vh - var(--navbar-height));
-  max-height: 760px;
-  margin-top: var(--navbar-height);
+  min-height: 100vh;
+  min-height: 100svh;
+  margin-top: 0;
   display: grid;
   align-items: center;
   justify-content: center;
-  padding: clamp(5rem, 12vh, 8rem) var(--layout-gutter) clamp(4.25rem, 9vh, 6.5rem);
+  padding: calc(var(--navbar-height, 3.875rem) + clamp(4rem, 10vh, 7rem)) var(--layout-gutter) clamp(4.25rem, 9vh, 6.5rem);
   overflow: hidden;
   text-align: center;
   background: #020607;
@@ -599,6 +598,16 @@ body.page-front .main-content {
     linear-gradient(rgba(18, 27, 24, 0.032) 1px, transparent 1px),
     linear-gradient(90deg, rgba(18, 27, 24, 0.026) 1px, transparent 1px);
   background-size: auto, 44px 44px, 44px 44px;
+}
+
+.home-timeline-anchor {
+  display: block;
+  position: relative;
+  top: calc(-1 * var(--navbar-height, 3.875rem));
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  scroll-margin-top: var(--navbar-height, 3.875rem);
 }
 
 .content-shell {
@@ -1464,10 +1473,9 @@ body.page-front .home-index > p:first-of-type + p {
   }
 
   .home-hero {
-    min-height: 640px;
-    height: calc(100vh - var(--navbar-height));
-    max-height: 760px;
-    padding-top: clamp(5rem, 10vh, 7rem);
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-top: calc(var(--navbar-height, 3.875rem) + clamp(4rem, 8vh, 6rem));
     padding-bottom: clamp(4rem, 8vh, 5.5rem);
   }
 
@@ -1503,8 +1511,8 @@ body.page-front .home-index > p:first-of-type + p {
   }
 
   .home-hero {
-    min-height: 82vh;
-    padding-top: 4.2rem;
+    min-height: 100svh;
+    padding-top: calc(var(--navbar-height, 3.5rem) + 3rem);
   }
 
   .home-hero__title {
