@@ -24,12 +24,13 @@
   <meta name="theme-color" content="#05060c">
   <title>文章标题 · 网页版 PPT</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" sizes="any">
+  <link rel="stylesheet" href="https://unpkg.com/heti/umd/heti.min.css">
   <style>
-    /* 仅内联 CSS */
+    /* 仅内联 CSS；heti 排版增强 + 主题色覆盖 */
   </style>
 </head>
 <body>
-  <div class="deck-shell">
+  <div class="deck-shell heti">
     <header class="deck-hud">
       <!-- 原文入口、当前标题、页码、控制区、进度条 -->
     </header>
