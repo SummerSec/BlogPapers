@@ -142,6 +142,23 @@ Constraints: one image explains the two input sources; do not draw a formal pipe
 
 为了让前面这套数据流不悬空，下面放一组从 sec-code-bench 直接导出的真实运行结果。场景完全一致：同一个 agent（`claude-code-biz-vul`），同一个"营销漏洞评测数据集"，总共 63 个 case；所有 run 都是 `completed`，`error_cases=0`。区别主要在于 skill profile：一组用进化前的 `deepseek` skill，一组用自动迭代后的 `evolution` skill。
 
+<!--
+illustration-prompt: 02b-baseline-vs-evolved-results
+Generate one standalone 16:9 horizontal Chinese article illustration for a sumsec.me style technical blog.
+
+Visual DNA: pure white background, clean minimalist deep charcoal contour line art, restrained low-saturation character color washes, large blank space, sparse cyan-blue and red-orange handwritten Chinese annotations. White-paper engineering sketch feeling, not PPT, not formal infographic, not UI screenshot, not dashboard, not cyberpunk, no pixel art, no top-left title.
+
+Recurring SumSec Observer required: original young adult security researcher and system observer with dark ink slightly messy side-swept short hair, thin-frame glasses, quiet sober low-key melancholic focused expression, clean-shaven jawline, pale cool-gray high-collar lightweight hooded jacket, dark cyan-blue inner lining / drawstrings / crossbody strap, black inner shirt, dark pants, muted gray-brown side tool bag with log papers and tiny cyan cables, black clipboard, chest "SummerSec" badge, exactly two subtle cyan-blue S-emblem rings, and one small black S tool chip. Natural upright posture, simple hand pose only.
+
+Theme: 基线版本和进化后版本的评测结果对比。
+Structure type: 前后对比 / 证据栈。
+Core idea: 同一批 63 个 case 的评测里，进化后的 skill 不是单纯把分数写高一点，而是把基线版本里容易漏掉的 case 重新兜住，让结果更稳、误漏更少。Kimi 从 77.8% 提升到 84.1%，GLM 从 77.8% 提升到 88.9%，DeepSeek 从 82.5% 提升到 87.3%；这些数字只是证据，真正要表达的是“同一批 case 里，被漏掉的结果变少了，判断被拉稳了”。
+Composition: On a wide white desk, SumSec Observer stands slightly to one side, comparing three paired paper result trays for Kimi, GLM, and DeepSeek. In each left baseline tray, a few small red-orange case slips are visibly sliding out of the tray or hanging at the edge, suggesting missed cases and unstable judgment. In each right evolved tray, those slips have been gathered back inside and clipped into place with small cyan seals, so the tray looks calmer, fuller, and more ordered. Observer uses one hand to press a loose red-orange slip back into the middle pair while holding a black clipboard in the other hand. A small blue strip labeled the same 63-case batch feeds both left and right trays. The exact percentages should appear only as tiny corner evidence notes attached to each model pair, such as Kimi 77.8% -> 84.1%, GLM 77.8% -> 88.9%, DeepSeek 82.5% -> 87.3%, not as large floating headline text. Do not draw a real table, dashboard, or matrix; make it a paper-tray comparison scene that shows fewer escaped cases on the evolved side.
+Suggested elements: paired paper result trays / slipping case slips / red-orange FN tags / cyan seals or clips / black clipboard.
+Chinese handwritten labels: "同一批 63 case" / "基线会漏" / "进化后兜住了" / "FN 变少" / "更稳" / "Kimi 77.8->84.1"。
+Color use: deep charcoal lines, pale cool gray and muted off-white for cards, cyan-blue for checks and evidence strip, red-orange only for failure tags and risky points, restrained character colors as specified.
+Constraints: one image explains only the improvement relationship between baseline and evolved results. The key visual meaning must come from fewer missed cases and steadier trays, not from standalone percentages. Do not turn it into a precise chart, percentage dashboard, matrix table, or product screenshot. If exact numbers appear, keep them tiny and attached to the corresponding model pair as corner evidence notes, never as the main headline. The article table below already carries exact metrics.
+-->
 ![基线与进化后评测效果对比](./pic/skill-evolution-results-trace/eval-v1-v2-compare.png)
 
 这张图只保留每组模型的基线版本和最终进化版本，方便直接看变化：Kimi 从 77.8% 到 84.1%，GLM 从 77.8% 到 88.9%，DeepSeek 从 82.5% 到 87.3%。图只表达"基线 vs 进化后"的对比关系；完整版本编号以下方表格为准，DeepSeek 中间还有一次 84.1% 的过渡运行。
