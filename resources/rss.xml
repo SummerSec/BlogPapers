@@ -7,13 +7,13 @@
 <docs>http://www.rssboard.org/rss-specification</docs>
 <generator>BlogPapers generate_feed_and_sitemap.py</generator>
 <language>zh-CN</language>
-<lastBuildDate>Wed, 01 Jul 2026 04:55:29 +0000</lastBuildDate>
+<lastBuildDate>Wed, 01 Jul 2026 07:00:50 +0000</lastBuildDate>
 <atom:link href="https://sumsec.me/resources/rss.xml" rel="self" type="application/rss+xml"/>
 <item>
 <title>从手改 Skill 到自动进化：评测结果和执行轨迹如何让 Agent 变稳</title>
 <link>https://sumsec.me/2026/skill-evolution-results-trace.html</link>
 <guid isPermaLink="true">https://sumsec.me/2026/skill-evolution-results-trace.html</guid>
-<pubDate>Sat, 27 Jun 2026 06:44:21 +0000</pubDate>
+<pubDate>Wed, 01 Jul 2026 06:59:59 +0000</pubDate>
 </item>
 <item>
 <title>模型人人都能用，什么才是你能带走的？我的答案是一个可进化的SKILL库</title>
