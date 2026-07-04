@@ -7,7 +7,7 @@
 <docs>http://www.rssboard.org/rss-specification</docs>
 <generator>BlogPapers generate_feed_and_sitemap.py</generator>
 <language>zh-CN</language>
-<lastBuildDate>Sat, 04 Jul 2026 14:00:55 +0000</lastBuildDate>
+<lastBuildDate>Sat, 04 Jul 2026 19:39:27 +0000</lastBuildDate>
 <atom:link href="https://sumsec.me/resources/rss.xml" rel="self" type="application/rss+xml"/>
 <item>
 <title>从手改 Skill 到自动进化：评测结果和执行轨迹如何让 Agent 变稳</title>
