@@ -57,6 +57,11 @@ defaults:
       title: "归档"
       comments: false
   - scope:
+      path: "resources/OpenSource.md"
+    values:
+      title: "开源项目"
+      comments: false
+  - scope:
       path: "resources/AboutMe.md"
     values:
       title: "关于"

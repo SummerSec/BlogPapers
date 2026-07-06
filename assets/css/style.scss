@@ -929,6 +929,51 @@ body.page-front .content-shell--home {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.open-source-table-wrap {
+  width: 100%;
+  margin: 1.5rem 0 2rem;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+}
+
+.page-body .open-source-table {
+  min-width: 960px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.page-body .open-source-table th,
+.page-body .open-source-table td {
+  padding: 0.68rem 0.76rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-body .open-source-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.page-body .open-source-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.page-body .open-source-table .project {
+  min-width: 12rem;
+  font-weight: 800;
+}
+
+.page-body .open-source-table td:nth-child(10) {
+  min-width: 22rem;
+}
+
+.page-body .open-source-table .muted {
+  color: var(--text-dim);
+}
+
 .page-body pre,
 .page-body code {
   font-family: var(--font-code);

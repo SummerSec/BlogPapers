@@ -40,6 +40,7 @@ _FALLBACK_POST_ROOTS = ("2021", "2022", "2023", "2026", "PL")
 STATIC_SITEMAP_PATHS = (
     "/resources/Archives.html",
     "/resources/AboutMe.html",
+    "/resources/OpenSource.html",
     "/resources/Advertisements.html",
     "/resources/subdomain.html",
     "/resources/rss.xml",
