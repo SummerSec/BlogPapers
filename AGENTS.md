@@ -203,5 +203,6 @@ chmod +x .githooks/pre-commit
 - 图片 CDN 前缀：`https://img.sumsec.me/`
 - CNAME：`sumsec.me`
 - 历史提交信息常见 emoji 前缀，例如 `🍭Update Sitemap`
+- 本项目提交前必须先同步远端；默认先执行 `git fetch origin`，再执行 `git pull --rebase origin master`，确认吸收最新自动更新后再 `commit` / `push`
 - `_site/` 是 Jekyll 构建产物，默认不提交
 - `resources/` 下存在一些非博客文件，例如 swagger、vless 配置等，除非明确相关任务，不要随意整理或重构

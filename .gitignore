@@ -12,6 +12,7 @@ docs/**
 .playwright-cli/**
 .jekyll-cache/**
 .agents/**
+.codex/
 # Remotion 子项目依赖（源码见 _scripts/remotion-blog-ppt-article）
 _scripts/remotion-blog-ppt-article/node_modules/
 
