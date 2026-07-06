@@ -120,6 +120,7 @@ def collect_repos() -> list[dict]:
     public_owner_repos = [
         repo for repo in repos
         if not repo.get("fork") and not repo.get("private")
+        and int(repo.get("stargazers_count") or 0) > 0
     ]
     sorted_repos = sorted(
         public_owner_repos,
