@@ -796,6 +796,11 @@ body.page-front .content-shell--home {
   min-width: 0;
 }
 
+.page-article:not(.page-with-ppt) .page-layout--article {
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
 .page-body {
   color: var(--text);
   font-family: var(--font-body);
