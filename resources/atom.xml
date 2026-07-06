@@ -2,15 +2,15 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-07-05T19:43:45Z</updated>
+  <updated>2026-07-06T02:20:36Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
   <subtitle>像清水一般清澈透明</subtitle>
   <entry>
     <id>https://sumsec.me/2026/skill-evolution-results-trace.html</id>
-    <title>从手改 Skill 到自动进化：评测结果和执行轨迹如何让 Agent 变稳</title>
-    <updated>2026-07-01T06:59:59Z</updated>
+    <title>Agent 越改越乱之后，我用评测和轨迹把它拉回来了</title>
+    <updated>2026-07-06T02:19:48Z</updated>
     <link href="https://sumsec.me/2026/skill-evolution-results-trace.html" rel="alternate" />
   </entry>
   <entry>
