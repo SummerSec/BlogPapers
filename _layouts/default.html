@@ -95,6 +95,12 @@
 
 {% assign asset_rev = site.github.build_revision | default: site.time | date: "%s" %}
 {% assign _stats_ep = site.stats_endpoint | default: "" | strip %}
+{% assign rendered_content = content %}
+{% if page_is_markdown_article %}
+  {% assign progressive_img_placeholder = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 675'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23eef2f0'/%3E%3Cstop offset='0.54' stop-color='%23dfe8e4'/%3E%3Cstop offset='1' stop-color='%23cfd9d5'/%3E%3C/linearGradient%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='24'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='1200' height='675' fill='url(%23g)'/%3E%3Ccircle cx='320' cy='180' r='180' fill='%2325c2a0' opacity='.18' filter='url(%23b)'/%3E%3Ccircle cx='910' cy='430' r='240' fill='%235f8fe8' opacity='.16' filter='url(%23b)'/%3E%3C/svg%3E" %}
+  {% capture progressive_img_prefix %}<p><img src="{{ progressive_img_placeholder }}" data-progressive-src="{% endcapture %}
+  {% assign rendered_content = rendered_content | replace: '<p><img src="', progressive_img_prefix %}
+{% endif %}
 <!DOCTYPE html>
 <html lang="zh-CN"{% if tlen > thr %} data-title-marquee-at="{{ thr }}"{% endif %}>
 <head>
@@ -104,6 +110,7 @@
   <meta name="theme-color" content="#f6f8f7">
   <meta name="color-scheme" content="light dark">
   <meta name="stats-namespace" content="sumsecme">
+  <meta name="image-preview-proxy" content="{{ site.image_preview_proxy | default: 'https://wsrv.nl/' | xml_escape }}">
   {% if _stats_ep != "" %}
   <meta name="stats-endpoint" content="{{ _stats_ep | xml_escape }}">
   {% endif %}
@@ -329,7 +336,7 @@
             <article class="article-column">
               <div id="article-pane" class="article-pane">
                 <div class="article-pane__inner page-body">
-                  {{ content }}
+                  {{ rendered_content }}
                   {% unless page_is_home %}
                   {% if ut.repo and page.comments != false %}
                   <section class="comments-section" id="comments" aria-labelledby="comments-heading">
@@ -357,7 +364,7 @@
         </div>
         {% else %}
         <article class="page-body{% if page_is_home %} home-index{% endif %}"{% if page_is_home %} data-home-index{% endif %}>
-          {{ content }}
+          {{ rendered_content }}
           {% unless page_is_home %}
           {% if ut.repo and page.comments != false %}
           <section class="comments-section" id="comments" aria-labelledby="comments-heading">

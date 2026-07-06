@@ -1200,6 +1200,147 @@
     runInitArticleReadingMode();
   }
 
+  // --- Progressive article images: placeholder -> blurred preview -> original on zoom ---
+  function initProgressiveImages() {
+    var imgs = Array.prototype.slice.call(document.querySelectorAll('.page-body img[data-progressive-src]'));
+    if (!imgs.length) return;
+    var proxyMeta = document.querySelector('meta[name="image-preview-proxy"]');
+    var previewProxy = (proxyMeta && proxyMeta.getAttribute('content')) || 'https://wsrv.nl/';
+    previewProxy = String(previewProxy).replace(/^\s+|\s+$/g, '');
+
+    function originalSrc(img) {
+      return img.getAttribute('data-progressive-src') || img.getAttribute('data-original-src') || img.currentSrc || img.src;
+    }
+
+    function canUseRemotePreview(url) {
+      try {
+        var u = new URL(url, window.location.href);
+        if (u.protocol !== 'http:' && u.protocol !== 'https:') return false;
+        var host = window.location.hostname;
+        if (host === 'localhost' || host === '127.0.0.1' || host === '') {
+          return u.hostname !== host;
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function previewSrc(url) {
+      if (!canUseRemotePreview(url)) return url;
+      var abs;
+      try {
+        abs = new URL(url, window.location.href).href;
+      } catch (e) {
+        return url;
+      }
+      if (!previewProxy) return url;
+      return previewProxy.replace(/\?$/, '').replace(/\/?$/, '/') +
+        '?url=' + encodeURIComponent(abs) + '&w=900&q=45&blur=4&output=webp';
+    }
+
+    function loadPreview(img) {
+      if (!img || img.getAttribute('data-progressive-state')) return;
+      var orig = originalSrc(img);
+      if (!orig) return;
+      img.setAttribute('data-original-src', orig);
+      img.setAttribute('data-progressive-state', 'preview');
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.addEventListener('load', function onLoad() {
+        img.removeEventListener('load', onLoad);
+        img.classList.add('progressive-image--loaded');
+      });
+      img.src = previewSrc(orig);
+    }
+
+    function loadOriginal(img, done) {
+      var orig = originalSrc(img);
+      if (!orig) return;
+      img.setAttribute('data-original-src', orig);
+      if (img.src === orig || img.currentSrc === orig) {
+        img.classList.add('progressive-image--original');
+        if (done) done(orig);
+        return;
+      }
+      var probe = new Image();
+      probe.onload = function () {
+        img.src = orig;
+        img.classList.add('progressive-image--original');
+        if (done) done(orig);
+      };
+      probe.onerror = function () {
+        if (done) done(orig);
+      };
+      probe.src = orig;
+    }
+
+    function ensureLightbox() {
+      var box = document.getElementById('image-lightbox');
+      if (box) return box;
+      box = document.createElement('div');
+      box.id = 'image-lightbox';
+      box.className = 'image-lightbox';
+      box.setAttribute('role', 'dialog');
+      box.setAttribute('aria-modal', 'true');
+      box.innerHTML =
+        '<button type="button" class="image-lightbox__close" aria-label="关闭原图">×</button>' +
+        '<img class="image-lightbox__img" alt="">';
+      document.body.appendChild(box);
+      function close() {
+        box.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+      box.addEventListener('click', function (e) {
+        if (e.target === box || e.target.closest('.image-lightbox__close')) close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') close();
+      });
+      return box;
+    }
+
+    function openOriginal(img) {
+      var box = ensureLightbox();
+      var target = box.querySelector('.image-lightbox__img');
+      var orig = originalSrc(img);
+      if (!orig || !target) return;
+      target.alt = img.getAttribute('alt') || '';
+      target.src = img.currentSrc || img.src;
+      box.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      loadOriginal(img, function (src) {
+        target.src = src;
+      });
+    }
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          observer.unobserve(entry.target);
+          loadPreview(entry.target);
+        });
+      }, { rootMargin: '900px 0px', threshold: 0.01 });
+      imgs.forEach(function (img) { observer.observe(img); });
+    } else {
+      imgs.forEach(loadPreview);
+    }
+
+    imgs.forEach(function (img) {
+      img.addEventListener('click', function (e) {
+        e.preventDefault();
+        openOriginal(img);
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProgressiveImages);
+  } else {
+    initProgressiveImages();
+  }
+
   // --- Article table of contents ---
   function initArticleToc() {
     var toc = document.getElementById('article-toc');

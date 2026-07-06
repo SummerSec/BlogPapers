@@ -23,6 +23,7 @@
   --selection-bg: rgba(46, 133, 85, 0.18);
   --navbar-height: 3.875rem;
   --content-max: 56rem;
+  --article-max: 68rem;
   --wide-max: 82rem;
   --layout-gutter: clamp(16px, 4vw, 48px);
   --radius: 0.5rem;
@@ -797,7 +798,7 @@ body.page-front .content-shell--home {
 }
 
 .page-article:not(.page-with-ppt) .page-layout--article {
-  max-width: var(--content-max);
+  max-width: var(--article-max);
   margin: 0 auto;
 }
 
@@ -869,6 +870,21 @@ body.page-front .content-shell--home {
   max-width: 100%;
   height: auto;
   cursor: zoom-in;
+}
+
+.page-body img[data-progressive-src] {
+  background: var(--bg-subtle);
+  filter: blur(14px);
+  transform: translateZ(0);
+  transition: filter 0.28s ease, opacity 0.28s ease;
+}
+
+.page-body img[data-progressive-src].progressive-image--loaded {
+  filter: blur(4px);
+}
+
+.page-body img[data-progressive-src].progressive-image--original {
+  filter: none;
 }
 
 .page-body p:not(:has(> img ~ img)) > img:only-child {
@@ -1201,7 +1217,7 @@ body.page-front .home-index > p:first-of-type + p {
 }
 
 .article-masthead {
-  max-width: var(--content-max);
+  max-width: var(--article-max);
   margin: 0 auto 1.8rem;
   padding-bottom: 1.2rem;
   border-bottom: 1px solid var(--border);
@@ -1226,7 +1242,7 @@ body.page-front .home-index > p:first-of-type + p {
 }
 
 .article-title {
-  max-width: var(--content-max);
+  max-width: var(--article-max);
   margin: 0;
   color: color-mix(in srgb, var(--text) 88%, #000 12%);
   font-family: var(--font-heading);
@@ -1443,7 +1459,7 @@ body.page-front .home-index > p:first-of-type + p {
 .article-ppt-shell {
   display: grid;
   gap: var(--reading-pane-gap);
-  max-width: var(--content-max);
+  max-width: var(--article-max);
   margin: 0 auto;
 }
 
@@ -1459,7 +1475,7 @@ body.page-front .home-index > p:first-of-type + p {
 }
 
 .article-pane__inner {
-  max-width: var(--content-max);
+  max-width: var(--article-max);
   margin: 0 auto;
 }
 
@@ -1598,6 +1614,55 @@ body.page-front .home-index > p:first-of-type + p {
 
 .back-to-top:hover {
   color: var(--color-primary);
+}
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  display: none;
+  place-items: center;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  background: rgba(7, 12, 11, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.image-lightbox.is-open {
+  display: grid;
+}
+
+.image-lightbox__img {
+  display: block;
+  max-width: min(100%, 1400px);
+  max-height: calc(100vh - 5rem);
+  border-radius: var(--radius);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.38);
+  background: var(--bg-subtle);
+  object-fit: contain;
+}
+
+.image-lightbox__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.86);
+  font-family: var(--font-ui);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.image-lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
 }
 
 @media (min-width: 980px) {
