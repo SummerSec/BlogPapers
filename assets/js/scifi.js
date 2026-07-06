@@ -1254,6 +1254,14 @@
       img.src = previewSrc(orig);
     }
 
+    function setHighPriority(img) {
+      if (!img) return;
+      img.loading = 'eager';
+      img.decoding = 'async';
+      if ('fetchPriority' in img) img.fetchPriority = 'high';
+      img.setAttribute('fetchpriority', 'high');
+    }
+
     function loadOriginal(img, done) {
       var orig = originalSrc(img);
       if (!orig) return;
@@ -1263,16 +1271,43 @@
         if (done) done(orig);
         return;
       }
+      var frame = img.closest('.progressive-image-frame');
+      img.setAttribute('data-progressive-state', 'original-loading');
+      if (frame) frame.classList.add('is-loading-original');
+      setHighPriority(img);
       var probe = new Image();
+      setHighPriority(probe);
       probe.onload = function () {
         img.src = orig;
         img.classList.add('progressive-image--original');
+        img.setAttribute('data-progressive-state', 'original');
+        if (frame) frame.classList.remove('is-loading-original');
         if (done) done(orig);
       };
       probe.onerror = function () {
-        if (done) done(orig);
+        if (frame) frame.classList.remove('is-loading-original');
+        if (done) done(orig, true);
       };
       probe.src = orig;
+    }
+
+    function enhanceImage(img) {
+      if (!img || img.closest('.progressive-image-frame') || !img.parentNode) return;
+      var frame = document.createElement('span');
+      frame.className = 'progressive-image-frame';
+      var action = document.createElement('button');
+      action.type = 'button';
+      action.className = 'progressive-image-action';
+      action.textContent = '查看原图';
+      action.setAttribute('aria-label', '查看原图');
+      img.parentNode.insertBefore(frame, img);
+      frame.appendChild(img);
+      frame.appendChild(action);
+      action.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openOriginal(img);
+      });
     }
 
     function ensureLightbox() {
@@ -1285,10 +1320,12 @@
       box.setAttribute('aria-modal', 'true');
       box.innerHTML =
         '<button type="button" class="image-lightbox__close" aria-label="关闭原图">×</button>' +
-        '<img class="image-lightbox__img" alt="">';
+        '<img class="image-lightbox__img" alt="">' +
+        '<div class="image-lightbox__status" aria-live="polite">正在加载原图...</div>';
       document.body.appendChild(box);
       function close() {
         box.classList.remove('is-open');
+        box.classList.remove('is-loading');
         document.body.style.overflow = '';
       }
       box.addEventListener('click', function (e) {
@@ -1305,12 +1342,14 @@
       var target = box.querySelector('.image-lightbox__img');
       var orig = originalSrc(img);
       if (!orig || !target) return;
+      setHighPriority(target);
       target.alt = img.getAttribute('alt') || '';
       target.src = img.currentSrc || img.src;
-      box.classList.add('is-open');
+      box.classList.add('is-open', 'is-loading');
       document.body.style.overflow = 'hidden';
       loadOriginal(img, function (src) {
         target.src = src;
+        box.classList.remove('is-loading');
       });
     }
 
@@ -1328,6 +1367,7 @@
     }
 
     imgs.forEach(function (img) {
+      enhanceImage(img);
       img.addEventListener('click', function (e) {
         e.preventDefault();
         openOriginal(img);

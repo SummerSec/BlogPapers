@@ -60,17 +60,20 @@ def local_gh_token() -> str:
 
 def fetch_json(url: str) -> list[dict]:
     req = Request(url, headers=github_headers())
-    try:
-        with urlopen(req, timeout=30) as resp:
-            body = resp.read().decode("utf-8")
-    except HTTPError as exc:
-        print(f"GitHub API error {exc.code}: {exc.reason}", file=sys.stderr)
-        return []
-    except URLError as exc:
-        print(f"GitHub API request failed: {exc.reason}", file=sys.stderr)
-        return []
-    data = json.loads(body)
-    return data if isinstance(data, list) else []
+    for attempt in range(1, 4):
+        try:
+            with urlopen(req, timeout=30) as resp:
+                body = resp.read().decode("utf-8")
+            data = json.loads(body)
+            return data if isinstance(data, list) else []
+        except HTTPError as exc:
+            print(f"GitHub API error {exc.code}: {exc.reason}", file=sys.stderr)
+            return []
+        except URLError as exc:
+            if attempt == 3:
+                print(f"GitHub API request failed: {exc.reason}", file=sys.stderr)
+                return []
+            continue
 
 
 def repo_contents(repo: dict) -> list[dict]:
@@ -158,25 +161,21 @@ def repo_row(index: int, repo: dict) -> str:
     name = esc_html(repo.get("name", ""))
     url = esc_html(repo.get("html_url", ""))
     readmes = repo.get("readme_links") or {}
-    readme_cells = []
+    readme_links_html = []
     for key, label in README_VARIANTS:
         readme_url = esc_html(readmes.get(key, ""))
-        readme_cells.append(f'<a href="{readme_url}">{label}</a>' if readme_url else '<span class="muted">-</span>')
+        if readme_url:
+            readme_links_html.append(f'<a href="{readme_url}">{label}</a>')
+    readme_cell = " ".join(readme_links_html) if readme_links_html else '<span class="muted">-</span>'
     desc = esc_html(repo.get("description") or "")
-    language = esc_html(repo.get("language") or "-")
     stars = fmt_int(repo.get("stargazers_count"))
-    forks = fmt_int(repo.get("forks_count"))
     updated = esc_html((repo.get("pushed_at") or repo.get("updated_at") or "")[:10])
     return f"""  <tr>
     <td class="num">{index}</td>
     <td class="project"><a href="{url}">{name}</a></td>
     <td class="num">{stars}</td>
-    <td class="num">{forks}</td>
-    <td>{language}</td>
     <td>{updated}</td>
-    <td>{readme_cells[0]}</td>
-    <td>{readme_cells[1]}</td>
-    <td>{readme_cells[2]}</td>
+    <td class="readme-links">{readme_cell}</td>
     <td>{desc}</td>
   </tr>"""
 
@@ -184,19 +183,18 @@ def repo_row(index: int, repo: dict) -> str:
 def render_page(repos: list[dict]) -> str:
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     total_stars = sum(int(repo.get("stargazers_count") or 0) for repo in repos)
-    total_forks = sum(int(repo.get("forks_count") or 0) for repo in repos)
     rows = "\n".join(repo_row(i, repo) for i, repo in enumerate(repos, 1))
     return f"""---
 layout: default
-title: 开源项目
+title: Github开源项目
 comments: false
 ---
 
-# 开源项目
+# Github开源项目
 
-这里按 Star 数量从高到低列出 [SummerSec](https://github.com/{GITHUB_USER}) 名下公开、非 fork 的 GitHub 仓库。`README`、`README_CN`、`README_en` 三列会按仓库根目录实际存在的文件生成链接。
+这里按 Star 数量从高到低列出 [SummerSec](https://github.com/{GITHUB_USER}) 名下公开、非 fork 的 GitHub 仓库。README 链接会按仓库根目录实际存在的文件生成。
 
-> 数据生成时间：{generated}；共 {len(repos)} 个项目，累计 {fmt_int(total_stars)} Stars / {fmt_int(total_forks)} Forks。
+> 数据生成时间：{generated}；共 {len(repos)} 个项目，累计 {fmt_int(total_stars)} Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -205,12 +203,8 @@ comments: false
       <th>#</th>
       <th>项目</th>
       <th>Stars</th>
-      <th>Forks</th>
-      <th>语言</th>
       <th>最近更新</th>
       <th>README</th>
-      <th>README_CN</th>
-      <th>README_en</th>
       <th>简介</th>
     </tr>
   </thead>
