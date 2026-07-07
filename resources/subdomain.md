@@ -38,7 +38,7 @@ tags:
 
 <!--CLOUDFLARE_DNS_SYNC_BEGIN-->
 
-> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **71** 条原始记录，**59** 个主机名）。TXT 等内容已截断。
+> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **72** 条原始记录，**60** 个主机名）。TXT 等内容已截断。
 
 | 主机名 | 类型 | 内容（节选） | Proxied |
 | ------ | ---- | ------------ | ------- |
@@ -48,6 +48,7 @@ tags:
 | [_dnslink.jb.sumsec.me](https://_dnslink.jb.sumsec.me/) | TXT | TXT: "dnslink=/ipns/3.jetbra.in" | 否 |
 | [_github-pages-challenge-summersec.sumsec.me](https://_github-pages-challenge-summersec.sumsec.me/) | TXT | TXT: f5348f974e140dd9ff5af3dedb7bd8 | 否 |
 | [_mailchannels.sumsec.me](https://_mailchannels.sumsec.me/) | TXT | TXT: v=mc1 cfid=sumsec.me | 否 |
+| [agent.sumsec.me](https://agent.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
 | [ait.sumsec.me](https://ait.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [arl.sumsec.me](https://arl.sumsec.me/) | CNAME | CNAME: 413a8c38-4ac9-4828-97cd-828c83f75e69.cfargotunn… | 是 |
 | [awvs.sumsec.me](https://awvs.sumsec.me/) | CNAME | CNAME: c424a3e4-916b-4174-8d44-c9e59b54fbb5.cfargotunn… | 是 |
