@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会按仓库根目录实际存在的文件生成。
 
-> 数据生成时间：2026-07-09 20:06:07 UTC；共 26 个项目，累计 7,947 Stars。
+> 数据生成时间：2026-07-10 04:17:35 UTC；共 26 个项目，累计 7,947 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -36,7 +36,7 @@ comments: false
     <td class="project"><a href="https://github.com/SummerSec/SpringBootExploit">SpringBootExploit</a></td>
     <td class="num">1,901</td>
     <td>2024-01-15</td>
-    <td class="readme-links"><a href="https://github.com/SummerSec/SpringBootExploit/blob/main/README.md">README</a></td>
+    <td class="readme-links"><a href="https://github.com/SummerSec/SpringBootExploit#readme">README</a></td>
     <td>项目是根据LandGrey/SpringBootVulExploit清单编写，目的hvv期间快速利用漏洞、降低漏洞利用门槛。</td>
   </tr>
   <tr>
@@ -52,7 +52,7 @@ comments: false
     <td class="project"><a href="https://github.com/SummerSec/learning-codeql">learning-codeql</a></td>
     <td class="num">802</td>
     <td>2022-03-18</td>
-    <td class="readme-links"><a href="https://github.com/SummerSec/learning-codeql/blob/main/README.md">README</a></td>
+    <td class="readme-links"><a href="https://github.com/SummerSec/learning-codeql#readme">README</a></td>
     <td>CodeQL Java 全网最全的中文学习资料</td>
   </tr>
   <tr>
@@ -131,7 +131,7 @@ comments: false
     <td class="num">14</td>
     <td class="project"><a href="https://github.com/SummerSec/SummerSec">SummerSec</a></td>
     <td class="num">36</td>
-    <td>2026-07-09</td>
+    <td>2026-07-10</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/SummerSec/blob/master/README.md">README</a></td>
     <td></td>
   </tr>
@@ -203,7 +203,7 @@ comments: false
     <td class="num">23</td>
     <td class="project"><a href="https://github.com/SummerSec/github-profile">github-profile</a></td>
     <td class="num">3</td>
-    <td>2026-07-09</td>
+    <td>2026-07-10</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/github-profile/blob/master/README.md">README</a></td>
     <td></td>
   </tr>
