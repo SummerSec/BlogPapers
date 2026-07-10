@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会按仓库根目录实际存在的文件生成。
 
-> 数据生成时间：2026-07-10 09:54:34 UTC；共 26 个项目，累计 7,949 Stars。
+> 数据生成时间：2026-07-10 15:04:07 UTC；共 26 个项目，累计 7,950 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -106,7 +106,7 @@ comments: false
   <tr>
     <td class="num">11</td>
     <td class="project"><a href="https://github.com/SummerSec/BypassSuper">BypassSuper</a></td>
-    <td class="num">104</td>
+    <td class="num">105</td>
     <td>2021-02-08</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/BypassSuper/blob/master/README.md">README</a></td>
     <td>Bypass 403 or 401 or 404</td>
@@ -164,7 +164,7 @@ comments: false
     <td class="project"><a href="https://github.com/SummerSec/Gen-Image">Gen-Image</a></td>
     <td class="num">11</td>
     <td>2026-07-01</td>
-    <td class="readme-links"><a href="https://github.com/SummerSec/Gen-Image#readme">README</a></td>
+    <td class="readme-links"><a href="https://github.com/SummerSec/Gen-Image/blob/master/README.md">README</a></td>
     <td>基于OPENAI 的 GPT Image 模型前端图像生成工作台</td>
   </tr>
   <tr>
