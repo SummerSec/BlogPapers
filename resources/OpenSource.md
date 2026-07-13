@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会按仓库根目录实际存在的文件生成。
 
-> 数据生成时间：2026-07-13 09:49:42 UTC；共 26 个项目，累计 7,955 Stars。
+> 数据生成时间：2026-07-13 15:13:44 UTC；共 26 个项目，累计 7,955 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -52,7 +52,7 @@ comments: false
     <td class="project"><a href="https://github.com/SummerSec/learning-codeql">learning-codeql</a></td>
     <td class="num">802</td>
     <td>2022-03-18</td>
-    <td class="readme-links"><a href="https://github.com/SummerSec/learning-codeql/blob/main/README.md">README</a></td>
+    <td class="readme-links"><a href="https://github.com/SummerSec/learning-codeql#readme">README</a></td>
     <td>CodeQL Java 全网最全的中文学习资料</td>
   </tr>
   <tr>
@@ -60,7 +60,7 @@ comments: false
     <td class="project"><a href="https://github.com/SummerSec/SpringExploit">SpringExploit</a></td>
     <td class="num">450</td>
     <td>2022-06-14</td>
-    <td class="readme-links"><a href="https://github.com/SummerSec/SpringExploit/blob/main/README.md">README</a></td>
+    <td class="readme-links"><a href="https://github.com/SummerSec/SpringExploit#readme">README</a></td>
     <td>🚀 一款为了学习go而诞生的漏洞利用工具</td>
   </tr>
   <tr>
@@ -92,7 +92,7 @@ comments: false
     <td class="project"><a href="https://github.com/SummerSec/BurpBountyProfiles">BurpBountyProfiles</a></td>
     <td class="num">144</td>
     <td>2021-02-08</td>
-    <td class="readme-links"><a href="https://github.com/SummerSec/BurpBountyProfiles#readme">README</a></td>
+    <td class="readme-links"><a href="https://github.com/SummerSec/BurpBountyProfiles/blob/main/README.md">README</a></td>
     <td>BurpBounty插件的配置文件收集项目</td>
   </tr>
   <tr>
