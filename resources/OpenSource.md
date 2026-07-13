@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会按仓库根目录实际存在的文件生成。
 
-> 数据生成时间：2026-07-13 04:03:34 UTC；共 26 个项目，累计 7,954 Stars。
+> 数据生成时间：2026-07-13 09:49:42 UTC；共 26 个项目，累计 7,955 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -34,7 +34,7 @@ comments: false
   <tr>
     <td class="num">2</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringBootExploit">SpringBootExploit</a></td>
-    <td class="num">1,902</td>
+    <td class="num">1,903</td>
     <td>2024-01-15</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/SpringBootExploit/blob/main/README.md">README</a></td>
     <td>项目是根据LandGrey/SpringBootVulExploit清单编写，目的hvv期间快速利用漏洞、降低漏洞利用门槛。</td>
@@ -92,7 +92,7 @@ comments: false
     <td class="project"><a href="https://github.com/SummerSec/BurpBountyProfiles">BurpBountyProfiles</a></td>
     <td class="num">144</td>
     <td>2021-02-08</td>
-    <td class="readme-links"><a href="https://github.com/SummerSec/BurpBountyProfiles/blob/main/README.md">README</a></td>
+    <td class="readme-links"><a href="https://github.com/SummerSec/BurpBountyProfiles#readme">README</a></td>
     <td>BurpBounty插件的配置文件收集项目</td>
   </tr>
   <tr>
@@ -115,7 +115,7 @@ comments: false
     <td class="num">12</td>
     <td class="project"><a href="https://github.com/SummerSec/BlogPapers">BlogPapers</a></td>
     <td class="num">59</td>
-    <td>2026-07-12</td>
+    <td>2026-07-13</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/BlogPapers/blob/master/README.md">README</a></td>
     <td>个人博客网站</td>
   </tr>
@@ -179,7 +179,7 @@ comments: false
     <td class="num">20</td>
     <td class="project"><a href="https://github.com/SummerSec/LOF_Arbiter">LOF_Arbiter</a></td>
     <td class="num">7</td>
-    <td>2026-07-10</td>
+    <td>2026-07-13</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/LOF_Arbiter/blob/main/README.md">README</a></td>
     <td>LOF_Arbiter (套利)</td>
   </tr>
