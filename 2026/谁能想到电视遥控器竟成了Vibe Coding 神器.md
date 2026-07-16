@@ -43,7 +43,7 @@ tags:
 
 这个用法就更简单了。我也拿它刷网页版抖音，直接用遥控器操作页面。它本来就是给电视做的，换到网页版短视频上，居然一点都不违和。
 
-<video controls playsinline preload="metadata" width="100%" style="max-width:1080px" src="./pic/vibe-coding-remote/douying.mp4"></video>
+<video controls playsinline preload="metadata" width="100%" style="max-width:1080px" src="./pic/vibe-coding-remote/douying-web.mp4"></video>
 
 ![小米蓝牙遥控器 2 Pro 的语音功能](./pic/vibe-coding-remote/xiaomi-remote-voice.jpg)
 
