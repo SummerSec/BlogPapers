@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会按仓库根目录实际存在的文件生成。
 
-> 数据生成时间：2026-07-15 19:38:07 UTC；共 26 个项目，累计 7,957 Stars。
+> 数据生成时间：2026-07-16 03:40:57 UTC；共 26 个项目，累计 7,958 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -26,7 +26,7 @@ comments: false
   <tr>
     <td class="num">1</td>
     <td class="project"><a href="https://github.com/SummerSec/ShiroAttack2">ShiroAttack2</a></td>
-    <td class="num">2,598</td>
+    <td class="num">2,599</td>
     <td>2026-06-04</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/ShiroAttack2/blob/master/README.md">README</a> <a href="https://github.com/SummerSec/ShiroAttack2/blob/master/README_EN.md">README_en</a></td>
     <td>shiro反序列化漏洞综合利用（仅限授权测试使用）</td>
@@ -131,7 +131,7 @@ comments: false
     <td class="num">14</td>
     <td class="project"><a href="https://github.com/SummerSec/SummerSec">SummerSec</a></td>
     <td class="num">36</td>
-    <td>2026-07-15</td>
+    <td>2026-07-16</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/SummerSec/blob/master/README.md">README</a></td>
     <td></td>
   </tr>
@@ -203,7 +203,7 @@ comments: false
     <td class="num">23</td>
     <td class="project"><a href="https://github.com/SummerSec/github-profile">github-profile</a></td>
     <td class="num">3</td>
-    <td>2026-07-15</td>
+    <td>2026-07-16</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/github-profile/blob/master/README.md">README</a></td>
     <td></td>
   </tr>
