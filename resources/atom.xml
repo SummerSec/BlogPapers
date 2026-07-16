@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-07-16T15:10:01Z</updated>
+  <updated>2026-07-16T15:13:44Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
@@ -10,7 +10,7 @@
   <entry>
     <id>https://sumsec.me/2026/%E8%B0%81%E8%83%BD%E6%83%B3%E5%88%B0%E7%94%B5%E8%A7%86%E9%81%A5%E6%8E%A7%E5%99%A8%E7%AB%9F%E6%88%90%E4%BA%86Vibe%20Coding%20%E7%A5%9E%E5%99%A8.html</id>
     <title>谁能想到，电视遥控器竟成了 Vibe Coding 神器</title>
-    <updated>2026-07-16T13:18:05Z</updated>
+    <updated>2026-07-16T15:11:20Z</updated>
     <link href="https://sumsec.me/2026/%E8%B0%81%E8%83%BD%E6%83%B3%E5%88%B0%E7%94%B5%E8%A7%86%E9%81%A5%E6%8E%A7%E5%99%A8%E7%AB%9F%E6%88%90%E4%BA%86Vibe%20Coding%20%E7%A5%9E%E5%99%A8.html" rel="alternate" />
   </entry>
   <entry>
