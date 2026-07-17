@@ -869,8 +869,9 @@
     if (!a.href) return;
     try {
       var ap = normalizePathForNav(new URL(a.href).pathname);
+      var isGroupParent = a.classList.contains('nav-link--group');
       var categorySectionActive = a.classList.contains('nav-link--categories') && path.indexOf('/categories/') === 0;
-      if (ap === path || categorySectionActive || (path === '/' && (ap === '/' || ap === '/index.html'))) {
+      if (!isGroupParent && (ap === path || categorySectionActive || (path === '/' && (ap === '/' || ap === '/index.html')))) {
         a.classList.add('nav-active');
         a.setAttribute('aria-current', 'page');
       }
