@@ -18,7 +18,12 @@ comments: false
       <li>
         <a class="category-article__title" href="../2026/AI%20Agent%20%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%BF%85%E7%84%B6%E6%BC%94%E8%BF%9B%EF%BC%9ACLI%E3%80%81Skills%E3%80%81Harness%20%E4%B8%8E%20Loop.html">AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop</a>
         <div class="category-article__meta">
-          <time datetime="2026">2026</time>
+          <time datetime="2026-07-17">2026 · 07/17</time>
+          <span class="category-article__tags" aria-label="文章标签">
+            <span>AI</span>
+            <span>Agent</span>
+            <span>CLI</span>
+          </span>
         </div>
       </li>
       <li>
