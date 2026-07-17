@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-07-17T14:41:59Z</updated>
+  <updated>2026-07-17T14:51:09Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
@@ -10,7 +10,7 @@
   <entry>
     <id>https://sumsec.me/2026/AI%20Agent%20%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%BF%85%E7%84%B6%E6%BC%94%E8%BF%9B%EF%BC%9ACLI%E3%80%81Skills%E3%80%81Harness%20%E4%B8%8E%20Loop.html</id>
     <title>AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop</title>
-    <updated>2026-07-17T14:34:35Z</updated>
+    <updated>2026-07-17T14:50:05Z</updated>
     <link href="https://sumsec.me/2026/AI%20Agent%20%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%BF%85%E7%84%B6%E6%BC%94%E8%BF%9B%EF%BC%9ACLI%E3%80%81Skills%E3%80%81Harness%20%E4%B8%8E%20Loop.html" rel="alternate" />
   </entry>
   <entry>

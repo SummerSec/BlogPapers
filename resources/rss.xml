@@ -7,13 +7,13 @@
 <docs>http://www.rssboard.org/rss-specification</docs>
 <generator>BlogPapers generate_feed_and_sitemap.py</generator>
 <language>zh-CN</language>
-<lastBuildDate>Fri, 17 Jul 2026 14:41:59 +0000</lastBuildDate>
+<lastBuildDate>Fri, 17 Jul 2026 14:51:09 +0000</lastBuildDate>
 <atom:link href="https://sumsec.me/resources/rss.xml" rel="self" type="application/rss+xml"/>
 <item>
 <title>AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop</title>
 <link>https://sumsec.me/2026/AI%20Agent%20%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%BF%85%E7%84%B6%E6%BC%94%E8%BF%9B%EF%BC%9ACLI%E3%80%81Skills%E3%80%81Harness%20%E4%B8%8E%20Loop.html</link>
 <guid isPermaLink="true">https://sumsec.me/2026/AI%20Agent%20%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%BF%85%E7%84%B6%E6%BC%94%E8%BF%9B%EF%BC%9ACLI%E3%80%81Skills%E3%80%81Harness%20%E4%B8%8E%20Loop.html</guid>
-<pubDate>Fri, 17 Jul 2026 14:34:35 +0000</pubDate>
+<pubDate>Fri, 17 Jul 2026 14:50:05 +0000</pubDate>
 </item>
 <item>
 <title>从安全角度谈Java反射机制--前章</title>
