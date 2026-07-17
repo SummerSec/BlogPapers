@@ -173,14 +173,12 @@
           {% endif %}
           {% endfor %}
           <a href="{{ '/categories/README.html' | relative_url }}" class="nav-link nav-link--categories">分类</a>
-          <a href="{{ '/resources/Archives.html' | relative_url }}" class="nav-link nav-link--archives">归档</a>
           <a href="{{ '/resources/AboutMe.html' | relative_url }}" class="nav-link nav-link--about">关于</a>
           <a href="{{ '/resources/OpenSource.html' | relative_url }}" class="nav-link nav-link--opensource">Github开源项目</a>
           <a href="{{ '/resources/README.html' | relative_url }}" class="nav-link nav-link--resources">资源</a>
         </div>
         <div class="nav-cluster nav-cluster--utility" aria-label="外部与订阅">
           <a href="https://github.com/{{ site.repository }}" class="nav-link nav-link--github" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://old.sumsec.me" class="nav-link nav-link--legacy" target="_blank" rel="noopener">旧站</a>
           <a href="{{ '/resources/rss.xml' | relative_url }}" class="nav-link nav-link--rss">RSS</a>
         </div>
       </nav>

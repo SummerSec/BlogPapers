@@ -8,7 +8,7 @@ comments: false
   <header class="category-browser__header">
     <p class="category-browser__eyebrow">TOPIC DIRECTORY / SUMSEC</p>
     <h1>主题分类</h1>
-    <p>选择一个分类，进入独立页面查看该主题下的全部文章。按年份浏览仍保留在归档页面，文章原有链接不会改变。</p>
+    <p>按主题或年份两个维度浏览全部文章。主题分类在下面按组展示，年份归档见页底；文章原有链接不会改变。</p>
     <div class="category-browser__summary"><strong>118</strong> 篇文章 <span aria-hidden="true">/</span> <strong>10</strong> 条主题路径</div>
   </header>
   <nav class="category-directory" aria-label="主题分类目录">
@@ -71,4 +71,29 @@ comments: false
       <span class="category-directory__count">11</span>
     </a>
   </nav>
+  <section class="category-archive" aria-label="按年份浏览">
+    <div class="category-page__section-title"><h2>按年份浏览</h2><span><a href="../resources/Archives.html">全部归档</a></span></div>
+    <div class="category-archive__grid">
+      <a class="category-archive__link" href="../2026/README.html">
+        <span class="category-archive__year">2026</span>
+        <span class="category-archive__count">09 篇</span>
+      </a>
+      <a class="category-archive__link" href="../2022/README.html">
+        <span class="category-archive__year">2022</span>
+        <span class="category-archive__count">22 篇</span>
+      </a>
+      <a class="category-archive__link" href="../2021/README.html">
+        <span class="category-archive__year">2021</span>
+        <span class="category-archive__count">38 篇</span>
+      </a>
+      <a class="category-archive__link" href="../2020/README.html">
+        <span class="category-archive__year">2020</span>
+        <span class="category-archive__count">19 篇</span>
+      </a>
+      <a class="category-archive__link" href="../2019/README.html">
+        <span class="category-archive__year">2019</span>
+        <span class="category-archive__count">24 篇</span>
+      </a>
+    </div>
+  </section>
 </div>

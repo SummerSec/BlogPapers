@@ -265,7 +265,11 @@ def article_href(path: Path) -> str:
     return "../" + "/".join(quote(part, safe="") for part in html_path.split("/"))
 
 
-def render_index(categories: list[dict], grouped: dict[str, list[Article]]) -> str:
+def render_index(
+    categories: list[dict],
+    grouped: dict[str, list[Article]],
+    year_counts: list[tuple[str, int]],
+) -> str:
     total = sum(len(items) for items in grouped.values())
     lines = [
         "---",
@@ -278,7 +282,7 @@ def render_index(categories: list[dict], grouped: dict[str, list[Article]]) -> s
         '  <header class="category-browser__header">',
         '    <p class="category-browser__eyebrow">TOPIC DIRECTORY / SUMSEC</p>',
         "    <h1>主题分类</h1>",
-        "    <p>选择一个分类，进入独立页面查看该主题下的全部文章。按年份浏览仍保留在归档页面，文章原有链接不会改变。</p>",
+        "    <p>按主题或年份两个维度浏览全部文章。主题分类在下面按组展示，年份归档见页底；文章原有链接不会改变。</p>",
         f'    <div class="category-browser__summary"><strong>{total}</strong> 篇文章 <span aria-hidden="true">/</span> <strong>{len(categories)}</strong> 条主题路径</div>',
         "  </header>",
         '  <nav class="category-directory" aria-label="主题分类目录">',
@@ -299,7 +303,26 @@ def render_index(categories: list[dict], grouped: dict[str, list[Article]]) -> s
                 "    </a>",
             ]
         )
-    lines.extend(["  </nav>", "</div>", ""])
+    lines.extend(["  </nav>"])
+    if year_counts:
+        lines.extend(
+            [
+                '  <section class="category-archive" aria-label="按年份浏览">',
+                '    <div class="category-page__section-title"><h2>按年份浏览</h2><span><a href="../resources/Archives.html">全部归档</a></span></div>',
+                '    <div class="category-archive__grid">',
+            ]
+        )
+        for year, count in year_counts:
+            lines.extend(
+                [
+                    f'      <a class="category-archive__link" href="../{year}/README.html">',
+                    f'        <span class="category-archive__year">{year}</span>',
+                    f'        <span class="category-archive__count">{count:02d} 篇</span>',
+                    "      </a>",
+                ]
+            )
+        lines.extend(["    </div>", "  </section>"])
+    lines.extend(["</div>", ""])
     return "\n".join(lines)
 
 
@@ -369,8 +392,19 @@ def main() -> int:
         grouped = {category["slug"]: [] for category in categories}
         for article in articles:
             grouped[classify(article, categories, pinned)].append(article)
+        per_root: dict[str, int] = {}
+        for article in articles:
+            root_name = article.path.relative_to(REPO_ROOT).parts[0]
+            per_root[root_name] = per_root.get(root_name, 0) + 1
+        year_counts = sorted(
+            ((name, count) for name, count in per_root.items() if name.isdigit() and len(name) == 4),
+            key=lambda item: item[0],
+            reverse=True,
+        )
         CATEGORY_DIR.mkdir(parents=True, exist_ok=True)
-        (CATEGORY_DIR / "README.md").write_text(render_index(categories, grouped), encoding="utf-8", newline="\n")
+        (CATEGORY_DIR / "README.md").write_text(
+            render_index(categories, grouped, year_counts), encoding="utf-8", newline="\n"
+        )
         expected = {"readme.md"}
         for category in categories:
             expected.add(f'{category["slug"]}.md'.casefold())
