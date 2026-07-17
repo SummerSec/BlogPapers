@@ -57,6 +57,10 @@ defaults:
       title: "归档"
       comments: false
   - scope:
+      path: "categories"
+    values:
+      comments: false
+  - scope:
       path: "resources/OpenSource.md"
     values:
       title: "Github开源项目"

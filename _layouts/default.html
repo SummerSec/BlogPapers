@@ -15,7 +15,7 @@
 {% assign _page_src = page.path | default: '' %}
 {% assign _page_src_ext = _page_src | split: '.' | last %}
 {% if _page_src_ext == 'md' or _page_src_ext == 'markdown' %}
-  {% unless _page_src == 'README.md' or _page_src contains 'resources/' %}
+  {% unless _page_src == 'README.md' or _page_src contains 'resources/' or _page_src contains 'categories/' %}
     {% assign page_is_markdown_article = true %}
     {% assign page_kind = 'article' %}
   {% endunless %}
@@ -151,6 +151,22 @@
       <nav class="site-nav" id="site-nav" aria-label="主导航">
         <div class="nav-cluster nav-cluster--primary" aria-label="站内页面">
           <a href="{{ '/' | relative_url }}" class="nav-link nav-link--home">首页</a>
+          <div class="nav-dropdown">
+            <a href="{{ '/categories/' | relative_url }}" class="nav-link nav-link--categories">分类</a>
+            <div class="nav-dropdown__menu" aria-label="主题分类">
+              {% assign nav_last_group = '' %}
+              {% for category in site.data.article_categories.categories %}
+              {% assign nav_group = category.group | default: '' %}
+              {% if nav_group != '' and nav_group != nav_last_group %}
+              <p class="nav-dropdown__header">{{ nav_group }}</p>
+              {% endif %}
+              {% assign nav_last_group = nav_group %}
+              <a href="{{ '/categories/' | append: category.slug | append: '.html' | relative_url }}" class="nav-dropdown__item">
+                <span>{{ category.code }}</span>{{ category.name }}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
           <a href="{{ '/resources/Archives.html' | relative_url }}" class="nav-link nav-link--archives">归档</a>
           <a href="{{ '/resources/AboutMe.html' | relative_url }}" class="nav-link nav-link--about">关于</a>
           <a href="{{ '/resources/OpenSource.html' | relative_url }}" class="nav-link nav-link--opensource">Github开源项目</a>

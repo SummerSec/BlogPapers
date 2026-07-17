@@ -28,6 +28,7 @@ from urllib.parse import quote
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RESOURCES = REPO_ROOT / "resources"
+CATEGORIES = REPO_ROOT / "categories"
 SITE = "https://sumsec.me"
 SITE_DESC = "像清水一般清澈透明"
 CHANNEL_TITLE = "SUMSEC"
@@ -38,6 +39,7 @@ _FALLBACK_POST_ROOTS = ("2021", "2022", "2023", "2026", "PL")
 
 # 固定收录的导航类页面（不含首页与 resources/README，二者在 sitemap 中单独插入顺序）
 STATIC_SITEMAP_PATHS = (
+    "/categories/",
     "/resources/Archives.html",
     "/resources/AboutMe.html",
     "/resources/OpenSource.html",
@@ -191,6 +193,12 @@ def collect_sitemap_urls(
 
     if RESOURCES.is_dir():
         for path in sorted(RESOURCES.glob("*.md")):
+            if path.name == "README.md":
+                continue
+            add(url_for_md(path.relative_to(REPO_ROOT)))
+
+    if CATEGORIES.is_dir():
+        for path in sorted(CATEGORIES.glob("*.md")):
             if path.name == "README.md":
                 continue
             add(url_for_md(path.relative_to(REPO_ROOT)))

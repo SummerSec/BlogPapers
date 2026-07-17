@@ -27,6 +27,7 @@ tags:
 | swagger-xss.yaml | [swagger-xss.yaml](./swagger.yaml) |
 | vless.yaml | [vless.yaml](./vless.yaml) |
 | Archives.md | [Archives.md](./Archives.md) |
+| categories/README.md | [主题分类目录](../categories/README.md) |
 | Advertisements.md | [Advertisements.md](./Advertisements.md) |
 | AboutMe.md | [AboutMe.md](./AboutMe.md) |
 | OpenSource.md | [OpenSource.md](./OpenSource.md) |
@@ -34,6 +35,7 @@ tags:
 | urls.txt | [urls.txt](./urls.txt) |
 | JPATHRceBean.xml | [JPATHRceBean.xml](./JPATHRceBean.xml) |
 | generate_feed_and_sitemap.py | [生成 RSS / Atom / Sitemap](../_scripts/generate_feed_and_sitemap.py) |
+| generate_categories_page.py | [生成主题分类页](../_scripts/generate_categories_page.py) |
 | spring-framework-rce.zip | [spring-framework-rce.zip](./spring-framework-rce.zip) |
 | chrome/js.svg | [chrome/js.svg](./chrome/js.svg) |
 | chrome/r.php | [chrome/r.php](./chrome/r.php) |

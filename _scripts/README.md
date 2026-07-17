@@ -1,5 +1,22 @@
 # 仓库维护脚本
 
+## `generate_categories_page.py`
+
+根据 `resources/Archives.md` 中登记的归档根目录收集博文，并优先读取各目录 `README.md` 时间轴中的日期与 Tags，生成 `categories/README.md` 分类目录，以及 `categories/<slug>.md` 独立分类页。
+
+分类名称、页面 slug、匹配标签和关键词集中维护在 `_data/article_categories.json`。新增 `AI Coding`、`Web Coding` 一类配置后，脚本会创建对应的独立页面。文章文件继续保留在年份目录，不需要为了分类移动路径；已被 Git 跟踪或暂存、但尚未写入时间轴的 Markdown 也会被收录。未跟踪草稿不会提前出现在生成页中。
+
+配置字段说明：
+
+- `tags` / `keywords` / `roots`：按时间轴标签、标题关键词、归档根目录自动归类
+- `articles`：显式指定某篇文章的归属（仓库相对路径），优先级最高；列出的文章即使尚未被 Git 跟踪也会收录，适合即将发布的新文
+- `group`：可选分组名（如 `AI 方向`），相同分组在分类目录卡片与顶部导航下拉中显示组标题
+- `fallback`：兜底分类，全配置有且只能有一个
+
+```bash
+python _scripts/generate_categories_page.py
+```
+
 ## `fetch_cloudflare_subdomains.py`
 
 从 Cloudflare DNS API 拉取 `sumsec.me` 下全部记录，生成 Markdown 表格，写入 `resources/subdomain.md` 中 `<!--CLOUDFLARE_DNS_SYNC_BEGIN-->` … `END` 之间。

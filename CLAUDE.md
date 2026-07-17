@@ -43,6 +43,16 @@ BUNDLE_WITHOUT="" bundle exec jekyll serve
 
 要求：Jekyll 4.x + Dart Sass，不使用 LibSass。
 
+## 主题分类
+
+除按年份浏览外，站点还有一套主题分类，入口在顶部导航「分类」下拉与 `/categories/`：
+
+- 分类定义集中在 `_data/article_categories.json`（slug、名称、配色、`tags`/`keywords`/`roots` 自动匹配规则、`articles` 显式归属、`group` 分组、`fallback` 兜底）
+- 新增/改名/删除分类只改这一个 JSON 再重跑脚本即可，导航下拉、目录页、独立分类页全部自动生成；配色 `accent` 复用 `assets/css/style.scss` 里已有的 `[data-topic='...']` 值，未定义的 accent 会回退默认蓝色
+- `categories/` 下所有页面由 `_scripts/generate_categories_page.py` 生成，**不要手工编辑**；AboutMe 工作流会自动重跑并提交
+- 新增文章只需正常登记到年份 README 时间轴（带上 Tags），脚本下次运行即自动归类；标签匹配不准时，把文章相对路径加进对应分类的 `articles` 列表
+- 调整分类后本地运行 `py _scripts/generate_categories_page.py` 验证
+
 ## 新增文章约定
 
 1. 新建文章：`YYYY/post-title.md`
