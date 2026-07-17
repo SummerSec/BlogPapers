@@ -5,7 +5,7 @@ comments: false
 ---
 
 <div class="category-page" data-topic="violet">
-  <nav class="category-breadcrumb" aria-label="页面路径"><a href="./">主题分类</a><span aria-hidden="true">/</span><span aria-current="page">AI 思考</span></nav>
+  <nav class="category-breadcrumb" aria-label="页面路径"><a href="./README.html">主题分类</a><span aria-hidden="true">/</span><span aria-current="page">AI 思考</span></nav>
   <header class="category-page__header">
     <p class="category-page__code">AI THINK</p>
     <h1>AI 思考</h1>

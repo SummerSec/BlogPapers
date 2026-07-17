@@ -344,7 +344,7 @@ def render_category_page(category: dict, items: list[Article]) -> str:
         "---",
         "",
         f'<div class="category-page" data-topic="{html.escape(category["accent"])}">',
-        '  <nav class="category-breadcrumb" aria-label="页面路径"><a href="./">主题分类</a><span aria-hidden="true">/</span><span aria-current="page">' + name + "</span></nav>",
+        '  <nav class="category-breadcrumb" aria-label="页面路径"><a href="./README.html">主题分类</a><span aria-hidden="true">/</span><span aria-current="page">' + name + "</span></nav>",
         '  <header class="category-page__header">',
         f'    <p class="category-page__code">{html.escape(category["code"])}</p>',
         f"    <h1>{name}</h1>",

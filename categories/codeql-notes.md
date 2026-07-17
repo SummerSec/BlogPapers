@@ -5,7 +5,7 @@ comments: false
 ---
 
 <div class="category-page" data-topic="mint">
-  <nav class="category-breadcrumb" aria-label="页面路径"><a href="./">主题分类</a><span aria-hidden="true">/</span><span aria-current="page">CodeQL 学习笔记</span></nav>
+  <nav class="category-breadcrumb" aria-label="页面路径"><a href="./README.html">主题分类</a><span aria-hidden="true">/</span><span aria-current="page">CodeQL 学习笔记</span></nav>
   <header class="category-page__header">
     <p class="category-page__code">CODEQL</p>
     <h1>CodeQL 学习笔记</h1>
