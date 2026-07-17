@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会按仓库根目录实际存在的文件生成。
 
-> 数据生成时间：2026-07-17 08:29:52 UTC；共 26 个项目，累计 7,958 Stars。
+> 数据生成时间：2026-07-17 14:05:36 UTC；共 26 个项目，累计 7,958 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -187,7 +187,7 @@ comments: false
     <td class="num">21</td>
     <td class="project"><a href="https://github.com/SummerSec/SumSec-Skills">SumSec-Skills</a></td>
     <td class="num">5</td>
-    <td>2026-07-09</td>
+    <td>2026-07-17</td>
     <td class="readme-links"><a href="https://github.com/SummerSec/SumSec-Skills/blob/master/README.md">README</a></td>
     <td>SummerSec 个人自定义Skill仓库</td>
   </tr>
