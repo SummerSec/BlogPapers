@@ -51,26 +51,104 @@
 
 ---
 
-
-
-#### 2021 📅
+#### 2021  📅
 
 | Time  | Name                                                         | Tags           |
 | ----- | ------------------------------------------------------------ | -------------- |
-| 04/15 | [PII泄露--用CodeQL识别日志中的PII数据](./2021/PII泄露--用CodeQL识别日志中的PII数据.md) | CodeQL/Java    |
-| 04/24 | [CodeQL workshop for Java Unsafe deserialization in Apache Struts](./2021/CodeQL-workshop-for-Java-Unsafe-deserialization-in-Apache-Struts.md) | CodeQL/Java    |
-| 06/05 | [weblogic之CVE-2020-2551iiop反序列化漏洞分析](./2021/weblogic之CVE-2020-2551iiop反序列化漏洞分析.md) | Java           |
-| 06/05 | [weblogic之CVE-2020-2551iiop反序列化漏洞复现](./2021/weblogic之CVE-2020-2551iiop反序列化漏洞复现.md) | Java           |
-| 07/15 | [Fastjson回显](./2021/Fastjson回显.md)                       | Java/Fastjson  |
-| 07/21 | [Tomcat通用回显学习笔记](./2021/Tomcat通用回显学习笔记.md)   | Java           |
-| 08/03 | [从Java反序列化漏洞题看CodeQL数据流](./2021/从Java反序列化漏洞题看CodeQL数据流.md) | CodeQL/Java    |
-| 11/01 | [Shiro-550反序列化漏洞分析](./2021/Shiro-550反序列化漏洞分析.md) | shiro550/Java  |
-| 11/09 | [记一次Log4j失败的Gadget挖掘记录](./2021/记一次Log4j失败的Gadget挖掘记录.md) | CodeQL/Java    |
-| 11/15 | [ysoserial改造记录](./2021/ysoserial改造记录.md)             | ysoserial/Java |
-| 11/30 | [JNDI注入](./2021/JNDI注入.md)                               | JNDI/Java      |
-| 12/08 | [shiro-JRMP-gadget](./2021/shiro-JRMP-gadget.md)             | shiro/exp      |
-| 12/21 | [Fastjson_Mysql_gadget复现](./2021/Fastjson_Mysql_gadget复现.md) | fastjson/exp   |
-| 12/31 | [2021年度总结](./2021/2021年度总结.md)                       | 总结           |
+| 02/05 | [BypassSuper使用介绍说明](./2021/BypassSuper工具介绍.md) | 反序列化 Java shiro/Java 文件上传 |
+| 03/05 | [一道shiro反序列化题目引发的思考](./2021/一道shiro反序列化题目引发的思考.md) | 未授权 401 403 |
+| 03/14 | [Queries](./2021/queries.md) | 反序列化 Java shiro |
+| 03/15 | [Predicates](./2021/predicates.md) | codeql |
+| 03/15 | [Type](./2021/type.md) | codeql |
+| 03/16 | [Aliases](./2021/aliases.md) | codeql |
+| 03/16 | [Expression](./2021/expressions.md) | codeql |
+| 03/16 | [Modules](./2021/modules.md) | codeql |
+| 03/17 | [Formulas](./2021/formulas.md) | Java 反序列化 |
+| 03/22 | [Basic query for Java code](./2021/Basic-query-for-Java-code.md) | Java 反序列化 |
+| 03/23 | [Analyzing data flow in Java](./2021/Analyzing-data-flow-in-Java.md) | codeql |
+| 03/24 | [Types in Java](./2021/Types-in-Java.md) | codeql |
+| 03/25 | [Navigating the call graph](./2021/Navigating-the-call-graph.md) | codeql |
+| 03/25 | [Overflow-prone comparisons in Java](./2021/Overflow-prone-comparisons-in-Java.md) |  |
+| 03/26 | [Abstract syntax tree classes for working with Java programs](./2021/Abstract-syntax-tree-classes-for-working-with-Java-programs.md) | codeql |
+| 03/26 | [Annotations in Java](./2021/Annotations-in-Java.md) | codeql |
+| 03/26 | [Javadoc](./2021/javadoc.md) | codeql |
+| 03/27 | [Working with source locations](./2021/Working-with-source-locations.md) | codeql |
+| 03/28 | [Variables](./2021/variables.md) | codeql |
+| 04/03 | [CodeQL library for Java](./2021/CodeQL-library-for-Java.md) | 反序列化 Java shiro |
+| 04/04 | [2020年研究回顾总结](./2021/2020年研究回顾总结.md) | 代码审计 |
+| 04/15 | [PII泄露--用CodeQL识别日志中的PII数据](./2021/PII泄露--用CodeQL识别日志中的PII数据.md) | CodeQL/Java |
+| 04/24 | [CodeQL for Java Unsafe deserialization in Apache Struts](./2021/CodeQL-workshop-for-Java-Unsafe-deserialization-in-Apache-Struts.md) | CodeQL/Java |
+| 06/05 | [weblogic之CVE-2020-2551iiop反序列化漏洞分析](./2021/weblogic之CVE-2020-2551iiop反序列化漏洞分析.md) | Java |
+| 06/05 | [weblogic之CVE-2020-2551iiop反序列化漏洞复现](./2021/weblogic之CVE-2020-2551iiop反序列化漏洞复现.md) | Java |
+| 07/15 | [Fastjson回显](./2021/Fastjson回显.md) | Java/Fastjson |
+| 07/21 | [Tomcat通用回显学习笔记](./2021/Tomcat通用回显学习笔记.md) | Java |
+| 08/03 | [从Java反序列化漏洞题看CodeQL数据流](./2021/从Java反序列化漏洞题看CodeQL数据流.md) | CodeQL/Java |
+| 08/18 | [CodeQL Create OpenJdk/Jdk8 Database](./2021/CodeQL-Create-OpenJdk_Jdk8-Database.md) | codeql |
+| 08/30 | [修改ysoserial使其支持任意代码执行](./2021/修改ysoserial使其支持任意代码执行.md) | Java |
+| 09/10 | [自定义 ClassLoader 隔离运行不同版本jar包的方式](./2021/自定义-ClassLoader-隔离运行不同版本jar包的方式.md) | Java |
+| 11/01 | [Shiro-550反序列化漏洞分析](./2021/Shiro-550反序列化漏洞分析.md) | shiro550/Java |
+| 11/09 | [记一次Log4j失败的Gadget挖掘记录](./2021/记一次Log4j失败的Gadget挖掘记录.md) | CodeQL/Java |
+| 11/15 | [ysoserial改造记录](./2021/ysoserial改造记录.md) | ysoserial/Java |
+| 11/30 | [JNDI注入](./2021/JNDI注入.md) | JNDI/Java |
+| 12/08 | [shiro-JRMP-gadget](./2021/shiro-JRMP-gadget.md) | shiro/exp |
+| 12/21 | [Fastjson_Mysql_gadget复现](./2021/Fastjson_Mysql_gadget复现.md) | fastjson/exp |
+| 12/31 | [2021年度总结](./2021/2021年度总结.md) |  |
 
 
+---
 
+#### 2020  📅
+
+| Time  | Name                                                         | Tags           |
+| ----- | ------------------------------------------------------------ | -------------- |
+| 02/03 | [bypass 学习笔记之绕安全狗bypass safedog](./2020/bypass-学习笔记之绕安全狗__bypass-safedog.md) | XXE 代码审计/2019 |
+| 02/23 | [CNVD-2020-10487(CVE-2020-1938)tomcat ajp 文件读取漏洞](./2020/CNVD-2020-10487CVE-2020-1938tomcat-ajp-文件读取漏洞.md) | JavaRCE/XXE 代码审计 |
+| 02/23 | [一篇文章读懂Java代码审计之XXE](./2020/一篇文章读懂Java代码审计之XXE.md) | 漏洞复现/bypass |
+| 03/03 | [春眠不觉晓，RCE知多少？](./2020/春眠不觉晓，RCE知多少？.md) | Java SSTI/漏洞复现 |
+| 03/24 | [白头搔更短，SSTI惹人心！](./2020/白头搔更短，SSTI惹人心！.md) | Java debugger/JavaRCE |
+| 05/05 | [Skipped breakpoint because it happened inside debugger evaluation](./2020/Skipped-breakpoint-because-it-happened-inside-debugger-evaluation.md) | ysoserial-Gadget/Java SSTI |
+| 05/06 | [小楼昨夜又春风，你知ysoserial-Gadget-URLDNS多少？](./2020/小楼昨夜又春风，你知ysoserial-Gadget-URLDNS多少？.md) | Java反射/Java debugger |
+| 05/12 | [从安全角度谈Java反射机制--前章](./2020/从安全角度谈Java反射机制-前章.md) | Java反射/ysoserial-Gadget |
+| 05/12 | [从安全角度谈Java反射机制--序章](./2020/从安全角度谈Java反射机制-序章.md) | Java反射/Java反射 |
+| 05/13 | [从安全角度谈Java反射机制--终章](./2020/从安全角度谈Java反射机制-终章.md) | Java 文件上传/Java反射 |
+| 05/14 | [2020网鼎杯---Java文件上传wp](./2020/2020网鼎杯-Java文件上传wp.md) | 反序列化/Java反射 |
+| 05/20 | [漫谈Java反序列化](./2020/漫谈Java反序列化.md) | Java Commons-Collections/Java 文件上传 |
+| 05/26 | [漫谈Commons-Collections反序列化](./2020/漫谈Commons-Collections反序列化.md) | Java 反序列化/反序列化 |
+| 06/01 | [Java反序列化链回显解决方案](./2020/Java反序列化回显解决方案.md) | Java 反序列化/Java Commons-Collections |
+| 07/01 | [Windows Terminal 配置文件](./2020/Windows-Terminal-配置文件.md) | Java 反序列化 |
+| 07/15 | [记一次面试题](./2020/记一次面试题.md) | Java 反序列化 |
+| 07/20 | [JDSRC安全课笔记](./2020/JSRC安全课笔记.md) | 反序列化 Java |
+| 07/23 | [逆向学习fastjson反序列化始](./2020/逆向学习fastjson反序列化始.md) | Java 文件上传 |
+| 12/20 | [一次意外的代码审计----JfinalCMS审计](./2020/一次意外的代码审计-JfinalCMS审计.md) | 未授权 401 403/反序列化 Java |
+
+
+---
+
+#### 2019  📅
+
+| Time  | Name                                                         | Tags           |
+| ----- | ------------------------------------------------------------ | -------------- |
+| 08/10 | [入门工具脚本之SQLMAP代理脚本](./2019/入门工具脚本之SQLMAP代理脚本.md) |  |
+| 08/12 | [python脚本之批量查询网站权重](./2019/python脚本之批量查询网站权重.md) |  |
+| 08/13 | [记一次Nessus无法启动问题--Corrupt Database](./2019/记一次Nessus无法启动问题-Corrupt-Database.md) |  |
+| 08/16 | [python脚本之批量查询网站权重2.0](./2019/python脚本之批量查询网站权重2-0.md) |  |
+| 09/07 | [惊现CVE-2019-0708 EXP惊醒睡梦中的安全圈](./2019/惊现CVE-2019-0708-EXP惊醒睡梦中的安全圈.md) |  |
+| 09/21 | [【漏洞预警】泛微e-cology OA系统远程代码执行漏洞及其复现](./2019/【漏洞预警】泛微e-cology-OA系统远程代码执行漏洞及其复现.md) |  |
+| 09/27 | [CVE-2019-16097 \|\| Harbor任意管理员注册漏洞复现](./2019/CVE-2019-16097-Harbor任意管理员注册漏洞复现.md) |  |
+| 09/28 | [网络安全现状与未来蓝图\|\|建立高效的网络安全体系](./2019/网络安全现状与未来蓝图-建立高效的网络安全体系.md) |  |
+| 10/16 | [【漏洞预警】泛微OA WorkflowCenterTreeData接口注入漏洞(限oracle数据库)](./2019/【漏洞预警】泛微OA-WorkflowCenterTreeData接口注入漏洞-限oracle数据库.md) |  |
+| 10/20 | [【墨者学院 】uWSGI 漏洞复现（CVE-2018-7490）](./2019/【墨者学院-】uWSGI-漏洞复现（CVE-2018-7490）.md) |  |
+| 10/22 | [【实战技巧】sqlmap不为人知的骚操作](./2019/【实战技巧】sqlmap不为人知的骚操作.md) |  |
+| 10/24 | [About Me 关于我](./2019/About-Me-关于我.md) |  |
+| 10/26 | [【漏洞复现】泛微ecology OA系统某接口存在数据库配置信息泄露漏洞](./2019/【漏洞复现】泛微ecology-OA系统某接口存在数据库配置信息泄露漏洞.md) |  |
+| 10/27 | [泛微ecology OA系统某接口存在数据库配置信息泄露漏洞exp-python](./2019/泛微ecology-OA系统某接口存在数据库配置信息泄露漏洞exp-python.md) | 漏洞复现 |
+| 10/30 | [【漏洞复现】Apache Solr 模板注入远程命令执行](./2019/【漏洞复现】Apache-Solr-模板注入远程命令执行.md) | 漏洞复现 |
+| 11/12 | [不为人知的黑科技\|\|双十一薅羊毛正确姿势](./2019/不为人知的黑科技-双十一薅羊毛正确姿势.md) | 漏洞复现 |
+| 11/13 | [Apache Flink任意Jar包上传导致远程代码执行](./2019/Apache-Flink任意Jar包上传导致远程代码执行.md) |  |
+| 11/25 | [VM虚拟机无法安装vmtools解决\|本程序需要您将此虚拟机上安装的操作系统更新到SP1](./2019/VM虚拟机无法安装vmtools解决-本程序需要您将此虚拟机上安装的操作系统更新到SP1.md) |  |
+| 11/30 | [CVE-2019-1388 UAC提权复现](./2019/CVE-2019-1388-UAC提权复现.md) |  |
+| 12/13 | [从翻邮箱发现钓鱼站到钓鱼系统通杀注入](./2019/从翻邮箱发现钓鱼站到钓鱼系统通杀注入-1.md) | 翻译 |
+| 12/13 | [记一次渗透学习\|\|钓鱼网站渗透](./2019/记一次渗透学习-钓鱼网站渗透.md) | 实战 |
+| 12/16 | [Telegram机器人作为渗透测试框架](./2019/Telegram机器人作为渗透测试框架.md) | 免杀/实战 |
+| 12/24 | [Python加密shellcode免杀](./2019/Python加密shellcode免杀.md) | 2019/翻译 |
+| 12/26 | [回望1920 AND 畅想2020](./2019/回望2019-AND-畅想2020.md) | bypass/免杀 |
