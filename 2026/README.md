@@ -7,6 +7,7 @@ tags:
 
 | Time  | Name                                                         | Tags           |
 | ----- | ------------------------------------------------------------ | -------------- |
+| 07/17 | [AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop](./AI%20Agent%20工程的必然演进：CLI、Skills、Harness%20与%20Loop.md) | AI/Agent/CLI/Skills |
 | 07/16 | [谁能想到，电视遥控器竟成了 Vibe Coding 神器](./谁能想到电视遥控器竟成了Vibe%20Coding%20神器.md) | AI/Agent/Vibe Coding/语音输入 |
 | 07/01 | [Agent 越改越乱之后，我用评测和轨迹把它拉回来了](./skill-evolution-results-trace.md) | AI/Agent/Skill/评测 |
 | 05/20 | [模型人人都能用，什么才是你能带走的？我的答案是一个可进化的SKILL库](./why-personal-agent-skills-repo.md) | AI/Agent/Skill/跨平台 |
