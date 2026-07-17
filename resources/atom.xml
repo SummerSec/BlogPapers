@@ -2,11 +2,413 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-07-17T14:05:36Z</updated>
+  <updated>2026-07-17T14:17:25Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
   <subtitle>像清水一般清澈透明</subtitle>
+  <entry>
+    <id>https://sumsec.me/2021/2020%E5%B9%B4%E7%A0%94%E7%A9%B6%E5%9B%9E%E9%A1%BE%E6%80%BB%E7%BB%93.html</id>
+    <title>2020年研究回顾总结</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/2020%E5%B9%B4%E7%A0%94%E7%A9%B6%E5%9B%9E%E9%A1%BE%E6%80%BB%E7%BB%93.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/Abstract-syntax-tree-classes-for-working-with-Java-programs.html</id>
+    <title>Abstract syntax tree classes for working with Java programs</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/Abstract-syntax-tree-classes-for-working-with-Java-programs.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/Analyzing-data-flow-in-Java.html</id>
+    <title>Analyzing data flow in Java</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/Analyzing-data-flow-in-Java.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/Annotations-in-Java.html</id>
+    <title>Annotations in Java</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/Annotations-in-Java.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/Basic-query-for-Java-code.html</id>
+    <title>Basic query for Java code</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/Basic-query-for-Java-code.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/BypassSuper%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D.html</id>
+    <title>BypassSuper使用介绍说明</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/BypassSuper%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/CodeQL-Create-OpenJdk_Jdk8-Database.html</id>
+    <title>CodeQL Create OpenJdk/Jdk8 Database</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/CodeQL-Create-OpenJdk_Jdk8-Database.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/CodeQL-library-for-Java.html</id>
+    <title>CodeQL library for Java</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/CodeQL-library-for-Java.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/Navigating-the-call-graph.html</id>
+    <title>Navigating the call graph</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/Navigating-the-call-graph.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/Overflow-prone-comparisons-in-Java.html</id>
+    <title>Overflow-prone comparisons in Java</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/Overflow-prone-comparisons-in-Java.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/Types-in-Java.html</id>
+    <title>Types in Java</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/Types-in-Java.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/Working-with-source-locations.html</id>
+    <title>Working with source locations</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/Working-with-source-locations.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/aliases.html</id>
+    <title>Aliases</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/aliases.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/expressions.html</id>
+    <title>Expression</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/expressions.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/formulas.html</id>
+    <title>Formulas</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/formulas.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/javadoc.html</id>
+    <title>Javadoc</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/javadoc.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/modules.html</id>
+    <title>Modules</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/modules.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/predicates.html</id>
+    <title>Predicates</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/predicates.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/queries.html</id>
+    <title>Queries</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/queries.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/type.html</id>
+    <title>Type</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/type.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/variables.html</id>
+    <title>Variables</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/variables.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/%E4%B8%80%E9%81%93shiro%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%A2%98%E7%9B%AE%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83.html</id>
+    <title>一道shiro反序列化题目引发的思考</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/%E4%B8%80%E9%81%93shiro%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%A2%98%E7%9B%AE%E5%BC%95%E5%8F%91%E7%9A%84%E6%80%9D%E8%80%83.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/%E4%BF%AE%E6%94%B9ysoserial%E4%BD%BF%E5%85%B6%E6%94%AF%E6%8C%81%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C.html</id>
+    <title>修改ysoserial使其支持任意代码执行</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/%E4%BF%AE%E6%94%B9ysoserial%E4%BD%BF%E5%85%B6%E6%94%AF%E6%8C%81%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/%E8%87%AA%E5%AE%9A%E4%B9%89-ClassLoader-%E9%9A%94%E7%A6%BB%E8%BF%90%E8%A1%8C%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACjar%E5%8C%85%E7%9A%84%E6%96%B9%E5%BC%8F.html</id>
+    <title>自定义 ClassLoader 隔离运行不同版本jar包的方式</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2021/%E8%87%AA%E5%AE%9A%E4%B9%89-ClassLoader-%E9%9A%94%E7%A6%BB%E8%BF%90%E8%A1%8C%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%ACjar%E5%8C%85%E7%9A%84%E6%96%B9%E5%BC%8F.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/2020%E7%BD%91%E9%BC%8E%E6%9D%AF-Java%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0wp.html</id>
+    <title>2020网鼎杯---Java文件上传wp</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/2020%E7%BD%91%E9%BC%8E%E6%9D%AF-Java%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0wp.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/CNVD-2020-10487CVE-2020-1938tomcat-ajp-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E.html</id>
+    <title>CNVD-2020-10487(CVE-2020-1938)tomcat ajp 文件读取漏洞</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/CNVD-2020-10487CVE-2020-1938tomcat-ajp-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/JSRC%E5%AE%89%E5%85%A8%E8%AF%BE%E7%AC%94%E8%AE%B0.html</id>
+    <title>JDSRC安全课笔记</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/JSRC%E5%AE%89%E5%85%A8%E8%AF%BE%E7%AC%94%E8%AE%B0.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9B%9E%E6%98%BE%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88.html</id>
+    <title>Java反序列化链回显解决方案</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9B%9E%E6%98%BE%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/Skipped-breakpoint-because-it-happened-inside-debugger-evaluation.html</id>
+    <title>Skipped breakpoint because it happened inside debugger evaluation</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/Skipped-breakpoint-because-it-happened-inside-debugger-evaluation.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/Windows-Terminal-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.html</id>
+    <title>Windows Terminal 配置文件</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/Windows-Terminal-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/bypass-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E7%BB%95%E5%AE%89%E5%85%A8%E7%8B%97__bypass-safedog.html</id>
+    <title>bypass 学习笔记之绕安全狗bypass safedog</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/bypass-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%B9%8B%E7%BB%95%E5%AE%89%E5%85%A8%E7%8B%97__bypass-safedog.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E4%B8%80%E6%AC%A1%E6%84%8F%E5%A4%96%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-JfinalCMS%E5%AE%A1%E8%AE%A1.html</id>
+    <title>一次意外的代码审计----JfinalCMS审计</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E4%B8%80%E6%AC%A1%E6%84%8F%E5%A4%96%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-JfinalCMS%E5%AE%A1%E8%AE%A1.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AF%BB%E6%87%82Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E4%B9%8BXXE.html</id>
+    <title>一篇文章读懂Java代码审计之XXE</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E8%AF%BB%E6%87%82Java%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%E4%B9%8BXXE.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E4%BB%8E%E5%AE%89%E5%85%A8%E8%A7%92%E5%BA%A6%E8%B0%88Java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6-%E5%89%8D%E7%AB%A0.html</id>
+    <title>从安全角度谈Java反射机制--前章</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E4%BB%8E%E5%AE%89%E5%85%A8%E8%A7%92%E5%BA%A6%E8%B0%88Java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6-%E5%89%8D%E7%AB%A0.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E4%BB%8E%E5%AE%89%E5%85%A8%E8%A7%92%E5%BA%A6%E8%B0%88Java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6-%E5%BA%8F%E7%AB%A0.html</id>
+    <title>从安全角度谈Java反射机制--序章</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E4%BB%8E%E5%AE%89%E5%85%A8%E8%A7%92%E5%BA%A6%E8%B0%88Java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6-%E5%BA%8F%E7%AB%A0.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E4%BB%8E%E5%AE%89%E5%85%A8%E8%A7%92%E5%BA%A6%E8%B0%88Java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6-%E7%BB%88%E7%AB%A0.html</id>
+    <title>从安全角度谈Java反射机制--终章</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E4%BB%8E%E5%AE%89%E5%85%A8%E8%A7%92%E5%BA%A6%E8%B0%88Java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6-%E7%BB%88%E7%AB%A0.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E5%B0%8F%E6%A5%BC%E6%98%A8%E5%A4%9C%E5%8F%88%E6%98%A5%E9%A3%8E%EF%BC%8C%E4%BD%A0%E7%9F%A5ysoserial-Gadget-URLDNS%E5%A4%9A%E5%B0%91%EF%BC%9F.html</id>
+    <title>小楼昨夜又春风，你知ysoserial-Gadget-URLDNS多少？</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E5%B0%8F%E6%A5%BC%E6%98%A8%E5%A4%9C%E5%8F%88%E6%98%A5%E9%A3%8E%EF%BC%8C%E4%BD%A0%E7%9F%A5ysoserial-Gadget-URLDNS%E5%A4%9A%E5%B0%91%EF%BC%9F.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E6%98%A5%E7%9C%A0%E4%B8%8D%E8%A7%89%E6%99%93%EF%BC%8CRCE%E7%9F%A5%E5%A4%9A%E5%B0%91%EF%BC%9F.html</id>
+    <title>春眠不觉晓，RCE知多少？</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E6%98%A5%E7%9C%A0%E4%B8%8D%E8%A7%89%E6%99%93%EF%BC%8CRCE%E7%9F%A5%E5%A4%9A%E5%B0%91%EF%BC%9F.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E6%BC%AB%E8%B0%88Commons-Collections%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.html</id>
+    <title>漫谈Commons-Collections反序列化</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E6%BC%AB%E8%B0%88Commons-Collections%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E6%BC%AB%E8%B0%88Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.html</id>
+    <title>漫谈Java反序列化</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E6%BC%AB%E8%B0%88Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E7%99%BD%E5%A4%B4%E6%90%94%E6%9B%B4%E7%9F%AD%EF%BC%8CSSTI%E6%83%B9%E4%BA%BA%E5%BF%83%EF%BC%81.html</id>
+    <title>白头搔更短，SSTI惹人心！</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E7%99%BD%E5%A4%B4%E6%90%94%E6%9B%B4%E7%9F%AD%EF%BC%8CSSTI%E6%83%B9%E4%BA%BA%E5%BF%83%EF%BC%81.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E8%AE%B0%E4%B8%80%E6%AC%A1%E9%9D%A2%E8%AF%95%E9%A2%98.html</id>
+    <title>记一次面试题</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E8%AE%B0%E4%B8%80%E6%AC%A1%E9%9D%A2%E8%AF%95%E9%A2%98.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A0fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%A7%8B.html</id>
+    <title>逆向学习fastjson反序列化始</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2020/%E9%80%86%E5%90%91%E5%AD%A6%E4%B9%A0fastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%A7%8B.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/About-Me-%E5%85%B3%E4%BA%8E%E6%88%91.html</id>
+    <title>About Me 关于我</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/About-Me-%E5%85%B3%E4%BA%8E%E6%88%91.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/Apache-Flink%E4%BB%BB%E6%84%8FJar%E5%8C%85%E4%B8%8A%E4%BC%A0%E5%AF%BC%E8%87%B4%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C.html</id>
+    <title>Apache Flink任意Jar包上传导致远程代码执行</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/Apache-Flink%E4%BB%BB%E6%84%8FJar%E5%8C%85%E4%B8%8A%E4%BC%A0%E5%AF%BC%E8%87%B4%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/CVE-2019-1388-UAC%E6%8F%90%E6%9D%83%E5%A4%8D%E7%8E%B0.html</id>
+    <title>CVE-2019-1388 UAC提权复现</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/CVE-2019-1388-UAC%E6%8F%90%E6%9D%83%E5%A4%8D%E7%8E%B0.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/CVE-2019-16097-Harbor%E4%BB%BB%E6%84%8F%E7%AE%A1%E7%90%86%E5%91%98%E6%B3%A8%E5%86%8C%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0.html</id>
+    <title>CVE-2019-16097 || Harbor任意管理员注册漏洞复现</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/CVE-2019-16097-Harbor%E4%BB%BB%E6%84%8F%E7%AE%A1%E7%90%86%E5%91%98%E6%B3%A8%E5%86%8C%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/Python%E5%8A%A0%E5%AF%86shellcode%E5%85%8D%E6%9D%80.html</id>
+    <title>Python加密shellcode免杀</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/Python%E5%8A%A0%E5%AF%86shellcode%E5%85%8D%E6%9D%80.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/Telegram%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%BD%9C%E4%B8%BA%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6.html</id>
+    <title>Telegram机器人作为渗透测试框架</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/Telegram%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%BD%9C%E4%B8%BA%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/VM%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%97%A0%E6%B3%95%E5%AE%89%E8%A3%85vmtools%E8%A7%A3%E5%86%B3-%E6%9C%AC%E7%A8%8B%E5%BA%8F%E9%9C%80%E8%A6%81%E6%82%A8%E5%B0%86%E6%AD%A4%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%8A%E5%AE%89%E8%A3%85%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%96%B0%E5%88%B0SP1.html</id>
+    <title>VM虚拟机无法安装vmtools解决|本程序需要您将此虚拟机上安装的操作系统更新到SP1</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/VM%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%97%A0%E6%B3%95%E5%AE%89%E8%A3%85vmtools%E8%A7%A3%E5%86%B3-%E6%9C%AC%E7%A8%8B%E5%BA%8F%E9%9C%80%E8%A6%81%E6%82%A8%E5%B0%86%E6%AD%A4%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%8A%E5%AE%89%E8%A3%85%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%9B%B4%E6%96%B0%E5%88%B0SP1.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/python%E8%84%9A%E6%9C%AC%E4%B9%8B%E6%89%B9%E9%87%8F%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99%E6%9D%83%E9%87%8D.html</id>
+    <title>python脚本之批量查询网站权重</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/python%E8%84%9A%E6%9C%AC%E4%B9%8B%E6%89%B9%E9%87%8F%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99%E6%9D%83%E9%87%8D.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/python%E8%84%9A%E6%9C%AC%E4%B9%8B%E6%89%B9%E9%87%8F%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99%E6%9D%83%E9%87%8D2-0.html</id>
+    <title>python脚本之批量查询网站权重2.0</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/python%E8%84%9A%E6%9C%AC%E4%B9%8B%E6%89%B9%E9%87%8F%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%AB%99%E6%9D%83%E9%87%8D2-0.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E3%80%90%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E3%80%91uWSGI-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%EF%BC%88CVE-2018-7490%EF%BC%89.html</id>
+    <title>【墨者学院 】uWSGI 漏洞复现（CVE-2018-7490）</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E3%80%90%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E3%80%91uWSGI-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%EF%BC%88CVE-2018-7490%EF%BC%89.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E3%80%90%E5%AE%9E%E6%88%98%E6%8A%80%E5%B7%A7%E3%80%91sqlmap%E4%B8%8D%E4%B8%BA%E4%BA%BA%E7%9F%A5%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C.html</id>
+    <title>【实战技巧】sqlmap不为人知的骚操作</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E3%80%90%E5%AE%9E%E6%88%98%E6%8A%80%E5%B7%A7%E3%80%91sqlmap%E4%B8%8D%E4%B8%BA%E4%BA%BA%E7%9F%A5%E7%9A%84%E9%AA%9A%E6%93%8D%E4%BD%9C.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E3%80%90%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E3%80%91Apache-Solr-%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.html</id>
+    <title>【漏洞复现】Apache Solr 模板注入远程命令执行</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E3%80%90%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E3%80%91Apache-Solr-%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E3%80%90%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E3%80%91%E6%B3%9B%E5%BE%AEecology-OA%E7%B3%BB%E7%BB%9F%E6%9F%90%E6%8E%A5%E5%8F%A3%E5%AD%98%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E.html</id>
+    <title>【漏洞复现】泛微ecology OA系统某接口存在数据库配置信息泄露漏洞</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E3%80%90%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E3%80%91%E6%B3%9B%E5%BE%AEecology-OA%E7%B3%BB%E7%BB%9F%E6%9F%90%E6%8E%A5%E5%8F%A3%E5%AD%98%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E3%80%90%E6%BC%8F%E6%B4%9E%E9%A2%84%E8%AD%A6%E3%80%91%E6%B3%9B%E5%BE%AEOA-WorkflowCenterTreeData%E6%8E%A5%E5%8F%A3%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E-%E9%99%90oracle%E6%95%B0%E6%8D%AE%E5%BA%93.html</id>
+    <title>【漏洞预警】泛微OA WorkflowCenterTreeData接口注入漏洞(限oracle数据库)</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E3%80%90%E6%BC%8F%E6%B4%9E%E9%A2%84%E8%AD%A6%E3%80%91%E6%B3%9B%E5%BE%AEOA-WorkflowCenterTreeData%E6%8E%A5%E5%8F%A3%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E-%E9%99%90oracle%E6%95%B0%E6%8D%AE%E5%BA%93.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E3%80%90%E6%BC%8F%E6%B4%9E%E9%A2%84%E8%AD%A6%E3%80%91%E6%B3%9B%E5%BE%AEe-cology-OA%E7%B3%BB%E7%BB%9F%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%8F%8A%E5%85%B6%E5%A4%8D%E7%8E%B0.html</id>
+    <title>【漏洞预警】泛微e-cology OA系统远程代码执行漏洞及其复现</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E3%80%90%E6%BC%8F%E6%B4%9E%E9%A2%84%E8%AD%A6%E3%80%91%E6%B3%9B%E5%BE%AEe-cology-OA%E7%B3%BB%E7%BB%9F%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%8F%8A%E5%85%B6%E5%A4%8D%E7%8E%B0.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E4%B8%8D%E4%B8%BA%E4%BA%BA%E7%9F%A5%E7%9A%84%E9%BB%91%E7%A7%91%E6%8A%80-%E5%8F%8C%E5%8D%81%E4%B8%80%E8%96%85%E7%BE%8A%E6%AF%9B%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF.html</id>
+    <title>不为人知的黑科技||双十一薅羊毛正确姿势</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E4%B8%8D%E4%B8%BA%E4%BA%BA%E7%9F%A5%E7%9A%84%E9%BB%91%E7%A7%91%E6%8A%80-%E5%8F%8C%E5%8D%81%E4%B8%80%E8%96%85%E7%BE%8A%E6%AF%9B%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E4%BB%8E%E7%BF%BB%E9%82%AE%E7%AE%B1%E5%8F%91%E7%8E%B0%E9%92%93%E9%B1%BC%E7%AB%99%E5%88%B0%E9%92%93%E9%B1%BC%E7%B3%BB%E7%BB%9F%E9%80%9A%E6%9D%80%E6%B3%A8%E5%85%A5-1.html</id>
+    <title>从翻邮箱发现钓鱼站到钓鱼系统通杀注入</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E4%BB%8E%E7%BF%BB%E9%82%AE%E7%AE%B1%E5%8F%91%E7%8E%B0%E9%92%93%E9%B1%BC%E7%AB%99%E5%88%B0%E9%92%93%E9%B1%BC%E7%B3%BB%E7%BB%9F%E9%80%9A%E6%9D%80%E6%B3%A8%E5%85%A5-1.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E5%85%A5%E9%97%A8%E5%B7%A5%E5%85%B7%E8%84%9A%E6%9C%AC%E4%B9%8BSQLMAP%E4%BB%A3%E7%90%86%E8%84%9A%E6%9C%AC.html</id>
+    <title>入门工具脚本之SQLMAP代理脚本</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E5%85%A5%E9%97%A8%E5%B7%A5%E5%85%B7%E8%84%9A%E6%9C%AC%E4%B9%8BSQLMAP%E4%BB%A3%E7%90%86%E8%84%9A%E6%9C%AC.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E5%9B%9E%E6%9C%9B2019-AND-%E7%95%85%E6%83%B32020.html</id>
+    <title>回望1920 AND 畅想2020</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E5%9B%9E%E6%9C%9B2019-AND-%E7%95%85%E6%83%B32020.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E6%83%8A%E7%8E%B0CVE-2019-0708-EXP%E6%83%8A%E9%86%92%E7%9D%A1%E6%A2%A6%E4%B8%AD%E7%9A%84%E5%AE%89%E5%85%A8%E5%9C%88.html</id>
+    <title>惊现CVE-2019-0708 EXP惊醒睡梦中的安全圈</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E6%83%8A%E7%8E%B0CVE-2019-0708-EXP%E6%83%8A%E9%86%92%E7%9D%A1%E6%A2%A6%E4%B8%AD%E7%9A%84%E5%AE%89%E5%85%A8%E5%9C%88.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E6%B3%9B%E5%BE%AEecology-OA%E7%B3%BB%E7%BB%9F%E6%9F%90%E6%8E%A5%E5%8F%A3%E5%AD%98%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9Eexp-python.html</id>
+    <title>泛微ecology OA系统某接口存在数据库配置信息泄露漏洞exp-python</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E6%B3%9B%E5%BE%AEecology-OA%E7%B3%BB%E7%BB%9F%E6%9F%90%E6%8E%A5%E5%8F%A3%E5%AD%98%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9Eexp-python.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%8E%B0%E7%8A%B6%E4%B8%8E%E6%9C%AA%E6%9D%A5%E8%93%9D%E5%9B%BE-%E5%BB%BA%E7%AB%8B%E9%AB%98%E6%95%88%E7%9A%84%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB.html</id>
+    <title>网络安全现状与未来蓝图||建立高效的网络安全体系</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%8E%B0%E7%8A%B6%E4%B8%8E%E6%9C%AA%E6%9D%A5%E8%93%9D%E5%9B%BE-%E5%BB%BA%E7%AB%8B%E9%AB%98%E6%95%88%E7%9A%84%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E4%BD%93%E7%B3%BB.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E8%AE%B0%E4%B8%80%E6%AC%A1Nessus%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98-Corrupt-Database.html</id>
+    <title>记一次Nessus无法启动问题--Corrupt Database</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E8%AE%B0%E4%B8%80%E6%AC%A1Nessus%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E9%97%AE%E9%A2%98-Corrupt-Database.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0-%E9%92%93%E9%B1%BC%E7%BD%91%E7%AB%99%E6%B8%97%E9%80%8F.html</id>
+    <title>记一次渗透学习||钓鱼网站渗透</title>
+    <updated>2026-07-17T14:14:20Z</updated>
+    <link href="https://sumsec.me/2019/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0-%E9%92%93%E9%B1%BC%E7%BD%91%E7%AB%99%E6%B8%97%E9%80%8F.html" rel="alternate" />
+  </entry>
   <entry>
     <id>https://sumsec.me/2026/%E8%B0%81%E8%83%BD%E6%83%B3%E5%88%B0%E7%94%B5%E8%A7%86%E9%81%A5%E6%8E%A7%E5%99%A8%E7%AB%9F%E6%88%90%E4%BA%86Vibe%20Coding%20%E7%A5%9E%E5%99%A8.html</id>
     <title>谁能想到，电视遥控器竟成了 Vibe Coding 神器</title>
