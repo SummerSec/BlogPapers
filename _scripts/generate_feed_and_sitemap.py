@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from email.utils import format_datetime
 from pathlib import Path
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RESOURCES = REPO_ROOT / "resources"
@@ -48,6 +48,9 @@ STATIC_SITEMAP_PATHS = (
     "/resources/rss.xml",
     "/resources/atom.xml",
 )
+
+TABLE_LINK_RE = re.compile(r"\[([^\]]+)\]\((.+?)\)")
+ARTICLE_FILENAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*\.md$")
 
 
 def git_last_commit_datetime(rel_posix: str) -> datetime | None:
@@ -79,16 +82,66 @@ def file_mtime_utc(path: Path) -> datetime:
     return datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc)
 
 
-def title_from_md(path: Path) -> str:
+def title_from_md(path: Path, indexed_title: str | None = None) -> str:
     try:
         text = path.read_text(encoding="utf-8", errors="replace")
-    except OSError:
-        return path.stem
-    for line in text.splitlines()[:60]:
+    except OSError as exc:
+        raise ValueError(f"无法读取文章标题：{path.relative_to(REPO_ROOT).as_posix()}") from exc
+
+    lines = text.splitlines()
+    for line in lines[:60]:
         s = line.strip()
         if s.startswith("# "):
             return s[2:].strip()
-    return path.stem
+
+    if lines and lines[0].strip() == "---":
+        for line in lines[1:60]:
+            stripped = line.strip()
+            if stripped == "---":
+                break
+            match = re.match(r"^title:\s*(.+?)\s*$", stripped, re.IGNORECASE)
+            if match:
+                title = match.group(1).strip().strip("\"'")
+                if title:
+                    return title
+
+    if indexed_title:
+        return indexed_title
+    raise ValueError(f"文章缺少 H1、front matter title 和时间轴标题：{path.relative_to(REPO_ROOT).as_posix()}")
+
+
+def collect_index_titles(post_roots: tuple[str, ...]) -> dict[Path, str]:
+    """从首页与各归档 README 时间轴收集正式文章标题。"""
+    titles: dict[Path, str] = {}
+    indexes = [(REPO_ROOT / "README.md", REPO_ROOT)]
+    indexes.extend((REPO_ROOT / root / "README.md", REPO_ROOT / root) for root in post_roots)
+    for index_path, base in indexes:
+        if not index_path.is_file():
+            continue
+        for line in index_path.read_text(encoding="utf-8", errors="replace").splitlines():
+            if not line.lstrip().startswith("|"):
+                continue
+            for match in TABLE_LINK_RE.finditer(line):
+                target = unquote(match.group(2).split("#", 1)[0].strip())
+                if target.startswith(("http://", "https://")):
+                    continue
+                path = (base / target).resolve()
+                try:
+                    path.relative_to(REPO_ROOT)
+                except ValueError:
+                    continue
+                if path.is_file() and path.suffix.casefold() == ".md":
+                    titles.setdefault(path, match.group(1).strip())
+    return titles
+
+
+def resolve_post_titles(
+    posts: list[tuple[Path, str, datetime]], indexed_titles: dict[Path, str]
+) -> dict[Path, str]:
+    return {
+        path: title_from_md(path, indexed_titles.get(path.resolve()))
+        for path, _rel_posix, _dt in posts
+    }
 
 
 def discover_post_roots() -> tuple[str, ...]:
@@ -153,9 +206,26 @@ def url_for_md(rel: Path) -> str:
     return f"{SITE}/{enc_stem}.html"
 
 
+def tracked_paths(post_roots: tuple[str, ...]) -> set[Path] | None:
+    try:
+        output = subprocess.check_output(
+            ["git", "-c", "core.quotepath=false", "ls-files", "-z", "--", *post_roots],
+            cwd=REPO_ROOT,
+            stderr=subprocess.DEVNULL,
+        )
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return None
+    return {
+        (REPO_ROOT / item.decode("utf-8")).resolve()
+        for item in output.split(b"\0")
+        if item
+    }
+
+
 def collect_posts(post_roots: tuple[str, ...]) -> list[tuple[Path, str, datetime]]:
     """返回 (绝对路径, repo 相对 posix, 排序用时间)。"""
     rows: list[tuple[Path, str, datetime]] = []
+    tracked = tracked_paths(post_roots)
     for root_name in post_roots:
         root = REPO_ROOT / root_name
         if not root.is_dir():
@@ -163,6 +233,10 @@ def collect_posts(post_roots: tuple[str, ...]) -> list[tuple[Path, str, datetime
         for path in sorted(root.rglob("*.md")):
             if path.name == "README.md":
                 continue
+            if tracked is not None and path.resolve() not in tracked:
+                continue
+            if not ARTICLE_FILENAME_RE.fullmatch(path.name):
+                raise ValueError(f"文章文件名必须使用小写英文 kebab-case：{path.relative_to(REPO_ROOT).as_posix()}")
             rel = path.relative_to(REPO_ROOT)
             rel_posix = rel.as_posix()
             dt = git_last_commit_datetime(rel_posix) or file_mtime_utc(path)
@@ -227,7 +301,7 @@ def write_sitemap(urls: list[str]) -> None:
     # ElementTree 默认 standalone 无；与旧文件风格接近即可
 
 
-def write_rss(posts: list[tuple[Path, str, datetime]]) -> None:
+def write_rss(posts: list[tuple[Path, str, datetime]], titles: dict[Path, str]) -> None:
     now = datetime.now(timezone.utc)
     lines = [
         "<?xml version='1.0' encoding='UTF-8'?>",
@@ -244,7 +318,7 @@ def write_rss(posts: list[tuple[Path, str, datetime]]) -> None:
     ]
     for path, rel_posix, dt in posts:
         link = url_for_md(path.relative_to(REPO_ROOT))
-        title = html.escape(title_from_md(path))
+        title = html.escape(titles[path])
         pub = format_datetime(dt.astimezone(timezone.utc))
         guid = html.escape(link)
         lines.append("<item>")
@@ -257,7 +331,7 @@ def write_rss(posts: list[tuple[Path, str, datetime]]) -> None:
     (RESOURCES / "rss.xml").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def write_atom(posts: list[tuple[Path, str, datetime]]) -> None:
+def write_atom(posts: list[tuple[Path, str, datetime]], titles: dict[Path, str]) -> None:
     now = datetime.now(timezone.utc)
     feed = ET.Element(
         "feed",
@@ -280,7 +354,7 @@ def write_atom(posts: list[tuple[Path, str, datetime]]) -> None:
         link = url_for_md(path.relative_to(REPO_ROOT))
         entry = ET.SubElement(feed, "entry")
         ET.SubElement(entry, "id").text = link
-        ET.SubElement(entry, "title").text = title_from_md(path)
+        ET.SubElement(entry, "title").text = titles[path]
         ET.SubElement(entry, "updated").text = dt.astimezone(timezone.utc).isoformat(timespec="seconds").replace(
             "+00:00", "Z"
         )
@@ -297,12 +371,21 @@ def main() -> int:
         print("请在 BlogPapers 仓库根目录运行。", file=sys.stderr)
         return 1
     post_roots = discover_post_roots()
-    posts = collect_posts(post_roots)
+    try:
+        posts = collect_posts(post_roots)
+    except ValueError as exc:
+        print(f"生成 feed 失败：{exc}", file=sys.stderr)
+        return 1
     if not posts:
         print("未发现任何博文 Markdown。", file=sys.stderr)
         return 1
-    write_rss(posts)
-    write_atom(posts)
+    try:
+        titles = resolve_post_titles(posts, collect_index_titles(post_roots))
+    except ValueError as exc:
+        print(f"生成 feed 失败：{exc}", file=sys.stderr)
+        return 1
+    write_rss(posts, titles)
+    write_atom(posts, titles)
     urls = collect_sitemap_urls(posts, post_roots)
     write_sitemap(urls)
     print(

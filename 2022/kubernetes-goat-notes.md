@@ -1,4 +1,5 @@
 ---
+title: "kubernetes-goat学习笔记"
 tags:
 - blog-comments
 ---

@@ -125,7 +125,7 @@ comments: false
     <td class="num">49</td>
     <td>2026-06-17</td>
     <td class="readme-links"><a href="./open-source/WebToolsCollections/README.html">README</a></td>
-    <td>🐛糊涂虫工具箱 About The Project https://sumsec.me/2022/Hack-Tools2Web.html</td>
+    <td>🐛糊涂虫工具箱 About The Project https://sumsec.me/2022/web-security-tools-collection.html</td>
   </tr>
   <tr>
     <td class="num">14</td>

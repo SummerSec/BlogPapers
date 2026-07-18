@@ -26,7 +26,7 @@
 <tr><td><a href="https://github.com/SummerSec/SPATool">SPATool</a></td><td>静态程序分析工具 主要生成方法的CFG和.java文件的AST </td><td align="center" width="12%">136 ⭐</td></tr>
 <tr><td><a href="https://github.com/SummerSec/BypassSuper">BypassSuper</a></td><td>Bypass 403 or 401 or 404</td><td align="center" width="12%">106 ⭐</td></tr>
 <tr><td><a href="https://github.com/SummerSec/BlogPapers">BlogPapers</a></td><td>个人博客网站</td><td align="center" width="12%">59 ⭐</td></tr>
-<tr><td><a href="https://github.com/SummerSec/WebToolsCollections">WebToolsCollections</a></td><td>🐛糊涂虫工具箱 About The Project https://sumsec.me/2022/Hack-Tools2Web.html</td><td align="center" width="12%">49 ⭐</td></tr>
+<tr><td><a href="https://github.com/SummerSec/WebToolsCollections">WebToolsCollections</a></td><td>🐛糊涂虫工具箱 About The Project https://sumsec.me/2022/web-security-tools-collection.html</td><td align="center" width="12%">49 ⭐</td></tr>
 <tr><td><a href="https://github.com/SummerSec/SummerSec">SummerSec</a></td><td></td><td align="center" width="12%">36 ⭐</td></tr>
 <tr><td><a href='https://github.com/summersec'><strong>Total Stars</strong></a></strong></td><td></td><td align="center" width="12%"> 8033 ⭐</td></tr>
 </table>
@@ -36,17 +36,17 @@
 
 ## Latest Posts 📝 
 
-<img align='right' src="https://sumsec.me/resources/work.gif" width="330" /> 🏑 [AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop](https://sumsec.me/2026/AI%20Agent%20%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%BF%85%E7%84%B6%E6%BC%94%E8%BF%9B%EF%BC%9ACLI%E3%80%81Skills%E3%80%81Harness%20%E4%B8%8E%20Loop.html)
+<img align='right' src="https://sumsec.me/resources/work.gif" width="330" /> 🏑 [AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop](https://sumsec.me/2026/ai-agent-engineering-evolution.html)
 
- 🐧 [谁能想到电视遥控器竟成了Vibe Coding 神器](https://sumsec.me/2026/%E8%B0%81%E8%83%BD%E6%83%B3%E5%88%B0%E7%94%B5%E8%A7%86%E9%81%A5%E6%8E%A7%E5%99%A8%E7%AB%9F%E6%88%90%E4%BA%86Vibe%20Coding%20%E7%A5%9E%E5%99%A8.html)
+ 🐧 [谁能想到电视遥控器竟成了Vibe Coding 神器](https://sumsec.me/2026/tv-remote-vibe-coding.html)
 
  👈 [skill-evolution-results-trace](https://sumsec.me/2026/skill-evolution-results-trace.html)
 
  🐊 [why-personal-agent-skills-repo](https://sumsec.me/2026/why-personal-agent-skills-repo.html)
 
- 🎺 [why-personal-agent-skills-repo-v2](https://sumsec.me/2026/why-personal-agent-skills-repo-v2.html)
+ 🎽 [AI 时代 ShiroAttack2 5](https://sumsec.me/2026/shiroattack2-5-ai-era-changes.html)
 
- 🎽 [AI 时代 ShiroAttack2 5](https://sumsec.me/2026/AI%20%E6%97%B6%E4%BB%A3%20ShiroAttack2%205.x%EF%BC%9A%E4%BF%AE%E6%94%B9%E4%BA%86%E4%BB%80%E4%B9%88.html)
+ 👈 [在 AGI 降临前，先给 AI 开一条脑内弹幕通道](https://sumsec.me/2026/agi-inner-commentary-channel.html)
 
 
 ---

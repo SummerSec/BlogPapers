@@ -16,19 +16,19 @@ comments: false
     <div class="category-page__section-title"><h2 id="category-articles-title">文章</h2><span>按时间倒序</span></div>
     <ol class="category-article-list">
       <li>
-        <a class="category-article__title" href="../PL/WALA%E4%BD%BF%E7%94%A8%E5%92%8C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html">WALA使用和学习笔记</a>
+        <a class="category-article__title" href="../PL/wala-learning-notes.html">WALA使用和学习笔记</a>
         <div class="category-article__meta">
           <time datetime="2026-03-20">更新 2026 · 03/20</time>
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../PL/%E7%9F%A5%E8%AF%86%E7%82%B9%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93.html">知识点面试题总结</a>
+        <a class="category-article__title" href="../PL/program-analysis-interview-notes.html">知识点面试题总结</a>
         <div class="category-article__meta">
           <time datetime="2026-03-20">更新 2026 · 03/20</time>
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../PL/Interprocedural-Analysis.html">PL-4-Interprocedural Analysis</a>
+        <a class="category-article__title" href="../PL/pl-interprocedural-analysis.html">PL-4-Interprocedural Analysis</a>
         <div class="category-article__meta">
           <time datetime="2022-01-08">2022 · 01/08</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -37,7 +37,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../PL/Data-Analysis-Foundation.html">PL-3-Data Analysis Foundation</a>
+        <a class="category-article__title" href="../PL/pl-data-analysis-foundation.html">PL-3-Data Analysis Foundation</a>
         <div class="category-article__meta">
           <time datetime="2022-01-07">2022 · 01/07</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -46,7 +46,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../PL/Data-Flow-Analysis.html">PL-2-Data-Flow-Analysis</a>
+        <a class="category-article__title" href="../PL/pl-data-flow-analysis.html">PL-2-Data-Flow-Analysis</a>
         <div class="category-article__meta">
           <time datetime="2022-01-06">2022 · 01/06</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -55,7 +55,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../PL/Intermediate-Representation.html">PL-1-Intermediate-Representation</a>
+        <a class="category-article__title" href="../PL/pl-intermediate-representation.html">PL-1-Intermediate-Representation</a>
         <div class="category-article__meta">
           <time datetime="2022-01-04">2022 · 01/04</time>
           <span class="category-article__tags" aria-label="文章标签">

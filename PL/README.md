@@ -10,8 +10,8 @@ tags:
 
 | Time  | Name                                                         | Tags |
 | ----- | ------------------------------------------------------------ | ---- |
-| 01/04 | [PL-1-Intermediate-Representation](./Intermediate-Representation.md) | PL   |
-| 01/06 | [PL-2-Data-Flow-Analysis](./Data-Flow-Analysis.md)           | PL   |
-| 01/07 | [PL-3-Data Analysis Foundation](./Data-Analysis-Foundation.md) | PL   |
-| 01/08 | [PL-4-Interprocedural Analysis](./Interprocedural-Analysis.md) | PL   |
+| 01/04 | [PL-1-Intermediate-Representation](./pl-intermediate-representation.md) | PL   |
+| 01/06 | [PL-2-Data-Flow-Analysis](./pl-data-flow-analysis.md)           | PL   |
+| 01/07 | [PL-3-Data Analysis Foundation](./pl-data-analysis-foundation.md) | PL   |
+| 01/08 | [PL-4-Interprocedural Analysis](./pl-interprocedural-analysis.md) | PL   |
 

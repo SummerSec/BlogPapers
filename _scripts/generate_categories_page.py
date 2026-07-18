@@ -20,6 +20,7 @@ CONFIG_PATH = REPO_ROOT / "_data" / "article_categories.json"
 CATEGORY_DIR = REPO_ROOT / "categories"
 FALLBACK_ROOTS = ("2021", "2022", "2023", "2026", "PL")
 TABLE_LINK_RE = re.compile(r"\[([^\]]+)\]\((.+?)\)")
+ARTICLE_FILENAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*\.md$")
 
 
 @dataclass(frozen=True)
@@ -79,11 +80,22 @@ def front_matter_tags(path: Path) -> tuple[str, ...]:
 
 
 def title_from_markdown(path: Path) -> str:
-    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+    lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+    for line in lines[:60]:
         stripped = line.strip()
         if stripped.startswith("# "):
             return stripped[2:].strip()
-    return path.stem
+    if lines and lines[0].strip() == "---":
+        for line in lines[1:60]:
+            stripped = line.strip()
+            if stripped == "---":
+                break
+            match = re.match(r"^title:\s*(.+?)\s*$", stripped, re.IGNORECASE)
+            if match:
+                title = match.group(1).strip().strip("\"'")
+                if title:
+                    return title
+    raise ValueError(f"文章缺少 H1 或 front matter title：{path.relative_to(REPO_ROOT).as_posix()}")
 
 
 def parse_indexes(roots: tuple[str, ...]) -> dict[Path, IndexEntry]:
@@ -201,6 +213,8 @@ def collect_articles(
             # 显式 articles 归属视为刻意收录，即使尚未被 Git 跟踪
             if tracked is not None and path.resolve() not in tracked and rel not in pinned:
                 continue
+            if not ARTICLE_FILENAME_RE.fullmatch(path.name):
+                raise ValueError(f"文章文件名必须使用小写英文 kebab-case：{path.relative_to(REPO_ROOT).as_posix()}")
             entry = index.get(path.resolve())
             month_day = entry.month_day if entry else ""
             tags = entry.tags if entry and entry.tags else front_matter_tags(path)

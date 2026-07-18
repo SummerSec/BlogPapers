@@ -16,7 +16,7 @@ comments: false
     <div class="category-page__section-title"><h2 id="category-articles-title">文章</h2><span>按时间倒序</span></div>
     <ol class="category-article-list">
       <li>
-        <a class="category-article__title" href="../2026/%E4%B8%80%E7%AF%87%E5%8D%9A%E6%96%87%EF%BC%8C%E4%B8%89%E7%A7%8D%E6%97%B6%E9%97%B4%EF%BC%9A%E7%BD%91%E9%A1%B5%E5%B9%BB%E7%81%AF%E4%B8%8E%20Remotion%20%E5%8A%A8%E6%95%88%E7%9A%84%E4%BA%A4%E4%BB%98%E9%80%BB%E8%BE%91.html">一篇博文，三种时间：网页幻灯与 Remotion 动效的交付逻辑</a>
+        <a class="category-article__title" href="../2026/blog-slides-remotion-delivery-timeline.html">一篇博文，三种时间：网页幻灯与 Remotion 动效的交付逻辑</a>
         <div class="category-article__meta">
           <time datetime="2026-04-12">2026 · 04/12</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -27,7 +27,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2022/%E7%9B%B8%E4%BC%BC%E5%BA%A6%E7%AE%97%E6%B3%95%E8%B0%83%E7%A0%94.html">相似度算法调研</a>
+        <a class="category-article__title" href="../2022/similarity-algorithm-research.html">相似度算法调研</a>
         <div class="category-article__meta">
           <time datetime="2022-08-08">2022 · 08/08</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -37,7 +37,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2022/Hack-Tools2Web.html">Hack-Tools2Web</a>
+        <a class="category-article__title" href="../2022/web-security-tools-collection.html">Hack-Tools2Web</a>
         <div class="category-article__meta">
           <time datetime="2022-02-27">2022 · 02/27</time>
           <span class="category-article__tags" aria-label="文章标签">

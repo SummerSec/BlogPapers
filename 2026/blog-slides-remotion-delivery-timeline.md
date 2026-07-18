@@ -1,7 +1,7 @@
 ---
 tags:
 - blog-comments
-ppt: ./一篇博文，三种时间：网页幻灯与 Remotion 动效的交付逻辑-ppt.html
+ppt: ./blog-slides-remotion-delivery-timeline-ppt.html
 ---
 # 一篇博文，三种时间：网页幻灯与 Remotion 动效的交付逻辑
 
@@ -149,7 +149,7 @@ GIF 只有 256 色，循环动效在意观感时，正文里更推荐 `<video sr
 
 `ppt` 也可写成绝对 URL。若指向别的域名，布局仍会出壳层，但 `scifi.js` 会做同源判断，跨域时不发 `fetch` 探测。同仓静态托管最省事；跨域就要自己兜嵌入失败和缓存策略这类浏览器脾气。
 
-实例：[《别让大模型「想太多」……》](./别让大模型_想太多_：SKILL开发中的语义陷阱与抗幻觉设计.md) 用策略 B，front matter 里有 `ppt: ./别让大模型_想太多_：SKILL开发中的语义陷阱与抗幻觉设计-ppt.html`，文件名一眼分清 Jekyll 页和独立 deck。
+实例：[《别让大模型「想太多」……》](./skill-semantic-traps-anti-hallucination.md) 用策略 B，front matter 里有 `ppt: ./skill-semantic-traps-anti-hallucination-ppt.html`，文件名一眼分清 Jekyll 页和独立 deck。
 
 deck 没准备好就别写 `ppt`。空 iframe 占的是读者时间。同源托管时，脚本用短超时的 `HEAD`/`GET` 探测资源；失败就收起分栏和「仅看 PPT」、清掉 iframe。宁可不露，也别挂一块长期 404 的灰框。
 

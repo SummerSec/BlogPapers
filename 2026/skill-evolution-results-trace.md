@@ -812,7 +812,7 @@ Constraints: no bar chart, no percentage headline, no dense word cloud; make the
 
 这跟前面 patch 引擎的"反口号"机制是同一件事的两面：语义陷阱控制词的边界，反口号正则控制句子的可执行性。一个防止模型想太宽，一个防止模型写太虚。
 
-> 这个发现我单独写过一篇更完整的分析：[《别让大模型"想太多"：SKILL 开发中的语义陷阱与抗幻觉设计》](https://sumsec.me/2026/%E5%88%AB%E8%AE%A9%E5%A4%A7%E6%A8%A1%E5%9E%8B_%E6%83%B3%E5%A4%AA%E5%A4%9A_%EF%BC%9ASKILL%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E8%AF%AD%E4%B9%89%E9%99%B7%E9%98%B1%E4%B8%8E%E6%8A%97%E5%B9%BB%E8%A7%89%E8%AE%BE%E8%AE%A1.html)。
+> 这个发现我单独写过一篇更完整的分析：[《别让大模型"想太多"：SKILL 开发中的语义陷阱与抗幻觉设计》](https://sumsec.me/2026/skill-semantic-traps-anti-hallucination.html)。
 
 ---
 

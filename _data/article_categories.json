@@ -10,8 +10,8 @@
       "tags": ["InnerOS", "人机协作", "AGI", "思考"],
       "keywords": ["AGI", "脑内弹幕", "InnerOS", "人机协作"],
       "articles": [
-        "2026/AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop.md",
-        "2026/在 AGI 降临前，先给 AI 开一条脑内弹幕通道.md"
+        "2026/ai-agent-engineering-evolution.md",
+        "2026/agi-inner-commentary-channel.md"
       ]
     },
     {
@@ -24,7 +24,7 @@
       "tags": ["Vibe Coding", "AI Coding", "AI编程"],
       "keywords": ["Vibe Coding", "AI Coding", "Codex", "Claude Code", "遥控器"],
       "articles": [
-        "2026/谁能想到电视遥控器竟成了Vibe Coding 神器.md"
+        "2026/tv-remote-vibe-coding.md"
       ]
     },
     {
@@ -39,8 +39,7 @@
       "articles": [
         "2026/skill-evolution-results-trace.md",
         "2026/why-personal-agent-skills-repo.md",
-        "2026/why-personal-agent-skills-repo-v2.md",
-        "2026/别让大模型_想太多_：SKILL开发中的语义陷阱与抗幻觉设计.md"
+        "2026/skill-semantic-traps-anti-hallucination.md"
       ]
     },
     {
@@ -62,16 +61,16 @@
         "2021/formulas.md",
         "2021/javadoc.md",
         "2021/variables.md",
-        "2021/Basic-query-for-Java-code.md",
-        "2021/Analyzing-data-flow-in-Java.md",
-        "2021/Types-in-Java.md",
-        "2021/Navigating-the-call-graph.md",
-        "2021/Overflow-prone-comparisons-in-Java.md",
-        "2021/Abstract-syntax-tree-classes-for-working-with-Java-programs.md",
-        "2021/Annotations-in-Java.md",
-        "2021/Working-with-source-locations.md",
-        "2021/CodeQL-library-for-Java.md",
-        "2021/CodeQL-Create-OpenJdk_Jdk8-Database.md"
+        "2021/codeql-java-basic-query.md",
+        "2021/codeql-java-data-flow-analysis.md",
+        "2021/codeql-java-types.md",
+        "2021/codeql-java-call-graph-navigation.md",
+        "2021/codeql-java-overflow-prone-comparisons.md",
+        "2021/codeql-java-ast-classes.md",
+        "2021/codeql-java-annotations.md",
+        "2021/codeql-java-source-locations.md",
+        "2021/codeql-java-library.md",
+        "2021/codeql-create-openjdk-jdk8-database.md"
       ]
     },
     {
@@ -84,15 +83,15 @@
       "tags": ["CTF", "Tricks"],
       "keywords": ["CodeQL CTF", "CodeQL Usage", "Gadget挖掘"],
       "articles": [
-        "2021/PII泄露--用CodeQL识别日志中的PII数据.md",
-        "2021/CodeQL-workshop-for-Java-Unsafe-deserialization-in-Apache-Struts.md",
-        "2021/从Java反序列化漏洞题看CodeQL数据流.md",
-        "2021/记一次Log4j失败的Gadget挖掘记录.md",
-        "2022/CodeQL-Usage-Tricks.md",
-        "2022/GitHub Java CodeQL CTF.md",
-        "2022/CodeQL与Shiro550碰撞.md",
-        "2022/CodeQL初见Shiro550.md",
-        "2022/CodeQL与AST之间联系.md"
+        "2021/codeql-detect-pii-log-leaks.md",
+        "2021/codeql-java-struts-unsafe-deserialization-workshop.md",
+        "2021/codeql-data-flow-java-deserialization.md",
+        "2021/log4j-gadget-mining-failure.md",
+        "2022/codeql-practical-usage-tricks.md",
+        "2022/github-java-codeql-ctf.md",
+        "2022/codeql-meets-shiro550.md",
+        "2022/codeql-first-look-shiro550.md",
+        "2022/codeql-and-ast.md"
       ]
     },
     {
@@ -106,7 +105,7 @@
       "tags": ["PL", "WALA", "Data Flow", "Data-Flow", "AST"],
       "keywords": ["WALA", "Interprocedural", "Data-Flow", "Data Flow", "Intermediate Representation", "程序分析"],
       "articles": [
-        "PL/知识点面试题总结.md"
+        "PL/program-analysis-interview-notes.md"
       ]
     },
     {
@@ -119,35 +118,35 @@
       "tags": ["Java", "漏洞分析", "Vul", "漏洞复现", "SpEL", "Spark", "命令执行", "正则匹配", "RCE"],
       "keywords": ["CVE-", "CNVD-", "漏洞分析", "漏洞复现", "漏洞预警", "代码审计", "SSTI", "XXE", "kubernetes-goat"],
       "articles": [
-        "2021/weblogic之CVE-2020-2551iiop反序列化漏洞分析.md",
-        "2021/weblogic之CVE-2020-2551iiop反序列化漏洞复现.md",
-        "2021/Shiro-550反序列化漏洞分析.md",
-        "2021/一道shiro反序列化题目引发的思考.md",
-        "2022/VMWare-Workspace-ONE-Access-Auth-Bypass.md",
-        "2022/Spring-Framework-RCE-CVE-2022-22965漏洞分析.md",
-        "2022/CVE-2022-33891 Apache Spark shell command injection.md",
-        "2022/正则匹配配置不当.md",
-        "2022/CVE-2022-22980 Mongodb SpEL.md",
-        "2022/Log4j2漏洞分析.md",
-        "2022/Java-Swing-To-RCE-漏洞分析.md",
-        "2022/SpringBoot Gateway EL表达式漏洞分析.md",
-        "2022/kubernetes-goat学习笔记.md",
-        "2019/惊现CVE-2019-0708-EXP惊醒睡梦中的安全圈.md",
-        "2019/【漏洞预警】泛微e-cology-OA系统远程代码执行漏洞及其复现.md",
-        "2019/CVE-2019-16097-Harbor任意管理员注册漏洞复现.md",
-        "2019/【漏洞预警】泛微OA-WorkflowCenterTreeData接口注入漏洞-限oracle数据库.md",
-        "2019/【墨者学院-】uWSGI-漏洞复现（CVE-2018-7490）.md",
-        "2019/【漏洞复现】泛微ecology-OA系统某接口存在数据库配置信息泄露漏洞.md",
-        "2019/泛微ecology-OA系统某接口存在数据库配置信息泄露漏洞exp-python.md",
-        "2019/【漏洞复现】Apache-Solr-模板注入远程命令执行.md",
-        "2019/Apache-Flink任意Jar包上传导致远程代码执行.md",
-        "2019/CVE-2019-1388-UAC提权复现.md",
-        "2020/CNVD-2020-10487CVE-2020-1938tomcat-ajp-文件读取漏洞.md",
-        "2020/一篇文章读懂Java代码审计之XXE.md",
-        "2020/春眠不觉晓，RCE知多少？.md",
-        "2020/白头搔更短，SSTI惹人心！.md",
-        "2020/2020网鼎杯-Java文件上传wp.md",
-        "2020/一次意外的代码审计-JfinalCMS审计.md"
+        "2021/weblogic-cve-2020-2551-iiop-analysis.md",
+        "2021/weblogic-cve-2020-2551-iiop-reproduction.md",
+        "2021/shiro-550-deserialization-analysis.md",
+        "2021/shiro-deserialization-challenge-notes.md",
+        "2022/vmware-one-access-auth-bypass.md",
+        "2022/spring-framework-cve-2022-22965-analysis.md",
+        "2022/cve-2022-33891-apache-spark-shell-command-injection.md",
+        "2022/regex-misconfiguration.md",
+        "2022/cve-2022-22980-mongodb-spel.md",
+        "2022/log4j2-vulnerability-analysis.md",
+        "2022/java-swing-rce-analysis.md",
+        "2022/spring-cloud-gateway-spel-rce-analysis.md",
+        "2022/kubernetes-goat-notes.md",
+        "2019/cve-2019-0708-bluekeep-exploit.md",
+        "2019/weaver-ecology-rce.md",
+        "2019/cve-2019-16097-harbor-admin-registration.md",
+        "2019/weaver-workflowcentertreedata-sql-injection.md",
+        "2019/uwsgi-cve-2018-7490-reproduction.md",
+        "2019/weaver-ecology-database-config-leak.md",
+        "2019/weaver-ecology-database-config-leak-exploit.md",
+        "2019/apache-solr-template-injection-rce.md",
+        "2019/apache-flink-arbitrary-jar-upload-rce.md",
+        "2019/cve-2019-1388-uac-privilege-escalation.md",
+        "2020/cnvd-2020-10487-cve-2020-1938-tomcat-ajp-file-read.md",
+        "2020/java-xxe-code-audit.md",
+        "2020/rce-overview.md",
+        "2020/ssti-overview.md",
+        "2020/2020-wangding-cup-java-file-upload.md",
+        "2020/jfinalcms-code-audit.md"
       ]
     },
     {
@@ -160,40 +159,40 @@
       "tags": ["Shiro", "shiro", "shiro550", "ShiroAttack2", "反序列化", "Fastjson", "fastjson", "Log4j2", "exp", "MemShell", "JNDI", "免杀", "bypass", "ysoserial", "DLL", "Load"],
       "keywords": ["ysoserial", "内存马", "回显", "免杀", "Gadget", "gadget", "GetShell", "后渗透", "JNDI", "注入", "sqlmap", "钓鱼", "Shiro", "Fastjson", "fastjson", "ClassLoader"],
       "articles": [
-        "2026/AI 时代 ShiroAttack2 5.x：修改了什么.md",
-        "2021/BypassSuper工具介绍.md",
-        "2021/Fastjson回显.md",
-        "2021/Tomcat通用回显学习笔记.md",
-        "2021/修改ysoserial使其支持任意代码执行.md",
-        "2021/ysoserial改造记录.md",
-        "2021/JNDI注入.md",
-        "2021/shiro-JRMP-gadget.md",
-        "2021/Fastjson_Mysql_gadget复现.md",
-        "2021/自定义-ClassLoader-隔离运行不同版本jar包的方式.md",
-        "2022/Spring Boot RCE到内存马探索.md",
-        "2022/Shiro后渗透拓展面.md",
-        "2022/shiro反序列化漏洞攻击拓展面--修改key.md",
-        "2022/Java加载动态链接库方式.md",
-        "2022/论如何优雅注入 Java 内存马.md",
-        "2019/入门工具脚本之SQLMAP代理脚本.md",
-        "2019/python脚本之批量查询网站权重.md",
-        "2019/python脚本之批量查询网站权重2-0.md",
-        "2019/【实战技巧】sqlmap不为人知的骚操作.md",
-        "2019/Telegram机器人作为渗透测试框架.md",
-        "2019/Python加密shellcode免杀.md",
-        "2019/从翻邮箱发现钓鱼站到钓鱼系统通杀注入-1.md",
-        "2019/记一次渗透学习-钓鱼网站渗透.md",
-        "2019/不为人知的黑科技-双十一薅羊毛正确姿势.md",
-        "2020/bypass-学习笔记之绕安全狗__bypass-safedog.md",
-        "2020/Skipped-breakpoint-because-it-happened-inside-debugger-evaluation.md",
-        "2020/小楼昨夜又春风，你知ysoserial-Gadget-URLDNS多少？.md",
-        "2020/从安全角度谈Java反射机制-前章.md",
-        "2020/从安全角度谈Java反射机制-序章.md",
-        "2020/从安全角度谈Java反射机制-终章.md",
-        "2020/漫谈Java反序列化.md",
-        "2020/漫谈Commons-Collections反序列化.md",
-        "2020/Java反序列化回显解决方案.md",
-        "2020/逆向学习fastjson反序列化始.md"
+        "2026/shiroattack2-5-ai-era-changes.md",
+        "2021/bypasssuper-guide.md",
+        "2021/fastjson-echo.md",
+        "2021/tomcat-universal-echo.md",
+        "2021/ysoserial-arbitrary-code-execution.md",
+        "2021/ysoserial-refactoring-notes.md",
+        "2021/jndi-injection.md",
+        "2021/shiro-jrmp-gadget-analysis.md",
+        "2021/fastjson-mysql-gadget.md",
+        "2021/custom-classloader-version-isolation.md",
+        "2022/spring-boot-rce-memory-shell.md",
+        "2022/shiro-post-exploitation.md",
+        "2022/shiro-deserialization-key-modification.md",
+        "2022/java-native-library-loading.md",
+        "2022/java-memory-shell-injection.md",
+        "2019/sqlmap-proxy-script.md",
+        "2019/python-batch-website-weight-query.md",
+        "2019/python-batch-website-weight-query-v2.md",
+        "2019/sqlmap-advanced-techniques.md",
+        "2019/telegram-penetration-testing-framework.md",
+        "2019/python-shellcode-antivirus-evasion.md",
+        "2019/phishing-platform-sql-injection.md",
+        "2019/phishing-site-penetration-test.md",
+        "2019/double-eleven-discount-technique.md",
+        "2020/bypass-safedog-notes.md",
+        "2020/debugger-evaluation-skipped-breakpoint.md",
+        "2020/ysoserial-urldns-gadget.md",
+        "2020/java-reflection-security-part-2.md",
+        "2020/java-reflection-security-part-1.md",
+        "2020/java-reflection-security-part-3.md",
+        "2020/java-deserialization.md",
+        "2020/commons-collections-deserialization.md",
+        "2020/java-deserialization-echo-solution.md",
+        "2020/fastjson-deserialization-reversing.md"
       ]
     },
     {
@@ -215,17 +214,17 @@
       "keywords": ["年度总结", "年终总结", "复盘", "随笔", "面试", "笔记"],
       "fallback": true,
       "articles": [
-        "2021/2020年研究回顾总结.md",
-        "2021/2021年度总结.md",
-        "2022/2022-年年度总结.md",
-        "2019/About-Me-关于我.md",
-        "2019/VM虚拟机无法安装vmtools解决-本程序需要您将此虚拟机上安装的操作系统更新到SP1.md",
-        "2019/回望2019-AND-畅想2020.md",
-        "2019/网络安全现状与未来蓝图-建立高效的网络安全体系.md",
-        "2019/记一次Nessus无法启动问题-Corrupt-Database.md",
-        "2020/Windows-Terminal-配置文件.md",
-        "2020/记一次面试题.md",
-        "2020/JSRC安全课笔记.md"
+        "2021/2020-research-review.md",
+        "2021/2021-annual-review.md",
+        "2022/2022-annual-review.md",
+        "2019/about-me.md",
+        "2019/vmware-tools-windows-sp1-fix.md",
+        "2019/2019-review-and-2020-outlook.md",
+        "2019/cybersecurity-current-state-and-future.md",
+        "2019/nessus-corrupt-database-fix.md",
+        "2020/windows-terminal-config.md",
+        "2020/interview-questions.md",
+        "2020/jsrc-security-course-notes.md"
       ]
     }
   ]

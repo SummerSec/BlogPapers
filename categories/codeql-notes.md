@@ -16,7 +16,7 @@ comments: false
     <div class="category-page__section-title"><h2 id="category-articles-title">文章</h2><span>按时间倒序</span></div>
     <ol class="category-article-list">
       <li>
-        <a class="category-article__title" href="../2021/CodeQL-Create-OpenJdk_Jdk8-Database.html">CodeQL Create OpenJdk/Jdk8 Database</a>
+        <a class="category-article__title" href="../2021/codeql-create-openjdk-jdk8-database.html">CodeQL Create OpenJdk/Jdk8 Database</a>
         <div class="category-article__meta">
           <time datetime="2021-08-18">2021 · 08/18</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -25,7 +25,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/CodeQL-library-for-Java.html">CodeQL library for Java</a>
+        <a class="category-article__title" href="../2021/codeql-java-library.html">CodeQL library for Java</a>
         <div class="category-article__meta">
           <time datetime="2021-04-03">2021 · 04/03</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -43,7 +43,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/Working-with-source-locations.html">Working with source locations</a>
+        <a class="category-article__title" href="../2021/codeql-java-source-locations.html">Working with source locations</a>
         <div class="category-article__meta">
           <time datetime="2021-03-27">2021 · 03/27</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -52,7 +52,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/Abstract-syntax-tree-classes-for-working-with-Java-programs.html">Abstract syntax tree classes for working with Java programs</a>
+        <a class="category-article__title" href="../2021/codeql-java-ast-classes.html">Abstract syntax tree classes for working with Java programs</a>
         <div class="category-article__meta">
           <time datetime="2021-03-26">2021 · 03/26</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -61,7 +61,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/Annotations-in-Java.html">Annotations in Java</a>
+        <a class="category-article__title" href="../2021/codeql-java-annotations.html">Annotations in Java</a>
         <div class="category-article__meta">
           <time datetime="2021-03-26">2021 · 03/26</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -79,7 +79,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/Navigating-the-call-graph.html">Navigating the call graph</a>
+        <a class="category-article__title" href="../2021/codeql-java-call-graph-navigation.html">Navigating the call graph</a>
         <div class="category-article__meta">
           <time datetime="2021-03-25">2021 · 03/25</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -88,13 +88,13 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/Overflow-prone-comparisons-in-Java.html">Overflow-prone comparisons in Java</a>
+        <a class="category-article__title" href="../2021/codeql-java-overflow-prone-comparisons.html">Overflow-prone comparisons in Java</a>
         <div class="category-article__meta">
           <time datetime="2021-03-25">2021 · 03/25</time>
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/Types-in-Java.html">Types in Java</a>
+        <a class="category-article__title" href="../2021/codeql-java-types.html">Types in Java</a>
         <div class="category-article__meta">
           <time datetime="2021-03-24">2021 · 03/24</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -103,7 +103,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/Analyzing-data-flow-in-Java.html">Analyzing data flow in Java</a>
+        <a class="category-article__title" href="../2021/codeql-java-data-flow-analysis.html">Analyzing data flow in Java</a>
         <div class="category-article__meta">
           <time datetime="2021-03-23">2021 · 03/23</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -112,7 +112,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/Basic-query-for-Java-code.html">Basic query for Java code</a>
+        <a class="category-article__title" href="../2021/codeql-java-basic-query.html">Basic query for Java code</a>
         <div class="category-article__meta">
           <time datetime="2021-03-22">2021 · 03/22</time>
           <span class="category-article__tags" aria-label="文章标签">
