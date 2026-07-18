@@ -7,18 +7,18 @@
 <docs>http://www.rssboard.org/rss-specification</docs>
 <generator>BlogPapers generate_feed_and_sitemap.py</generator>
 <language>zh-CN</language>
-<lastBuildDate>Sat, 18 Jul 2026 09:21:46 +0000</lastBuildDate>
+<lastBuildDate>Sat, 18 Jul 2026 12:01:50 +0000</lastBuildDate>
 <atom:link href="https://sumsec.me/resources/rss.xml" rel="self" type="application/rss+xml"/>
-<item>
-<title>在 AGI 降临前，先给 AI 开一条&quot;脑内弹幕&quot;通道</title>
-<link>https://sumsec.me/2026/agi-inner-commentary-channel.html</link>
-<guid isPermaLink="true">https://sumsec.me/2026/agi-inner-commentary-channel.html</guid>
-<pubDate>Sat, 18 Jul 2026 08:05:58 +0000</pubDate>
-</item>
 <item>
 <title>AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop</title>
 <link>https://sumsec.me/2026/ai-agent-engineering-evolution.html</link>
 <guid isPermaLink="true">https://sumsec.me/2026/ai-agent-engineering-evolution.html</guid>
+<pubDate>Sat, 18 Jul 2026 12:00:47 +0000</pubDate>
+</item>
+<item>
+<title>在 AGI 降临前，先给 AI 开一条&quot;脑内弹幕&quot;通道</title>
+<link>https://sumsec.me/2026/agi-inner-commentary-channel.html</link>
+<guid isPermaLink="true">https://sumsec.me/2026/agi-inner-commentary-channel.html</guid>
 <pubDate>Sat, 18 Jul 2026 08:05:58 +0000</pubDate>
 </item>
 <item>

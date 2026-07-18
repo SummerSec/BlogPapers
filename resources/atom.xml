@@ -2,22 +2,22 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-07-18T09:21:46Z</updated>
+  <updated>2026-07-18T12:01:50Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
   <subtitle>像清水一般清澈透明</subtitle>
   <entry>
+    <id>https://sumsec.me/2026/ai-agent-engineering-evolution.html</id>
+    <title>AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop</title>
+    <updated>2026-07-18T12:00:47Z</updated>
+    <link href="https://sumsec.me/2026/ai-agent-engineering-evolution.html" rel="alternate" />
+  </entry>
+  <entry>
     <id>https://sumsec.me/2026/agi-inner-commentary-channel.html</id>
     <title>在 AGI 降临前，先给 AI 开一条"脑内弹幕"通道</title>
     <updated>2026-07-18T08:05:58Z</updated>
     <link href="https://sumsec.me/2026/agi-inner-commentary-channel.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2026/ai-agent-engineering-evolution.html</id>
-    <title>AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop</title>
-    <updated>2026-07-18T08:05:58Z</updated>
-    <link href="https://sumsec.me/2026/ai-agent-engineering-evolution.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2026/blog-slides-remotion-delivery-timeline.html</id>
