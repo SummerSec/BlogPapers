@@ -163,7 +163,9 @@
             <div class="nav-dropdown__menu" aria-label="{{ nav_group }}">
               {% for category in nav_categories %}
               {% if category.group == nav_group %}
-              <a href="{{ '/categories/' | append: category.slug | append: '.html' | relative_url }}" class="nav-dropdown__item">
+              {% assign nav_category_url = '/categories/' | append: category.slug | append: '.html' %}
+              {% if category.page %}{% assign nav_category_url = category.page %}{% endif %}
+              <a href="{{ nav_category_url | relative_url }}" class="nav-dropdown__item">
                 <span>{{ category.code }}</span>{{ category.name }}
               </a>
               {% endif %}

@@ -9,7 +9,7 @@ comments: false
     <p class="category-browser__eyebrow">TOPIC DIRECTORY / SUMSEC</p>
     <h1>主题分类</h1>
     <p>按主题或年份两个维度浏览全部文章。主题分类在下面按组展示，年份归档见页底；文章原有链接不会改变。</p>
-    <div class="category-browser__summary"><strong>117</strong> 篇文章 <span aria-hidden="true">/</span> <strong>10</strong> 条主题路径</div>
+    <div class="category-browser__summary"><strong>117</strong> 篇文章 <span aria-hidden="true">/</span> <strong>11</strong> 条主题路径</div>
   </header>
   <nav class="category-directory" aria-label="主题分类目录">
     <a class="category-directory__link" data-topic="violet" href="./ai-thoughts.html">
@@ -64,6 +64,12 @@ comments: false
       <span class="category-directory__code">WEB CODING</span>
       <span class="category-directory__name">Web Coding</span>
       <span class="category-directory__count">03</span>
+    </a>
+    <a class="category-directory__link" data-topic="green" href="/resources/InvestmentLog.html">
+      <span class="category-directory__group">个人记录</span>
+      <span class="category-directory__code">INVEST</span>
+      <span class="category-directory__name">投资复盘</span>
+      <span class="category-directory__count">LIVE</span>
     </a>
     <a class="category-directory__link" data-topic="green" href="./reviews-notes.html">
       <span class="category-directory__code">LOG</span>

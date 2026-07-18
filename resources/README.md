@@ -31,6 +31,7 @@ tags:
 | Advertisements.md | [Advertisements.md](./Advertisements.md) |
 | AboutMe.md | [AboutMe.md](./AboutMe.md) |
 | OpenSource.md | [OpenSource.md](./OpenSource.md) |
+| InvestmentLog.md | [投资复盘](./InvestmentLog.md) |
 | 1644461078948.yml | [1644461078948.yml](./1644461078948.yml) |
 | urls.txt | [urls.txt](./urls.txt) |
 | JPATHRceBean.xml | [JPATHRceBean.xml](./JPATHRceBean.xml) |

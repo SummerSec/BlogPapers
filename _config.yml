@@ -66,6 +66,11 @@ defaults:
       title: "Github开源项目"
       comments: false
   - scope:
+      path: "resources/InvestmentLog.md"
+    values:
+      title: "投资复盘"
+      comments: false
+  - scope:
       path: "resources/AboutMe.md"
     values:
       title: "关于"

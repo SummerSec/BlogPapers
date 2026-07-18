@@ -304,8 +304,10 @@ def render_index(
     for category in categories:
         count = len(grouped[category["slug"]])
         group = (category.get("group") or "").strip()
+        href = category.get("page") or f'./{category["slug"]}.html'
+        count_label = "LIVE" if category.get("page") else f"{count:02d}"
         lines.append(
-            f'    <a class="category-directory__link" data-topic="{html.escape(category["accent"])}" href="./{html.escape(category["slug"])}.html">'
+            f'    <a class="category-directory__link" data-topic="{html.escape(category["accent"])}" href="{html.escape(href)}">'
         )
         if group:
             lines.append(f'      <span class="category-directory__group">{html.escape(group)}</span>')
@@ -313,7 +315,7 @@ def render_index(
             [
                 f'      <span class="category-directory__code">{html.escape(category["code"])}</span>',
                 f'      <span class="category-directory__name">{html.escape(category["name"])}</span>',
-                f'      <span class="category-directory__count">{count:02d}</span>',
+                f'      <span class="category-directory__count">{count_label}</span>',
                 "    </a>",
             ]
         )
@@ -421,6 +423,8 @@ def main() -> int:
         )
         expected = {"readme.md"}
         for category in categories:
+            if category.get("page"):
+                continue
             expected.add(f'{category["slug"]}.md'.casefold())
             (CATEGORY_DIR / f'{category["slug"]}.md').write_text(
                 render_category_page(category, grouped[category["slug"]]),
@@ -436,7 +440,8 @@ def main() -> int:
         print(f"生成主题分类失败：{exc}", file=sys.stderr)
         return 1
     summary = "，".join(f'{category["name"]} {len(grouped[category["slug"]])}' for category in categories)
-    print(f"已写入 categories/ 分类目录与 {len(categories)} 个独立分类页：共 {len(articles)} 篇；{summary}。")
+    generated_pages = sum(not category.get("page") for category in categories)
+    print(f"已写入 categories/ 分类目录与 {generated_pages} 个独立分类页：共 {len(articles)} 篇；{summary}。")
     return 0
 
 

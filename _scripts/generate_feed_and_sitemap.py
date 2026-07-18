@@ -43,6 +43,7 @@ STATIC_SITEMAP_PATHS = (
     "/resources/Archives.html",
     "/resources/AboutMe.html",
     "/resources/OpenSource.html",
+    "/resources/InvestmentLog.html",
     "/resources/Advertisements.html",
     "/resources/subdomain.html",
     "/resources/rss.xml",

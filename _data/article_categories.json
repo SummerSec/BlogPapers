@@ -205,6 +205,17 @@
       "keywords": ["工具", "Tools", "Jekyll", "Remotion", "PPT", "算法", "工程"]
     },
     {
+      "slug": "investment-records",
+      "group": "个人记录",
+      "code": "INVEST",
+      "name": "投资复盘",
+      "description": "每日账户投资情况、持仓汇总、历史资产快照与操作明细。",
+      "accent": "green",
+      "page": "/resources/InvestmentLog.html",
+      "tags": ["投资", "持仓", "复盘"],
+      "keywords": ["投资记录", "持仓汇总", "账户资产"]
+    },
+    {
       "slug": "reviews-notes",
       "code": "LOG",
       "name": "复盘与随笔",
