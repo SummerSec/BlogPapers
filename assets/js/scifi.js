@@ -1202,13 +1202,16 @@
     runInitArticleReadingMode();
   }
 
-  // --- Progressive article images: placeholder -> blurred preview -> original on zoom ---
+  // --- Progressive article images: placeholder -> blurred preview -> queued original ---
   function initProgressiveImages() {
     var imgs = Array.prototype.slice.call(document.querySelectorAll('.page-body img[data-progressive-src]'));
     if (!imgs.length) return;
     var proxyMeta = document.querySelector('meta[name="image-preview-proxy"]');
     var previewProxy = (proxyMeta && proxyMeta.getAttribute('content')) || 'https://wsrv.nl/';
     previewProxy = String(previewProxy).replace(/^\s+|\s+$/g, '');
+    var priorityQueue = [];
+    var activeOriginal = null;
+    var queueTimer = 0;
 
     function originalSrc(img) {
       return img.getAttribute('data-progressive-src') || img.getAttribute('data-original-src') || img.currentSrc || img.src;
@@ -1241,18 +1244,29 @@
         '?url=' + encodeURIComponent(abs) + '&w=900&q=45&blur=4&output=webp';
     }
 
-    function loadPreview(img) {
+    function loadPreview(img, eager) {
       if (!img || img.getAttribute('data-progressive-state')) return;
       var orig = originalSrc(img);
       if (!orig) return;
       img.setAttribute('data-original-src', orig);
-      img.setAttribute('data-progressive-state', 'preview');
-      img.loading = 'lazy';
+      img.setAttribute('data-progressive-state', 'preview-loading');
+      img.loading = eager ? 'eager' : 'lazy';
       img.decoding = 'async';
-      img.addEventListener('load', function onLoad() {
+      function onLoad() {
         img.removeEventListener('load', onLoad);
+        img.removeEventListener('error', onError);
         img.classList.add('progressive-image--loaded');
-      });
+        img.setAttribute('data-progressive-state', 'preview-ready');
+        scheduleOriginalQueue(240);
+      }
+      function onError() {
+        img.removeEventListener('load', onLoad);
+        img.removeEventListener('error', onError);
+        img.setAttribute('data-progressive-state', 'preview-error');
+        scheduleOriginalQueue(0);
+      }
+      img.addEventListener('load', onLoad);
+      img.addEventListener('error', onError);
       img.src = previewSrc(orig);
     }
 
@@ -1264,33 +1278,130 @@
       img.setAttribute('fetchpriority', 'high');
     }
 
-    function loadOriginal(img, done) {
+    function setLowPriority(img) {
+      if (!img) return;
+      img.decoding = 'async';
+      if ('fetchPriority' in img) img.fetchPriority = 'low';
+      img.setAttribute('fetchpriority', 'low');
+    }
+
+    function sameUrl(a, b) {
+      try {
+        return new URL(a, window.location.href).href === new URL(b, window.location.href).href;
+      } catch (e) {
+        return a === b;
+      }
+    }
+
+    function flushOriginalCallbacks(img, src, failed) {
+      var callbacks = img._progressiveOriginalCallbacks || [];
+      img._progressiveOriginalCallbacks = [];
+      callbacks.forEach(function (callback) {
+        callback(src, failed);
+      });
+    }
+
+    function finishOriginal(img, src, failed) {
+      var frame = img.closest('.progressive-image-frame');
+      if (frame) frame.classList.remove('is-loading-original');
+      img._progressiveProbe = null;
+      activeOriginal = null;
+      flushOriginalCallbacks(img, src, failed);
+      scheduleOriginalQueue(80);
+    }
+
+    function loadOriginal(img, urgent) {
       var orig = originalSrc(img);
-      if (!orig) return;
+      if (!orig) {
+        finishOriginal(img, '', true);
+        return;
+      }
       img.setAttribute('data-original-src', orig);
-      if (img.src === orig || img.currentSrc === orig) {
+      if (sameUrl(img.currentSrc || img.src, orig)) {
         img.classList.add('progressive-image--original');
-        if (done) done(orig);
+        img.setAttribute('data-progressive-state', 'original');
+        finishOriginal(img, orig, false);
         return;
       }
       var frame = img.closest('.progressive-image-frame');
       img.setAttribute('data-progressive-state', 'original-loading');
       if (frame) frame.classList.add('is-loading-original');
-      setHighPriority(img);
+      if (urgent) setHighPriority(img);
       var probe = new Image();
-      setHighPriority(probe);
+      img._progressiveProbe = probe;
+      if (urgent) setHighPriority(probe);
+      else setLowPriority(probe);
       probe.onload = function () {
         img.src = orig;
         img.classList.add('progressive-image--original');
         img.setAttribute('data-progressive-state', 'original');
-        if (frame) frame.classList.remove('is-loading-original');
-        if (done) done(orig);
+        finishOriginal(img, orig, false);
       };
       probe.onerror = function () {
-        if (frame) frame.classList.remove('is-loading-original');
-        if (done) done(orig, true);
+        img.setAttribute('data-progressive-state', 'original-error');
+        finishOriginal(img, orig, true);
       };
       probe.src = orig;
+    }
+
+    function nextAutomaticOriginal() {
+      for (var i = 0; i < imgs.length; i += 1) {
+        var state = imgs[i].getAttribute('data-progressive-state');
+        if (!state) {
+          loadPreview(imgs[i], true);
+          return null;
+        }
+        if (state === 'preview-ready' || state === 'preview-error') return imgs[i];
+        if (state === 'preview-loading' || state === 'original-loading') return null;
+      }
+      return null;
+    }
+
+    function runOriginalQueue() {
+      queueTimer = 0;
+      if (activeOriginal) return;
+      var target = null;
+      var urgent = false;
+      while (priorityQueue.length && !target) {
+        var candidate = priorityQueue.shift();
+        if (candidate.getAttribute('data-progressive-state') !== 'original') target = candidate;
+      }
+      if (target) urgent = true;
+      else target = nextAutomaticOriginal();
+      if (!target) return;
+      activeOriginal = target;
+      loadOriginal(target, urgent);
+    }
+
+    function scheduleOriginalQueue(delay) {
+      if (activeOriginal || queueTimer) return;
+      queueTimer = window.setTimeout(runOriginalQueue, delay || 0);
+    }
+
+    function requestOriginal(img, done) {
+      if (!img) return;
+      var state = img.getAttribute('data-progressive-state');
+      var orig = originalSrc(img);
+      if (state === 'original') {
+        if (done) done(orig, false);
+        return;
+      }
+      if (done) {
+        img._progressiveOriginalCallbacks = img._progressiveOriginalCallbacks || [];
+        img._progressiveOriginalCallbacks.push(done);
+      }
+      if (activeOriginal === img) {
+        setHighPriority(img);
+        setHighPriority(img._progressiveProbe);
+        return;
+      }
+      priorityQueue = priorityQueue.filter(function (queued) { return queued !== img; });
+      priorityQueue.unshift(img);
+      if (queueTimer) {
+        window.clearTimeout(queueTimer);
+        queueTimer = 0;
+      }
+      scheduleOriginalQueue(0);
     }
 
     function enhanceImage(img) {
@@ -1344,13 +1455,16 @@
       var target = box.querySelector('.image-lightbox__img');
       var orig = originalSrc(img);
       if (!orig || !target) return;
+      box._progressiveRequest = (box._progressiveRequest || 0) + 1;
+      var requestId = box._progressiveRequest;
       setHighPriority(target);
       target.alt = img.getAttribute('alt') || '';
       target.src = img.currentSrc || img.src;
       box.classList.add('is-open', 'is-loading');
       document.body.style.overflow = 'hidden';
-      loadOriginal(img, function (src) {
-        target.src = src;
+      requestOriginal(img, function (src, failed) {
+        if (box._progressiveRequest !== requestId) return;
+        if (!failed) target.src = src;
         box.classList.remove('is-loading');
       });
     }
@@ -1365,7 +1479,7 @@
       }, { rootMargin: '900px 0px', threshold: 0.01 });
       imgs.forEach(function (img) { observer.observe(img); });
     } else {
-      imgs.forEach(loadPreview);
+      imgs.forEach(function (img) { loadPreview(img, false); });
     }
 
     imgs.forEach(function (img) {
@@ -1375,6 +1489,7 @@
         openOriginal(img);
       });
     });
+    scheduleOriginalQueue(0);
   }
 
   if (document.readyState === 'loading') {
