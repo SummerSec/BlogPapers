@@ -1115,6 +1115,12 @@ body.page-kind-page:not(.page-front) .content-shell {
   box-shadow: var(--shadow-sm);
 }
 
+/* 单图被 JS 包进 frame 后，frame 收缩贴合图片宽度并整体居中，
+   否则 block frame 撑满正文栏、图片左对齐且「查看原图」按钮脱离图片右缘 */
+.page-body p:not(:has(> img ~ img)):not(:has(> .progressive-image-frame ~ .progressive-image-frame)) > .progressive-image-frame:only-child {
+  width: fit-content;
+}
+
 .page-body p:not(:has(> img ~ img)):not(:has(> .progressive-image-frame ~ .progressive-image-frame)) > img:only-child,
 .page-body p:not(:has(> img ~ img)):not(:has(> .progressive-image-frame ~ .progressive-image-frame)) > .progressive-image-frame:only-child > img {
   max-height: 520px;
