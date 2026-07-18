@@ -23,6 +23,7 @@ const TEXT_LIMITS = {
   snapshot_date: 10,
   account_key: 64,
   account_name: 80,
+  account_type: 24,
   asset_type: 16,
   holding_key: 128,
   captured_at: 40,
@@ -72,12 +73,16 @@ async function normalizeOperation(input) {
   const record = {
     occurred_at: new Date(occurredAt).toISOString(),
     operation,
+    account_key: cleanText(input.account_key, 'account_key') || 'all',
+    account_name: cleanText(input.account_name, 'account_name'),
+    account_type: cleanText(input.account_type, 'account_type'),
     instrument_code: cleanText(input.instrument_code, 'instrument_code'),
     instrument_name: cleanText(input.instrument_name, 'instrument_name'),
     side: cleanText(input.side, 'side'),
     quantity: cleanNumber(input.quantity),
     price: cleanNumber(input.price),
     amount: cleanNumber(input.amount),
+    fee: cleanNumber(input.fee),
     note: cleanText(input.note, 'note'),
     source_path: cleanText(input.source_path, 'source_path'),
   };
@@ -94,16 +99,19 @@ function normalizePortfolioSnapshot(input) {
     snapshot_date: snapshotDate,
     account_key: cleanText(input.account_key, 'account_key') || 'all',
     account_name: cleanText(input.account_name, 'account_name'),
+    account_type: cleanText(input.account_type, 'account_type'),
+    account_order: cleanNumber(input.account_order),
     total_asset: cleanNumber(input.total_asset),
     market_value: cleanNumber(input.market_value),
     cash: cleanNumber(input.cash),
     day_pnl: cleanNumber(input.day_pnl),
+    day_return: cleanNumber(input.day_return),
     total_pnl: cleanNumber(input.total_pnl),
     total_return: cleanNumber(input.total_return),
     source_path: cleanText(input.source_path, 'source_path'),
     captured_at: isValidIsoDate(capturedAt) ? new Date(capturedAt).toISOString() : new Date().toISOString(),
   };
-  const hasMetric = ['total_asset', 'market_value', 'cash', 'day_pnl', 'total_pnl', 'total_return']
+  const hasMetric = ['total_asset', 'market_value', 'cash', 'day_pnl', 'day_return', 'total_pnl', 'total_return']
     .some((field) => record[field] !== null);
   return hasMetric ? record : null;
 }
@@ -123,6 +131,7 @@ async function normalizeHoldingSnapshot(input) {
     snapshot_date: snapshotDate,
     account_key: cleanText(input.account_key, 'account_key') || 'all',
     account_name: cleanText(input.account_name, 'account_name'),
+    account_type: cleanText(input.account_type, 'account_type'),
     asset_type: cleanText(input.asset_type, 'asset_type') || 'stock',
     holding_key: holdingKey,
     instrument_code: instrumentCode,
@@ -133,6 +142,15 @@ async function normalizeHoldingSnapshot(input) {
     market_value: cleanNumber(input.market_value),
     pnl: cleanNumber(input.pnl),
     pnl_rate: cleanNumber(input.pnl_rate),
+    day_pnl: cleanNumber(input.day_pnl),
+    day_pnl_rate: cleanNumber(input.day_pnl_rate),
+    total_pnl: cleanNumber(input.total_pnl),
+    total_pnl_rate: cleanNumber(input.total_pnl_rate),
+    week_pnl: cleanNumber(input.week_pnl),
+    month_pnl: cleanNumber(input.month_pnl),
+    year_pnl: cleanNumber(input.year_pnl),
+    holding_days: cleanNumber(input.holding_days),
+    latest_change_rate: cleanNumber(input.latest_change_rate),
     weight: cleanNumber(input.weight),
     source_path: cleanText(input.source_path, 'source_path'),
     captured_at: isValidIsoDate(capturedAt) ? new Date(capturedAt).toISOString() : new Date().toISOString(),
@@ -162,14 +180,15 @@ async function ingestOperations(request, env) {
 
   const statement = env.DB.prepare(`
     INSERT OR IGNORE INTO investment_events (
-      event_key, occurred_at, operation, instrument_code, instrument_name,
-      side, quantity, price, amount, note, source_path
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      event_key, occurred_at, operation, account_key, account_name, account_type,
+      instrument_code, instrument_name, side, quantity, price, amount, fee, note, source_path
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   const results = await env.DB.batch(normalized.map((record) => statement.bind(
-    record.event_key, record.occurred_at, record.operation, record.instrument_code,
+    record.event_key, record.occurred_at, record.operation, record.account_key,
+    record.account_name, record.account_type, record.instrument_code,
     record.instrument_name, record.side, record.quantity, record.price, record.amount,
-    record.note, record.source_path,
+    record.fee, record.note, record.source_path,
   )));
   const inserted = results.reduce((total, result) => total + (result.meta?.changes || 0), 0);
   return json({ accepted: normalized.length, inserted, duplicates: normalized.length - inserted }, 202);
@@ -198,15 +217,19 @@ async function ingestSnapshots(request, env) {
 
   const portfolioStatement = env.DB.prepare(`
     INSERT INTO portfolio_snapshots (
-      snapshot_date, account_key, account_name, total_asset, market_value, cash,
-      day_pnl, total_pnl, total_return, source_path, captured_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      snapshot_date, account_key, account_name, account_type, account_order,
+      total_asset, market_value, cash, day_pnl, day_return, total_pnl, total_return,
+      source_path, captured_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(snapshot_date, account_key) DO UPDATE SET
       account_name = COALESCE(excluded.account_name, account_name),
+      account_type = COALESCE(excluded.account_type, account_type),
+      account_order = COALESCE(excluded.account_order, account_order),
       total_asset = COALESCE(excluded.total_asset, total_asset),
       market_value = COALESCE(excluded.market_value, market_value),
       cash = COALESCE(excluded.cash, cash),
       day_pnl = COALESCE(excluded.day_pnl, day_pnl),
+      day_return = COALESCE(excluded.day_return, day_return),
       total_pnl = COALESCE(excluded.total_pnl, total_pnl),
       total_return = COALESCE(excluded.total_return, total_return),
       source_path = excluded.source_path,
@@ -214,12 +237,15 @@ async function ingestSnapshots(request, env) {
   `);
   const holdingStatement = env.DB.prepare(`
     INSERT INTO holding_snapshots (
-      snapshot_date, account_key, account_name, asset_type, holding_key,
+      snapshot_date, account_key, account_name, account_type, asset_type, holding_key,
       instrument_code, instrument_name, quantity, cost_price, current_price,
-      market_value, pnl, pnl_rate, weight, source_path, captured_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      market_value, pnl, pnl_rate, day_pnl, day_pnl_rate, total_pnl, total_pnl_rate,
+      week_pnl, month_pnl, year_pnl, holding_days, latest_change_rate,
+      weight, source_path, captured_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(snapshot_date, account_key, asset_type, holding_key) DO UPDATE SET
       account_name = COALESCE(excluded.account_name, account_name),
+      account_type = COALESCE(excluded.account_type, account_type),
       instrument_code = COALESCE(excluded.instrument_code, instrument_code),
       instrument_name = COALESCE(excluded.instrument_name, instrument_name),
       quantity = COALESCE(excluded.quantity, quantity),
@@ -228,6 +254,15 @@ async function ingestSnapshots(request, env) {
       market_value = COALESCE(excluded.market_value, market_value),
       pnl = COALESCE(excluded.pnl, pnl),
       pnl_rate = COALESCE(excluded.pnl_rate, pnl_rate),
+      day_pnl = COALESCE(excluded.day_pnl, day_pnl),
+      day_pnl_rate = COALESCE(excluded.day_pnl_rate, day_pnl_rate),
+      total_pnl = COALESCE(excluded.total_pnl, total_pnl),
+      total_pnl_rate = COALESCE(excluded.total_pnl_rate, total_pnl_rate),
+      week_pnl = COALESCE(excluded.week_pnl, week_pnl),
+      month_pnl = COALESCE(excluded.month_pnl, month_pnl),
+      year_pnl = COALESCE(excluded.year_pnl, year_pnl),
+      holding_days = COALESCE(excluded.holding_days, holding_days),
+      latest_change_rate = COALESCE(excluded.latest_change_rate, latest_change_rate),
       weight = COALESCE(excluded.weight, weight),
       source_path = excluded.source_path,
       captured_at = excluded.captured_at
@@ -235,15 +270,19 @@ async function ingestSnapshots(request, env) {
 
   const statements = [
     ...portfolio.map((record) => portfolioStatement.bind(
-      record.snapshot_date, record.account_key, record.account_name, record.total_asset,
-      record.market_value, record.cash, record.day_pnl, record.total_pnl,
-      record.total_return, record.source_path, record.captured_at,
+      record.snapshot_date, record.account_key, record.account_name, record.account_type,
+      record.account_order, record.total_asset, record.market_value, record.cash, record.day_pnl,
+      record.day_return, record.total_pnl, record.total_return, record.source_path,
+      record.captured_at,
     )),
     ...holdings.map((record) => holdingStatement.bind(
-      record.snapshot_date, record.account_key, record.account_name, record.asset_type,
-      record.holding_key, record.instrument_code, record.instrument_name, record.quantity,
-      record.cost_price, record.current_price, record.market_value, record.pnl,
-      record.pnl_rate, record.weight, record.source_path, record.captured_at,
+      record.snapshot_date, record.account_key, record.account_name, record.account_type,
+      record.asset_type, record.holding_key, record.instrument_code, record.instrument_name,
+      record.quantity, record.cost_price, record.current_price, record.market_value,
+      record.pnl, record.pnl_rate, record.day_pnl, record.day_pnl_rate, record.total_pnl,
+      record.total_pnl_rate, record.week_pnl, record.month_pnl, record.year_pnl,
+      record.holding_days, record.latest_change_rate, record.weight, record.source_path,
+      record.captured_at,
     )),
   ];
   await env.DB.batch(statements);
@@ -255,8 +294,8 @@ async function listOperations(url, env) {
   const limit = Math.min(Math.max(Number.parseInt(url.searchParams.get('limit') || '1000', 10), 1), 5000);
   const since = new Date(Date.now() - days * 86400000).toISOString();
   const result = await env.DB.prepare(`
-    SELECT occurred_at, operation, instrument_code, instrument_name,
-           side, quantity, price, amount, note
+    SELECT occurred_at, operation, account_key, account_name, account_type,
+           instrument_code, instrument_name, side, quantity, price, amount, fee, note
     FROM investment_events
     WHERE occurred_at >= ?
     ORDER BY occurred_at DESC, id DESC
@@ -270,16 +309,16 @@ async function getPortfolio(url, env) {
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
   const [portfolioResult, latestDateResult, operationsResult] = await env.DB.batch([
     env.DB.prepare(`
-      SELECT snapshot_date, account_key, account_name, total_asset, market_value,
-             cash, day_pnl, total_pnl, total_return, captured_at
+      SELECT snapshot_date, account_key, account_name, account_type, account_order, total_asset, market_value,
+             cash, day_pnl, day_return, total_pnl, total_return, captured_at
       FROM portfolio_snapshots
       WHERE snapshot_date >= ?
       ORDER BY snapshot_date DESC, account_name, account_key
     `).bind(since),
-    env.DB.prepare('SELECT MAX(snapshot_date) AS latest_date FROM holding_snapshots'),
+    env.DB.prepare('SELECT MAX(snapshot_date) AS latest_date FROM portfolio_snapshots'),
     env.DB.prepare(`
-      SELECT occurred_at, operation, instrument_code, instrument_name,
-             side, quantity, price, amount, note
+      SELECT occurred_at, operation, account_key, account_name, account_type,
+             instrument_code, instrument_name, side, quantity, price, amount, fee, note
       FROM investment_events
       ORDER BY occurred_at DESC, id DESC
       LIMIT 100
@@ -290,9 +329,11 @@ async function getPortfolio(url, env) {
   let holdings = [];
   if (latestDate) {
     const result = await env.DB.prepare(`
-      SELECT snapshot_date, account_key, account_name, asset_type,
+      SELECT snapshot_date, account_key, account_name, account_type, asset_type,
              instrument_code, instrument_name, quantity, cost_price,
-             current_price, market_value, pnl, pnl_rate, weight, captured_at
+             current_price, market_value, pnl, pnl_rate, day_pnl, day_pnl_rate,
+             total_pnl, total_pnl_rate, week_pnl, month_pnl, year_pnl,
+             holding_days, latest_change_rate, weight, captured_at
       FROM holding_snapshots
       WHERE snapshot_date = ?
       ORDER BY market_value DESC, instrument_name, instrument_code

@@ -1,16 +1,16 @@
 # 投资操作日志 Worker
 
-使用 Cloudflare Worker + D1 保存浏览器扩展捕获的投资操作、每日账户快照、持仓快照和历史资产趋势，并向博客页面提供实时只读数据。
+使用 Cloudflare Worker + D1 保存浏览器扩展捕获的分类账户、交易记录、每日账户快照、持仓快照和历史资产趋势，并向博客页面提供实时只读数据。
 
 ## 接口
 
-- `POST /api/operations`：写入操作，需要 `Authorization: Bearer <INGEST_TOKEN>`。
+- `POST /api/operations`：单条或批量写入交易记录，需要 `Authorization: Bearer <INGEST_TOKEN>`。
 - `GET /api/operations?days=90&limit=1000`：博客公开读取的脱敏记录。
 - `POST /api/snapshots`：批量写入账户与持仓快照，需要写入令牌。
 - `GET /api/portfolio?days=365`：实时返回历史账户快照、最新持仓和近期操作。
 - `GET /health`：健康检查。
 
-服务端只接收操作时间、动作、证券代码/名称、方向、数量、价格、金额、备注和来源接口，不接收同花顺 Cookie、userid 或原始接口响应。
+服务端接收账户显示名称、脱敏后的账户键、账户与持仓指标及交易记录，不接收同花顺 Cookie、userid 或原始接口响应。`GET` 接口是公开的，因此其中的账户名称、持仓与交易数据会对博客访问者可见。
 
 ## 部署
 
