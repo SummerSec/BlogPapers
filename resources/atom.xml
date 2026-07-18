@@ -2,106 +2,652 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-07-18T03:35:21Z</updated>
+  <updated>2026-07-18T08:07:21Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
   <subtitle>像清水一般清澈透明</subtitle>
   <entry>
+    <id>https://sumsec.me/2026/agi-inner-commentary-channel.html</id>
+    <title>在 AGI 降临前，先给 AI 开一条"脑内弹幕"通道</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2026/agi-inner-commentary-channel.html" rel="alternate" />
+  </entry>
+  <entry>
     <id>https://sumsec.me/2026/ai-agent-engineering-evolution.html</id>
     <title>AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop</title>
-    <updated>2026-07-17T15:54:32Z</updated>
+    <updated>2026-07-18T08:05:58Z</updated>
     <link href="https://sumsec.me/2026/ai-agent-engineering-evolution.html" rel="alternate" />
   </entry>
   <entry>
-    <id>https://sumsec.me/2020/java-reflection-security-part-2.html</id>
-    <title>从安全角度谈Java反射机制--前章</title>
-    <updated>2026-07-17T14:21:47Z</updated>
-    <link href="https://sumsec.me/2020/java-reflection-security-part-2.html" rel="alternate" />
+    <id>https://sumsec.me/2026/blog-slides-remotion-delivery-timeline.html</id>
+    <title>一篇博文，三种时间：网页幻灯与 Remotion 动效的交付逻辑</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2026/blog-slides-remotion-delivery-timeline.html" rel="alternate" />
   </entry>
   <entry>
-    <id>https://sumsec.me/2020/java-reflection-security-part-3.html</id>
-    <title>从安全角度谈Java反射机制--终章</title>
-    <updated>2026-07-17T14:21:47Z</updated>
-    <link href="https://sumsec.me/2020/java-reflection-security-part-3.html" rel="alternate" />
+    <id>https://sumsec.me/2026/shiroattack2-5-ai-era-changes.html</id>
+    <title>AI 时代 ShiroAttack2 5.x：修改了什么</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2026/shiroattack2-5-ai-era-changes.html" rel="alternate" />
   </entry>
   <entry>
-    <id>https://sumsec.me/2020/fastjson-deserialization-reversing.html</id>
-    <title>逆向学习fastjson反序列化始</title>
-    <updated>2026-07-17T14:21:47Z</updated>
-    <link href="https://sumsec.me/2020/fastjson-deserialization-reversing.html" rel="alternate" />
+    <id>https://sumsec.me/2026/skill-evolution-results-trace.html</id>
+    <title>Agent 越改越乱之后，我用评测和轨迹把它拉回来了</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2026/skill-evolution-results-trace.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2026/skill-semantic-traps-anti-hallucination.html</id>
+    <title>🔍 别让大模型"想太多"：SKILL开发中的语义陷阱与抗幻觉设计</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2026/skill-semantic-traps-anti-hallucination.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2026/tv-remote-vibe-coding.html</id>
+    <title>谁能想到，电视遥控器竟成了 Vibe Coding 神器</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2026/tv-remote-vibe-coding.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/2022-annual-review.html</id>
+    <title>2022 年年度总结</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/2022-annual-review.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/codeql-and-ast.html</id>
+    <title>CodeQL与AST之间联系</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/codeql-and-ast.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/codeql-first-look-shiro550.html</id>
+    <title>CodeQL初见Shiro550</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/codeql-first-look-shiro550.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/codeql-meets-shiro550.html</id>
+    <title>CodeQL与Shiro550碰撞</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/codeql-meets-shiro550.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/codeql-practical-usage-tricks.html</id>
+    <title>CodeQL Usage Tricks</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/codeql-practical-usage-tricks.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/cve-2022-22980-mongodb-spel.html</id>
+    <title>CVE-2022-22980 Mongodb SpEL</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/cve-2022-22980-mongodb-spel.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/cve-2022-33891-apache-spark-shell-command-injection.html</id>
+    <title>CVE-2022-33891 Apache Spark shell command injection</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/cve-2022-33891-apache-spark-shell-command-injection.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/github-java-codeql-ctf.html</id>
+    <title>GitHub Java CodeQL CTF</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/github-java-codeql-ctf.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/java-memory-shell-injection.html</id>
+    <title>论如何优雅注入 Java 内存马</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/java-memory-shell-injection.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/java-native-library-loading.html</id>
+    <title>Java加载动态链接库方式</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/java-native-library-loading.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/java-swing-rce-analysis.html</id>
+    <title>Java-Swing-To-RCE-漏洞分析</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/java-swing-rce-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/kubernetes-goat-notes.html</id>
+    <title>kubernetes-goat学习笔记</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/kubernetes-goat-notes.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/log4j2-vulnerability-analysis.html</id>
+    <title>Log4j2 漏洞分析</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/log4j2-vulnerability-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/regex-misconfiguration.html</id>
+    <title>正则匹配配置不当</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/regex-misconfiguration.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/shiro-deserialization-key-modification.html</id>
+    <title>shiro反序列化漏洞攻击拓展面--修改key</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/shiro-deserialization-key-modification.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/shiro-post-exploitation.html</id>
+    <title>Shiro后渗透拓展面</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/shiro-post-exploitation.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/similarity-algorithm-research.html</id>
+    <title>相似度算法调研</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/similarity-algorithm-research.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/spring-boot-rce-memory-shell.html</id>
+    <title>Spring Boot RCE到内存马探索</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/spring-boot-rce-memory-shell.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/spring-cloud-gateway-spel-rce-analysis.html</id>
+    <title>SpringBoot Gateway EL表达式漏洞分析</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/spring-cloud-gateway-spel-rce-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/spring-framework-cve-2022-22965-analysis.html</id>
+    <title>Spring-Framework-RCE-CVE-2022-22965漏洞分析</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/spring-framework-cve-2022-22965-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/vmware-one-access-auth-bypass.html</id>
+    <title>VMWare-Workspace-ONE-Access-Auth-Bypass</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/vmware-one-access-auth-bypass.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2022/web-security-tools-collection.html</id>
+    <title>Hack-Tools2Web</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2022/web-security-tools-collection.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2021/2020-research-review.html</id>
     <title>2020年研究回顾总结</title>
-    <updated>2026-07-17T14:14:20Z</updated>
+    <updated>2026-07-18T08:05:58Z</updated>
     <link href="https://sumsec.me/2021/2020-research-review.html" rel="alternate" />
   </entry>
   <entry>
-    <id>https://sumsec.me/2021/codeql-java-ast-classes.html</id>
-    <title>Abstract syntax tree classes for working with Java programs</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2021/codeql-java-ast-classes.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/codeql-java-data-flow-analysis.html</id>
-    <title>Analyzing data flow in Java</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2021/codeql-java-data-flow-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/codeql-java-annotations.html</id>
-    <title>Annotations in Java</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2021/codeql-java-annotations.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/codeql-java-basic-query.html</id>
-    <title>Basic query for Java code</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2021/codeql-java-basic-query.html" rel="alternate" />
+    <id>https://sumsec.me/2021/2021-annual-review.html</id>
+    <title>2021年度总结</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/2021-annual-review.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2021/bypasssuper-guide.html</id>
     <title>BypassSuper使用介绍说明</title>
-    <updated>2026-07-17T14:14:20Z</updated>
+    <updated>2026-07-18T08:05:58Z</updated>
     <link href="https://sumsec.me/2021/bypasssuper-guide.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2021/codeql-create-openjdk-jdk8-database.html</id>
     <title>CodeQL Create OpenJdk/Jdk8 Database</title>
-    <updated>2026-07-17T14:14:20Z</updated>
+    <updated>2026-07-18T08:05:58Z</updated>
     <link href="https://sumsec.me/2021/codeql-create-openjdk-jdk8-database.html" rel="alternate" />
   </entry>
   <entry>
-    <id>https://sumsec.me/2021/codeql-java-library.html</id>
-    <title>CodeQL library for Java</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2021/codeql-java-library.html" rel="alternate" />
+    <id>https://sumsec.me/2021/codeql-data-flow-java-deserialization.html</id>
+    <title>从Java反序列化漏洞题看CodeQL数据流</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/codeql-data-flow-java-deserialization.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/codeql-detect-pii-log-leaks.html</id>
+    <title>PII泄露--用CodeQL识别日志中的PII数据</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/codeql-detect-pii-log-leaks.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/codeql-java-annotations.html</id>
+    <title>Annotations in Java</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/codeql-java-annotations.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/codeql-java-ast-classes.html</id>
+    <title>Abstract syntax tree classes for working with Java programs</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/codeql-java-ast-classes.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/codeql-java-basic-query.html</id>
+    <title>Basic query for Java code</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/codeql-java-basic-query.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2021/codeql-java-call-graph-navigation.html</id>
     <title>Navigating the call graph</title>
-    <updated>2026-07-17T14:14:20Z</updated>
+    <updated>2026-07-18T08:05:58Z</updated>
     <link href="https://sumsec.me/2021/codeql-java-call-graph-navigation.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/codeql-java-data-flow-analysis.html</id>
+    <title>Analyzing data flow in Java</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/codeql-java-data-flow-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/codeql-java-library.html</id>
+    <title>CodeQL library for Java</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/codeql-java-library.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2021/codeql-java-overflow-prone-comparisons.html</id>
     <title>Overflow-prone comparisons in Java</title>
-    <updated>2026-07-17T14:14:20Z</updated>
+    <updated>2026-07-18T08:05:58Z</updated>
     <link href="https://sumsec.me/2021/codeql-java-overflow-prone-comparisons.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/codeql-java-types.html</id>
-    <title>Types in Java</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2021/codeql-java-types.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2021/codeql-java-source-locations.html</id>
     <title>Working with source locations</title>
-    <updated>2026-07-17T14:14:20Z</updated>
+    <updated>2026-07-18T08:05:58Z</updated>
     <link href="https://sumsec.me/2021/codeql-java-source-locations.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/codeql-java-struts-unsafe-deserialization-workshop.html</id>
+    <title>CodeQL workshop for Java: Unsafe deserialization in Apache Struts</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/codeql-java-struts-unsafe-deserialization-workshop.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/codeql-java-types.html</id>
+    <title>Types in Java</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/codeql-java-types.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/custom-classloader-version-isolation.html</id>
+    <title>自定义 ClassLoader 隔离运行不同版本jar包的方式</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/custom-classloader-version-isolation.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/fastjson-echo.html</id>
+    <title>Fastjson回显</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/fastjson-echo.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/fastjson-mysql-gadget.html</id>
+    <title>Fastjson_Mysql_gadget复现</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/fastjson-mysql-gadget.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/jndi-injection.html</id>
+    <title>JNDI注入</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/jndi-injection.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/log4j-gadget-mining-failure.html</id>
+    <title>记一次Log4j失败的Gadget挖掘记录</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/log4j-gadget-mining-failure.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/shiro-550-deserialization-analysis.html</id>
+    <title>概述</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/shiro-550-deserialization-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/shiro-deserialization-challenge-notes.html</id>
+    <title>一道shiro反序列化题目引发的思考</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/shiro-deserialization-challenge-notes.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/shiro-jrmp-gadget-analysis.html</id>
+    <title>shiro-JRMP-gadget</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/shiro-jrmp-gadget-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/tomcat-universal-echo.html</id>
+    <title>Tomcat通用回显学习笔记</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/tomcat-universal-echo.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/weblogic-cve-2020-2551-iiop-analysis.html</id>
+    <title>前言</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/weblogic-cve-2020-2551-iiop-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/weblogic-cve-2020-2551-iiop-reproduction.html</id>
+    <title>漏洞环境的搭建</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/weblogic-cve-2020-2551-iiop-reproduction.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/ysoserial-arbitrary-code-execution.html</id>
+    <title>修改ysoserial使其支持任意代码执行</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/ysoserial-arbitrary-code-execution.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2021/ysoserial-refactoring-notes.html</id>
+    <title>Ysoserial改造记录</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2021/ysoserial-refactoring-notes.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/2020-wangding-cup-java-file-upload.html</id>
+    <title>2020网鼎杯---Java文件上传wp</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/2020-wangding-cup-java-file-upload.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/bypass-safedog-notes.html</id>
+    <title>bypass 学习笔记之绕安全狗bypass safedog</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/bypass-safedog-notes.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/cnvd-2020-10487-cve-2020-1938-tomcat-ajp-file-read.html</id>
+    <title>CNVD-2020-10487(CVE-2020-1938)tomcat ajp 文件读取漏洞</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/cnvd-2020-10487-cve-2020-1938-tomcat-ajp-file-read.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/commons-collections-deserialization.html</id>
+    <title>漫谈Commons-Collections反序列化</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/commons-collections-deserialization.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/debugger-evaluation-skipped-breakpoint.html</id>
+    <title>Skipped breakpoint because it happened inside debugger evaluation</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/debugger-evaluation-skipped-breakpoint.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/fastjson-deserialization-reversing.html</id>
+    <title>逆向学习fastjson反序列化始</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/fastjson-deserialization-reversing.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/interview-questions.html</id>
+    <title>记一次面试题</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/interview-questions.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/java-deserialization-echo-solution.html</id>
+    <title>Java反序列化链回显解决方案</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/java-deserialization-echo-solution.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/java-deserialization.html</id>
+    <title>漫谈Java反序列化</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/java-deserialization.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/java-reflection-security-part-1.html</id>
+    <title>从安全角度谈Java反射机制--序章</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/java-reflection-security-part-1.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/java-reflection-security-part-2.html</id>
+    <title>从安全角度谈Java反射机制--前章</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/java-reflection-security-part-2.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/java-reflection-security-part-3.html</id>
+    <title>从安全角度谈Java反射机制--终章</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/java-reflection-security-part-3.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/java-xxe-code-audit.html</id>
+    <title>一篇文章读懂Java代码审计之XXE</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/java-xxe-code-audit.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/jfinalcms-code-audit.html</id>
+    <title>一次意外的代码审计----JfinalCMS审计</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/jfinalcms-code-audit.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/jsrc-security-course-notes.html</id>
+    <title>JDSRC安全课笔记</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/jsrc-security-course-notes.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/rce-overview.html</id>
+    <title>春眠不觉晓，RCE知多少？</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/rce-overview.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/ssti-overview.html</id>
+    <title>白头搔更短，SSTI惹人心！</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/ssti-overview.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/windows-terminal-config.html</id>
+    <title>Windows Terminal 配置文件</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/windows-terminal-config.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2020/ysoserial-urldns-gadget.html</id>
+    <title>小楼昨夜又春风，你知ysoserial-Gadget-URLDNS多少？</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2020/ysoserial-urldns-gadget.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/2019-review-and-2020-outlook.html</id>
+    <title>回望1920 AND 畅想2020</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/2019-review-and-2020-outlook.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/about-me.html</id>
+    <title>About Me 关于我</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/about-me.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/apache-flink-arbitrary-jar-upload-rce.html</id>
+    <title>Apache Flink任意Jar包上传导致远程代码执行</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/apache-flink-arbitrary-jar-upload-rce.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/apache-solr-template-injection-rce.html</id>
+    <title>【漏洞复现】Apache Solr 模板注入远程命令执行</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/apache-solr-template-injection-rce.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/cve-2019-0708-bluekeep-exploit.html</id>
+    <title>惊现CVE-2019-0708 EXP惊醒睡梦中的安全圈</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/cve-2019-0708-bluekeep-exploit.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/cve-2019-1388-uac-privilege-escalation.html</id>
+    <title>CVE-2019-1388 UAC提权复现</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/cve-2019-1388-uac-privilege-escalation.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/cve-2019-16097-harbor-admin-registration.html</id>
+    <title>CVE-2019-16097 || Harbor任意管理员注册漏洞复现</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/cve-2019-16097-harbor-admin-registration.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/cybersecurity-current-state-and-future.html</id>
+    <title>网络安全现状与未来蓝图||建立高效的网络安全体系</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/cybersecurity-current-state-and-future.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/double-eleven-discount-technique.html</id>
+    <title>不为人知的黑科技||双十一薅羊毛正确姿势</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/double-eleven-discount-technique.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/nessus-corrupt-database-fix.html</id>
+    <title>记一次Nessus无法启动问题--Corrupt Database</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/nessus-corrupt-database-fix.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/phishing-platform-sql-injection.html</id>
+    <title>从翻邮箱发现钓鱼站到钓鱼系统通杀注入</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/phishing-platform-sql-injection.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/phishing-site-penetration-test.html</id>
+    <title>记一次渗透学习||钓鱼网站渗透</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/phishing-site-penetration-test.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/python-batch-website-weight-query-v2.html</id>
+    <title>python脚本之批量查询网站权重2.0</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/python-batch-website-weight-query-v2.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/python-batch-website-weight-query.html</id>
+    <title>python脚本之批量查询网站权重</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/python-batch-website-weight-query.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/python-shellcode-antivirus-evasion.html</id>
+    <title>Python加密shellcode免杀</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/python-shellcode-antivirus-evasion.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/sqlmap-advanced-techniques.html</id>
+    <title>【实战技巧】sqlmap不为人知的骚操作</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/sqlmap-advanced-techniques.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/sqlmap-proxy-script.html</id>
+    <title>入门工具脚本之SQLMAP代理脚本</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/sqlmap-proxy-script.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/telegram-penetration-testing-framework.html</id>
+    <title>Telegram机器人作为渗透测试框架</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/telegram-penetration-testing-framework.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/uwsgi-cve-2018-7490-reproduction.html</id>
+    <title>【墨者学院 】uWSGI 漏洞复现（CVE-2018-7490）</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/uwsgi-cve-2018-7490-reproduction.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/vmware-tools-windows-sp1-fix.html</id>
+    <title>VM虚拟机无法安装vmtools解决|本程序需要您将此虚拟机上安装的操作系统更新到SP1</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/vmware-tools-windows-sp1-fix.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/weaver-ecology-database-config-leak-exploit.html</id>
+    <title>泛微ecology OA系统某接口存在数据库配置信息泄露漏洞exp-python</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/weaver-ecology-database-config-leak-exploit.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/weaver-ecology-database-config-leak.html</id>
+    <title>【漏洞复现】泛微ecology OA系统某接口存在数据库配置信息泄露漏洞</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/weaver-ecology-database-config-leak.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/weaver-ecology-rce.html</id>
+    <title>【漏洞预警】泛微e-cology OA系统远程代码执行漏洞及其复现</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/weaver-ecology-rce.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/2019/weaver-workflowcentertreedata-sql-injection.html</id>
+    <title>【漏洞预警】泛微OA WorkflowCenterTreeData接口注入漏洞(限oracle数据库)</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/2019/weaver-workflowcentertreedata-sql-injection.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/PL/pl-data-analysis-foundation.html</id>
+    <title>PL-3-Data Analysis Foundation</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/PL/pl-data-analysis-foundation.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/PL/pl-data-flow-analysis.html</id>
+    <title>PL-2-Data-Flow-Analysis</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/PL/pl-data-flow-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/PL/pl-intermediate-representation.html</id>
+    <title>PL-1-Intermediate-Representation</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/PL/pl-intermediate-representation.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/PL/pl-interprocedural-analysis.html</id>
+    <title>PL-4-Interprocedural Analysis</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/PL/pl-interprocedural-analysis.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/PL/program-analysis-interview-notes.html</id>
+    <title>知识点面试题总结</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/PL/program-analysis-interview-notes.html" rel="alternate" />
+  </entry>
+  <entry>
+    <id>https://sumsec.me/PL/wala-learning-notes.html</id>
+    <title>WALA使用和学习笔记</title>
+    <updated>2026-07-18T08:05:58Z</updated>
+    <link href="https://sumsec.me/PL/wala-learning-notes.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2021/aliases.html</id>
@@ -158,555 +704,9 @@
     <link href="https://sumsec.me/2021/variables.html" rel="alternate" />
   </entry>
   <entry>
-    <id>https://sumsec.me/2021/shiro-deserialization-challenge-notes.html</id>
-    <title>一道shiro反序列化题目引发的思考</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2021/shiro-deserialization-challenge-notes.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/ysoserial-arbitrary-code-execution.html</id>
-    <title>修改ysoserial使其支持任意代码执行</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2021/ysoserial-arbitrary-code-execution.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/custom-classloader-version-isolation.html</id>
-    <title>自定义 ClassLoader 隔离运行不同版本jar包的方式</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2021/custom-classloader-version-isolation.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/2020-wangding-cup-java-file-upload.html</id>
-    <title>2020网鼎杯---Java文件上传wp</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/2020-wangding-cup-java-file-upload.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/cnvd-2020-10487-cve-2020-1938-tomcat-ajp-file-read.html</id>
-    <title>CNVD-2020-10487(CVE-2020-1938)tomcat ajp 文件读取漏洞</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/cnvd-2020-10487-cve-2020-1938-tomcat-ajp-file-read.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/jsrc-security-course-notes.html</id>
-    <title>JDSRC安全课笔记</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/jsrc-security-course-notes.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/java-deserialization-echo-solution.html</id>
-    <title>Java反序列化链回显解决方案</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/java-deserialization-echo-solution.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/debugger-evaluation-skipped-breakpoint.html</id>
-    <title>Skipped breakpoint because it happened inside debugger evaluation</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/debugger-evaluation-skipped-breakpoint.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/windows-terminal-config.html</id>
-    <title>Windows Terminal 配置文件</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/windows-terminal-config.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/bypass-safedog-notes.html</id>
-    <title>bypass 学习笔记之绕安全狗bypass safedog</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/bypass-safedog-notes.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/jfinalcms-code-audit.html</id>
-    <title>一次意外的代码审计----JfinalCMS审计</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/jfinalcms-code-audit.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/java-xxe-code-audit.html</id>
-    <title>一篇文章读懂Java代码审计之XXE</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/java-xxe-code-audit.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/java-reflection-security-part-1.html</id>
-    <title>从安全角度谈Java反射机制--序章</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/java-reflection-security-part-1.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/ysoserial-urldns-gadget.html</id>
-    <title>小楼昨夜又春风，你知ysoserial-Gadget-URLDNS多少？</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/ysoserial-urldns-gadget.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/rce-overview.html</id>
-    <title>春眠不觉晓，RCE知多少？</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/rce-overview.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/commons-collections-deserialization.html</id>
-    <title>漫谈Commons-Collections反序列化</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/commons-collections-deserialization.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/java-deserialization.html</id>
-    <title>漫谈Java反序列化</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/java-deserialization.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/ssti-overview.html</id>
-    <title>白头搔更短，SSTI惹人心！</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/ssti-overview.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2020/interview-questions.html</id>
-    <title>记一次面试题</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2020/interview-questions.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/about-me.html</id>
-    <title>About Me 关于我</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/about-me.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/apache-flink-arbitrary-jar-upload-rce.html</id>
-    <title>Apache Flink任意Jar包上传导致远程代码执行</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/apache-flink-arbitrary-jar-upload-rce.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/cve-2019-1388-uac-privilege-escalation.html</id>
-    <title>CVE-2019-1388 UAC提权复现</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/cve-2019-1388-uac-privilege-escalation.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/cve-2019-16097-harbor-admin-registration.html</id>
-    <title>CVE-2019-16097 || Harbor任意管理员注册漏洞复现</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/cve-2019-16097-harbor-admin-registration.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/python-shellcode-antivirus-evasion.html</id>
-    <title>Python加密shellcode免杀</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/python-shellcode-antivirus-evasion.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/telegram-penetration-testing-framework.html</id>
-    <title>Telegram机器人作为渗透测试框架</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/telegram-penetration-testing-framework.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/vmware-tools-windows-sp1-fix.html</id>
-    <title>VM虚拟机无法安装vmtools解决|本程序需要您将此虚拟机上安装的操作系统更新到SP1</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/vmware-tools-windows-sp1-fix.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/python-batch-website-weight-query.html</id>
-    <title>python脚本之批量查询网站权重</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/python-batch-website-weight-query.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/python-batch-website-weight-query-v2.html</id>
-    <title>python脚本之批量查询网站权重2.0</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/python-batch-website-weight-query-v2.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/uwsgi-cve-2018-7490-reproduction.html</id>
-    <title>【墨者学院 】uWSGI 漏洞复现（CVE-2018-7490）</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/uwsgi-cve-2018-7490-reproduction.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/sqlmap-advanced-techniques.html</id>
-    <title>【实战技巧】sqlmap不为人知的骚操作</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/sqlmap-advanced-techniques.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/apache-solr-template-injection-rce.html</id>
-    <title>【漏洞复现】Apache Solr 模板注入远程命令执行</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/apache-solr-template-injection-rce.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/weaver-ecology-database-config-leak.html</id>
-    <title>【漏洞复现】泛微ecology OA系统某接口存在数据库配置信息泄露漏洞</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/weaver-ecology-database-config-leak.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/weaver-workflowcentertreedata-sql-injection.html</id>
-    <title>【漏洞预警】泛微OA WorkflowCenterTreeData接口注入漏洞(限oracle数据库)</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/weaver-workflowcentertreedata-sql-injection.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/weaver-ecology-rce.html</id>
-    <title>【漏洞预警】泛微e-cology OA系统远程代码执行漏洞及其复现</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/weaver-ecology-rce.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/double-eleven-discount-technique.html</id>
-    <title>不为人知的黑科技||双十一薅羊毛正确姿势</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/double-eleven-discount-technique.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/phishing-platform-sql-injection.html</id>
-    <title>从翻邮箱发现钓鱼站到钓鱼系统通杀注入</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/phishing-platform-sql-injection.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/sqlmap-proxy-script.html</id>
-    <title>入门工具脚本之SQLMAP代理脚本</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/sqlmap-proxy-script.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/2019-review-and-2020-outlook.html</id>
-    <title>回望1920 AND 畅想2020</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/2019-review-and-2020-outlook.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/cve-2019-0708-bluekeep-exploit.html</id>
-    <title>惊现CVE-2019-0708 EXP惊醒睡梦中的安全圈</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/cve-2019-0708-bluekeep-exploit.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/weaver-ecology-database-config-leak-exploit.html</id>
-    <title>泛微ecology OA系统某接口存在数据库配置信息泄露漏洞exp-python</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/weaver-ecology-database-config-leak-exploit.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/cybersecurity-current-state-and-future.html</id>
-    <title>网络安全现状与未来蓝图||建立高效的网络安全体系</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/cybersecurity-current-state-and-future.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/nessus-corrupt-database-fix.html</id>
-    <title>记一次Nessus无法启动问题--Corrupt Database</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/nessus-corrupt-database-fix.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2019/phishing-site-penetration-test.html</id>
-    <title>记一次渗透学习||钓鱼网站渗透</title>
-    <updated>2026-07-17T14:14:20Z</updated>
-    <link href="https://sumsec.me/2019/phishing-site-penetration-test.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2026/tv-remote-vibe-coding.html</id>
-    <title>谁能想到，电视遥控器竟成了 Vibe Coding 神器</title>
-    <updated>2026-07-16T15:11:20Z</updated>
-    <link href="https://sumsec.me/2026/tv-remote-vibe-coding.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2026/skill-evolution-results-trace.html</id>
-    <title>Agent 越改越乱之后，我用评测和轨迹把它拉回来了</title>
-    <updated>2026-07-06T02:19:48Z</updated>
-    <link href="https://sumsec.me/2026/skill-evolution-results-trace.html" rel="alternate" />
-  </entry>
-  <entry>
     <id>https://sumsec.me/2026/why-personal-agent-skills-repo.html</id>
     <title>模型人人都能用，什么才是你能带走的？我的答案是一个可进化的SKILL库</title>
     <updated>2026-05-25T05:27:13Z</updated>
     <link href="https://sumsec.me/2026/why-personal-agent-skills-repo.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2026/shiroattack2-5-ai-era-changes.html</id>
-    <title>AI 时代 ShiroAttack2 5.x：修改了什么</title>
-    <updated>2026-05-16T04:26:06Z</updated>
-    <link href="https://sumsec.me/2026/shiroattack2-5-ai-era-changes.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2026/agi-inner-commentary-channel.html</id>
-    <title>在 AGI 降临前，先给 AI 开一条"脑内弹幕"通道</title>
-    <updated>2026-04-14T12:03:58Z</updated>
-    <link href="https://sumsec.me/2026/agi-inner-commentary-channel.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2026/blog-slides-remotion-delivery-timeline.html</id>
-    <title>一篇博文，三种时间：网页幻灯与 Remotion 动效的交付逻辑</title>
-    <updated>2026-04-12T14:07:56Z</updated>
-    <link href="https://sumsec.me/2026/blog-slides-remotion-delivery-timeline.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2026/skill-semantic-traps-anti-hallucination.html</id>
-    <title>🔍 别让大模型"想太多"：SKILL开发中的语义陷阱与抗幻觉设计</title>
-    <updated>2026-04-11T09:56:40Z</updated>
-    <link href="https://sumsec.me/2026/skill-semantic-traps-anti-hallucination.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/2022-annual-review.html</id>
-    <title>2022 年年度总结</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/2022-annual-review.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/cve-2022-22980-mongodb-spel.html</id>
-    <title>CVE-2022-22980 Mongodb SpEL</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/cve-2022-22980-mongodb-spel.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/cve-2022-33891-apache-spark-shell-command-injection.html</id>
-    <title>CVE-2022-33891 Apache Spark shell command injection</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/cve-2022-33891-apache-spark-shell-command-injection.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/codeql-practical-usage-tricks.html</id>
-    <title>CodeQL-Usage-Tricks</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/codeql-practical-usage-tricks.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/codeql-and-ast.html</id>
-    <title>CodeQL与AST之间联系</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/codeql-and-ast.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/codeql-meets-shiro550.html</id>
-    <title>CodeQL与Shiro550碰撞</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/codeql-meets-shiro550.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/codeql-first-look-shiro550.html</id>
-    <title>CodeQL初见Shiro550</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/codeql-first-look-shiro550.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/github-java-codeql-ctf.html</id>
-    <title>GitHub Java CodeQL CTF</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/github-java-codeql-ctf.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/web-security-tools-collection.html</id>
-    <title>Hack-Tools2Web</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/web-security-tools-collection.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/java-swing-rce-analysis.html</id>
-    <title>Java-Swing-To-RCE-漏洞分析</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/java-swing-rce-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/java-native-library-loading.html</id>
-    <title>Java加载动态链接库方式</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/java-native-library-loading.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/log4j2-vulnerability-analysis.html</id>
-    <title>Log4j2 漏洞分析</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/log4j2-vulnerability-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/shiro-post-exploitation.html</id>
-    <title>Shiro后渗透拓展面</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/shiro-post-exploitation.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/spring-boot-rce-memory-shell.html</id>
-    <title>Spring Boot RCE到内存马探索</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/spring-boot-rce-memory-shell.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/spring-framework-cve-2022-22965-analysis.html</id>
-    <title>Spring-Framework-RCE-CVE-2022-22965漏洞分析</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/spring-framework-cve-2022-22965-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/spring-cloud-gateway-spel-rce-analysis.html</id>
-    <title>SpringBoot Gateway EL表达式漏洞分析</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/spring-cloud-gateway-spel-rce-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/vmware-one-access-auth-bypass.html</id>
-    <title>VMWare-Workspace-ONE-Access-Auth-Bypass</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/vmware-one-access-auth-bypass.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/kubernetes-goat-notes.html</id>
-    <title>kubernetes-goat学习笔记</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/kubernetes-goat-notes.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/shiro-deserialization-key-modification.html</id>
-    <title>shiro反序列化漏洞攻击拓展面--修改key</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/shiro-deserialization-key-modification.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/regex-misconfiguration.html</id>
-    <title>正则匹配配置不当</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/regex-misconfiguration.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/similarity-algorithm-research.html</id>
-    <title>相似度算法调研</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/similarity-algorithm-research.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2022/java-memory-shell-injection.html</id>
-    <title>论如何优雅注入 Java 内存马</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2022/java-memory-shell-injection.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/2021-annual-review.html</id>
-    <title>2021年度总结</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/2021-annual-review.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/codeql-java-struts-unsafe-deserialization-workshop.html</id>
-    <title>CodeQL workshop for Java: Unsafe deserialization in Apache Struts</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/codeql-java-struts-unsafe-deserialization-workshop.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/fastjson-mysql-gadget.html</id>
-    <title>Fastjson_Mysql_gadget复现</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/fastjson-mysql-gadget.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/fastjson-echo.html</id>
-    <title>Fastjson回显</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/fastjson-echo.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/jndi-injection.html</id>
-    <title>JNDI注入</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/jndi-injection.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/codeql-detect-pii-log-leaks.html</id>
-    <title>PII泄露--用CodeQL识别日志中的PII数据</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/codeql-detect-pii-log-leaks.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/shiro-550-deserialization-analysis.html</id>
-    <title>概述</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/shiro-550-deserialization-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/tomcat-universal-echo.html</id>
-    <title>Tomcat通用回显学习笔记</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/tomcat-universal-echo.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/shiro-jrmp-gadget-analysis.html</id>
-    <title>shiro-JRMP-gadget</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/shiro-jrmp-gadget-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/weblogic-cve-2020-2551-iiop-analysis.html</id>
-    <title>前言</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/weblogic-cve-2020-2551-iiop-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/weblogic-cve-2020-2551-iiop-reproduction.html</id>
-    <title>漏洞环境的搭建</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/weblogic-cve-2020-2551-iiop-reproduction.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/ysoserial-refactoring-notes.html</id>
-    <title>Ysoserial改造记录</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/ysoserial-refactoring-notes.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/codeql-data-flow-java-deserialization.html</id>
-    <title>从Java反序列化漏洞题看CodeQL数据流</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/codeql-data-flow-java-deserialization.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2021/log4j-gadget-mining-failure.html</id>
-    <title>记一次Log4j失败的Gadget挖掘记录</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/2021/log4j-gadget-mining-failure.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/PL/pl-data-analysis-foundation.html</id>
-    <title>Data-Analysis-Foundation</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/PL/pl-data-analysis-foundation.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/PL/pl-data-flow-analysis.html</id>
-    <title>Data-Flow-Analysis</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/PL/pl-data-flow-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/PL/pl-intermediate-representation.html</id>
-    <title>Intermediate-Representation</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/PL/pl-intermediate-representation.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/PL/pl-interprocedural-analysis.html</id>
-    <title>Interprocedural-Analysis</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/PL/pl-interprocedural-analysis.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/PL/wala-learning-notes.html</id>
-    <title>WALA使用和学习笔记</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/PL/wala-learning-notes.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/PL/program-analysis-interview-notes.html</id>
-    <title>知识点面试题总结</title>
-    <updated>2026-03-20T15:09:30Z</updated>
-    <link href="https://sumsec.me/PL/program-analysis-interview-notes.html" rel="alternate" />
   </entry>
 </feed>

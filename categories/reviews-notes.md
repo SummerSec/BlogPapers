@@ -16,9 +16,9 @@ comments: false
     <div class="category-page__section-title"><h2 id="category-articles-title">文章</h2><span>按时间倒序</span></div>
     <ol class="category-article-list">
       <li>
-        <a class="category-article__title" href="../2019/vmware-tools-windows-sp1-fix.html">VM虚拟机无法安装vmtools解决|本程序需要您将此虚拟机上安装的操作系统更新到SP1</a>
+        <a class="category-article__title" href="../2022/2022-annual-review.html">2022 年年度总结</a>
         <div class="category-article__meta">
-          <time datetime="2019">2019</time>
+          <time datetime="2022">2022</time>
         </div>
       </li>
       <li>
@@ -28,9 +28,9 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2022/2022-annual-review.html">2022 年年度总结</a>
+        <a class="category-article__title" href="../2019/vmware-tools-windows-sp1-fix.html">VM虚拟机无法安装vmtools解决|本程序需要您将此虚拟机上安装的操作系统更新到SP1</a>
         <div class="category-article__meta">
-          <time datetime="2022">2022</time>
+          <time datetime="2019">2019</time>
         </div>
       </li>
       <li>

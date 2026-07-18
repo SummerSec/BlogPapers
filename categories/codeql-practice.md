@@ -38,7 +38,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2022/codeql-meets-shiro550.html">CodeQL与Shiro550碰撞</a>
+        <a class="category-article__title" href="../2022/codeql-first-look-shiro550.html">CodeQL初见Shiro550</a>
         <div class="category-article__meta">
           <time datetime="2022-02-21">2022 · 02/21</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -49,7 +49,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2022/codeql-first-look-shiro550.html">CodeQL初见Shiro550</a>
+        <a class="category-article__title" href="../2022/codeql-meets-shiro550.html">CodeQL与Shiro550碰撞</a>
         <div class="category-article__meta">
           <time datetime="2022-02-21">2022 · 02/21</time>
           <span class="category-article__tags" aria-label="文章标签">

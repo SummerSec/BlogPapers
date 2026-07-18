@@ -52,7 +52,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/codeql-java-ast-classes.html">Abstract syntax tree classes for working with Java programs</a>
+        <a class="category-article__title" href="../2021/codeql-java-annotations.html">Annotations in Java</a>
         <div class="category-article__meta">
           <time datetime="2021-03-26">2021 · 03/26</time>
           <span class="category-article__tags" aria-label="文章标签">
@@ -61,7 +61,7 @@ comments: false
         </div>
       </li>
       <li>
-        <a class="category-article__title" href="../2021/codeql-java-annotations.html">Annotations in Java</a>
+        <a class="category-article__title" href="../2021/codeql-java-ast-classes.html">Abstract syntax tree classes for working with Java programs</a>
         <div class="category-article__meta">
           <time datetime="2021-03-26">2021 · 03/26</time>
           <span class="category-article__tags" aria-label="文章标签">
