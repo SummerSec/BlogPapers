@@ -1,0 +1,14 @@
+name = "sumsec-investment-log"
+main = "src/index.js"
+compatibility_date = "2026-07-18"
+workers_dev = true
+preview_urls = false
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sumsec-investment-log"
+database_id = "5cf959ec-3a53-43d2-b125-515fccbd7d8d"
+migrations_dir = "migrations"
+
+[observability]
+enabled = true
