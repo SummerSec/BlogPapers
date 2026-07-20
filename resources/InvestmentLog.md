@@ -76,15 +76,17 @@ comments: false
     </div>
   </section>
 
-  <details class="investment-ledger__history" id="investment-history-section" hidden>
-    <summary>历史资产快照</summary>
-    <div class="investment-table-wrap">
-      <table class="investment-table investment-table--history">
-        <thead><tr><th>日期</th><th>账户</th><th>总资产</th><th>持有盈亏</th><th>收益率</th><th>当日盈亏</th><th>当日收益率</th></tr></thead>
-        <tbody id="investment-history"></tbody>
-      </table>
+  <section class="investment-ledger__section investment-ledger__history" id="investment-history-section" hidden>
+    <div class="investment-ledger__section-head">
+      <h2>历史资产走势</h2>
+      <span>汇总资产与各平台资产，单位：元</span>
     </div>
-  </details>
+    <div class="investment-history-legend" id="investment-history-legend" aria-label="资产曲线图例"></div>
+    <div class="investment-history-chart">
+      <svg id="investment-history-chart" viewBox="0 0 1120 420" role="img" aria-label="横轴为日期、纵轴为资产金额的历史资产曲线"></svg>
+      <div class="investment-history-tooltip" id="investment-history-tooltip" role="status" aria-live="polite" hidden></div>
+    </div>
+  </section>
 
   <p class="investment-ledger__disclaimer">公开数据仅用于个人记录，不构成任何投资建议。</p>
 </div>
@@ -119,16 +121,32 @@ comments: false
 .investment-table--accounts { min-width: 900px; }
 .investment-table--holdings { min-width: 1900px; }
 .investment-table--trades { min-width: 1120px; }
-.investment-table--history { min-width: 850px; }
 .investment-table--holdings th:nth-child(-n+3), .investment-table--holdings td:nth-child(-n+3),
 .investment-table--trades th:nth-child(-n+5), .investment-table--trades td:nth-child(-n+5),
-.investment-table--accounts th:first-child, .investment-table--accounts td:first-child,
-.investment-table--history th:nth-child(-n+2), .investment-table--history td:nth-child(-n+2) { text-align: left; }
+.investment-table--accounts th:first-child, .investment-table--accounts td:first-child { text-align: left; }
 .investment-ledger .is-positive { color: #d84b57; }
 .investment-ledger .is-negative { color: #268a63; }
 .investment-empty { margin: .9rem 0 0; color: var(--text-muted); }
-.investment-ledger__history { margin-top: 2rem; border-top: 1px solid var(--border-strong); padding-top: 1rem; }
-.investment-ledger__history summary { margin-bottom: .75rem; cursor: pointer; font-weight: 650; }
+.investment-ledger__history { border-top: 1px solid var(--border-strong); padding-top: 1.5rem; }
+.investment-history-legend { display: flex; flex-wrap: wrap; gap: .55rem 1.25rem; margin-bottom: .75rem; color: var(--text-muted); font-size: .82rem; }
+.investment-history-legend span { display: inline-flex; align-items: center; gap: .45rem; }
+.investment-history-legend i { width: 1.5rem; height: 0; border-top: 2px solid var(--series-color); }
+.investment-history-legend span:first-child i { border-top-width: 3px; }
+.investment-history-legend strong { color: var(--text-strong); font: 600 .82rem/1.3 var(--font-code); }
+.investment-history-chart { position: relative; width: 100%; min-height: 260px; aspect-ratio: 8 / 3; }
+.investment-history-chart svg { display: block; width: 100%; height: 100%; min-height: 260px; overflow: visible; }
+.investment-history-chart .history-grid { stroke: var(--border); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.investment-history-chart .history-axis { fill: var(--text-dim); font: 12px/1 var(--font-code); }
+.investment-history-chart .history-axis-title { fill: var(--text-muted); font: 12px/1 var(--font-body); }
+.investment-history-chart .history-line { fill: none; stroke: var(--series-color); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.investment-history-chart .history-line--total { stroke-width: 3; }
+.investment-history-chart .history-point { fill: var(--bg); stroke: var(--series-color); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.investment-history-chart .history-guide { stroke: var(--border-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.investment-history-tooltip { position: absolute; z-index: 2; min-width: 10rem; max-width: min(18rem, calc(100% - 1rem)); padding: .55rem .65rem; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--bg-elevated); color: var(--text); box-shadow: 0 8px 24px rgba(0, 0, 0, .12); pointer-events: none; font-size: .78rem; }
+.investment-history-tooltip strong { display: block; margin-bottom: .25rem; color: var(--text-strong); font-family: var(--font-code); }
+.investment-history-tooltip span { display: flex; justify-content: space-between; gap: 1.5rem; }
+.investment-history-tooltip em { font-style: normal; }
+.investment-history-tooltip b { color: var(--text-strong); font-family: var(--font-code); }
 .investment-ledger__disclaimer { margin-top: 2rem; color: var(--text-dim); font-size: .82rem; }
 @media (max-width: 760px) {
   .investment-ledger__header h1 { font-size: 1.65rem; }
@@ -137,6 +155,9 @@ comments: false
   .investment-metric:nth-child(2) { border-right: 0; }
   .investment-metric:nth-child(n+3) { border-bottom: 0; }
   .investment-ledger__section-head { align-items: flex-start; flex-direction: column; gap: .25rem; }
+  .investment-history-chart { aspect-ratio: 4 / 3; }
+  .investment-history-chart .history-axis { font-size: 36px; }
+  .investment-history-chart .history-axis-title { display: none; }
 }
 </style>
 
@@ -292,16 +313,151 @@ comments: false
     document.getElementById('investment-trades-empty').hidden = rows.length > 0;
   }
 
-  function renderHistory() {
+  function historySeries() {
     var snapshots = Array.isArray(state.data.portfolio_snapshots) ? state.data.portfolio_snapshots : [];
     var specific = snapshots.some(function (item) { return item.account_key !== 'all'; });
     if (specific) snapshots = snapshots.filter(function (item) { return item.account_key !== 'all'; });
-    document.getElementById('investment-history').innerHTML = snapshots.map(function (item) {
-      return '<tr><td>' + escapeHtml(item.snapshot_date) + '</td><td>' + escapeHtml(item.account_name || accountLabel(item.account_key)) + '</td>'
-        + '<td>' + formatMoney(item.total_asset) + '</td>' + cell(item.total_pnl, formatSigned)
-        + cell(item.total_return, formatRate) + cell(item.day_pnl, formatSigned) + cell(item.day_return, formatRate) + '</tr>';
+    var dates = Array.from(new Set(snapshots.map(function (item) { return item.snapshot_date; }).filter(Boolean))).sort();
+    var keys = [];
+    state.accounts.forEach(function (item) {
+      if (item.account_key !== 'all' && keys.indexOf(item.account_key) === -1) keys.push(item.account_key);
+    });
+    snapshots.forEach(function (item) {
+      if (keys.indexOf(item.account_key) === -1) keys.push(item.account_key);
+    });
+    var lookup = {};
+    var labels = {};
+    snapshots.forEach(function (item) {
+      var value = number(item.total_asset);
+      if (value !== null) lookup[item.snapshot_date + '|' + item.account_key] = value;
+      if (item.account_name) labels[item.account_key] = item.account_name;
+    });
+    var accounts = keys.map(function (key) {
+      return {
+        key: key,
+        label: labels[key] || accountLabel(key),
+        values: dates.map(function (date) {
+          var value = lookup[date + '|' + key];
+          return value === undefined ? null : value;
+        }),
+      };
+    }).filter(function (series) {
+      return series.values.some(function (value) { return value !== null; });
+    });
+    var total = dates.map(function (_, index) {
+      var values = accounts.map(function (series) { return series.values[index]; });
+      if (!values.length || values.some(function (value) { return value === null; })) return null;
+      return values.reduce(function (result, value) { return result + value; }, 0);
+    });
+    return { dates: dates, series: [{ key: 'total', label: '汇总资产', values: total }].concat(accounts) };
+  }
+
+  function renderHistory() {
+    var chartData = historySeries();
+    var section = document.getElementById('investment-history-section');
+    var svg = document.getElementById('investment-history-chart');
+    if (!chartData.dates.length) { section.hidden = true; return; }
+
+    var colors = ['var(--color-signal)', 'var(--color-blue)', 'var(--color-amber)', 'color-mix(in srgb, var(--color-blue) 58%, var(--color-amber))', 'var(--text-muted)', 'var(--color-primary-light)'];
+    chartData.series.forEach(function (series, index) { series.color = colors[index % colors.length]; });
+    var allValues = chartData.series.reduce(function (result, series) {
+      return result.concat(series.values.filter(function (value) { return value !== null; }));
+    }, []);
+    if (!allValues.length) { section.hidden = true; return; }
+
+    var width = 1120; var height = 420;
+    var margin = { top: 22, right: 28, bottom: 54, left: 156 };
+    var plotWidth = width - margin.left - margin.right;
+    var plotHeight = height - margin.top - margin.bottom;
+    var minimum = Math.min.apply(null, allValues);
+    var maximum = Math.max.apply(null, allValues);
+    var padding = Math.max((maximum - minimum) * .08, Math.abs(maximum || 1) * .015, 1);
+    var yMin = minimum >= 0 ? 0 : minimum - padding; var yMax = maximum + padding;
+    function x(index) {
+      return chartData.dates.length === 1 ? margin.left + plotWidth / 2 : margin.left + index * plotWidth / (chartData.dates.length - 1);
+    }
+    function y(value) { return margin.top + (yMax - value) * plotHeight / (yMax - yMin); }
+    function compactMoney(value) {
+      return new Intl.NumberFormat('zh-CN', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
+    }
+    function pathFor(values) {
+      var path = ''; var open = false;
+      values.forEach(function (value, index) {
+        if (value === null) { open = false; return; }
+        path += (open ? ' L ' : ' M ') + x(index).toFixed(2) + ' ' + y(value).toFixed(2);
+        open = true;
+      });
+      return path.trim();
+    }
+
+    var markup = '<title>历史资产走势</title><desc>横轴为日期，纵轴为资产金额，包含汇总资产和各平台资产曲线。曲线断点代表该日期未同步完整数据。</desc>';
+    for (var tick = 0; tick < 5; tick += 1) {
+      var tickY = margin.top + tick * plotHeight / 4;
+      var tickValue = yMax - tick * (yMax - yMin) / 4;
+      markup += '<line class="history-grid" x1="' + margin.left + '" y1="' + tickY + '" x2="' + (width - margin.right) + '" y2="' + tickY + '"></line>';
+      markup += '<text class="history-axis" x="' + (margin.left - 12) + '" y="' + (tickY + 4) + '" text-anchor="end">' + compactMoney(tickValue) + '</text>';
+    }
+    var xTickCount = Math.min(6, chartData.dates.length);
+    var xIndexes = [];
+    for (var xTick = 0; xTick < xTickCount; xTick += 1) {
+      var xIndex = xTickCount === 1 ? 0 : Math.round(xTick * (chartData.dates.length - 1) / (xTickCount - 1));
+      if (xIndexes.indexOf(xIndex) === -1) xIndexes.push(xIndex);
+    }
+    xIndexes.forEach(function (index) {
+      var anchor = index === 0 ? 'start' : (index === chartData.dates.length - 1 ? 'end' : 'middle');
+      markup += '<text class="history-axis" x="' + x(index) + '" y="' + (height - 24) + '" text-anchor="' + anchor + '">' + escapeHtml(chartData.dates[index].slice(5)) + '</text>';
+    });
+    markup += '<text class="history-axis-title" x="' + (margin.left + plotWidth / 2) + '" y="' + (height - 3) + '" text-anchor="middle">日期</text>';
+    markup += '<text class="history-axis-title" transform="translate(18 ' + (margin.top + plotHeight / 2) + ') rotate(-90)" text-anchor="middle">资产（元）</text>';
+    chartData.series.forEach(function (series, seriesIndex) {
+      var path = pathFor(series.values);
+      if (!path) return;
+      markup += '<path class="history-line ' + (seriesIndex === 0 ? 'history-line--total' : '') + '" style="--series-color:' + series.color + '" d="' + path + '"></path>';
+      if (chartData.dates.length <= 31) {
+        series.values.forEach(function (value, index) {
+          if (value !== null) markup += '<circle class="history-point" style="--series-color:' + series.color + '" cx="' + x(index) + '" cy="' + y(value) + '" r="3"></circle>';
+        });
+      }
+    });
+    markup += '<line id="investment-history-guide" class="history-guide" y1="' + margin.top + '" y2="' + (height - margin.bottom) + '" hidden></line>';
+    markup += '<g id="investment-history-hover-points"></g>';
+    markup += '<rect id="investment-history-hit" x="' + margin.left + '" y="' + margin.top + '" width="' + plotWidth + '" height="' + plotHeight + '" fill="transparent"></rect>';
+    svg.innerHTML = markup;
+
+    document.getElementById('investment-history-legend').innerHTML = chartData.series.map(function (series) {
+      var latest = null;
+      for (var i = series.values.length - 1; i >= 0; i -= 1) { if (series.values[i] !== null) { latest = series.values[i]; break; } }
+      return '<span style="--series-color:' + series.color + '"><i aria-hidden="true"></i>' + escapeHtml(series.label) + '<strong>' + formatMoney(latest) + '</strong></span>';
     }).join('');
-    document.getElementById('investment-history-section').hidden = snapshots.length === 0;
+
+    var hit = document.getElementById('investment-history-hit');
+    var guide = document.getElementById('investment-history-guide');
+    var hoverPoints = document.getElementById('investment-history-hover-points');
+    var tooltip = document.getElementById('investment-history-tooltip');
+    function hideTooltip() { guide.hidden = true; hoverPoints.innerHTML = ''; tooltip.hidden = true; }
+    hit.addEventListener('pointerleave', hideTooltip);
+    hit.addEventListener('pointermove', function (event) {
+      var bounds = svg.getBoundingClientRect();
+      var svgX = (event.clientX - bounds.left) * width / bounds.width;
+      var index = chartData.dates.length === 1 ? 0 : Math.round((svgX - margin.left) * (chartData.dates.length - 1) / plotWidth);
+      index = Math.max(0, Math.min(chartData.dates.length - 1, index));
+      var guideX = x(index);
+      guide.hidden = false; guide.setAttribute('x1', guideX); guide.setAttribute('x2', guideX);
+      hoverPoints.innerHTML = chartData.series.map(function (series) {
+        var value = series.values[index];
+        return value === null ? '' : '<circle class="history-point" style="--series-color:' + series.color + '" cx="' + guideX + '" cy="' + y(value) + '" r="5"></circle>';
+      }).join('');
+      tooltip.innerHTML = '<strong>' + escapeHtml(chartData.dates[index]) + '</strong>' + chartData.series.map(function (series) {
+        return '<span><em>' + escapeHtml(series.label) + '</em><b>' + formatMoney(series.values[index]) + '</b></span>';
+      }).join('');
+      tooltip.hidden = false;
+      var chartBounds = tooltip.parentElement.getBoundingClientRect();
+      var left = (guideX / width) * chartBounds.width + 12;
+      if (left + tooltip.offsetWidth > chartBounds.width) left = (guideX / width) * chartBounds.width - tooltip.offsetWidth - 12;
+      tooltip.style.left = Math.max(0, left) + 'px';
+      tooltip.style.top = Math.max(0, (margin.top / height) * chartBounds.height) + 'px';
+    });
+    section.hidden = false;
   }
 
   function renderDetail() {
