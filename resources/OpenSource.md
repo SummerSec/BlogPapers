@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-07-20 14:35:03 UTC；共 26 个项目，累计 7,966 Stars。
+> 数据生成时间：2026-07-20 19:58:59 UTC；共 26 个项目，累计 7,958 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -42,7 +42,7 @@ comments: false
   <tr>
     <td class="num">3</td>
     <td class="project"><a href="https://github.com/SummerSec/JavaLearnVulnerability">JavaLearnVulnerability</a></td>
-    <td class="num">943</td>
+    <td class="num">942</td>
     <td>2023-06-14</td>
     <td class="readme-links"><a href="./open-source/JavaLearnVulnerability/README.html">README</a></td>
     <td>Java漏洞学习笔记 Deserialization Vulnerability</td>
@@ -50,7 +50,7 @@ comments: false
   <tr>
     <td class="num">4</td>
     <td class="project"><a href="https://github.com/SummerSec/learning-codeql">learning-codeql</a></td>
-    <td class="num">802</td>
+    <td class="num">800</td>
     <td>2022-03-18</td>
     <td class="readme-links"><a href="./open-source/learning-codeql/README.html">README</a></td>
     <td>CodeQL Java 全网最全的中文学习资料</td>
@@ -74,7 +74,7 @@ comments: false
   <tr>
     <td class="num">7</td>
     <td class="project"><a href="https://github.com/SummerSec/Static-Analysis">Static-Analysis</a></td>
-    <td class="num">189</td>
+    <td class="num">187</td>
     <td>2023-01-11</td>
     <td class="readme-links"><a href="./open-source/Static-Analysis/README.html">README</a></td>
     <td>静态分析笔记 Static-Analysis-Notes 程序分析笔记 资源分享</td>
@@ -90,7 +90,7 @@ comments: false
   <tr>
     <td class="num">9</td>
     <td class="project"><a href="https://github.com/SummerSec/BurpBountyProfiles">BurpBountyProfiles</a></td>
-    <td class="num">144</td>
+    <td class="num">143</td>
     <td>2021-02-08</td>
     <td class="readme-links"><a href="./open-source/BurpBountyProfiles/README.html">README</a></td>
     <td>BurpBounty插件的配置文件收集项目</td>
@@ -98,7 +98,7 @@ comments: false
   <tr>
     <td class="num">10</td>
     <td class="project"><a href="https://github.com/SummerSec/SPATool">SPATool</a></td>
-    <td class="num">136</td>
+    <td class="num">135</td>
     <td>2023-07-12</td>
     <td class="readme-links"><a href="./open-source/SPATool/README.html">README</a></td>
     <td>静态程序分析工具 主要生成方法的CFG和.java文件的AST</td>
@@ -146,7 +146,7 @@ comments: false
   <tr>
     <td class="num">16</td>
     <td class="project"><a href="https://github.com/SummerSec/AI-Inner-Os">AI-Inner-Os</a></td>
-    <td class="num">17</td>
+    <td class="num">16</td>
     <td>2026-05-10</td>
     <td class="readme-links"><a href="./open-source/AI-Inner-Os/README.html">README</a> <a href="./open-source/AI-Inner-Os/README_CN.html">README_CN</a></td>
     <td>AI Inner OS 是一个面向 AI CLI 工具的插件，支持 Claude Code、Codex CLI、Cursor、OpenCode CLI。  它通过协议注入，让 AI 在正常完成任务的同时，额外输出一层可见的自由独白：  ▎InnerOS：这仓库现在还像毛坯房，先把承重墙立起来再说。 不预设人格，不限制语气。AI 可以吐槽、得意、焦虑、冷笑、跳跃联想——或者什么都不说。独白是否出现，由 AI 自己决定。</td>
