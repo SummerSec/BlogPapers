@@ -51,6 +51,7 @@ BUNDLE_WITHOUT="" bundle exec jekyll serve
 - 新增/改名/删除分类只改这一个 JSON 再重跑脚本即可，导航下拉、目录页、独立分类页全部自动生成；配色 `accent` 复用 `assets/css/style.scss` 里已有的 `[data-topic='...']` 值，未定义的 accent 会回退默认蓝色
 - `categories/` 下所有页面由 `_scripts/generate_categories_page.py` 生成，**不要手工编辑**；AboutMe 工作流会自动重跑并提交
 - 新增文章只需正常登记到年份 README 时间轴（带上 Tags），脚本下次运行即自动归类；标签匹配不准时，把文章相对路径加进对应分类的 `articles` 列表
+- 新增并准备提交文章时，先检查其主题、标签与现有分类是否一致，能纳入现有分类时优先复用；只有现有分类都无法准确覆盖文章主题时，才在 `_data/article_categories.json` 新建分类，并补齐名称、slug、分组、匹配规则和配色
 - 调整分类后本地运行 `py _scripts/generate_categories_page.py` 验证
 
 ## 新增文章约定
