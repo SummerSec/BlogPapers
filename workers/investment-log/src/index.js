@@ -29,6 +29,8 @@ const TEXT_LIMITS = {
   captured_at: 40,
 };
 
+const TRADE_HISTORY_PATH = '/caishen_fund/pc/account/v1/get_money_history';
+
 function json(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
@@ -90,6 +92,9 @@ async function normalizeOperation(input) {
     note: cleanText(input.note, 'note'),
     source_path: cleanText(input.source_path, 'source_path'),
   };
+  const hasTradeDetail = Boolean(record.instrument_code || record.instrument_name
+    || record.quantity !== null || record.price !== null || record.amount !== null);
+  if (record.source_path !== TRADE_HISTORY_PATH || !hasTradeDetail) return null;
   record.event_key = cleanText(input.event_key, 'event_key') || await hashValue(JSON.stringify(record));
   return record;
 }
