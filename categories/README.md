@@ -16,7 +16,7 @@ comments: false
       <span class="category-directory__group">AI 方向</span>
       <span class="category-directory__code">AI THINK</span>
       <span class="category-directory__name">AI 思考</span>
-      <span class="category-directory__count">02</span>
+      <span class="category-directory__count">03</span>
     </a>
     <a class="category-directory__link" data-topic="blue" href="./ai-coding.html">
       <span class="category-directory__group">AI 方向</span>
