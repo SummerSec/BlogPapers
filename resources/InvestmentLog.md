@@ -320,7 +320,14 @@ comments: false
     var snapshots = Array.isArray(state.data.portfolio_snapshots) ? state.data.portfolio_snapshots : [];
     var specific = snapshots.some(function (item) { return item.account_key !== 'all'; });
     if (specific) snapshots = snapshots.filter(function (item) { return item.account_key !== 'all'; });
-    var dates = Array.from(new Set(snapshots.map(function (item) { return item.snapshot_date; }).filter(Boolean))).sort();
+    function isWeekday(date) {
+      var parts = String(date || '').split('-').map(Number);
+      if (parts.length !== 3 || parts.some(function (part) { return !Number.isFinite(part); })) return false;
+      var day = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2])).getUTCDay();
+      return day !== 0 && day !== 6;
+    }
+    var dates = Array.from(new Set(snapshots.map(function (item) { return item.snapshot_date; })
+      .filter(function (date) { return isWeekday(date); }))).sort();
     var identities = [];
     var labels = {};
     var lookup = {};
