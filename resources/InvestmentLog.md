@@ -174,6 +174,7 @@ comments: false
   }
 
   function number(value) {
+    if (value === null || value === undefined || value === '') return null;
     var parsed = Number(value);
     return Number.isFinite(parsed) ? parsed : null;
   }
@@ -318,26 +319,40 @@ comments: false
     var specific = snapshots.some(function (item) { return item.account_key !== 'all'; });
     if (specific) snapshots = snapshots.filter(function (item) { return item.account_key !== 'all'; });
     var dates = Array.from(new Set(snapshots.map(function (item) { return item.snapshot_date; }).filter(Boolean))).sort();
-    var keys = [];
-    state.accounts.forEach(function (item) {
-      if (item.account_key !== 'all' && keys.indexOf(item.account_key) === -1) keys.push(item.account_key);
-    });
-    snapshots.forEach(function (item) {
-      if (keys.indexOf(item.account_key) === -1) keys.push(item.account_key);
-    });
-    var lookup = {};
+    var identities = [];
     var labels = {};
-    snapshots.forEach(function (item) {
-      var value = number(item.total_asset);
-      if (value !== null) lookup[item.snapshot_date + '|' + item.account_key] = value;
-      if (item.account_name) labels[item.account_key] = item.account_name;
+    var lookup = {};
+    var captured = {};
+
+    function identity(item) {
+      var name = String(item.account_name || '').trim();
+      return name ? 'name:' + name : 'key:' + item.account_key;
+    }
+
+    state.accounts.forEach(function (item) {
+      if (item.account_key === 'all') return;
+      var id = identity(item);
+      if (identities.indexOf(id) === -1) identities.push(id);
+      labels[id] = item.account_name || accountLabel(item.account_key);
     });
-    var accounts = keys.map(function (key) {
+    snapshots.forEach(function (item) {
+      var id = identity(item);
+      if (identities.indexOf(id) === -1) identities.push(id);
+      labels[id] = item.account_name || labels[id] || accountLabel(item.account_key);
+      var value = number(item.total_asset);
+      var pointKey = item.snapshot_date + '|' + id;
+      var capturedAt = String(item.captured_at || '');
+      if (value !== null && (!captured[pointKey] || capturedAt >= captured[pointKey])) {
+        lookup[pointKey] = value;
+        captured[pointKey] = capturedAt;
+      }
+    });
+    var accounts = identities.map(function (id) {
       return {
-        key: key,
-        label: labels[key] || accountLabel(key),
+        key: id,
+        label: labels[id] || '未命名账户',
         values: dates.map(function (date) {
-          var value = lookup[date + '|' + key];
+          var value = lookup[date + '|' + id];
           return value === undefined ? null : value;
         }),
       };
