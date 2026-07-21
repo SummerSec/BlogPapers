@@ -2,11 +2,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-07-21T11:26:06Z</updated>
+  <updated>2026-07-21T12:25:44Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
   <subtitle>像清水一般清澈透明</subtitle>
+  <entry>
+    <id>https://sumsec.me/2026/ai-era-personal-team-competitiveness.html</id>
+    <title>AI 时代，如何保持个人与团队的顶尖竞争力</title>
+    <updated>2026-07-21T12:24:29Z</updated>
+    <link href="https://sumsec.me/2026/ai-era-personal-team-competitiveness.html" rel="alternate" />
+  </entry>
   <entry>
     <id>https://sumsec.me/2026/ai-agent-engineering-evolution.html</id>
     <title>AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop</title>

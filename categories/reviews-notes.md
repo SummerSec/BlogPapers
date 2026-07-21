@@ -10,11 +10,17 @@ comments: false
     <p class="category-page__code">LOG</p>
     <h1>复盘与随笔</h1>
     <p class="category-page__description">年度总结、学习记录，以及尚未归入专门主题的研究笔记。</p>
-    <div class="category-page__count"><strong>11</strong> 篇文章</div>
+    <div class="category-page__count"><strong>12</strong> 篇文章</div>
   </header>
   <section class="category-page__articles" aria-labelledby="category-articles-title">
     <div class="category-page__section-title"><h2 id="category-articles-title">文章</h2><span>按时间倒序</span></div>
     <ol class="category-article-list">
+      <li>
+        <a class="category-article__title" href="../2026/ai-era-personal-team-competitiveness.html">AI 时代，如何保持个人与团队的顶尖竞争力</a>
+        <div class="category-article__meta">
+          <time datetime="2026">2026</time>
+        </div>
+      </li>
       <li>
         <a class="category-article__title" href="../2022/2022-annual-review.html">2022 年年度总结</a>
         <div class="category-article__meta">
