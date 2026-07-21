@@ -8,7 +8,7 @@ comments: false
   <header class="investment-ledger__header">
     <p class="investment-ledger__eyebrow">PORTFOLIO LEDGER / LIVE</p>
     <h1>投资复盘</h1>
-    <p>账户、持仓与交易记录由本地投资账本同步至 Cloudflare D1。</p>
+    <p>账户、持仓与交易记录由本地投资账本按 T+1 已结算口径同步至 Cloudflare D1。</p>
     <div class="investment-ledger__status" id="investment-status" role="status">正在读取最新数据...</div>
   </header>
 
@@ -234,8 +234,10 @@ comments: false
   function selectedHoldings() {
     var holdings = Array.isArray(state.data.holdings) ? state.data.holdings : [];
     if (state.selectedAccount !== 'all') return holdings.filter(function (item) { return item.account_key === state.selectedAccount; });
+    var specific = holdings.filter(function (item) { return item.account_key !== 'all'; });
+    if (specific.length) return specific;
     var aggregate = holdings.filter(function (item) { return item.account_key === 'all'; });
-    return aggregate.length ? aggregate : holdings.filter(function (item) { return item.account_key !== 'all'; });
+    return aggregate;
   }
 
   function selectedTrades() {

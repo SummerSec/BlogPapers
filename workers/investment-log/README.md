@@ -6,8 +6,8 @@
 
 - `POST /api/operations`：单条或批量写入交易记录，需要 `Authorization: Bearer <INGEST_TOKEN>`。
 - `GET /api/operations?days=90&limit=1000`：博客公开读取的脱敏记录。
-- `POST /api/snapshots`：批量写入账户与持仓快照，需要写入令牌。
-- `GET /api/portfolio?days=365`：实时返回历史账户快照、最新持仓和近期操作。
+- `POST /api/snapshots`：批量写入账户与持仓快照，需要写入令牌；仅接受上海日期当天之前的 T+1 已结算快照。
+- `GET /api/portfolio?days=365`：返回 T+1 历史账户快照、最新已结算持仓和近期操作。
 - `GET /health`：健康检查。
 
 服务端接收账户显示名称、脱敏后的账户键、账户与持仓指标及交易记录，不接收同花顺 Cookie、userid 或原始接口响应。`GET` 接口是公开的，因此其中的账户名称、持仓与交易数据会对博客访问者可见。

@@ -56,6 +56,10 @@ function isValidSnapshotDate(value) {
   return /^\d{4}-\d{2}-\d{2}$/.test(value || '') && !Number.isNaN(Date.parse(`${value}T00:00:00Z`));
 }
 
+function shanghaiToday() {
+  return new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString().slice(0, 10);
+}
+
 async function hashValue(value) {
   const bytes = new TextEncoder().encode(String(value));
   const digest = await crypto.subtle.digest('SHA-256', bytes);
@@ -209,8 +213,11 @@ async function ingestSnapshots(request, env) {
     return json({ error: 'snapshot batch is too large' }, 400);
   }
 
-  const portfolio = portfolioInputs.map(normalizePortfolioSnapshot).filter(Boolean);
-  const holdings = (await Promise.all(holdingInputs.map(normalizeHoldingSnapshot))).filter(Boolean);
+  const settlementCutoff = shanghaiToday();
+  const portfolio = portfolioInputs.map(normalizePortfolioSnapshot)
+    .filter((record) => record && record.snapshot_date < settlementCutoff);
+  const holdings = (await Promise.all(holdingInputs.map(normalizeHoldingSnapshot)))
+    .filter((record) => record && record.snapshot_date < settlementCutoff);
   if (portfolio.length === 0 && holdings.length === 0) {
     return json({ error: 'no valid snapshots' }, 400);
   }
@@ -307,15 +314,17 @@ async function listOperations(url, env) {
 async function getPortfolio(url, env) {
   const days = Math.min(Math.max(Number.parseInt(url.searchParams.get('days') || '365', 10), 1), 3650);
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
+  const settlementCutoff = shanghaiToday();
   const [portfolioResult, latestDateResult, operationsResult] = await env.DB.batch([
     env.DB.prepare(`
       SELECT snapshot_date, account_key, account_name, account_type, account_order, total_asset, market_value,
              cash, day_pnl, day_return, total_pnl, total_return, captured_at
       FROM portfolio_snapshots
-      WHERE snapshot_date >= ?
+      WHERE snapshot_date >= ? AND snapshot_date < ?
       ORDER BY snapshot_date DESC, account_name, account_key
-    `).bind(since),
-    env.DB.prepare('SELECT MAX(snapshot_date) AS latest_date FROM portfolio_snapshots'),
+    `).bind(since, settlementCutoff),
+    env.DB.prepare('SELECT MAX(snapshot_date) AS latest_date FROM portfolio_snapshots WHERE snapshot_date < ?')
+      .bind(settlementCutoff),
     env.DB.prepare(`
       SELECT occurred_at, operation, account_key, account_name, account_type,
              instrument_code, instrument_name, side, quantity, price, amount, fee, note
