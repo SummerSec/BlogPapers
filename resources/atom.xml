@@ -2,22 +2,22 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-07-22T14:13:50Z</updated>
+  <updated>2026-07-22T14:17:55Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
   <subtitle>像清水一般清澈透明</subtitle>
   <entry>
+    <id>https://sumsec.me/2026/ai-era-personal-team-competitiveness.html</id>
+    <title>AI 时代，如何保持个人与团队的顶尖竞争力</title>
+    <updated>2026-07-22T14:16:26Z</updated>
+    <link href="https://sumsec.me/2026/ai-era-personal-team-competitiveness.html" rel="alternate" />
+  </entry>
+  <entry>
     <id>https://sumsec.me/2026/ai-agent-harness-sharing.html</id>
     <title>AI 时代的真正竞争力：一个语音按钮与一套可进化的 Harness</title>
     <updated>2026-07-22T13:58:52Z</updated>
     <link href="https://sumsec.me/2026/ai-agent-harness-sharing.html" rel="alternate" />
-  </entry>
-  <entry>
-    <id>https://sumsec.me/2026/ai-era-personal-team-competitiveness.html</id>
-    <title>AI 时代，如何保持个人与团队的顶尖竞争力</title>
-    <updated>2026-07-21T12:24:29Z</updated>
-    <link href="https://sumsec.me/2026/ai-era-personal-team-competitiveness.html" rel="alternate" />
   </entry>
   <entry>
     <id>https://sumsec.me/2026/ai-agent-engineering-evolution.html</id>

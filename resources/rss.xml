@@ -7,19 +7,19 @@
 <docs>http://www.rssboard.org/rss-specification</docs>
 <generator>BlogPapers generate_feed_and_sitemap.py</generator>
 <language>zh-CN</language>
-<lastBuildDate>Wed, 22 Jul 2026 14:13:50 +0000</lastBuildDate>
+<lastBuildDate>Wed, 22 Jul 2026 14:17:55 +0000</lastBuildDate>
 <atom:link href="https://sumsec.me/resources/rss.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title>AI 时代，如何保持个人与团队的顶尖竞争力</title>
+<link>https://sumsec.me/2026/ai-era-personal-team-competitiveness.html</link>
+<guid isPermaLink="true">https://sumsec.me/2026/ai-era-personal-team-competitiveness.html</guid>
+<pubDate>Wed, 22 Jul 2026 14:16:26 +0000</pubDate>
+</item>
 <item>
 <title>AI 时代的真正竞争力：一个语音按钮与一套可进化的 Harness</title>
 <link>https://sumsec.me/2026/ai-agent-harness-sharing.html</link>
 <guid isPermaLink="true">https://sumsec.me/2026/ai-agent-harness-sharing.html</guid>
 <pubDate>Wed, 22 Jul 2026 13:58:52 +0000</pubDate>
-</item>
-<item>
-<title>AI 时代，如何保持个人与团队的顶尖竞争力</title>
-<link>https://sumsec.me/2026/ai-era-personal-team-competitiveness.html</link>
-<guid isPermaLink="true">https://sumsec.me/2026/ai-era-personal-team-competitiveness.html</guid>
-<pubDate>Tue, 21 Jul 2026 12:24:29 +0000</pubDate>
 </item>
 <item>
 <title>AI Agent 工程的必然演进：CLI、Skills、Harness 与 Loop</title>
