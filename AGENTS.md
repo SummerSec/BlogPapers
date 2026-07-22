@@ -78,42 +78,6 @@ title: Post Title
 - `README.md` 最后一列使用 `标签甲/标签乙` 这种斜杠分隔格式
 - 若需给 Markdown 自动补 `tags: blog-comments`，可使用 `_scripts/add_blog_comments_tag.py` 或本地 pre-commit
 
-## 文章转网页版 PPT
-
-当用户要求把仓库中的文章做成网页版 PPT、HTML 演讲稿、slide deck 或独立演示页时，优先使用本仓库 skill：
-
-- `.claude/skills/creating-blog-web-ppt/SKILL.md`
-- `.codex/skills/creating-blog-web-ppt/SKILL.md`（Codex 环境；若本地目录为 `.Codex/`，按实际路径读取）
-
-默认规则：
-
-- 输入通常是 `YYYY/post-name.md`
-- 输出默认是同目录、同 basename 的 `YYYY/post-name.html`
-- 产物应为独立单文件 HTML，不依赖 Jekyll layout
-- 保持文章目录内原有相对图片路径可用，例如 `./pic/...`
-- 该 skill 已合并 [FeeiCN/slide-writer](https://github.com/FeeiCN/slide-writer) 工作流快照（`vendor/slide-writer/`）：主题均在 `vendor/slide-writer/themes/`；企业默认与上游一致（未识别企业为 **ant-group**）；同目录增补 **`blog-sumsec.md`**，索引与 Phase 0 顺序见该目录下 `_index.md` 文首
-
-执行这类任务时，通常需要读取：
-
-- `assets/css/style.scss`
-- `_layouts/default.html`
-- `.claude/skills/creating-blog-web-ppt/references/slide-writer-merge.md`
-- `.codex/skills/creating-blog-web-ppt/references/slide-writer-merge.md`（Codex 环境按实际路径择一）
-- `.claude/skills/creating-blog-web-ppt/vendor/slide-writer/themes/_index.md`（唯一主题索引：企业识别 + BlogPapers `blog-sumsec` 增补顺序）
-- `.claude/skills/creating-blog-web-ppt/vendor/slide-writer/themes/blog-sumsec.md`（选用 `blog-sumsec` 时）
-- `.claude/skills/creating-blog-web-ppt/references/repo-conventions.md`
-- `.claude/skills/creating-blog-web-ppt/references/visual-system.md`
-- `.claude/skills/creating-blog-web-ppt/references/html-template.md`
-- `.claude/skills/creating-blog-web-ppt/references/verification-checklist.md`
-
-除非用户明确要求，否则不要顺手改：
-
-- `README.md`
-- `resources/Archives.md`
-- 首页入口、站点导航、归档入口
-
-这类任务完成前必须做浏览器级验证，不能只做静态阅读或代码检查。
-
 ## Remotion 博文配图与短视频
 
 当用户要求用 Remotion 为文章生成与站点风格一致的静帧、MP4 或（可选）GIF 时，优先阅读：
