@@ -9,7 +9,7 @@ comments: false
     <p class="category-browser__eyebrow">TOPIC DIRECTORY / SUMSEC</p>
     <h1>主题分类</h1>
     <p>按主题或年份两个维度浏览全部文章。主题分类在下面按组展示，年份归档见页底；文章原有链接不会改变。</p>
-    <div class="category-browser__summary"><strong>118</strong> 篇文章 <span aria-hidden="true">/</span> <strong>11</strong> 条主题路径</div>
+    <div class="category-browser__summary"><strong>119</strong> 篇文章 <span aria-hidden="true">/</span> <strong>11</strong> 条主题路径</div>
   </header>
   <nav class="category-directory" aria-label="主题分类目录">
     <a class="category-directory__link" data-topic="violet" href="./ai-thoughts.html">
@@ -28,7 +28,7 @@ comments: false
       <span class="category-directory__group">AI 方向</span>
       <span class="category-directory__code">AI LAB</span>
       <span class="category-directory__name">AI 实践</span>
-      <span class="category-directory__count">03</span>
+      <span class="category-directory__count">04</span>
     </a>
     <a class="category-directory__link" data-topic="mint" href="./codeql-notes.html">
       <span class="category-directory__group">程序分析</span>
@@ -82,7 +82,7 @@ comments: false
     <div class="category-archive__grid">
       <a class="category-archive__link" href="../2026/README.html">
         <span class="category-archive__year">2026</span>
-        <span class="category-archive__count">09 篇</span>
+        <span class="category-archive__count">10 篇</span>
       </a>
       <a class="category-archive__link" href="../2022/README.html">
         <span class="category-archive__year">2022</span>
