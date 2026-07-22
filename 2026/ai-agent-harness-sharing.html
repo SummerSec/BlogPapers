@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#101314">
+  <meta name="description" content="从语音输入、Skills 管理、语义边界、评测进化到个人与团队竞争力的 AI Agent 工程分享。">
+  <title>AI 时代的竞争力：一个语音按钮与一套可进化的 Harness</title>
+  <link rel="icon" href="../resources/sumsec-icon.png" type="image/png">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@500,600,700,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #101314;
+      --ink-soft: #222829;
+      --paper: #f7f9f8;
+      --paper-pure: #ffffff;
+      --line: #c9d0cd;
+      --muted: #5f6966;
+      --mint: #5ed1bd;
+      --mint-deep: #087b6d;
+      --orange: #f3a04a;
+      --coral: #ed6a5a;
+      --blue: #9db5ff;
+      --content: calc(100vw - 64px);
+      --nav-height: 64px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      overflow-x: hidden;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Satoshi", "Noto Sans SC", "Segoe UI", sans-serif;
+      letter-spacing: 0;
+      text-rendering: optimizeLegibility;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      z-index: 110;
+      padding: 10px 14px;
+      color: #ffffff;
+      background: var(--ink);
+      transform: translateY(-160%);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 4px;
+    }
+
+    .scroll-progress {
+      position: fixed;
+      inset: 0 auto auto 0;
+      z-index: 100;
+      width: 0;
+      height: 3px;
+      background: var(--mint);
+    }
+
+    .site-nav {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      z-index: 90;
+      width: calc(100vw - 32px);
+      height: var(--nav-height);
+      transform: translateX(-50%);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 24px;
+      padding: 0 18px;
+      color: #f7f9f8;
+      background: rgba(16, 19, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+    }
+
+    .brand img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+    }
+
+    .nav-links {
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: rgba(247, 249, 248, 0.72);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .nav-links a {
+      transition: color 180ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.is-active {
+      color: var(--mint);
+    }
+
+    .nav-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-button {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 4px;
+      color: #ffffff;
+      background: transparent;
+      cursor: pointer;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .icon-button:hover {
+      color: var(--ink);
+      background: var(--mint);
+      transform: translateY(-2px);
+    }
+
+    .page-switcher {
+      position: fixed;
+      top: 50%;
+      right: 18px;
+      z-index: 85;
+      display: grid;
+      gap: 6px;
+      transform: translateY(-50%);
+      padding: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 6px;
+      background: rgba(16, 19, 20, 0.88);
+      backdrop-filter: blur(16px);
+    }
+
+    .page-switcher .icon-button {
+      width: 42px;
+      height: 42px;
+      font-size: 1.15rem;
+    }
+
+    .page-switcher .icon-button:disabled {
+      color: rgba(255, 255, 255, 0.28);
+      background: transparent;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    main {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 92svh;
+      display: grid;
+      align-items: end;
+      color: #ffffff;
+      background: var(--ink);
+      isolation: isolate;
+    }
+
+    .hero-media,
+    .hero-shade {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-media {
+      z-index: -2;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 70% center;
+      filter: saturate(0.82) contrast(1.05);
+    }
+
+    .hero-shade {
+      z-index: -1;
+      background: rgba(9, 12, 13, 0.72);
+      clip-path: polygon(0 0, 72% 0, 54% 100%, 0 100%);
+    }
+
+    .hero-inner {
+      width: var(--content);
+      margin: 0 auto;
+      padding: 140px 0 60px;
+    }
+
+    .hero-copy {
+      width: min(980px, 72%);
+    }
+
+    .eyebrow {
+      margin: 0 0 24px;
+      color: var(--mint);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.86rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 1120px;
+      margin-bottom: 28px;
+      font-size: 6.5rem;
+      line-height: 0.98;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .hero-lead {
+      max-width: 720px;
+      margin-bottom: 38px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 1.24rem;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      font-weight: 800;
+      transition: transform 220ms ease, background 220ms ease, color 220ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+    }
+
+    .button-primary {
+      color: var(--ink);
+      background: var(--mint);
+    }
+
+    .button-secondary {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.44);
+      background: rgba(16, 19, 20, 0.42);
+    }
+
+    .marquee {
+      overflow: hidden;
+      color: var(--ink);
+      background: var(--mint);
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .marquee-track {
+      width: max-content;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      padding: 15px 0;
+      animation: marquee 24s linear infinite;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .marquee-track span::after {
+      content: "/";
+      margin-left: 26px;
+      color: var(--mint-deep);
+    }
+
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
+    }
+
+    .section {
+      position: relative;
+      min-height: 100svh;
+      display: grid;
+      align-items: center;
+      padding: 112px 0 84px;
+    }
+
+    .section-inner {
+      width: var(--content);
+      margin: 0 auto;
+    }
+
+    .section-kicker {
+      margin-bottom: 18px;
+      color: var(--mint-deep);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      max-width: 1040px;
+      margin-bottom: 28px;
+      font-size: 4.4rem;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .section-copy {
+      max-width: 66ch;
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .body-copy {
+      max-width: 68ch;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.82;
+    }
+
+    .body-copy + .body-copy {
+      margin-top: 14px;
+    }
+
+    .remote {
+      background: var(--paper-pure);
+    }
+
+    .remote-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.74fr) minmax(480px, 1.26fr);
+      align-items: center;
+      gap: 5vw;
+    }
+
+    .remote-copy .section-title {
+      font-size: 3.7rem;
+    }
+
+    .remote-gesture {
+      margin-top: 34px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 600;
+    }
+
+    .remote-note {
+      max-width: 54ch;
+      margin-top: 28px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .remote-gesture span {
+      padding: 9px 12px;
+      color: #ffffff;
+      background: var(--ink);
+      border-radius: 3px;
+    }
+
+    .remote-gesture i {
+      color: var(--coral);
+      font-style: normal;
+    }
+
+    .figure {
+      margin: 0;
+      overflow: hidden;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+    }
+
+    .figure img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      transition: transform 700ms ease;
+    }
+
+    .remote .figure img {
+      height: min(68svh, 720px);
+      aspect-ratio: auto;
+    }
+
+    .figure:hover img {
+      transform: scale(1.025);
+    }
+
+    .harness {
+      color: #f7f9f8;
+      background: var(--ink);
+    }
+
+    .harness-stage {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.72fr) minmax(0, 2.28fr);
+      gap: 4vw;
+      align-items: start;
+    }
+
+    .harness-intro {
+      padding-top: 8px;
+    }
+
+    .harness-intro .section-title {
+      font-size: 4rem;
+    }
+
+    .harness-intro .section-copy {
+      color: rgba(247, 249, 248, 0.64);
+    }
+
+    .harness-definition {
+      margin-top: 42px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--mint);
+      font-size: 1.12rem;
+      font-weight: 700;
+      line-height: 1.65;
+    }
+
+    .harness-principles {
+      display: grid;
+      gap: 14px;
+      margin: 30px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .harness-principles li {
+      padding-left: 18px;
+      color: rgba(247, 249, 248, 0.72);
+      border-left: 2px solid var(--mint);
+      line-height: 1.6;
+    }
+
+    .capability-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(300px, auto));
+      grid-auto-flow: dense;
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .capability {
+      position: relative;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px;
+      color: #ffffff;
+      background: var(--ink-soft);
+      overflow: hidden;
+      transition: background 240ms ease, color 240ms ease;
+    }
+
+    .capability:hover {
+      color: var(--ink);
+      background: var(--mint);
+    }
+
+    .capability-wide {
+      grid-column: span 2;
+    }
+
+    .capability h3 {
+      margin-bottom: 22px;
+      font-size: 1.6rem;
+      line-height: 1.15;
+    }
+
+    .capability p {
+      margin-bottom: 0;
+      color: rgba(255, 255, 255, 0.62);
+      line-height: 1.65;
+    }
+
+    .capability p + p {
+      margin-top: 12px;
+    }
+
+    .capability:hover p {
+      color: rgba(16, 19, 20, 0.72);
+    }
+
+    .capability-code {
+      display: inline-block;
+      margin-bottom: 34px;
+      color: var(--orange);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .capability:hover .capability-code {
+      color: var(--mint-deep);
+    }
+
+    .harness-figure {
+      margin-top: 64px;
+      width: 68%;
+      max-width: none;
+      margin-left: auto;
+    }
+
+    .harness-figure img {
+      max-height: 52svh;
+    }
+
+    .skill-quality {
+      background: #e9eeec;
+    }
+
+    .skill-quality-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.14fr) minmax(460px, 0.86fr);
+      gap: 5vw;
+      align-items: center;
+    }
+
+    .quality-pillars {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      margin: 34px 0;
+      background: var(--ink);
+      border: 1px solid var(--ink);
+    }
+
+    .quality-pillar {
+      min-height: 170px;
+      padding: 20px;
+      background: var(--paper-pure);
+    }
+
+    .quality-pillar strong {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--mint-deep);
+      font-size: 1.04rem;
+    }
+
+    .quality-pillar p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .semantic-note {
+      margin-top: 22px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .semantic-visual {
+      min-width: 0;
+    }
+
+    .inline-image {
+      width: 112px;
+      height: 54px;
+      display: inline-block;
+      margin: 0 10px;
+      vertical-align: middle;
+      background-image: url("./pic/llm/09-semantic-vulnerability.png");
+      background-size: cover;
+      background-position: center;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+    }
+
+    .rules-list {
+      display: grid;
+      gap: 1px;
+      margin-top: 38px;
+      background: var(--ink);
+      border: 1px solid var(--ink);
+    }
+
+    .rule-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      background: var(--paper-pure);
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .rule-row span:last-child {
+      color: var(--coral);
+      text-align: right;
+    }
+
+    .rule-row b {
+      color: var(--mint-deep);
+    }
+
+    .accuracy {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      margin-top: 1px;
+      background: var(--ink);
+      border: 1px solid var(--ink);
+    }
+
+    .accuracy div {
+      padding: 24px;
+      background: #ffffff;
+    }
+
+    .accuracy strong {
+      display: block;
+      font-size: 3.5rem;
+      line-height: 1;
+    }
+
+    .accuracy div:first-child strong {
+      color: var(--mint-deep);
+    }
+
+    .accuracy div:last-child strong {
+      color: var(--coral);
+    }
+
+    .accuracy span {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+    }
+
+    .evolution {
+      background: var(--paper-pure);
+    }
+
+    .evolution-head {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 64px;
+      align-items: end;
+      margin-bottom: 74px;
+    }
+
+    .evolution-eligibility {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 34px;
+      padding: 22px 26px;
+      color: #ffffff;
+      background: var(--ink);
+      border-left: 8px solid var(--orange);
+    }
+
+    .evolution-eligibility strong {
+      color: var(--mint);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.86rem;
+    }
+
+    .evolution-eligibility p {
+      max-width: 90ch;
+      margin-bottom: 0;
+      color: rgba(255, 255, 255, 0.76);
+      line-height: 1.7;
+    }
+
+    .evolution-head .section-copy {
+      margin-bottom: 0;
+    }
+
+    .evolution-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .flow-step {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 22px;
+      border: 1px solid var(--ink);
+      border-radius: 4px;
+      background: #ffffff;
+      transition: transform 220ms ease, background 220ms ease;
+    }
+
+    .flow-step:hover {
+      transform: translateY(-8px);
+      background: var(--mint);
+    }
+
+    .flow-step code {
+      color: var(--mint-deep);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.76rem;
+    }
+
+    .flow-step strong {
+      font-size: 1.4rem;
+      line-height: 1.2;
+    }
+
+    .flow-step p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .gate-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 28px;
+      background: var(--ink);
+      border: 1px solid var(--ink);
+    }
+
+    .gate {
+      min-height: 150px;
+      padding: 20px;
+      background: var(--paper-pure);
+    }
+
+    .gate code {
+      color: var(--coral);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.76rem;
+    }
+
+    .gate strong {
+      display: block;
+      margin: 18px 0 8px;
+    }
+
+    .gate p {
+      margin-bottom: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .evolution-evidence {
+      margin-top: 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .evolution-evidence .figure:nth-child(2) {
+      margin-top: 84px;
+    }
+
+    .competitiveness {
+      color: #ffffff;
+      background: var(--ink);
+    }
+
+    .competitiveness .section-title {
+      max-width: 1400px;
+    }
+
+    .competitiveness-intro {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 5vw;
+      align-items: end;
+    }
+
+    .competitiveness-intro .section-copy {
+      margin-bottom: 0;
+      color: rgba(255, 255, 255, 0.64);
+    }
+
+    .competitive-principles {
+      margin-top: clamp(56px, 7vw, 112px);
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .principle-panel {
+      min-height: min(620px, 72svh);
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+      align-items: stretch;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .principle-panel:nth-child(even) {
+      grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.2fr);
+    }
+
+    .principle-panel:nth-child(even) .principle-media {
+      order: 2;
+    }
+
+    .principle-media {
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      margin: 0;
+      overflow: hidden;
+      background: #f7f8f5;
+    }
+
+    .principle-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .principle-panel:hover .principle-media img {
+      transform: scale(1.025);
+    }
+
+    .principle-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(40px, 6vw, 96px);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .principle-number {
+      margin-bottom: 24px;
+      color: var(--mint);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+    }
+
+    .principle-copy h3 {
+      max-width: 680px;
+      margin: 0;
+      font-size: clamp(2.2rem, 4vw, 5.2rem);
+      line-height: 1.05;
+    }
+
+    .principle-copy p {
+      max-width: 620px;
+      margin: 28px 0 0;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: clamp(1rem, 1.3vw, 1.2rem);
+      line-height: 1.75;
+    }
+
+    .accordion {
+      min-height: 610px;
+      display: flex;
+      gap: 6px;
+      margin-top: clamp(64px, 8vw, 128px);
+      margin-bottom: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .accordion-item {
+      position: relative;
+      min-width: 0;
+      flex: 1 1 0;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 4px;
+      background: #222829;
+      cursor: pointer;
+      transition: flex 520ms cubic-bezier(0.2, 0.7, 0.2, 1), border-color 220ms ease;
+    }
+
+    .accordion-item:hover,
+    .accordion-item:focus-within,
+    .accordion-item.is-open {
+      flex: 4.2 1 0;
+      border-color: var(--mint);
+    }
+
+    .accordion-item img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.15) contrast(1.04);
+      opacity: 0.58;
+      transition: opacity 420ms ease, transform 700ms ease;
+    }
+
+    .accordion-item:hover img,
+    .accordion-item:focus-within img,
+    .accordion-item.is-open img {
+      opacity: 0.88;
+      transform: scale(1.04);
+    }
+
+    .accordion-button {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      padding: 28px;
+      color: #ffffff;
+      text-align: left;
+      border: 0;
+      background: rgba(16, 19, 20, 0.56);
+      cursor: pointer;
+    }
+
+    .accordion-button strong {
+      max-width: 440px;
+      font-size: 1.7rem;
+      line-height: 1.15;
+    }
+
+    .accordion-button span {
+      max-width: 480px;
+      margin-top: 14px;
+      color: rgba(255, 255, 255, 0.76);
+      line-height: 1.6;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 260ms ease, transform 260ms ease;
+    }
+
+    .accordion-item:hover .accordion-button span,
+    .accordion-item:focus-within .accordion-button span,
+    .accordion-item.is-open .accordion-button span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .finale {
+      min-height: 100svh;
+      display: grid;
+      align-items: center;
+      color: var(--ink);
+      background: var(--mint);
+    }
+
+    .finale-quote {
+      max-width: 1180px;
+      margin-bottom: 54px;
+      font-size: 5.2rem;
+      line-height: 1.03;
+      font-weight: 900;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .finale-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: end;
+      padding-top: 30px;
+      border-top: 2px solid var(--ink);
+    }
+
+    .source-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      max-width: 850px;
+      font-weight: 700;
+    }
+
+    .source-links a {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .source-links a:hover {
+      color: #ffffff;
+    }
+
+    .finale-mark {
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1080px) {
+      h1 {
+        font-size: 5rem;
+      }
+
+      .hero-copy {
+        width: 82%;
+      }
+
+      .section-title,
+      .harness-intro .section-title {
+        font-size: 3.6rem;
+      }
+
+      .remote-layout,
+      .skill-quality-layout {
+        grid-template-columns: 1fr 1fr;
+        gap: 42px;
+      }
+
+      .harness-stage {
+        grid-template-columns: 0.7fr 1.3fr;
+        gap: 42px;
+      }
+
+      .capability-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: auto;
+      }
+
+      .quality-pillars,
+      .gate-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .evolution-flow {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .finale-quote {
+        font-size: 4.2rem;
+      }
+    }
+
+    @media (max-width: 760px) {
+      :root {
+        --content: min(100% - 32px, 680px);
+      }
+
+      .site-nav {
+        top: 8px;
+        width: calc(100vw - 16px);
+        grid-template-columns: 1fr auto;
+        padding: 0 12px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        min-height: 92svh;
+      }
+
+      .hero-shade {
+        background: rgba(9, 12, 13, 0.74);
+        clip-path: none;
+      }
+
+      .hero-media img {
+        object-position: center;
+      }
+
+      .hero-inner {
+        padding: 104px 0 34px;
+      }
+
+      .hero-copy {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 3.35rem;
+        line-height: 1.02;
+      }
+
+      .hero-lead {
+        font-size: 1.05rem;
+      }
+
+      .section {
+        min-height: auto;
+        padding: 92px 0;
+      }
+
+      .section-title,
+      .harness-intro .section-title,
+      .remote-copy .section-title {
+        font-size: 2.75rem;
+      }
+
+      .remote-layout,
+      .skill-quality-layout,
+      .harness-stage,
+      .evolution-head,
+      .evolution-evidence,
+      .finale-grid,
+      .competitiveness-intro {
+        grid-template-columns: 1fr;
+      }
+
+      .principle-panel,
+      .principle-panel:nth-child(even) {
+        min-height: 0;
+        grid-template-columns: 1fr;
+      }
+
+      .principle-panel:nth-child(even) .principle-media {
+        order: 0;
+      }
+
+      .principle-media {
+        min-height: 0;
+        aspect-ratio: 16 / 10;
+      }
+
+      .principle-copy {
+        padding: 40px 24px 52px;
+      }
+
+      .principle-copy h3 {
+        font-size: clamp(2rem, 9.5vw, 2.7rem);
+      }
+
+      .remote-layout,
+      .skill-quality-layout,
+      .harness-stage {
+        gap: 48px;
+      }
+
+      .remote-gesture {
+        flex-wrap: wrap;
+      }
+
+      .harness-intro {
+        position: static !important;
+        transform: none !important;
+      }
+
+      .capability-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .capability,
+      .capability-wide {
+        min-height: 250px;
+        grid-column: auto;
+      }
+
+      .harness-figure {
+        width: 100%;
+      }
+
+      .quality-pillars,
+      .gate-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .evolution-eligibility {
+        grid-template-columns: 1fr;
+      }
+
+      .inline-image {
+        width: 82px;
+        height: 40px;
+        margin: 0 5px;
+      }
+
+      .rule-row {
+        grid-template-columns: 1fr auto 1fr;
+        font-size: 0.95rem;
+      }
+
+      .accuracy strong {
+        font-size: 2.5rem;
+      }
+
+      .evolution-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-step {
+        min-height: 180px;
+      }
+
+      .evolution-evidence .figure:nth-child(2) {
+        margin-top: 0;
+      }
+
+      .accordion {
+        min-height: auto;
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .accordion-item,
+      .accordion-item:hover,
+      .accordion-item:focus-within,
+      .accordion-item.is-open {
+        min-height: 420px;
+        flex: none;
+      }
+
+      .accordion-button span {
+        opacity: 1;
+        transform: none;
+      }
+
+      .finale {
+        min-height: 760px;
+      }
+
+      .finale-quote {
+        font-size: 3.2rem;
+      }
+
+      .finale-grid {
+        align-items: start;
+      }
+
+      .page-switcher {
+        top: auto;
+        right: 16px;
+        bottom: 16px;
+        grid-template-columns: repeat(2, 42px);
+        transform: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">跳到主要内容</a>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
+  <nav class="site-nav" aria-label="分享导航">
+    <a class="brand" href="https://sumsec.me" target="_blank" rel="noopener noreferrer" aria-label="访问 SUMSEC">
+      <img src="../resources/sumsec-icon.png" alt="">
+      <span>SUMSEC</span>
+    </a>
+    <div class="nav-links">
+      <a href="#remote">语音按钮</a>
+      <a href="#harness">Harness</a>
+      <a href="#quality">Skill 规范</a>
+      <a href="#evolution">进化</a>
+      <a href="#competitiveness">竞争力</a>
+    </div>
+    <div class="nav-tools">
+      <button class="icon-button" id="fullscreenToggle" type="button" aria-label="切换全屏" title="切换全屏">⛶</button>
+    </div>
+  </nav>
+
+  <nav class="page-switcher" aria-label="章节切换">
+    <button class="icon-button" id="previousPage" type="button" aria-label="上一章" aria-keyshortcuts="ArrowUp" title="上一章（↑）">↑</button>
+    <button class="icon-button" id="nextPage" type="button" aria-label="下一章" aria-keyshortcuts="ArrowDown" title="下一章（↓）">↓</button>
+  </nav>
+
+  <main id="mainContent">
+    <header class="hero" id="top">
+      <div class="hero-media" aria-hidden="true">
+        <img src="../assets/ai-agent-engineering-evolution-illustrations/01-cover-agent-engineering.png" alt="">
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">AI WORKING SYSTEM · SUMSEC</p>
+          <h1>AI 时代的<br>真正竞争力</h1>
+          <p class="hero-lead">一个更快的语音按钮，以及一套让 Skills 可分发、可管理、可版本化、可验证、可持续进化的 Harness。</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#remote">进入分享 <span aria-hidden="true">↓</span></a>
+            <a class="button button-secondary" href="https://sumsec.me/2026/ai-era-personal-team-competitiveness.html" target="_blank" rel="noopener noreferrer">阅读原文 <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Skill</span><span>Plugin</span><span>Harness</span><span>Version</span><span>Eval</span><span>Trace</span><span>Rollback</span><span>Self-correction</span>
+        <span>Skill</span><span>Plugin</span><span>Harness</span><span>Version</span><span>Eval</span><span>Trace</span><span>Rollback</span><span>Self-correction</span>
+      </div>
+    </div>
+
+    <section class="section remote" id="remote" data-nav="语音按钮">
+      <div class="section-inner remote-layout">
+        <div class="remote-copy">
+          <p class="section-kicker">一个很小的输入改造</p>
+          <h2 class="section-title">电视遥控器，成了我的语音按钮</h2>
+          <p class="section-copy">我把麦克风键映射成语音输入快捷键。它没有让模型变强，只是让我更快地把需求说给 Codex 和 Claude Code。</p>
+          <p class="remote-note">真正完成语音转文字的仍然是输入法或语音软件。遥控器只把“找输入框、开麦克风、说完再关闭”压缩成一个不需要看屏幕的动作。这是输入体验的小改造，不是 Harness 的一部分。</p>
+          <div class="remote-gesture" role="img" aria-label="按住说话，松开提交">
+            <span>按住</span><i>→</i><span>说话</span><i>→</i><span>松开</span>
+          </div>
+        </div>
+        <figure class="figure reveal-image">
+          <img src="./pic/vibe-coding-remote/sumsec-observer-remote-coding.png" alt="SumSec Observer 使用遥控器进行语音输入">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section harness" id="harness" data-nav="Harness">
+      <div class="section-inner harness-stage">
+        <div class="harness-intro">
+          <p class="section-kicker">从零散经验到能力系统</p>
+          <h2 class="section-title">Skill 写出来，只是开始</h2>
+          <p class="section-copy">真正困难的是：多个平台怎么使用，数量多了怎么组织，修改以后怎么同步，效果变差怎么回滚。</p>
+          <p class="harness-definition">Harness 管理 Skills 的完整生命周期：组织、分发、运行、验证和进化。</p>
+          <ul class="harness-principles">
+            <li>Skill 不是保存起来的 Prompt，而是结构化行为规范、参考资料和辅助脚本组成的能力包。</li>
+            <li>从 Marketplace 到 Plugin、Skill、References，每一层都按需加载，避免把无关能力塞进上下文。</li>
+            <li>技能资产属于个人和团队，不属于 Claude、Codex、Cursor 中的任何单一平台。</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="capability-grid">
+            <article class="capability capability-wide">
+              <span class="capability-code">CORE / SKILL.md</span>
+              <div>
+                <h3>一份核心能力，多个稳定入口</h3>
+                <p>核心 `SKILL.md` 只维护一份，平台差异交给 Plugin、Manifest 与 Adapter。</p>
+                <p>换 Agent、换设备、换项目后，已经验证过的方法不再归零。</p>
+              </div>
+            </article>
+            <article class="capability">
+              <span class="capability-code">DISTRIBUTE</span>
+              <div>
+                <h3>可分发</h3>
+                <p>Claude、Codex、Cursor 共享同一套方法，版本号统一管理，一次更新同步多个入口。</p>
+              </div>
+            </article>
+            <article class="capability">
+              <span class="capability-code">MANAGE</span>
+              <div>
+                <h3>可管理</h3>
+                <p>按写作、开发、安全、媒体等领域组织 Plugin，按需安装、启用和更新。</p>
+                <p>不同领域独立发布，也减少误触发和注意力浪费。</p>
+              </div>
+            </article>
+            <article class="capability">
+              <span class="capability-code">VERSION</span>
+              <div>
+                <h3>可版本化</h3>
+                <p>Git 保存每次修改的原因和结果，Release 管发布，Diff 管审查，旧版本提供明确回滚点。</p>
+                <p>官方规范作为基座同步，个人定制留在独立层。</p>
+              </div>
+            </article>
+            <article class="capability capability-wide">
+              <span class="capability-code">EVOLVE</span>
+              <div>
+                <h3>可进化，但不能自由漂移</h3>
+                <p>真实任务产生结果和执行轨迹；重复失败收敛成根因，才允许生成一个小范围候选 Diff。</p>
+                <p>门禁决定接受、拒绝或回滚，黑名单记住已经失败的修改方向。</p>
+              </div>
+            </article>
+            <article class="capability">
+              <span class="capability-code">EXECUTE</span>
+              <div>
+                <h3>可执行</h3>
+                <p>Skill 规定何时用、为什么用、怎么用；CLI 和领域工具负责真正执行。</p>
+                <p>模型负责判断，成熟程序承担搜索、构建、测试与部署。</p>
+              </div>
+            </article>
+          </div>
+
+          <figure class="figure harness-figure reveal-image">
+            <img src="../assets/ai-agent-engineering-evolution-illustrations/04-harness-alignment.png" alt="Harness 让 Agent 保持在正确路径上">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section skill-quality" id="quality" data-nav="Skill 规范">
+      <div class="section-inner skill-quality-layout">
+        <div>
+          <p class="section-kicker">Skill 编写质量</p>
+          <h2 class="section-title">关键词<span class="inline-image" aria-hidden="true"></span>也是行为边界</h2>
+          <p class="section-copy">高质量 Skill 不是把要求写得更长，而是把执行路径、外部状态、判断边界和工具选择收窄到可以验证。</p>
+
+          <div class="quality-pillars">
+            <article class="quality-pillar"><strong>结构化工作流</strong><p>把任务拆成有依赖关系的步骤，明确每一步输入、动作和输出，防止跳步和乱序。</p></article>
+            <article class="quality-pillar"><strong>校验 → 执行 → 验证</strong><p>关键步骤前读取状态，执行后回读结果，用外部文件对抗遗忘和“看起来做完”。</p></article>
+            <article class="quality-pillar"><strong>定义文件与反例</strong><p>穷举什么属于范围、什么不属于范围，并提供输入、分析、结论的完整判定示例。</p></article>
+            <article class="quality-pillar"><strong>领域定制工具</strong><p>提前回答何时用、为何用、如何用，减少 Agent 在通用工具之间反复试探。</p></article>
+          </div>
+
+          <p class="body-copy">完成这些结构以后，还要检查核心词汇本身。人类觉得相近的词，在模型语义空间里可能激活完全不同的范围。宽边界词会让模型觉得“多想一点也合理”，最终越过定义文件。</p>
+
+          <div class="rules-list">
+            <div class="rule-row"><span>检查</span><b>&gt;</b><span>审查</span></div>
+            <div class="rule-row"><span>列出</span><b>&gt;</b><span>描述</span></div>
+            <div class="rule-row"><span>漏洞</span><b>&gt;</b><span>风险</span></div>
+            <div class="rule-row"><span>要求</span><b>&gt;</b><span>建议</span></div>
+          </div>
+
+          <div class="accuracy" role="group" aria-label="漏洞版与风险版准确率对比">
+            <div><strong>89.3%</strong><span>“漏洞”版本</span></div>
+            <div><strong>62.1%</strong><span>“风险”版本</span></div>
+          </div>
+        </div>
+
+        <div class="semantic-visual">
+          <figure class="figure reveal-image">
+            <img src="../assets/ai-agent-harness-sharing-illustrations/01-keywords-behavior-boundary.png" alt="SumSec Observer 校准漏洞与风险两个不同宽度的语义边界">
+          </figure>
+          <p class="semantic-note">实验中，Skill 的结构、约束和示例完全相同，只把“漏洞”机械替换为“风险”，准确率就从 89.3% 降到 62.1%。这不是普通的措辞润色，而是行为边界发生了变化。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section evolution" id="evolution" data-nav="进化">
+      <div class="section-inner">
+        <div class="evolution-head">
+          <div>
+            <p class="section-kicker">让修改有证据、有版本、有退路</p>
+            <h2 class="section-title">进化不是让 AI 自己教自己</h2>
+          </div>
+          <p class="section-copy">LLM 只生成候选修改。诊断、验证、回滚、黑名单和停止条件交给可复查的工程规则。</p>
+        </div>
+
+        <div class="evolution-eligibility">
+          <strong>适用边界</strong>
+          <p>只有输出能够客观判定对错的任务才适合自动进化，例如漏洞判断、垃圾邮件分类、结构化字段抽取。开放式写作没有唯一标准答案，不能机械判断一次修改是否真的更好。</p>
+        </div>
+
+        <div class="evolution-flow">
+          <article class="flow-step"><code>INPUT</code><strong>执行任务</strong><p>用一批带标准答案的真实 case 暴露稳定失败，而不是凭感觉修改 Skill。</p></article>
+          <article class="flow-step"><code>EVIDENCE</code><strong>结果 × 轨迹</strong><p>结果说明错没错，轨迹说明工具调用、步骤和结论是怎么偏离的。</p></article>
+          <article class="flow-step"><code>DIAGNOSE</code><strong>确定性诊断</strong><p>规则识别缺步、重复重试和工具错误；宁可少判，也不让 LLM 飘着判。</p></article>
+          <article class="flow-step"><code>PATCH</code><strong>候选 Diff</strong><p>LLM 只把已经收敛的根因写成不超过 80 行的小修改。</p></article>
+          <article class="flow-step"><code>MEMORY</code><strong>接受或回滚</strong><p>通过验证才写入新版本；失败进入跨版本黑名单，停滞或退化时停止。</p></article>
+        </div>
+
+        <div class="gate-grid">
+          <article class="gate"><code>TARGET</code><strong>改了有用</strong><p>本次目标 case 至少有一个从错变对。</p></article>
+          <article class="gate"><code>GUARDRAIL</code><strong>没搞坏旧功能</strong><p>之前答对的 case 一个都不能回归。</p></article>
+          <article class="gate"><code>HOLDOUT</code><strong>泛化没有退步</strong><p>隔离测试集的 F1 不能下降超过 1 个百分点。</p></article>
+          <article class="gate"><code>VERIFY</code><strong>Skill 本身仍健康</strong><p>结构、触发词和文本质量不能因为补规则而变乱。</p></article>
+        </div>
+
+        <div class="evolution-evidence">
+          <figure class="figure reveal-image">
+            <img src="./pic/skill-evolution-results-trace/02-results-and-trace.png" alt="评测结果与执行轨迹缺一不可">
+          </figure>
+          <figure class="figure reveal-image">
+            <img src="./pic/skill-evolution-results-trace/15-final-evolution-loop.png" alt="Skill 最终进化循环">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section competitiveness" id="competitiveness" data-nav="竞争力">
+      <div class="section-inner">
+        <div class="competitiveness-intro">
+          <div>
+            <p class="section-kicker">从工程系统回到个人与团队</p>
+            <h2 class="section-title">真正的差距，是学习、验证和自我修正的速度</h2>
+          </div>
+          <p class="section-copy">工具变化很快，做事逻辑也要跟着变。先问 AI 能做什么、需要什么上下文、怎样观察和验证，再决定人的分工。功能、代码和想法都会被复制；别人最难复制的是你持续获得反馈、推翻旧判断并继续向前的能力。</p>
+        </div>
+
+        <div class="competitive-principles">
+          <article class="principle-panel">
+            <figure class="principle-media">
+              <img src="../assets/ai-era-personal-team-competitiveness-illustrations/01-old-logic-new-conditions.png" alt="面对新条件，先改变旧的做事逻辑">
+            </figure>
+            <div class="principle-copy">
+              <span class="principle-number">01 / Change the logic</span>
+              <h3>先把脑子转过来</h3>
+              <p>不要只在旧流程旁边加一个聊天框。先重新判断 AI 能做什么、需要什么上下文、怎样执行和验证，再重做工具入口、协作方式与人的分工。真正需要升级的，首先是做事逻辑。</p>
+            </div>
+          </article>
+
+          <article class="principle-panel">
+            <figure class="principle-media">
+              <img src="../assets/ai-era-personal-team-competitiveness-illustrations/05-expiring-successful-experience.png" alt="持续验证经验，让复制者只能追上过去的版本">
+            </figure>
+            <div class="principle-copy">
+              <span class="principle-number">02 / Keep moving</span>
+              <h3>真正的竞争力是自我修正速度</h3>
+              <p>功能、代码和观点都会被复制，成功经验也会过期。真正难以复制的，是持续获得反馈、验证判断、替换失效方法的速度。让别人复制到的永远只是你的上一版。</p>
+            </div>
+          </article>
+        </div>
+
+        <ul class="accordion">
+          <li class="accordion-item is-open">
+            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/08-ai-infrastructure-not-lamp.png" alt="AI 不只是电灯，而是基础设施">
+            <button class="accordion-button" type="button" aria-expanded="true">
+              <strong>别只把 AI 当成电灯</strong>
+              <span>不是在旧流程旁边挂一个 AI 助手，而是重新设计上下文、执行和验证入口。</span>
+            </button>
+          </li>
+          <li class="accordion-item">
+            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/02-ai-log-window.png" alt="让 AI 通过日志参与验证">
+            <button class="accordion-button" type="button" aria-expanded="false">
+              <strong>让 AI 看得见结果</strong>
+              <span>日志、测试和运行记录是 AI 可以直接读取的验证窗口。</span>
+            </button>
+          </li>
+          <li class="accordion-item">
+            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/03-usable-demo-first.png" alt="先做可用 Demo">
+            <button class="accordion-button" type="button" aria-expanded="false">
+              <strong>先验证，再建设</strong>
+              <span>AI 降低了开发成本，却没有降低维护成本。先做可用 Demo，再决定投入。</span>
+            </button>
+          </li>
+          <li class="accordion-item">
+            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/09-build-on-mature-infrastructure.png" alt="站在成熟基础设施上">
+            <button class="accordion-button" type="button" aria-expanded="false">
+              <strong>复用成熟能力</strong>
+              <span>先找现有项目、标准库和平台能力，只补真正缺少的最后一块。</span>
+            </button>
+          </li>
+          <li class="accordion-item">
+            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/04-exploration-engineering-collaboration.png" alt="探索者与成熟开发者持续协作">
+            <button class="accordion-button" type="button" aria-expanded="false">
+              <strong>探索与工程化不能断开</strong>
+              <span>先驱者继续解释判断和停止条件，成熟开发者补稳定性与维护能力；团队接的不只是代码，还有方法。</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="section finale" id="finale">
+      <div class="section-inner">
+        <p class="finale-quote">模型是公共能力。Harness 才是可以长期积累的个人与团队资产。</p>
+        <div class="finale-grid">
+          <nav class="source-links" aria-label="相关文章">
+            <a href="https://sumsec.me/2026/tv-remote-vibe-coding.html" target="_blank" rel="noopener noreferrer">遥控器与语音输入</a>
+            <a href="https://sumsec.me/2026/why-personal-agent-skills-repo.html" target="_blank" rel="noopener noreferrer">可进化的 Skill 库</a>
+            <a href="https://sumsec.me/2026/skill-semantic-traps-anti-hallucination.html" target="_blank" rel="noopener noreferrer">Skill 语义陷阱</a>
+            <a href="https://sumsec.me/2026/skill-evolution-results-trace.html" target="_blank" rel="noopener noreferrer">评测与轨迹</a>
+            <a href="https://sumsec.me/2026/ai-era-personal-team-competitiveness.html" target="_blank" rel="noopener noreferrer">个人与团队竞争力</a>
+          </nav>
+          <span class="finale-mark">SUMSEC / 2026</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script>
+    const progress = document.querySelector('.scroll-progress');
+    const navLinks = [...document.querySelectorAll('.nav-links a')];
+    const sections = [...document.querySelectorAll('[data-nav]')];
+    const fullscreenToggle = document.getElementById('fullscreenToggle');
+    const previousPage = document.getElementById('previousPage');
+    const nextPage = document.getElementById('nextPage');
+    const pages = [document.getElementById('top'), ...sections, document.getElementById('finale')];
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const getCurrentPageIndex = () => {
+      const marker = window.scrollY + window.innerHeight * 0.42;
+      let current = 0;
+      pages.forEach((page, index) => {
+        if (page.offsetTop <= marker) current = index;
+      });
+      return current;
+    };
+
+    const updatePageControls = () => {
+      const current = getCurrentPageIndex();
+      previousPage.disabled = current === 0;
+      nextPage.disabled = current === pages.length - 1;
+    };
+
+    const goToPage = (direction) => {
+      const targetIndex = Math.min(pages.length - 1, Math.max(0, getCurrentPageIndex() + direction));
+      pages[targetIndex].scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+    };
+
+    const updateScrollState = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+      progress.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+
+      let activeId = '';
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= window.innerHeight * 0.42) activeId = section.id;
+      });
+      navLinks.forEach((link) => link.classList.toggle('is-active', link.getAttribute('href') === `#${activeId}`));
+      updatePageControls();
+    };
+
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+    updateScrollState();
+
+    fullscreenToggle.addEventListener('click', async () => {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch (error) {
+        fullscreenToggle.disabled = true;
+        fullscreenToggle.title = '当前环境不支持全屏';
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      fullscreenToggle.setAttribute('aria-label', document.fullscreenElement ? '退出全屏' : '切换全屏');
+    });
+
+    previousPage.addEventListener('click', () => goToPage(-1));
+    nextPage.addEventListener('click', () => goToPage(1));
+
+    document.addEventListener('keydown', (event) => {
+      const target = event.target;
+      const isEditing = target instanceof HTMLElement && (
+        target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)
+      );
+      if (isEditing || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+
+      event.preventDefault();
+      goToPage(event.key === 'ArrowDown' ? 1 : -1);
+    });
+
+    document.querySelectorAll('.accordion-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.accordion-item').forEach((item) => {
+          const open = item.contains(button);
+          item.classList.toggle('is-open', open);
+          item.querySelector('.accordion-button').setAttribute('aria-expanded', String(open));
+        });
+      });
+    });
+
+    if (!reducedMotion && window.gsap && window.ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.fromTo('.hero-media img',
+        { scale: 1.08 },
+        { scale: 0.98, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1 } }
+      );
+
+      gsap.utils.toArray('.reveal-image').forEach((element) => {
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 92%',
+            end: 'bottom 8%',
+            scrub: 0.8
+          }
+        })
+          .fromTo(element, { scale: 0.86, autoAlpha: 0.34 }, { scale: 1, autoAlpha: 1, ease: 'none', duration: 0.48 })
+          .to(element, { scale: 0.96, autoAlpha: 0.28, ease: 'none', duration: 0.52 });
+      });
+
+      if (window.innerWidth > 760) {
+        ScrollTrigger.create({
+          trigger: '.harness-stage',
+          start: 'top 112px',
+          end: 'bottom bottom-=120',
+          pin: '.harness-intro',
+          pinSpacing: false
+        });
+      }
+
+      ScrollTrigger.refresh();
+    }
+  </script>
+</body>
+</html>
