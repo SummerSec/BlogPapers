@@ -525,6 +525,17 @@
       line-height: 1.6;
     }
 
+    .harness-thesis {
+      margin: 30px 0 0;
+      padding: 20px 22px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+      border-left: 4px solid var(--orange);
+      font-size: 1.02rem;
+      font-weight: 800;
+      line-height: 1.65;
+    }
+
     .capability-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -672,6 +683,17 @@
       border: 1px solid var(--ink);
     }
 
+    .rules-caption {
+      margin: 30px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+
+    .rules-caption + .rules-list {
+      margin-top: 12px;
+    }
+
     .rule-row {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -760,6 +782,59 @@
       max-width: 90ch;
       margin-bottom: 0;
       color: rgba(255, 255, 255, 0.76);
+      line-height: 1.7;
+    }
+
+    .evolution-proof {
+      margin-bottom: 34px;
+      padding: clamp(24px, 3vw, 42px);
+      color: var(--ink);
+      background: var(--mint);
+      border: 1px solid var(--ink);
+    }
+
+    .evolution-proof > strong {
+      display: block;
+      font-size: clamp(1.35rem, 2vw, 2rem);
+    }
+
+    .proof-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 24px 0 20px;
+      border-top: 1px solid rgba(16, 19, 20, 0.28);
+      border-bottom: 1px solid rgba(16, 19, 20, 0.28);
+    }
+
+    .proof-metric {
+      padding: 20px 18px;
+      border-left: 1px solid rgba(16, 19, 20, 0.28);
+    }
+
+    .proof-metric:first-child {
+      border-left: 0;
+    }
+
+    .proof-metric span,
+    .proof-metric strong {
+      display: block;
+    }
+
+    .proof-metric span {
+      margin-bottom: 10px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .proof-metric strong {
+      font-size: clamp(1.5rem, 2.6vw, 3rem);
+      line-height: 1;
+    }
+
+    .proof-note {
+      max-width: 90ch;
+      margin: 0;
       line-height: 1.7;
     }
 
@@ -943,6 +1018,17 @@
       line-height: 1.75;
     }
 
+    .principle-copy p + p {
+      margin-top: 18px;
+    }
+
+    .principle-copy a {
+      color: var(--mint);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
     .accordion {
       min-height: 610px;
       display: flex;
@@ -1013,21 +1099,34 @@
       line-height: 1.15;
     }
 
-    .accordion-button span {
+    .accordion-button > span {
       max-width: 480px;
-      margin-top: 14px;
+      max-height: 0;
+      margin-top: 0;
+      overflow: hidden;
       color: rgba(255, 255, 255, 0.76);
       line-height: 1.6;
       opacity: 0;
       transform: translateY(12px);
-      transition: opacity 260ms ease, transform 260ms ease;
+      transition: max-height 420ms ease, margin 260ms ease, opacity 260ms ease, transform 260ms ease;
     }
 
-    .accordion-item:hover .accordion-button span,
-    .accordion-item:focus-within .accordion-button span,
-    .accordion-item.is-open .accordion-button span {
+    .accordion-item:hover .accordion-button > span,
+    .accordion-item:focus-within .accordion-button > span,
+    .accordion-item.is-open .accordion-button > span {
+      max-height: 440px;
+      margin-top: 14px;
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .accordion-paragraph {
+      display: block;
+      margin-top: 12px;
+    }
+
+    .accordion-paragraph:first-child {
+      margin-top: 0;
     }
 
     .finale {
@@ -1040,12 +1139,20 @@
 
     .finale-quote {
       max-width: 1180px;
-      margin-bottom: 54px;
+      margin-bottom: 30px;
       font-size: 5.2rem;
       line-height: 1.03;
       font-weight: 900;
       letter-spacing: 0;
       text-wrap: balance;
+    }
+
+    .finale-subline {
+      max-width: 900px;
+      margin: 0 0 54px;
+      font-size: clamp(1.08rem, 1.8vw, 1.5rem);
+      font-weight: 700;
+      line-height: 1.6;
     }
 
     .finale-grid {
@@ -1253,6 +1360,19 @@
         grid-template-columns: 1fr;
       }
 
+      .proof-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-metric {
+        border-top: 1px solid rgba(16, 19, 20, 0.28);
+        border-left: 0;
+      }
+
+      .proof-metric:first-child {
+        border-top: 0;
+      }
+
       .inline-image {
         width: 82px;
         height: 40px;
@@ -1294,9 +1414,15 @@
         flex: none;
       }
 
-      .accordion-button span {
+      .accordion-button > span {
+        max-height: 540px;
+        margin-top: 14px;
         opacity: 1;
         transform: none;
+      }
+
+      .accordion-item.accordion-item--long {
+        min-height: 620px;
       }
 
       .finale {
@@ -1371,7 +1497,7 @@
         <div class="hero-copy">
           <p class="eyebrow">AI WORKING SYSTEM · SUMSEC</p>
           <h1>AI 时代的<br>真正竞争力</h1>
-          <p class="hero-lead">一个更快的语音按钮，以及一套让 Skills 可分发、可管理、可版本化、可验证、可持续进化的 Harness。</p>
+          <p class="hero-lead">语音按钮减少输入摩擦，Harness 把 Skills 变成可积累的资产；真正拉开差距的，是持续学习、验证和自我修正的速度。</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#remote">进入分享 <span aria-hidden="true">↓</span></a>
             <a class="button button-secondary" href="https://sumsec.me/2026/ai-era-personal-team-competitiveness.html" target="_blank" rel="noopener noreferrer">阅读原文 <span aria-hidden="true">↗</span></a>
@@ -1409,13 +1535,14 @@
         <div class="harness-intro">
           <p class="section-kicker">从零散经验到能力系统</p>
           <h2 class="section-title">Skill 写出来，只是开始</h2>
-          <p class="section-copy">真正困难的是：多个平台怎么使用，数量多了怎么组织，修改以后怎么同步，效果变差怎么回滚。</p>
+          <p class="section-copy">真正困难的是：多个平台怎么使用，数量多了怎么组织，修改如何同步与版本管理，效果变差怎么回滚，以及怎样根据真实结果继续改进。</p>
           <p class="harness-definition">Harness 管理 Skills 的完整生命周期：组织、分发、运行、验证和进化。</p>
           <ul class="harness-principles">
             <li>Skill 不是保存起来的 Prompt，而是结构化行为规范、参考资料和辅助脚本组成的能力包。</li>
             <li>从 Marketplace 到 Plugin、Skill、References，每一层都按需加载，避免把无关能力塞进上下文。</li>
             <li>技能资产属于个人和团队，不属于 Claude、Codex、Cursor 中的任何单一平台。</li>
           </ul>
+          <p class="harness-thesis">模型人人都能用，真正能带走的是经过验证、可以跨平台复用的方法。没有版本记录的 Skill，只是一份会不断变形的提示词。</p>
         </div>
 
         <div>
@@ -1443,7 +1570,7 @@
                 <p>不同领域独立发布，也减少误触发和注意力浪费。</p>
               </div>
             </article>
-            <article class="capability">
+            <article class="capability capability-wide">
               <span class="capability-code">VERSION</span>
               <div>
                 <h3>可版本化</h3>
@@ -1457,14 +1584,6 @@
                 <h3>可进化，但不能自由漂移</h3>
                 <p>真实任务产生结果和执行轨迹；重复失败收敛成根因，才允许生成一个小范围候选 Diff。</p>
                 <p>门禁决定接受、拒绝或回滚，黑名单记住已经失败的修改方向。</p>
-              </div>
-            </article>
-            <article class="capability">
-              <span class="capability-code">EXECUTE</span>
-              <div>
-                <h3>可执行</h3>
-                <p>Skill 规定何时用、为什么用、怎么用；CLI 和领域工具负责真正执行。</p>
-                <p>模型负责判断，成熟程序承担搜索、构建、测试与部署。</p>
               </div>
             </article>
           </div>
@@ -1492,6 +1611,7 @@
 
           <p class="body-copy">完成这些结构以后，还要检查核心词汇本身。人类觉得相近的词，在模型语义空间里可能激活完全不同的范围。宽边界词会让模型觉得“多想一点也合理”，最终越过定义文件。</p>
 
+          <p class="rules-caption">左侧不是永远更好的词，而是在当前任务中语义边界更窄、输出更容易验证的选择。</p>
           <div class="rules-list">
             <div class="rule-row"><span>检查</span><b>&gt;</b><span>审查</span></div>
             <div class="rule-row"><span>列出</span><b>&gt;</b><span>描述</span></div>
@@ -1509,7 +1629,7 @@
           <figure class="figure reveal-image">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-illustrations/01-keywords-behavior-boundary.png" alt="SumSec Observer 校准漏洞与风险两个不同宽度的语义边界" loading="lazy" decoding="async" fetchpriority="low">
           </figure>
-          <p class="semantic-note">实验中，Skill 的结构、约束和示例完全相同，只把“漏洞”机械替换为“风险”，准确率就从 89.3% 降到 62.1%。这不是普通的措辞润色，而是行为边界发生了变化。</p>
+          <p class="semantic-note">在同一批 56 个测试接口中，Skill 的结构、约束和示例完全相同，只把“漏洞”机械替换为“风险”，准确率就从 89.3% 降到 62.1%。错误并非随机，其中 68% 属于语义范围溢出。这不是普通的措辞润色，而是行为边界发生了变化。</p>
         </div>
       </div>
     </section>
@@ -1527,6 +1647,16 @@
         <div class="evolution-eligibility">
           <strong>适用边界</strong>
           <p>只有输出能够客观判定对错的任务才适合自动进化，例如漏洞判断、垃圾邮件分类、结构化字段抽取。开放式写作没有唯一标准答案，不能机械判断一次修改是否真的更好。</p>
+        </div>
+
+        <div class="evolution-proof">
+          <strong>同一批 63 个真实 case，进化后的 Skill 稳定做对了更多任务</strong>
+          <div class="proof-metrics" role="group" aria-label="三个模型进化前后的通过率">
+            <div class="proof-metric"><span>KIMI</span><strong>77.8% → 84.1%</strong></div>
+            <div class="proof-metric"><span>GLM</span><strong>77.8% → 88.9%</strong></div>
+            <div class="proof-metric"><span>DEEPSEEK</span><strong>82.5% → 87.3%</strong></div>
+          </div>
+          <p class="proof-note">总分提高不等于没有回归。真实对比里，“修复旧错误”和“新增错误”会同时发生，所以必须逐 case 检查，并用 Guardrail 拦住被新修改破坏的旧能力。</p>
         </div>
 
         <div class="evolution-flow">
@@ -1579,12 +1709,24 @@
 
           <article class="principle-panel">
             <figure class="principle-media">
-              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/05-expiring-successful-experience.png" alt="持续验证经验，让复制者只能追上过去的版本" loading="lazy" decoding="async" fetchpriority="low">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/09-build-on-mature-infrastructure.png" alt="优先站在成熟项目、标准库和平台能力之上" loading="lazy" decoding="async" fetchpriority="low">
             </figure>
             <div class="principle-copy">
-              <span class="principle-number">02 / Keep moving</span>
+              <span class="principle-number">02 / Reuse first</span>
+              <h3>站在巨人的肩膀上</h3>
+              <p>AI 写代码越快，造轮子也越容易。一个需求交给 Agent，它很容易从头搭一套东西，把简单功能写成一部史诗。最后留下的是一大堆要维护的代码，而很多需求其实早已有成熟方案：现有项目、内部平台、标准库、操作系统能力，或者 GitHub 上已经被反复维护的开源项目。</p>
+              <p><a href="https://github.com/DietrichGebert/ponytail" target="_blank" rel="noopener noreferrer">Ponytail</a> 的思路很值得复用：写代码前先问，需求真的存在吗？项目里是否已有实现？标准库、平台原生能力或已有依赖能不能解决？这些路都走不通，再写最小实现。</p>
+            </div>
+          </article>
+
+          <article class="principle-panel">
+            <figure class="principle-media">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/10-iterate-ahead.png" alt="持续学习、验证和迭代，让自己的下一版领先于复制者" loading="lazy" decoding="async" fetchpriority="low">
+            </figure>
+            <div class="principle-copy">
+              <span class="principle-number">03 / Keep moving</span>
               <h3>真正的竞争力是自我修正速度</h3>
-              <p>功能、代码和观点都会被复制，成功经验也会过期。真正难以复制的，是持续获得反馈、验证判断、替换失效方法的速度。让别人复制到的永远只是你的上一版。</p>
+              <p>功能、代码和观点都会被复制。真正难以复制的，是持续获得反馈、验证判断、推翻旧结论并进入下一轮的速度。让别人复制到的永远只是你的上一版。</p>
             </div>
           </article>
         </div>
@@ -1601,21 +1743,14 @@
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/02-ai-log-window.png" alt="让 AI 通过日志参与验证" loading="lazy" decoding="async" fetchpriority="low">
             <button class="accordion-button" type="button" aria-expanded="false">
               <strong>让 AI 看得见结果</strong>
-              <span>日志、测试和运行记录是 AI 可以直接读取的验证窗口。</span>
+              <span>把日志、API 调用记录、测试结果和运行环境留给 AI 直接读取，让它不只生成代码，也能参与定位、核实和验证。</span>
             </button>
           </li>
           <li class="accordion-item">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/03-usable-demo-first.png" alt="先做可用 Demo" loading="lazy" decoding="async" fetchpriority="low">
             <button class="accordion-button" type="button" aria-expanded="false">
               <strong>先验证，再建设</strong>
-              <span>AI 降低了开发成本，却没有降低维护成本。先做可用 Demo，再决定投入。</span>
-            </button>
-          </li>
-          <li class="accordion-item">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/09-build-on-mature-infrastructure.png" alt="站在成熟基础设施上" loading="lazy" decoding="async" fetchpriority="low">
-            <button class="accordion-button" type="button" aria-expanded="false">
-              <strong>复用成熟能力</strong>
-              <span>先找现有项目、标准库和平台能力，只补真正缺少的最后一块。</span>
+              <span>AI 降低了开发成本，却没有降低维护成本。先用可用 Demo 回答“问题是否真实、有没有人用”，再决定是否继续投入。</span>
             </button>
           </li>
           <li class="accordion-item">
@@ -1625,13 +1760,25 @@
               <span>先驱者继续解释判断和停止条件，成熟开发者补稳定性与维护能力；团队接的不只是代码，还有方法。</span>
             </button>
           </li>
+          <li class="accordion-item accordion-item--long">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/05-expiring-successful-experience.png" alt="成功经验过期后也要主动淘汰和重新测试" loading="lazy" decoding="async" fetchpriority="low">
+            <button class="accordion-button" type="button" aria-expanded="false">
+              <strong>成功经验也有保质期</strong>
+              <span>
+                <span class="accordion-paragraph">我们做得不好的地方之一，是没有及时发现一些成功经验已经过期。</span>
+                <span class="accordion-paragraph">AI 技术更新太快。半年前有效的方法，在新模型、新工具和新理论出现后可能已经没有必要；但一旦贴上“成功落地”的标签，就容易被当成长久正确的做法继续维护。</span>
+                <span class="accordion-paragraph">管理者不能只推广成功经验，还要盯着它何时失效：条件变了就重做验证，该替换就替换，该停就停。组织既要积累经验，也要会删除经验，否则知识库最终会变成没人敢动的历史包袱。</span>
+              </span>
+            </button>
+          </li>
         </ul>
       </div>
     </section>
 
     <footer class="section finale" id="finale">
       <div class="section-inner">
-        <p class="finale-quote">模型是公共能力。Harness 才是可以长期积累的个人与团队资产。</p>
+        <p class="finale-quote">模型是公共能力，Harness 是可以积累的资产。</p>
+        <p class="finale-subline">真正拉开差距的，是让这套资产不断接受反馈、更新和淘汰的速度。</p>
         <div class="finale-grid">
           <nav class="source-links" aria-label="相关文章">
             <a href="https://sumsec.me/2026/tv-remote-vibe-coding.html" target="_blank" rel="noopener noreferrer">遥控器与语音输入</a>
