@@ -80,6 +80,14 @@
       max-width: 100%;
     }
 
+    img[data-progressive-src] {
+      background: #e4ebe8;
+    }
+
+    img[data-progressive-src]:not(.progressive-image--original) {
+      filter: blur(14px);
+    }
+
     :focus-visible {
       outline: 3px solid var(--orange);
       outline-offset: 4px;
@@ -1356,7 +1364,7 @@
   <main id="mainContent">
     <header class="hero" id="top">
       <div class="hero-media" aria-hidden="true">
-        <img src="../assets/ai-agent-engineering-evolution-illustrations/01-cover-agent-engineering.png" alt="">
+        <img src="../assets/ai-agent-engineering-evolution-illustrations/01-cover-agent-engineering.png" alt="" loading="eager" decoding="async" fetchpriority="high">
       </div>
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-inner">
@@ -1391,7 +1399,7 @@
           </div>
         </div>
         <figure class="figure reveal-image">
-          <img src="./pic/vibe-coding-remote/sumsec-observer-remote-coding.png" alt="SumSec Observer 使用遥控器进行语音输入">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="./pic/vibe-coding-remote/sumsec-observer-remote-coding.png" alt="SumSec Observer 使用遥控器进行语音输入" loading="lazy" decoding="async" fetchpriority="low">
         </figure>
       </div>
     </section>
@@ -1462,7 +1470,7 @@
           </div>
 
           <figure class="figure harness-figure reveal-image">
-            <img src="../assets/ai-agent-engineering-evolution-illustrations/04-harness-alignment.png" alt="Harness 让 Agent 保持在正确路径上">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-engineering-evolution-illustrations/04-harness-alignment.png" alt="Harness 让 Agent 保持在正确路径上" loading="lazy" decoding="async" fetchpriority="low">
           </figure>
         </div>
       </div>
@@ -1499,7 +1507,7 @@
 
         <div class="semantic-visual">
           <figure class="figure reveal-image">
-            <img src="../assets/ai-agent-harness-sharing-illustrations/01-keywords-behavior-boundary.png" alt="SumSec Observer 校准漏洞与风险两个不同宽度的语义边界">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-illustrations/01-keywords-behavior-boundary.png" alt="SumSec Observer 校准漏洞与风险两个不同宽度的语义边界" loading="lazy" decoding="async" fetchpriority="low">
           </figure>
           <p class="semantic-note">实验中，Skill 的结构、约束和示例完全相同，只把“漏洞”机械替换为“风险”，准确率就从 89.3% 降到 62.1%。这不是普通的措辞润色，而是行为边界发生了变化。</p>
         </div>
@@ -1538,10 +1546,10 @@
 
         <div class="evolution-evidence">
           <figure class="figure reveal-image">
-            <img src="./pic/skill-evolution-results-trace/02-results-and-trace.png" alt="评测结果与执行轨迹缺一不可">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="./pic/skill-evolution-results-trace/02-results-and-trace.png" alt="评测结果与执行轨迹缺一不可" loading="lazy" decoding="async" fetchpriority="low">
           </figure>
           <figure class="figure reveal-image">
-            <img src="./pic/skill-evolution-results-trace/15-final-evolution-loop.png" alt="Skill 最终进化循环">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="./pic/skill-evolution-results-trace/15-final-evolution-loop.png" alt="Skill 最终进化循环" loading="lazy" decoding="async" fetchpriority="low">
           </figure>
         </div>
       </div>
@@ -1560,7 +1568,7 @@
         <div class="competitive-principles">
           <article class="principle-panel">
             <figure class="principle-media">
-              <img src="../assets/ai-era-personal-team-competitiveness-illustrations/01-old-logic-new-conditions.png" alt="面对新条件，先改变旧的做事逻辑">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/01-old-logic-new-conditions.png" alt="面对新条件，先改变旧的做事逻辑" loading="lazy" decoding="async" fetchpriority="low">
             </figure>
             <div class="principle-copy">
               <span class="principle-number">01 / Change the logic</span>
@@ -1571,7 +1579,7 @@
 
           <article class="principle-panel">
             <figure class="principle-media">
-              <img src="../assets/ai-era-personal-team-competitiveness-illustrations/05-expiring-successful-experience.png" alt="持续验证经验，让复制者只能追上过去的版本">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/05-expiring-successful-experience.png" alt="持续验证经验，让复制者只能追上过去的版本" loading="lazy" decoding="async" fetchpriority="low">
             </figure>
             <div class="principle-copy">
               <span class="principle-number">02 / Keep moving</span>
@@ -1583,35 +1591,35 @@
 
         <ul class="accordion">
           <li class="accordion-item is-open">
-            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/08-ai-infrastructure-not-lamp.png" alt="AI 不只是电灯，而是基础设施">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/08-ai-infrastructure-not-lamp.png" alt="AI 不只是电灯，而是基础设施" loading="lazy" decoding="async" fetchpriority="low">
             <button class="accordion-button" type="button" aria-expanded="true">
               <strong>别只把 AI 当成电灯</strong>
               <span>不是在旧流程旁边挂一个 AI 助手，而是重新设计上下文、执行和验证入口。</span>
             </button>
           </li>
           <li class="accordion-item">
-            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/02-ai-log-window.png" alt="让 AI 通过日志参与验证">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/02-ai-log-window.png" alt="让 AI 通过日志参与验证" loading="lazy" decoding="async" fetchpriority="low">
             <button class="accordion-button" type="button" aria-expanded="false">
               <strong>让 AI 看得见结果</strong>
               <span>日志、测试和运行记录是 AI 可以直接读取的验证窗口。</span>
             </button>
           </li>
           <li class="accordion-item">
-            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/03-usable-demo-first.png" alt="先做可用 Demo">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/03-usable-demo-first.png" alt="先做可用 Demo" loading="lazy" decoding="async" fetchpriority="low">
             <button class="accordion-button" type="button" aria-expanded="false">
               <strong>先验证，再建设</strong>
               <span>AI 降低了开发成本，却没有降低维护成本。先做可用 Demo，再决定投入。</span>
             </button>
           </li>
           <li class="accordion-item">
-            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/09-build-on-mature-infrastructure.png" alt="站在成熟基础设施上">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/09-build-on-mature-infrastructure.png" alt="站在成熟基础设施上" loading="lazy" decoding="async" fetchpriority="low">
             <button class="accordion-button" type="button" aria-expanded="false">
               <strong>复用成熟能力</strong>
               <span>先找现有项目、标准库和平台能力，只补真正缺少的最后一块。</span>
             </button>
           </li>
           <li class="accordion-item">
-            <img src="../assets/ai-era-personal-team-competitiveness-illustrations/04-exploration-engineering-collaboration.png" alt="探索者与成熟开发者持续协作">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-era-personal-team-competitiveness-illustrations/04-exploration-engineering-collaboration.png" alt="探索者与成熟开发者持续协作" loading="lazy" decoding="async" fetchpriority="low">
             <button class="accordion-button" type="button" aria-expanded="false">
               <strong>探索与工程化不能断开</strong>
               <span>先驱者继续解释判断和停止条件，成熟开发者补稳定性与维护能力；团队接的不只是代码，还有方法。</span>
@@ -1649,6 +1657,61 @@
     const nextPage = document.getElementById('nextPage');
     const pages = [document.getElementById('top'), ...sections, document.getElementById('finale')];
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const progressiveImages = [...document.querySelectorAll('img[data-progressive-src]')];
+    const imageQueue = [];
+    let activeImage = null;
+
+    const loadNextImage = () => {
+      if (activeImage || imageQueue.length === 0) return;
+      const img = imageQueue.shift();
+      const source = img.getAttribute('data-progressive-src');
+      if (!source) {
+        loadNextImage();
+        return;
+      }
+
+      activeImage = img;
+      img.setAttribute('data-progressive-state', 'original-loading');
+      const probe = new Image();
+      probe.decoding = 'async';
+      probe.fetchPriority = 'low';
+
+      const finish = (loaded) => {
+        if (loaded) {
+          img.src = source;
+          img.classList.add('progressive-image--original');
+          img.setAttribute('data-progressive-state', 'original');
+        } else {
+          img.setAttribute('data-progressive-state', 'original-error');
+        }
+        activeImage = null;
+        loadNextImage();
+      };
+
+      probe.addEventListener('load', () => finish(true), { once: true });
+      probe.addEventListener('error', () => finish(false), { once: true });
+      probe.src = source;
+    };
+
+    const enqueueImage = (img) => {
+      if (img.getAttribute('data-progressive-state')) return;
+      img.setAttribute('data-progressive-state', 'queued');
+      imageQueue.push(img);
+      loadNextImage();
+    };
+
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          imageObserver.unobserve(entry.target);
+          enqueueImage(entry.target);
+        });
+      }, { rootMargin: '900px 0px', threshold: 0.01 });
+      progressiveImages.forEach((img) => imageObserver.observe(img));
+    } else {
+      progressiveImages.forEach(enqueueImage);
+    }
 
     const getCurrentPageIndex = () => {
       const marker = window.scrollY + window.innerHeight * 0.42;
