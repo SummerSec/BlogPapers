@@ -18,7 +18,12 @@ comments: false
       <li>
         <a class="category-article__title" href="../2026/ai-era-personal-team-competitiveness.html">AI 时代，如何保持个人与团队的顶尖竞争力</a>
         <div class="category-article__meta">
-          <time datetime="2026">2026</time>
+          <time datetime="2026-07-21">2026 · 07/21</time>
+          <span class="category-article__tags" aria-label="文章标签">
+            <span>AI</span>
+            <span>团队协作</span>
+            <span>竞争力</span>
+          </span>
         </div>
       </li>
       <li>

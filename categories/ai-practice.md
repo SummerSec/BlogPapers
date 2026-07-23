@@ -18,7 +18,12 @@ comments: false
       <li>
         <a class="category-article__title" href="../2026/ai-agent-harness-sharing.html">AI 时代的真正竞争力：一个语音按钮与一套可进化的 Harness</a>
         <div class="category-article__meta">
-          <time datetime="2026">2026</time>
+          <time datetime="2026-07-22">2026 · 07/22</time>
+          <span class="category-article__tags" aria-label="文章标签">
+            <span>AI</span>
+            <span>Agent</span>
+            <span>Harness</span>
+          </span>
         </div>
       </li>
       <li>
