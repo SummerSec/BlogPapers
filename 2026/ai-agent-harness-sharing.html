@@ -42,7 +42,7 @@
     body {
       margin: 0;
       min-width: 320px;
-      overflow-x: hidden;
+      overflow-x: clip;
       color: var(--ink);
       background: var(--paper);
       font-family: "Satoshi", "Noto Sans SC", "Segoe UI", sans-serif;
@@ -210,7 +210,7 @@
     main {
       width: 100%;
       max-width: 100%;
-      overflow-x: hidden;
+      overflow-x: clip;
     }
 
     .hero {
@@ -483,12 +483,22 @@
 
     .harness-stage {
       display: grid;
-      grid-template-columns: minmax(320px, 0.72fr) minmax(0, 2.28fr);
-      gap: 4vw;
-      align-items: start;
+      gap: 72px;
+    }
+
+    .harness-overview {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+      gap: clamp(48px, 7vw, 112px);
+      align-items: end;
+    }
+
+    .harness-overview > * {
+      min-width: 0;
     }
 
     .harness-intro {
+      max-width: 680px;
       padding-top: 8px;
     }
 
@@ -501,50 +511,76 @@
     }
 
     .harness-definition {
-      margin-top: 42px;
-      padding-top: 22px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      max-width: 35ch;
+      margin-top: 34px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.26);
       color: var(--mint);
       font-size: 1.12rem;
       font-weight: 700;
       line-height: 1.65;
     }
 
+    .harness-principle-panel {
+      padding: 34px 0 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.26);
+    }
+
+    .harness-principle-label {
+      display: block;
+      margin-bottom: 24px;
+      color: var(--orange);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
     .harness-principles {
       display: grid;
-      gap: 14px;
-      margin: 30px 0 0;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      margin: 0;
       padding: 0;
       list-style: none;
     }
 
     .harness-principles li {
-      padding-left: 18px;
+      min-width: 0;
+      padding-top: 16px;
       color: rgba(247, 249, 248, 0.72);
-      border-left: 2px solid var(--mint);
+      border-top: 2px solid var(--mint);
       line-height: 1.6;
     }
 
     .harness-thesis {
       margin: 30px 0 0;
-      padding: 20px 22px;
+      padding: 20px 0 0;
       color: #ffffff;
-      background: rgba(255, 255, 255, 0.06);
-      border-left: 4px solid var(--orange);
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
       font-size: 1.02rem;
       font-weight: 800;
       line-height: 1.65;
     }
 
     .capability-grid {
+      position: relative;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      grid-template-rows: repeat(2, minmax(300px, auto));
-      grid-auto-flow: dense;
-      gap: 1px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.2);
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.24);
+    }
+
+    .capability-grid::before {
+      content: "HARNESS LIFECYCLE";
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--orange);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
     }
 
     .capability {
@@ -553,64 +589,281 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 28px;
+      min-height: 250px;
+      padding: 30px 26px 28px;
       color: #ffffff;
-      background: var(--ink-soft);
+      border-top: 3px solid rgba(255, 255, 255, 0.18);
+      border-left: 1px solid rgba(255, 255, 255, 0.16);
+      background: transparent;
       overflow: hidden;
-      transition: background 240ms ease, color 240ms ease;
+      transition: background 240ms ease, border-color 240ms ease;
     }
 
     .capability:hover {
-      color: var(--ink);
-      background: var(--mint);
+      border-top-color: var(--mint);
+      background: rgba(255, 255, 255, 0.06);
     }
 
-    .capability-wide {
-      grid-column: span 2;
+    .capability:last-child {
+      border-right: 1px solid rgba(255, 255, 255, 0.16);
     }
 
     .capability h3 {
-      margin-bottom: 22px;
-      font-size: 1.6rem;
+      margin-bottom: 16px;
+      font-size: 1.4rem;
       line-height: 1.15;
+      overflow-wrap: anywhere;
     }
 
     .capability p {
       margin-bottom: 0;
       color: rgba(255, 255, 255, 0.62);
-      line-height: 1.65;
+      font-size: 0.94rem;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
     }
 
     .capability p + p {
       margin-top: 12px;
     }
 
-    .capability:hover p {
-      color: rgba(16, 19, 20, 0.72);
+    .capability code {
+      color: inherit;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.86em;
     }
 
     .capability-code {
       display: inline-block;
-      margin-bottom: 34px;
+      margin-bottom: 48px;
       color: var(--orange);
       font-family: "JetBrains Mono", monospace;
       font-size: 0.8rem;
       font-weight: 600;
     }
 
-    .capability:hover .capability-code {
-      color: var(--mint-deep);
+    .harness-library {
+      padding-top: 38px;
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .harness-library-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 28px;
+    }
+
+    .harness-library h3 {
+      max-width: 16ch;
+      margin: 0;
+      font-size: 2.8rem;
+      line-height: 1.08;
+      overflow-wrap: anywhere;
+    }
+
+    .harness-library-copy {
+      max-width: 68ch;
+      margin: 22px 0 0;
+      color: rgba(247, 249, 248, 0.64);
+      line-height: 1.75;
+    }
+
+    .harness-repo-link {
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0 8px;
+      color: var(--mint);
+      border-bottom: 1px solid rgba(94, 209, 189, 0.5);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .harness-repo-link:hover {
+      color: #ffffff;
+      border-color: #ffffff;
+    }
+
+    .harness-skill-editorial {
+      display: grid;
+      grid-template-columns: minmax(380px, 0.92fr) minmax(0, 1.08fr);
+      gap: clamp(44px, 6vw, 92px);
+      align-items: start;
+      margin-top: 52px;
+    }
+
+    .harness-skill-stage {
+      position: sticky;
+      top: 112px;
+      min-width: 0;
+    }
+
+    .harness-skill-visuals {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: #dfe6e3;
+    }
+
+    .harness-skill-visual {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.9);
+      pointer-events: none;
+    }
+
+    .harness-skill-visual.is-active {
+      z-index: 1;
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+    .harness-skill-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.84) contrast(1.04);
+    }
+
+    .harness-skill-index {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .harness-skill-entry {
+      position: relative;
+      min-width: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      transition: background 220ms ease;
+    }
+
+    .harness-skill-entry::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      bottom: -1px;
+      left: 0;
+      width: 3px;
+      background: var(--mint);
+      transform: scaleY(0);
+      transform-origin: center;
+      transition: transform 220ms ease;
+    }
+
+    .harness-skill-entry.is-active {
+      background: rgba(94, 209, 189, 0.07);
+    }
+
+    .harness-skill-entry.is-active::before {
+      transform: scaleY(1);
+    }
+
+    .harness-skill-button {
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(190px, 0.8fr) minmax(0, 1.2fr);
+      gap: 28px;
+      align-items: center;
+      padding: 25px 66px 25px 24px;
+      color: inherit;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .harness-skill-button strong {
+      min-width: 0;
+      font-size: clamp(1.08rem, 1.35vw, 1.34rem);
+      line-height: 1.18;
+      overflow-wrap: anywhere;
+      transition: color 180ms ease, transform 220ms ease;
+    }
+
+    .harness-skill-button span {
+      color: rgba(247, 249, 248, 0.6);
+      font-size: 0.91rem;
+      line-height: 1.58;
+      transition: color 180ms ease;
+    }
+
+    .harness-skill-entry:hover .harness-skill-button strong,
+    .harness-skill-entry:focus-within .harness-skill-button strong,
+    .harness-skill-entry.is-active .harness-skill-button strong {
+      color: var(--mint);
+      transform: translateX(4px);
+    }
+
+    .harness-skill-entry.is-active .harness-skill-button span {
+      color: rgba(247, 249, 248, 0.86);
+    }
+
+    .harness-skill-link {
+      position: absolute;
+      top: 50%;
+      right: 18px;
+      z-index: 2;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--mint);
+      border: 1px solid rgba(94, 209, 189, 0.42);
+      border-radius: 4px;
+      background: transparent;
+      font-size: 1rem;
+      transform: translateY(-50%);
+      transition: color 180ms ease, background 180ms ease, transform 180ms ease;
+    }
+
+    .harness-skill-link:hover,
+    .harness-skill-link:focus-visible {
+      color: var(--ink);
+      background: var(--mint);
+      transform: translateY(calc(-50% - 2px));
+    }
+
+    .harness-closing {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+      gap: clamp(40px, 6vw, 92px);
+      align-items: center;
+      padding-top: 56px;
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .harness-closing-copy h3 {
+      max-width: 12ch;
+      margin: 12px 0 20px;
+      font-size: clamp(2rem, 3.5vw, 3.7rem);
+      line-height: 1.06;
+    }
+
+    .harness-closing-copy p {
+      max-width: 46ch;
+      margin: 0;
+      color: rgba(247, 249, 248, 0.66);
+      line-height: 1.7;
     }
 
     .harness-figure {
-      margin-top: 64px;
-      width: 68%;
+      width: 100%;
       max-width: none;
-      margin-left: auto;
+      margin: 0;
     }
 
     .harness-figure img {
-      max-height: 52svh;
+      max-height: 58svh;
     }
 
     .skill-quality {
@@ -1208,14 +1461,18 @@
         gap: 42px;
       }
 
-      .harness-stage {
-        grid-template-columns: 0.7fr 1.3fr;
-        gap: 42px;
+      .harness-overview {
+        grid-template-columns: 1fr;
+        gap: 46px;
+        align-items: start;
       }
 
       .capability-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-template-rows: auto;
+      }
+
+      .capability:last-child {
+        grid-column: span 2;
       }
 
       .quality-pillars,
@@ -1229,6 +1486,39 @@
 
       .finale-quote {
         font-size: 4.2rem;
+      }
+
+      .harness-library-head {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .harness-repo-link {
+        justify-self: start;
+      }
+
+      .harness-skill-editorial {
+        grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.18fr);
+        gap: 34px;
+      }
+
+      .harness-skill-button {
+        grid-template-columns: 1fr;
+        gap: 9px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .harness-intro {
+        max-width: 720px;
+      }
+
+      .harness-principles {
+        grid-template-columns: 1fr;
+      }
+
+      .harness-principles li {
+        padding-top: 14px;
       }
     }
 
@@ -1291,7 +1581,6 @@
 
       .remote-layout,
       .skill-quality-layout,
-      .harness-stage,
       .evolution-head,
       .evolution-evidence,
       .finale-grid,
@@ -1323,8 +1612,7 @@
       }
 
       .remote-layout,
-      .skill-quality-layout,
-      .harness-stage {
+      .skill-quality-layout {
         gap: 48px;
       }
 
@@ -1341,14 +1629,14 @@
         grid-template-columns: 1fr;
       }
 
-      .capability,
-      .capability-wide {
-        min-height: 250px;
+      .capability {
+        min-height: 220px;
         grid-column: auto;
+        border-right: 1px solid rgba(255, 255, 255, 0.16);
       }
 
-      .harness-figure {
-        width: 100%;
+      .capability:last-child {
+        grid-column: auto;
       }
 
       .quality-pillars,
@@ -1423,6 +1711,43 @@
 
       .accordion-item.accordion-item--long {
         min-height: 620px;
+      }
+
+      .harness-library h3 {
+        font-size: 2.35rem;
+      }
+
+      .harness-stage {
+        gap: 56px;
+      }
+
+      .harness-skill-editorial {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .harness-skill-stage {
+        top: 82px;
+        z-index: 4;
+        padding-bottom: 1px;
+        background: var(--ink);
+      }
+
+      .harness-skill-visuals {
+        aspect-ratio: 16 / 9;
+      }
+
+      .harness-skill-button {
+        padding: 22px 56px 22px 18px;
+      }
+
+      .harness-skill-link {
+        right: 12px;
+      }
+
+      .harness-closing {
+        grid-template-columns: 1fr;
+        padding-top: 44px;
       }
 
       .finale {
@@ -1532,62 +1857,153 @@
 
     <section class="section harness" id="harness" data-nav="Harness">
       <div class="section-inner harness-stage">
-        <div class="harness-intro">
-          <p class="section-kicker">从零散经验到能力系统</p>
-          <h2 class="section-title">Skill 写出来，只是开始</h2>
-          <p class="section-copy">真正困难的是：多个平台怎么使用，数量多了怎么组织，修改如何同步与版本管理，效果变差怎么回滚，以及怎样根据真实结果继续改进。</p>
-          <p class="harness-definition">Harness 管理 Skills 的完整生命周期：组织、分发、运行、验证和进化。</p>
-          <ul class="harness-principles">
-            <li>Skill 不是保存起来的 Prompt，而是结构化行为规范、参考资料和辅助脚本组成的能力包。</li>
-            <li>从 Marketplace 到 Plugin、Skill、References，每一层都按需加载，避免把无关能力塞进上下文。</li>
-            <li>技能资产属于个人和团队，不属于 Claude、Codex、Cursor 中的任何单一平台。</li>
-          </ul>
-          <p class="harness-thesis">模型人人都能用，真正能带走的是经过验证、可以跨平台复用的方法。没有版本记录的 Skill，只是一份会不断变形的提示词。</p>
+        <div class="harness-overview">
+          <div class="harness-intro">
+            <p class="section-kicker">从零散经验到能力系统</p>
+            <h2 class="section-title">Skill 写出来，<br>只是开始</h2>
+            <p class="section-copy">真正困难的是：多个平台怎么使用，数量多了怎么组织，修改如何同步与版本管理，效果变差怎么回滚，以及怎样根据真实结果继续改进。</p>
+            <p class="harness-definition">Harness 管理 Skills 的完整生命周期：组织、分发、运行、验证和进化。</p>
+          </div>
+          <div class="harness-principle-panel">
+            <span class="harness-principle-label">Three operating principles</span>
+            <ul class="harness-principles">
+              <li>Skill 不是保存起来的 Prompt，而是结构化行为规范、参考资料和辅助脚本组成的能力包。</li>
+              <li>Marketplace、Plugin、Skill、References 分层按需加载，不把无关能力塞进上下文。</li>
+              <li>技能资产属于个人和团队，不属于 Claude、Codex、Cursor 中的任何单一平台。</li>
+            </ul>
+            <p class="harness-thesis">模型人人都能用，真正能带走的是经过验证、可以跨平台复用的方法。</p>
+          </div>
         </div>
 
-        <div>
-          <div class="capability-grid">
-            <article class="capability capability-wide">
-              <span class="capability-code">CORE / SKILL.md</span>
-              <div>
-                <h3>一份核心能力，多个稳定入口</h3>
-                <p>核心 `SKILL.md` 只维护一份，平台差异交给 Plugin、Manifest 与 Adapter。</p>
-                <p>换 Agent、换设备、换项目后，已经验证过的方法不再归零。</p>
-              </div>
-            </article>
-            <article class="capability">
-              <span class="capability-code">DISTRIBUTE</span>
-              <div>
-                <h3>可分发</h3>
-                <p>Claude、Codex、Cursor 共享同一套方法，版本号统一管理，一次更新同步多个入口。</p>
-              </div>
-            </article>
-            <article class="capability">
-              <span class="capability-code">MANAGE</span>
-              <div>
-                <h3>可管理</h3>
-                <p>按写作、开发、安全、媒体等领域组织 Plugin，按需安装、启用和更新。</p>
-                <p>不同领域独立发布，也减少误触发和注意力浪费。</p>
-              </div>
-            </article>
-            <article class="capability capability-wide">
-              <span class="capability-code">VERSION</span>
-              <div>
-                <h3>可版本化</h3>
-                <p>Git 保存每次修改的原因和结果，Release 管发布，Diff 管审查，旧版本提供明确回滚点。</p>
-                <p>官方规范作为基座同步，个人定制留在独立层。</p>
-              </div>
-            </article>
-            <article class="capability capability-wide">
-              <span class="capability-code">EVOLVE</span>
-              <div>
-                <h3>可进化，但不能自由漂移</h3>
-                <p>真实任务产生结果和执行轨迹；重复失败收敛成根因，才允许生成一个小范围候选 Diff。</p>
-                <p>门禁决定接受、拒绝或回滚，黑名单记住已经失败的修改方向。</p>
-              </div>
-            </article>
-          </div>
+        <div class="capability-grid" aria-label="Harness 生命周期">
+          <article class="capability">
+            <span class="capability-code">01 / CORE</span>
+            <div>
+              <h3>一份核心能力</h3>
+              <p>核心 <code>SKILL.md</code> 只维护一份，平台差异交给 Plugin、Manifest 与 Adapter。</p>
+            </div>
+          </article>
+          <article class="capability">
+            <span class="capability-code">02 / DISTRIBUTE</span>
+            <div>
+              <h3>跨平台分发</h3>
+              <p>Claude、Codex、Cursor 共享同一套方法，一次更新同步多个入口。</p>
+            </div>
+          </article>
+          <article class="capability">
+            <span class="capability-code">03 / MANAGE</span>
+            <div>
+              <h3>按领域管理</h3>
+              <p>按写作、开发、安全、媒体组织 Plugin，按需安装、启用和更新。</p>
+            </div>
+          </article>
+          <article class="capability">
+            <span class="capability-code">04 / VERSION</span>
+            <div>
+              <h3>记录与回滚</h3>
+              <p>Git 保存修改原因和结果，Release 管发布，Diff 管审查，旧版本提供回滚点。</p>
+            </div>
+          </article>
+          <article class="capability">
+            <span class="capability-code">05 / EVOLVE</span>
+            <div>
+              <h3>基于证据进化</h3>
+              <p>真实结果触发小范围候选 Diff，门禁决定接受、拒绝或回滚，避免自由漂移。</p>
+            </div>
+          </article>
+        </div>
 
+        <div class="harness-library" id="harness-skills">
+          <div class="harness-library-head">
+            <div>
+              <h3>我反复调用的 Skills</h3>
+            </div>
+            <a class="harness-repo-link" href="https://github.com/SummerSec/SumSec-Skills" target="_blank" rel="noopener noreferrer">
+              SummerSec / SumSec-Skills <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <p class="harness-library-copy">我经常使用的不是一个万能 Skill，而是一组按场景分工的能力入口。每一个只解决一类问题，组合起来才是稳定的工作系统。</p>
+
+          <div class="harness-skill-editorial">
+            <div class="harness-skill-stage" aria-live="polite">
+              <div class="harness-skill-visuals">
+                <figure class="harness-skill-visual is-active" data-skill-visual="0">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-skills/01-writing-zh.png" alt="SumSec Observer 在校稿台整理中文技术文章与配图" loading="lazy" decoding="async" fetchpriority="low">
+                </figure>
+                <figure class="harness-skill-visual" data-skill-visual="1" aria-hidden="true">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-skills/02-agents-dev.png" alt="SumSec Observer 在 Agent 能力装配工位创建和验证 Skill" loading="lazy" decoding="async" fetchpriority="low">
+                </figure>
+                <figure class="harness-skill-visual" data-skill-visual="2" aria-hidden="true">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-skills/03-claude-md-management.png" alt="SumSec Observer 审计 CLAUDE.md 并沉淀会话经验" loading="lazy" decoding="async" fetchpriority="low">
+                </figure>
+                <figure class="harness-skill-visual" data-skill-visual="3" aria-hidden="true">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-skills/04-skill-optimizer.png" alt="SumSec Observer 在精密诊断台检查 Skill 的触发、结构和证据" loading="lazy" decoding="async" fetchpriority="low">
+                </figure>
+                <figure class="harness-skill-visual" data-skill-visual="4" aria-hidden="true">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-skills/05-claude-agents-symlink.png" alt="SumSec Observer 用相对链接让 CLAUDE.md 与 AGENTS.md 读取同一份内容" loading="lazy" decoding="async" fetchpriority="low">
+                </figure>
+                <figure class="harness-skill-visual" data-skill-visual="5" aria-hidden="true">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-skills/06-taste-skill.png" alt="SumSec Observer 在排版工作台设计 HTML 页面布局、层级和节奏" loading="lazy" decoding="async" fetchpriority="low">
+                </figure>
+                <figure class="harness-skill-visual" data-skill-visual="6" aria-hidden="true">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-skills/07-semantic-linter.png" alt="SumSec Observer 校准指令词汇的语义边界并标出范围溢出" loading="lazy" decoding="async" fetchpriority="low">
+                </figure>
+                <figure class="harness-skill-visual" data-skill-visual="7" aria-hidden="true">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-skills/08-workflow-skill-creator.png" alt="SumSec Observer 用步骤卡、依赖和进度文件组织可恢复的复杂工作流" loading="lazy" decoding="async" fetchpriority="low">
+                </figure>
+                <figure class="harness-skill-visual" data-skill-visual="8" aria-hidden="true">
+                  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-harness-sharing-skills/09-multi-platform-plugin-guide.png" alt="SumSec Observer 对齐 Claude、Codex 和 Cursor 插件包的版本、Manifest 与文档" loading="lazy" decoding="async" fetchpriority="low">
+                </figure>
+              </div>
+            </div>
+
+            <ol class="harness-skill-index">
+              <li class="harness-skill-entry is-active" data-skill-index="0">
+                <button class="harness-skill-button" type="button" aria-pressed="true"><strong>writing-zh@sumsec-skills</strong><span>写中文技术文章时调用：去 AI 味、统一语气，并为 SumSec 正文设计配图。</span></button>
+                <a class="harness-skill-link" href="https://github.com/SummerSec/SumSec-Skills/tree/master/writing-zh" target="_blank" rel="noopener noreferrer" aria-label="打开 writing-zh" title="打开 writing-zh">↗</a>
+              </li>
+              <li class="harness-skill-entry" data-skill-index="1">
+                <button class="harness-skill-button" type="button" aria-pressed="false"><strong>agents-dev@sumsec-skills</strong><span>创建或维护 Agent 能力时调用：做 Skill、Hook、流程编排和多平台插件对齐。</span></button>
+                <a class="harness-skill-link" href="https://github.com/SummerSec/SumSec-Skills/tree/master/agents-dev" target="_blank" rel="noopener noreferrer" aria-label="打开 agents-dev" title="打开 agents-dev">↗</a>
+              </li>
+              <li class="harness-skill-entry" data-skill-index="2">
+                <button class="harness-skill-button" type="button" aria-pressed="false"><strong>claude-md-management@sumsec-skills</strong><span>项目规则变旧或会话产生新经验时调用：审计 CLAUDE.md，把可复用经验沉淀进项目记忆。</span></button>
+                <a class="harness-skill-link" href="https://github.com/SummerSec/SumSec-Skills/tree/master/claude-md-management" target="_blank" rel="noopener noreferrer" aria-label="打开 claude-md-management" title="打开 claude-md-management">↗</a>
+              </li>
+              <li class="harness-skill-entry" data-skill-index="3">
+                <button class="harness-skill-button" type="button" aria-pressed="false"><strong>skill-optimizer</strong><span>Skill 不触发、结构臃肿或效果下降时调用：先基于规范与会话证据诊断，再给出小范围优化方案。</span></button>
+                <a class="harness-skill-link" href="https://github.com/SummerSec/SumSec-Skills/tree/master/agents-dev/skills/skill-optimizer" target="_blank" rel="noopener noreferrer" aria-label="打开 skill-optimizer" title="打开 skill-optimizer">↗</a>
+              </li>
+              <li class="harness-skill-entry" data-skill-index="4">
+                <button class="harness-skill-button" type="button" aria-pressed="false"><strong>claude-agents-symlink</strong><span>仓库同时服务 Claude 与 Codex 时调用：让 CLAUDE.md 安全指向 AGENTS.md，保留单一规则源。</span></button>
+                <a class="harness-skill-link" href="https://github.com/SummerSec/SumSec-Skills/tree/master/agents-dev/skills/claude-agents-symlink" target="_blank" rel="noopener noreferrer" aria-label="打开 claude-agents-symlink" title="打开 claude-agents-symlink">↗</a>
+              </li>
+              <li class="harness-skill-entry" data-skill-index="5">
+                <button class="harness-skill-button" type="button" aria-pressed="false"><strong>taste-skill@sumsec-skills</strong><span>制作页面或重做前端视觉时调用：确定布局、层级与节奏；这份分享 HTML 就由它辅助完成。</span></button>
+                <a class="harness-skill-link" href="https://github.com/SummerSec/SumSec-Skills/tree/master/taste-skill" target="_blank" rel="noopener noreferrer" aria-label="打开 taste-skill" title="打开 taste-skill">↗</a>
+              </li>
+              <li class="harness-skill-entry" data-skill-index="6">
+                <button class="harness-skill-button" type="button" aria-pressed="false"><strong>semantic-linter</strong><span>编写或修改 SKILL.md、AGENTS.md、CLAUDE.md 等指令文件时调用：发现宽边界措辞，减少幻觉和范围漂移。</span></button>
+                <a class="harness-skill-link" href="https://github.com/SummerSec/semantic-linter" target="_blank" rel="noopener noreferrer" aria-label="打开 semantic-linter" title="打开 semantic-linter">↗</a>
+              </li>
+              <li class="harness-skill-entry" data-skill-index="7">
+                <button class="harness-skill-button" type="button" aria-pressed="false"><strong>workflow-skill-creator</strong><span>任务有三个以上顺序步骤、跨步骤状态和恢复需求时调用：把复杂流程做成可验证、可续跑的 Skill。</span></button>
+                <a class="harness-skill-link" href="https://github.com/SummerSec/SumSec-Skills/tree/master/agents-dev/skills/workflow-skill-creator" target="_blank" rel="noopener noreferrer" aria-label="打开 workflow-skill-creator" title="打开 workflow-skill-creator">↗</a>
+              </li>
+              <li class="harness-skill-entry" data-skill-index="8">
+                <button class="harness-skill-button" type="button" aria-pressed="false"><strong>multi-platform-plugin-guide</strong><span>插件准备跨 Claude、Codex、Cursor 发布时调用：对齐 Manifest、版本、Hook 路径、市场条目和安装文档。</span></button>
+                <a class="harness-skill-link" href="https://github.com/SummerSec/SumSec-Skills/tree/master/agents-dev/skills/multi-platform-plugin-guide" target="_blank" rel="noopener noreferrer" aria-label="打开 multi-platform-plugin-guide" title="打开 multi-platform-plugin-guide">↗</a>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="harness-closing">
+          <div class="harness-closing-copy">
+            <p class="section-kicker">The portable advantage</p>
+            <h3>把能力带走，而不是重新开始</h3>
+            <p>换 Agent、换设备、换项目后，已经验证过的方法不再归零。没有版本记录的 Skill，只是一份会不断变形的提示词。</p>
+          </div>
           <figure class="figure harness-figure reveal-image">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23e4ebe8'/%3E%3C/svg%3E" data-progressive-src="../assets/ai-agent-engineering-evolution-illustrations/04-harness-alignment.png" alt="Harness 让 Agent 保持在正确路径上" loading="lazy" decoding="async" fetchpriority="low">
           </figure>
@@ -1928,15 +2344,85 @@
       goToPage(event.key === 'ArrowDown' ? 1 : -1);
     });
 
-    document.querySelectorAll('.accordion-button').forEach((button) => {
-      button.addEventListener('click', () => {
-        document.querySelectorAll('.accordion-item').forEach((item) => {
-          const open = item.contains(button);
-          item.classList.toggle('is-open', open);
-          item.querySelector('.accordion-button').setAttribute('aria-expanded', String(open));
+    document.querySelectorAll('.accordion').forEach((accordion) => {
+      accordion.querySelectorAll('.accordion-button').forEach((button) => {
+        button.addEventListener('click', () => {
+          accordion.querySelectorAll('.accordion-item').forEach((item) => {
+            const open = item.contains(button);
+            item.classList.toggle('is-open', open);
+            item.querySelector('.accordion-button').setAttribute('aria-expanded', String(open));
+          });
         });
       });
     });
+
+    const skillEntries = [...document.querySelectorAll('.harness-skill-entry')];
+    const skillVisuals = [...document.querySelectorAll('.harness-skill-visual')];
+    let activeSkillIndex = 0;
+
+    const setActiveSkill = (index, animate = true) => {
+      if (!skillEntries[index] || !skillVisuals[index]) return;
+      if (index === activeSkillIndex && skillEntries[index].classList.contains('is-active')) return;
+      activeSkillIndex = index;
+
+      skillEntries.forEach((entry, entryIndex) => {
+        const active = entryIndex === index;
+        entry.classList.toggle('is-active', active);
+        entry.querySelector('.harness-skill-button')?.setAttribute('aria-pressed', String(active));
+      });
+
+      skillVisuals.forEach((visual, visualIndex) => {
+        const active = visualIndex === index;
+        visual.classList.toggle('is-active', active);
+        visual.setAttribute('aria-hidden', String(!active));
+      });
+
+      if (animate && !reducedMotion && window.gsap) {
+        gsap.killTweensOf(skillVisuals[index]);
+        gsap.fromTo(skillVisuals[index],
+          { autoAlpha: 0.18, scale: 0.88 },
+          { autoAlpha: 1, scale: 1, duration: 0.72, ease: 'power3.out', overwrite: true }
+        );
+      }
+    };
+
+    skillEntries.forEach((entry, index) => {
+      const button = entry.querySelector('.harness-skill-button');
+      entry.addEventListener('mouseenter', () => setActiveSkill(index));
+      button?.addEventListener('focus', () => setActiveSkill(index));
+      button?.addEventListener('click', () => setActiveSkill(index));
+    });
+
+    const syncSkillFromScroll = () => {
+      const index = document.querySelector('.harness-skill-index');
+      if (!index) return;
+      const indexRect = index.getBoundingClientRect();
+      if (indexRect.top > window.innerHeight * 0.72 || indexRect.bottom < window.innerHeight * 0.28) return;
+
+      const targetY = window.innerHeight * 0.52;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+      skillEntries.forEach((entry, entryIndex) => {
+        const rect = entry.getBoundingClientRect();
+        const distance = Math.abs((rect.top + rect.bottom) / 2 - targetY);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = entryIndex;
+        }
+      });
+      setActiveSkill(closestIndex);
+    };
+
+    let skillScrollFrame = 0;
+    window.addEventListener('scroll', () => {
+      if (skillScrollFrame) return;
+      skillScrollFrame = window.requestAnimationFrame(() => {
+        skillScrollFrame = 0;
+        syncSkillFromScroll();
+      });
+    }, { passive: true });
+
+    setActiveSkill(0, false);
 
     if (!reducedMotion && window.gsap && window.ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger);
@@ -1958,16 +2444,6 @@
           .fromTo(element, { scale: 0.86, autoAlpha: 0.34 }, { scale: 1, autoAlpha: 1, ease: 'none', duration: 0.48 })
           .to(element, { scale: 0.96, autoAlpha: 0.28, ease: 'none', duration: 0.52 });
       });
-
-      if (window.innerWidth > 760) {
-        ScrollTrigger.create({
-          trigger: '.harness-stage',
-          start: 'top 112px',
-          end: 'bottom bottom-=120',
-          pin: '.harness-intro',
-          pinSpacing: false
-        });
-      }
 
       ScrollTrigger.refresh();
     }
