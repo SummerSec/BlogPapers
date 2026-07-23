@@ -21,3 +21,19 @@ wrangler d1 migrations apply sumsec-investment-log --remote
 wrangler secret put INGEST_TOKEN
 wrangler deploy
 ```
+
+## 同步到本地
+
+在仓库根目录运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File workers\investment-log\scripts\sync-local.ps1
+```
+
+脚本会完整导出远程 D1，并在 `workers/investment-log/local-data/` 生成：
+
+- `sumsec-investment-log-YYYYMMDD-HHMMSS.sql`：每次同步的完整 SQL 备份。
+- `latest.sql`：最近一次完整导出。
+- `latest.sqlite`：可直接用于 Python、R、DataGrip 或 DB Browser for SQLite 的分析库。
+
+本地数据目录已被 Git 忽略，不会随博客源码上传。需要自定义保存位置时可传入 `-OutputDirectory D:\investment-data`。

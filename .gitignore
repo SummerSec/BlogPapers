@@ -6,6 +6,7 @@ __pycache__/
 _scripts/remotion-blog-ppt-article/__pycache__/**
 # Cloudflare Wrangler 本地缓存（勿提交）
 **/.wrangler/
+workers/investment-log/local-data/
 output/**
 docs/**
 .cursor/**
