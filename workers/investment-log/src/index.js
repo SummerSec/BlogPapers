@@ -30,6 +30,11 @@ const TEXT_LIMITS = {
 };
 
 const TRADE_HISTORY_PATH = '/caishen_fund/pc/account/v1/get_money_history';
+const CURRENT_SNAPSHOT_PATHS = new Set([
+  '/caishen_fund/pc/asset/v1/stock_position',
+  '/caishen_fund/pc/account/v1/stock_card',
+  '/caishen_fund/pc/account/v1/init',
+]);
 
 function json(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
@@ -60,6 +65,21 @@ function isValidSnapshotDate(value) {
 
 function shanghaiToday() {
   return new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString().slice(0, 10);
+}
+
+function shanghaiDateFromIso(value) {
+  return new Date(Date.parse(value) + 8 * 60 * 60 * 1000).toISOString().slice(0, 10);
+}
+
+function shanghaiHourFromIso(value) {
+  return new Date(Date.parse(value) + 8 * 60 * 60 * 1000).getUTCHours();
+}
+
+function hasConsistentSnapshotDate(record) {
+  const capturedDate = shanghaiDateFromIso(record.captured_at);
+  if (record.snapshot_date === capturedDate && shanghaiHourFromIso(record.captured_at) < 18) return false;
+  if (!CURRENT_SNAPSHOT_PATHS.has(record.source_path)) return true;
+  return record.snapshot_date === capturedDate;
 }
 
 async function hashValue(value) {
@@ -220,9 +240,9 @@ async function ingestSnapshots(request, env) {
 
   const settlementCutoff = shanghaiToday();
   const portfolio = portfolioInputs.map(normalizePortfolioSnapshot)
-    .filter((record) => record && record.snapshot_date < settlementCutoff);
+    .filter((record) => record && record.snapshot_date <= settlementCutoff && hasConsistentSnapshotDate(record));
   const holdings = (await Promise.all(holdingInputs.map(normalizeHoldingSnapshot)))
-    .filter((record) => record && record.snapshot_date < settlementCutoff);
+    .filter((record) => record && record.snapshot_date <= settlementCutoff && hasConsistentSnapshotDate(record));
   if (portfolio.length === 0 && holdings.length === 0) {
     return json({ error: 'no valid snapshots' }, 400);
   }

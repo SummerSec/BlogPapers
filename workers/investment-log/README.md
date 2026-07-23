@@ -6,7 +6,7 @@
 
 - `POST /api/operations`：单条或批量写入真实交易流水，需要 `Authorization: Bearer <INGEST_TOKEN>`；仅接受 `get_money_history` 来源且包含成交字段的记录。
 - `GET /api/operations?days=90&limit=1000`：博客公开读取的脱敏记录。
-- `POST /api/snapshots`：批量写入账户与持仓快照，需要写入令牌；仅接受上海日期当天之前的 T+1 已结算快照。
+- `POST /api/snapshots`：批量写入账户与持仓快照，需要写入令牌；允许上海时间 18:00 后暂存当天数据，但股票实时快照日期必须与采集日期一致。
 - `GET /api/portfolio?days=365`：返回 T+1 历史账户快照、最新已结算持仓和近期操作。
 - `GET /health`：健康检查。
 
