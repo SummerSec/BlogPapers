@@ -74,7 +74,7 @@ comments: false
     <a class="category-directory__link" data-topic="green" href="./reviews-notes.html">
       <span class="category-directory__code">LOG</span>
       <span class="category-directory__name">复盘与随笔</span>
-      <span class="category-directory__count">12</span>
+      <span class="category-directory__count">11</span>
     </a>
   </nav>
   <section class="category-archive" aria-label="按年份浏览">
