@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-07-24T13:04:41Z</updated>
+  <updated>2026-07-24T13:13:29Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
@@ -10,7 +10,7 @@
   <entry>
     <id>https://sumsec.me/2026/liang-wenfeng-investor-meeting-transcript.html</id>
     <title>梁文锋投资人会议文字稿修正稿</title>
-    <updated>2026-07-24T13:01:06Z</updated>
+    <updated>2026-07-24T13:12:18Z</updated>
     <link href="https://sumsec.me/2026/liang-wenfeng-investor-meeting-transcript.html" rel="alternate" />
   </entry>
   <entry>
