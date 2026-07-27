@@ -69,6 +69,20 @@ function shanghaiToday() {
   return new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString().slice(0, 10);
 }
 
+function previousBusinessDate(value) {
+  const date = new Date(`${value}T12:00:00Z`);
+  do {
+    date.setUTCDate(date.getUTCDate() - 1);
+  } while (date.getUTCDay() === 0 || date.getUTCDay() === 6);
+  return date.toISOString().slice(0, 10);
+}
+
+function currentSnapshotDateForCapture(value) {
+  const capturedDate = shanghaiDateFromIso(value);
+  const day = new Date(`${capturedDate}T12:00:00Z`).getUTCDay();
+  return day === 0 || day === 6 ? previousBusinessDate(capturedDate) : capturedDate;
+}
+
 function shanghaiDateFromIso(value) {
   return new Date(Date.parse(value) + 8 * 60 * 60 * 1000).toISOString().slice(0, 10);
 }
@@ -81,7 +95,7 @@ function hasConsistentSnapshotDate(record) {
   const capturedDate = shanghaiDateFromIso(record.captured_at);
   if (record.snapshot_date === capturedDate && shanghaiHourFromIso(record.captured_at) < 18) return false;
   if (!CURRENT_SNAPSHOT_PATHS.has(record.source_path)) return true;
-  return record.snapshot_date === capturedDate;
+  return record.snapshot_date === currentSnapshotDateForCapture(record.captured_at);
 }
 
 async function hashValue(value) {
@@ -411,43 +425,56 @@ async function listOperations(url, env) {
   const days = Math.min(Math.max(Number.parseInt(url.searchParams.get('days') || '90', 10), 1), 3650);
   const limit = Math.min(Math.max(Number.parseInt(url.searchParams.get('limit') || '1000', 10), 1), 5000);
   const since = new Date(Date.now() - days * 86400000).toISOString();
+  const settlementCutoff = previousBusinessDate(shanghaiToday());
   const result = await env.DB.prepare(`
     SELECT occurred_at, operation, account_key, account_name, account_type,
            instrument_code, instrument_name, side, quantity, price, amount, fee, note
     FROM investment_events
-    WHERE occurred_at >= ?
+    WHERE occurred_at >= ? AND substr(occurred_at, 1, 10) <= ?
     ORDER BY occurred_at DESC, id DESC
     LIMIT ?
-  `).bind(since, limit).all();
+  `).bind(since, settlementCutoff, limit).all();
   return json({ generated_at: new Date().toISOString(), operations: result.results || [] }, 200, { 'Cache-Control': 'no-store' });
 }
 
 async function getPortfolio(url, env) {
   const days = Math.min(Math.max(Number.parseInt(url.searchParams.get('days') || '365', 10), 1), 3650);
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
-  const settlementCutoff = shanghaiToday();
-  const [portfolioResult, latestDateResult, operationsResult] = await env.DB.batch([
+  const settlementCutoff = previousBusinessDate(shanghaiToday());
+  const [portfolioResult, latestDateResult, latestHoldingDateResult, operationsResult] = await env.DB.batch([
     env.DB.prepare(`
       SELECT snapshot_date, account_key, account_name, account_type, account_order, total_asset, market_value,
              cash, day_pnl, day_return, total_pnl, total_return, captured_at
       FROM portfolio_snapshots
-      WHERE snapshot_date >= ? AND snapshot_date < ?
+      WHERE snapshot_date >= ? AND snapshot_date <= ?
+        AND strftime('%w', snapshot_date) NOT IN ('0', '6')
       ORDER BY snapshot_date DESC, account_name, account_key
     `).bind(since, settlementCutoff),
-    env.DB.prepare('SELECT MAX(snapshot_date) AS latest_date FROM portfolio_snapshots WHERE snapshot_date < ?')
+    env.DB.prepare(`
+      SELECT MAX(snapshot_date) AS latest_date
+      FROM portfolio_snapshots
+      WHERE snapshot_date <= ? AND strftime('%w', snapshot_date) NOT IN ('0', '6')
+    `)
       .bind(settlementCutoff),
+    env.DB.prepare(`
+      SELECT MAX(snapshot_date) AS latest_date
+      FROM holding_snapshots
+      WHERE snapshot_date <= ? AND strftime('%w', snapshot_date) NOT IN ('0', '6')
+    `).bind(settlementCutoff),
     env.DB.prepare(`
       SELECT occurred_at, operation, account_key, account_name, account_type,
              instrument_code, instrument_name, side, quantity, price, amount, fee, note
       FROM investment_events
+      WHERE substr(occurred_at, 1, 10) <= ?
       ORDER BY occurred_at DESC, id DESC
       LIMIT 100
-    `),
+    `).bind(settlementCutoff),
   ]);
 
   const latestDate = latestDateResult.results?.[0]?.latest_date || null;
+  const latestHoldingDate = latestHoldingDateResult.results?.[0]?.latest_date || null;
   let holdings = [];
-  if (latestDate) {
+  if (latestHoldingDate) {
     const result = await env.DB.prepare(`
       SELECT snapshot_date, account_key, account_name, account_type, asset_type,
              instrument_code, instrument_name, quantity, cost_price,
@@ -457,13 +484,14 @@ async function getPortfolio(url, env) {
       FROM holding_snapshots
       WHERE snapshot_date = ?
       ORDER BY market_value DESC, instrument_name, instrument_code
-    `).bind(latestDate).all();
+    `).bind(latestHoldingDate).all();
     holdings = result.results || [];
   }
 
   return json({
     generated_at: new Date().toISOString(),
     latest_snapshot_date: latestDate,
+    latest_holding_date: latestHoldingDate,
     portfolio_snapshots: portfolioResult.results || [],
     holdings,
     operations: operationsResult.results || [],
