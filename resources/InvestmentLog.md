@@ -9,7 +9,20 @@ comments: false
     <p class="investment-ledger__eyebrow">PORTFOLIO LEDGER / LIVE</p>
     <h1>投资复盘</h1>
     <p>账户、持仓与交易记录由本地投资账本按 T+1 已结算口径同步至 Cloudflare D1。</p>
-    <div class="investment-ledger__status" id="investment-status" role="status">正在读取最新数据...</div>
+    <div class="investment-ledger__auth" id="investment-auth">
+      <form id="investment-login-form">
+        <label for="investment-password">访问密码</label>
+        <div class="investment-ledger__auth-row">
+          <input id="investment-password" name="password" type="password" autocomplete="current-password" required>
+          <button type="submit">进入</button>
+        </div>
+        <p id="investment-login-error" role="alert" hidden></p>
+      </form>
+    </div>
+    <div class="investment-ledger__session" id="investment-session" hidden>
+      <div class="investment-ledger__status" id="investment-status" role="status">正在读取最新数据...</div>
+      <button type="button" id="investment-logout">退出访问</button>
+    </div>
   </header>
 
   <section class="investment-ledger__section" id="investment-overview" hidden>
@@ -88,7 +101,7 @@ comments: false
     </div>
   </section>
 
-  <p class="investment-ledger__disclaimer">公开数据仅用于个人记录，不构成任何投资建议。</p>
+  <p class="investment-ledger__disclaimer">数据仅用于个人记录，不构成任何投资建议。</p>
 </div>
 
 <style>
@@ -99,6 +112,18 @@ comments: false
 .investment-ledger__eyebrow { margin: 0; color: var(--color-signal); font: 700 .76rem/1.4 var(--font-code); }
 .investment-ledger__status { margin-top: 1rem; color: var(--text-muted); font-family: var(--font-code); }
 .investment-ledger__status.is-error { color: var(--color-amber); }
+.investment-ledger__auth { max-width: 25rem; margin-top: 1.25rem; }
+.investment-ledger__auth label { display: block; margin-bottom: .45rem; color: var(--text-muted); font-size: .82rem; }
+.investment-ledger__auth-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; }
+.investment-ledger__auth input { min-width: 0; height: 40px; padding: 0 .75rem; border: 1px solid var(--border-strong); border-radius: 4px; background: var(--bg-elevated); color: var(--text); font: .9rem/1 var(--font-code); }
+.investment-ledger__auth input:focus { outline: 2px solid var(--color-signal); outline-offset: 1px; }
+.investment-ledger__auth button, .investment-ledger__session button { min-height: 40px; padding: .55rem .9rem; border: 1px solid var(--border-strong); border-radius: 4px; background: transparent; color: var(--text); cursor: pointer; }
+.investment-ledger__auth button:hover, .investment-ledger__session button:hover { border-color: var(--color-signal); color: var(--color-signal); }
+.investment-ledger__auth button:disabled { cursor: wait; opacity: .6; }
+.investment-ledger__auth p { margin: .55rem 0 0; color: var(--color-amber); font-size: .82rem; }
+.investment-ledger__session { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+.investment-ledger__session[hidden] { display: none; }
+.investment-ledger__session .investment-ledger__status { margin-top: 0; }
 .investment-ledger__section { margin-top: 2rem; }
 .investment-ledger__section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
 .investment-ledger__section-head--compact { margin-top: 1.25rem; }
@@ -163,8 +188,15 @@ comments: false
 
 <script>
 (function () {
-  var endpoint = 'https://sumsec-investment-log.sumsec.workers.dev/api/portfolio?days=3650';
+  var apiBase = 'https://sumsec-investment-log.sumsec.workers.dev';
+  var endpoint = apiBase + '/api/portfolio?days=3650';
+  var sessionKey = 'sumsec-investment-read-session';
   var status = document.getElementById('investment-status');
+  var auth = document.getElementById('investment-auth');
+  var loginForm = document.getElementById('investment-login-form');
+  var passwordInput = document.getElementById('investment-password');
+  var loginError = document.getElementById('investment-login-error');
+  var session = document.getElementById('investment-session');
   var state = { data: null, accounts: [], selectedAccount: 'all', selectedView: 'holdings' };
 
   function escapeHtml(value) {
@@ -506,9 +538,42 @@ comments: false
     state.selectedView = button.getAttribute('data-view'); renderDetail();
   });
 
-  fetch(endpoint, { headers: { 'Accept': 'application/json' } })
-    .then(function (response) { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+  function hideData() {
+    ['investment-overview', 'investment-accounts-section', 'investment-detail-section', 'investment-history-section'].forEach(function (id) {
+      document.getElementById(id).hidden = true;
+    });
+  }
+
+  function showLogin(message) {
+    hideData();
+    session.hidden = true;
+    auth.hidden = false;
+    loginError.textContent = message || '';
+    loginError.hidden = !message;
+    passwordInput.focus();
+  }
+
+  function showSession() {
+    auth.hidden = true;
+    session.hidden = false;
+    status.classList.remove('is-error');
+    status.textContent = '正在读取最新数据...';
+  }
+
+  function loadPortfolio(token) {
+    showSession();
+    return fetch(endpoint, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } })
+      .then(function (response) {
+        if (response.status === 401) {
+          sessionStorage.removeItem(sessionKey);
+          showLogin('访问已过期，请重新输入密码。');
+          return null;
+        }
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+      })
     .then(function (data) {
+      if (!data) return;
       state.data = data; state.accounts = latestAccounts(data);
       if (!state.accounts.length) { status.textContent = '尚无账户快照'; return; }
       renderAccounts(); renderHistory(); renderDetail();
@@ -519,5 +584,42 @@ comments: false
     .catch(function (error) {
       status.textContent = '数据读取失败：' + error.message; status.classList.add('is-error');
     });
+  }
+
+  loginForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    var button = loginForm.querySelector('button[type="submit"]');
+    var password = passwordInput.value;
+    button.disabled = true;
+    loginError.hidden = true;
+    fetch(apiBase + '/api/login', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: password }),
+    }).then(function (response) {
+      if (response.status === 401) throw new Error('密码不正确。');
+      if (!response.ok) throw new Error('登录服务暂时不可用（HTTP ' + response.status + '）。');
+      return response.json();
+    }).then(function (data) {
+      if (!data.token) throw new Error('登录响应无效。');
+      sessionStorage.setItem(sessionKey, data.token);
+      passwordInput.value = '';
+      return loadPortfolio(data.token);
+    }).catch(function (error) {
+      showLogin(error.message);
+    }).finally(function () {
+      button.disabled = false;
+    });
+  });
+
+  document.getElementById('investment-logout').addEventListener('click', function () {
+    sessionStorage.removeItem(sessionKey);
+    state.data = null; state.accounts = [];
+    showLogin('已退出访问。');
+  });
+
+  var storedToken = sessionStorage.getItem(sessionKey);
+  if (storedToken) loadPortfolio(storedToken);
+  else showLogin('');
 })();
 </script>

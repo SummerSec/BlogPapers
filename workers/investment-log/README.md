@@ -5,12 +5,13 @@
 ## 接口
 
 - `POST /api/operations`：单条或批量写入真实交易流水，需要 `Authorization: Bearer <INGEST_TOKEN>`；仅接受 `get_money_history` 来源且包含成交字段的记录。
-- `GET /api/operations?days=90&limit=1000`：博客公开读取的脱敏记录。
+- `POST /api/login`：使用访问密码换取 12 小时有效的签名会话令牌。
+- `GET /api/operations?days=90&limit=1000`：读取交易记录，需要登录接口签发的会话令牌。
 - `POST /api/snapshots`：批量写入账户与持仓快照，需要写入令牌；允许上海时间 18:00 后暂存当天数据，但股票实时快照日期必须与采集日期一致。
-- `GET /api/portfolio?days=365`：返回 T+1 历史账户快照、最新已结算持仓和近期操作。
+- `GET /api/portfolio?days=365`：返回 T+1 历史账户快照、最新已结算持仓和近期操作，需要会话令牌。
 - `GET /health`：健康检查。
 
-服务端接收账户显示名称、脱敏后的账户键、账户与持仓指标及交易记录，不接收同花顺 Cookie、userid 或原始接口响应。`GET` 接口是公开的，因此其中的账户名称、持仓与交易数据会对博客访问者可见。
+服务端接收账户显示名称、脱敏后的账户键、账户与持仓指标及交易记录，不接收同花顺 Cookie、userid 或原始接口响应。投资读取接口受密码会话保护，健康检查保持公开。
 
 ## 部署
 
@@ -19,8 +20,12 @@ wrangler d1 create sumsec-investment-log
 # 将数据库 ID 写入 wrangler.toml
 wrangler d1 migrations apply sumsec-investment-log --remote
 wrangler secret put INGEST_TOKEN
+wrangler secret put READ_PASSWORD
+wrangler secret put SESSION_SECRET
 wrangler deploy
 ```
+
+本地开发时，将 `.dev.vars.example` 复制为 `.dev.vars` 并填写实际值。`.dev.vars` 已被 Git 忽略，不要把访问密码或会话签名密钥提交到仓库。
 
 ## 同步到本地
 

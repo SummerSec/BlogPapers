@@ -36,6 +36,8 @@ const CURRENT_SNAPSHOT_PATHS = new Set([
   '/caishen_fund/pc/account/v1/init',
 ]);
 
+const READ_SESSION_TTL_SECONDS = 12 * 60 * 60;
+
 function json(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
@@ -88,6 +90,90 @@ async function hashValue(value) {
   return [...new Uint8Array(digest)]
     .map((byte) => byte.toString(16).padStart(2, '0'))
     .join('');
+}
+
+function bytesToBase64Url(bytes) {
+  let binary = '';
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+}
+
+function textToBase64Url(value) {
+  return bytesToBase64Url(new TextEncoder().encode(value));
+}
+
+function base64UrlToText(value) {
+  const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
+  const padding = '='.repeat((4 - (normalized.length % 4)) % 4);
+  const binary = atob(normalized + padding);
+  return new TextDecoder().decode(Uint8Array.from(binary, (character) => character.charCodeAt(0)));
+}
+
+async function constantTimeEqual(left, right) {
+  const [leftHash, rightHash] = await Promise.all([hashValue(left), hashValue(right)]);
+  let difference = 0;
+  for (let index = 0; index < leftHash.length; index += 1) {
+    difference |= leftHash.charCodeAt(index) ^ rightHash.charCodeAt(index);
+  }
+  return difference === 0;
+}
+
+async function signReadSession(payload, secret) {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const signature = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
+  return bytesToBase64Url(new Uint8Array(signature));
+}
+
+async function createReadSession(env) {
+  const payload = textToBase64Url(JSON.stringify({
+    exp: Math.floor(Date.now() / 1000) + READ_SESSION_TTL_SECONDS,
+  }));
+  return `${payload}.${await signReadSession(payload, env.SESSION_SECRET)}`;
+}
+
+async function isReadAuthorized(request, env) {
+  if (!env.SESSION_SECRET) return false;
+  const authorization = request.headers.get('Authorization') || '';
+  const token = authorization.startsWith('Bearer ') ? authorization.slice(7) : '';
+  const parts = token.split('.');
+  if (parts.length !== 2 || !parts[0] || !parts[1]) return false;
+
+  try {
+    const expectedSignature = await signReadSession(parts[0], env.SESSION_SECRET);
+    if (!(await constantTimeEqual(parts[1], expectedSignature))) return false;
+    const payload = JSON.parse(base64UrlToText(parts[0]));
+    return Number.isFinite(payload.exp) && payload.exp > Math.floor(Date.now() / 1000);
+  } catch {
+    return false;
+  }
+}
+
+async function login(request, env) {
+  if (!env.READ_PASSWORD || !env.SESSION_SECRET) {
+    return json({ error: 'read access is not configured' }, 503, { 'Cache-Control': 'no-store' });
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: 'invalid JSON body' }, 400, { 'Cache-Control': 'no-store' });
+  }
+  const password = typeof body.password === 'string' ? body.password : '';
+  if (!password || password.length > 200 || !(await constantTimeEqual(password, env.READ_PASSWORD))) {
+    return json({ error: 'invalid password' }, 401, { 'Cache-Control': 'no-store' });
+  }
+
+  return json({
+    token: await createReadSession(env),
+    expires_in: READ_SESSION_TTL_SECONDS,
+  }, 200, { 'Cache-Control': 'no-store' });
 }
 
 async function normalizeOperation(input) {
@@ -391,10 +477,17 @@ export default {
     if (request.method === 'GET' && url.pathname === '/health') {
       return json({ ok: true, service: 'sumsec-investment-log' });
     }
-    if (request.method === 'GET' && url.pathname === '/api/operations') return listOperations(url, env);
+    if (request.method === 'POST' && url.pathname === '/api/login') return login(request, env);
+    if (request.method === 'GET' && url.pathname === '/api/operations') {
+      if (!(await isReadAuthorized(request, env))) return json({ error: 'unauthorized' }, 401, { 'Cache-Control': 'no-store' });
+      return listOperations(url, env);
+    }
     if (request.method === 'POST' && url.pathname === '/api/operations') return ingestOperations(request, env);
     if (request.method === 'POST' && url.pathname === '/api/snapshots') return ingestSnapshots(request, env);
-    if (request.method === 'GET' && url.pathname === '/api/portfolio') return getPortfolio(url, env);
+    if (request.method === 'GET' && url.pathname === '/api/portfolio') {
+      if (!(await isReadAuthorized(request, env))) return json({ error: 'unauthorized' }, 401, { 'Cache-Control': 'no-store' });
+      return getPortfolio(url, env);
+    }
     return json({ error: 'not found' }, 404);
   },
 };
