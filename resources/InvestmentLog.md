@@ -155,7 +155,7 @@ comments: false
 .investment-ledger__date-picker { position: relative; display: flex; min-height: 42px; padding: .35rem .8rem; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; }
 .investment-ledger__date-picker span { color: var(--text-muted); font: .65rem/1.2 var(--font-body); }
 .investment-ledger__date-picker time { margin-top: .1rem; color: var(--text-strong); font: 650 .82rem/1.25 var(--font-code); white-space: nowrap; }
-.investment-ledger__date-picker input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; color-scheme: dark; cursor: pointer; }
+.investment-ledger__date-picker input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; color-scheme: light dark; cursor: pointer; }
 .investment-ledger__date-latest { min-height: 44px; padding: .5rem .8rem; border: 1px solid var(--border-strong); border-radius: 6px; color: var(--text-muted); font: 600 .78rem/1 var(--font-body); white-space: nowrap; }
 .investment-ledger__date-step:hover, .investment-ledger__date-latest:hover, .investment-ledger__date-picker:hover { background: var(--bg-subtle); color: var(--color-signal); }
 .investment-ledger__date-picker:hover time { color: var(--color-signal); }
@@ -627,7 +627,8 @@ comments: false
     var date = parseCalendarDate(value);
     if (!date) return '选择日期';
     var weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-    return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + weekdays[date.getDay()];
+    function pad(value) { return String(value).padStart(2, '0'); }
+    return date.getFullYear() + '.' + pad(date.getMonth() + 1) + '.' + pad(date.getDate()) + ' ' + weekdays[date.getDay()];
   }
 
   function adjacentBusinessDate(value, direction) {
