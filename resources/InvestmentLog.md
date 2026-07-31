@@ -23,14 +23,22 @@ comments: false
       <div class="investment-ledger__status" id="investment-status" role="status">正在读取最新数据...</div>
       <button type="button" id="investment-logout">退出访问</button>
     </div>
-    <div class="investment-ledger__date-filter" id="investment-date-filter" hidden>
-      <div>
-        <label for="investment-date">查看日期</label>
+    <div class="investment-ledger__date-filter" id="investment-date-filter" aria-label="历史快照日期" hidden>
+      <div class="investment-ledger__date-copy">
+        <strong>历史回看</strong>
         <span id="investment-date-resolution">选择一个交易日查看历史快照</span>
       </div>
       <div class="investment-ledger__date-actions">
-        <input id="investment-date" type="date" aria-describedby="investment-date-resolution">
-        <button type="button" id="investment-date-latest">查看最新</button>
+        <div class="investment-ledger__date-cluster" role="group" aria-label="切换交易日">
+          <button class="investment-ledger__date-step" type="button" id="investment-date-prev" aria-label="查看上一交易日">‹</button>
+          <label class="investment-ledger__date-picker" for="investment-date">
+            <span>选择日期</span>
+            <time id="investment-date-display">最新快照</time>
+            <input id="investment-date" type="date" aria-describedby="investment-date-resolution">
+          </label>
+          <button class="investment-ledger__date-step" type="button" id="investment-date-next" aria-label="查看下一交易日">›</button>
+        </div>
+        <button class="investment-ledger__date-latest" type="button" id="investment-date-latest">回到最新</button>
       </div>
     </div>
   </header>
@@ -134,16 +142,27 @@ comments: false
 .investment-ledger__session { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
 .investment-ledger__session[hidden] { display: none; }
 .investment-ledger__session .investment-ledger__status { margin-top: 0; }
-.investment-ledger__date-filter { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-top: 1rem; padding: .8rem .9rem; border: 1px solid var(--border-strong); border-left: 3px solid var(--color-signal); border-radius: 4px; background: var(--bg-subtle); }
+.investment-ledger__date-filter { display: grid; grid-template-columns: minmax(10rem, 1fr) auto; align-items: center; gap: 1rem; margin-top: 1rem; padding: .8rem 0; border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong); }
 .investment-ledger__date-filter[hidden] { display: none; }
-.investment-ledger__date-filter label { display: block; color: var(--text-strong); font: 650 .85rem/1.3 var(--font-heading); }
-.investment-ledger__date-filter span { display: block; margin-top: .2rem; color: var(--text-muted); font: .76rem/1.4 var(--font-code); }
-.investment-ledger__date-actions { display: flex; align-items: center; gap: .5rem; }
-.investment-ledger__date-actions input { height: 38px; padding: 0 .65rem; border: 1px solid var(--border-strong); border-radius: 4px; background: var(--bg-elevated); color: var(--text); color-scheme: light dark; font: .82rem/1 var(--font-code); }
-.investment-ledger__date-actions button { min-height: 38px; padding: .5rem .75rem; border: 1px solid var(--border-strong); border-radius: 4px; background: transparent; color: var(--text); cursor: pointer; }
-.investment-ledger__date-actions button:hover { border-color: var(--color-signal); color: var(--color-signal); }
-.investment-ledger__date-actions input:focus, .investment-ledger__date-actions button:focus { outline: 2px solid var(--color-signal); outline-offset: 1px; }
-.investment-ledger__date-actions input:disabled, .investment-ledger__date-actions button:disabled { cursor: wait; opacity: .6; }
+.investment-ledger__date-copy strong { display: block; color: var(--text-strong); font: 650 .86rem/1.3 var(--font-heading); }
+.investment-ledger__date-copy span { display: block; margin-top: .2rem; color: var(--text-muted); font: .76rem/1.4 var(--font-code); }
+.investment-ledger__date-actions { display: flex; align-items: stretch; gap: .5rem; }
+.investment-ledger__date-cluster { display: grid; grid-template-columns: 2.5rem minmax(10.75rem, 1fr) 2.5rem; overflow: hidden; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--bg-elevated); }
+.investment-ledger__date-step, .investment-ledger__date-latest { border: 0; background: transparent; color: var(--text); cursor: pointer; transition: color .16s ease, background-color .16s ease, transform .12s ease; }
+.investment-ledger__date-step { min-width: 2.5rem; padding: 0; color: var(--text-muted); font: 500 1.45rem/1 var(--font-body); }
+.investment-ledger__date-step:first-child { border-right: 1px solid var(--border-strong); }
+.investment-ledger__date-step:last-child { border-left: 1px solid var(--border-strong); }
+.investment-ledger__date-picker { position: relative; display: flex; min-height: 42px; padding: .35rem .8rem; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; }
+.investment-ledger__date-picker span { color: var(--text-muted); font: .65rem/1.2 var(--font-body); }
+.investment-ledger__date-picker time { margin-top: .1rem; color: var(--text-strong); font: 650 .82rem/1.25 var(--font-code); white-space: nowrap; }
+.investment-ledger__date-picker input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; color-scheme: dark; cursor: pointer; }
+.investment-ledger__date-latest { min-height: 44px; padding: .5rem .8rem; border: 1px solid var(--border-strong); border-radius: 6px; color: var(--text-muted); font: 600 .78rem/1 var(--font-body); white-space: nowrap; }
+.investment-ledger__date-step:hover, .investment-ledger__date-latest:hover, .investment-ledger__date-picker:hover { background: var(--bg-subtle); color: var(--color-signal); }
+.investment-ledger__date-picker:hover time { color: var(--color-signal); }
+.investment-ledger__date-step:active, .investment-ledger__date-latest:active { transform: scale(.97); }
+.investment-ledger__date-step:focus-visible, .investment-ledger__date-latest:focus-visible, .investment-ledger__date-picker:focus-within { outline: 2px solid var(--color-signal); outline-offset: -2px; }
+.investment-ledger__date-actions input:disabled, .investment-ledger__date-actions button:disabled { cursor: wait; opacity: .45; }
+.investment-ledger__date-actions button:disabled:hover { background: transparent; color: var(--text-muted); }
 .investment-ledger__section { margin-top: 2rem; }
 .investment-ledger__section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
 .investment-ledger__section-head--compact { margin-top: 1.25rem; }
@@ -200,8 +219,10 @@ comments: false
   .investment-metric:nth-child(2) { border-right: 0; }
   .investment-metric:nth-child(n+3) { border-bottom: 0; }
   .investment-ledger__section-head { align-items: flex-start; flex-direction: column; gap: .25rem; }
-  .investment-ledger__date-filter { align-items: stretch; flex-direction: column; }
-  .investment-ledger__date-actions input { flex: 1; min-width: 0; }
+  .investment-ledger__date-filter { grid-template-columns: 1fr; align-items: stretch; }
+  .investment-ledger__date-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+  .investment-ledger__date-cluster { grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem; }
+  .investment-ledger__date-latest { padding-inline: .7rem; }
   .investment-history-chart { aspect-ratio: 4 / 3; }
   .investment-history-chart .history-axis { font-size: 36px; }
   .investment-history-chart .history-axis-title { display: none; }
@@ -221,9 +242,12 @@ comments: false
   var session = document.getElementById('investment-session');
   var dateFilter = document.getElementById('investment-date-filter');
   var dateInput = document.getElementById('investment-date');
+  var dateDisplay = document.getElementById('investment-date-display');
   var dateResolution = document.getElementById('investment-date-resolution');
+  var datePrev = document.getElementById('investment-date-prev');
+  var dateNext = document.getElementById('investment-date-next');
   var dateLatest = document.getElementById('investment-date-latest');
-  var state = { data: null, accounts: [], selectedAccount: 'all', selectedView: 'holdings', requestedDate: '', requestSequence: 0 };
+  var state = { data: null, accounts: [], selectedAccount: 'all', selectedView: 'holdings', requestedDate: '', latestSettledDate: '', requestSequence: 0, loading: false };
 
   function escapeHtml(value) {
     return String(value === null || value === undefined ? '' : value)
@@ -587,12 +611,54 @@ comments: false
     status.textContent = '正在读取最新数据...';
   }
 
+  function parseCalendarDate(value) {
+    var match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(value || ''));
+    if (!match) return null;
+    var date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  function calendarDateValue(date) {
+    function pad(value) { return String(value).padStart(2, '0'); }
+    return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+  }
+
+  function formatCalendarDate(value) {
+    var date = parseCalendarDate(value);
+    if (!date) return '选择日期';
+    var weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + weekdays[date.getDay()];
+  }
+
+  function adjacentBusinessDate(value, direction) {
+    var date = parseCalendarDate(value);
+    if (!date) return '';
+    do { date.setDate(date.getDate() + direction); }
+    while (date.getDay() === 0 || date.getDay() === 6);
+    return calendarDateValue(date);
+  }
+
+  function updateDateNavigation() {
+    var current = dateInput.value || state.latestSettledDate;
+    var next = adjacentBusinessDate(current, 1);
+    dateDisplay.textContent = current ? formatCalendarDate(current) : '选择日期';
+    dateDisplay.dateTime = current || '';
+    datePrev.disabled = state.loading || !current;
+    dateNext.disabled = state.loading || !current || !state.latestSettledDate || current >= state.latestSettledDate || next > state.latestSettledDate;
+    dateLatest.disabled = state.loading || !state.requestedDate;
+    dateInput.disabled = state.loading;
+  }
+
+  function setDateLoading(loading) {
+    state.loading = loading;
+    updateDateNavigation();
+  }
+
   function loadPortfolio(token, requestedDate) {
     var requestId = ++state.requestSequence;
     var requestUrl = endpoint + (requestedDate ? '&date=' + encodeURIComponent(requestedDate) : '');
     state.requestedDate = requestedDate || '';
-    dateInput.disabled = true;
-    dateLatest.disabled = true;
+    setDateLoading(true);
     showSession();
     return fetch(requestUrl, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } })
       .then(function (response) {
@@ -609,6 +675,7 @@ comments: false
     .then(function (data) {
       if (!data || requestId !== state.requestSequence) return;
       state.data = data; state.accounts = latestAccounts(data); state.selectedAccount = 'all';
+      state.latestSettledDate = data.latest_settled_date || '';
       dateInput.max = data.latest_settled_date || '';
       dateInput.value = requestedDate || data.latest_snapshot_date || '';
       dateFilter.hidden = false;
@@ -631,14 +698,26 @@ comments: false
       status.textContent = '数据读取失败：' + error.message; status.classList.add('is-error');
     }).finally(function () {
       if (requestId !== state.requestSequence) return;
-      dateInput.disabled = false;
-      dateLatest.disabled = false;
+      setDateLoading(false);
     });
   }
 
   dateInput.addEventListener('change', function () {
     var token = sessionStorage.getItem(sessionKey);
     if (token && dateInput.value) loadPortfolio(token, dateInput.value);
+  });
+
+  datePrev.addEventListener('click', function () {
+    var token = sessionStorage.getItem(sessionKey);
+    var target = adjacentBusinessDate(dateInput.value || state.latestSettledDate, -1);
+    if (token && target) loadPortfolio(token, target);
+  });
+
+  dateNext.addEventListener('click', function () {
+    var token = sessionStorage.getItem(sessionKey);
+    var target = adjacentBusinessDate(dateInput.value || state.latestSettledDate, 1);
+    if (target > state.latestSettledDate) target = state.latestSettledDate;
+    if (token && target) loadPortfolio(token, target);
   });
 
   dateLatest.addEventListener('click', function () {
