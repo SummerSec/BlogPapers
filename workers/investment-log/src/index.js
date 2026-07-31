@@ -30,6 +30,7 @@ const TEXT_LIMITS = {
 };
 
 const TRADE_HISTORY_PATH = '/caishen_fund/pc/account/v1/get_money_history';
+const ASSET_TREND_PATH = '/caishen_fund/pc/asset/v1/asset_trend';
 const CURRENT_SNAPSHOT_PATHS = new Set([
   '/caishen_fund/pc/asset/v1/stock_position',
   '/caishen_fund/pc/account/v1/stock_card',
@@ -214,7 +215,13 @@ async function normalizeOperation(input) {
   };
   const hasTradeDetail = Boolean(record.instrument_code || record.instrument_name
     || record.quantity !== null || record.price !== null || record.amount !== null);
-  if (record.source_path !== TRADE_HISTORY_PATH || !hasTradeDetail) return null;
+  const isTradeHistory = record.source_path === TRADE_HISTORY_PATH;
+  const isInferredFundCashFlow = record.source_path === ASSET_TREND_PATH
+    && record.account_type === 'fund'
+    && record.amount !== null
+    && record.note === '根据相邻交易日总资产变化扣除当日盈亏推算，非平台原始交易流水'
+    && (record.operation === '赎回/资金转出（推算）' || record.operation === '申购/资金转入（推算）');
+  if ((!isTradeHistory && !isInferredFundCashFlow) || !hasTradeDetail) return null;
   record.event_key = cleanText(input.event_key, 'event_key') || await hashValue(JSON.stringify(record));
   return record;
 }
@@ -495,17 +502,40 @@ async function getPortfolio(url, env) {
 
   let holdings = [];
   if (latestHoldingDate) {
-    const result = await env.DB.prepare(`
-      SELECT snapshot_date, account_key, account_name, account_type, asset_type,
-             instrument_code, instrument_name, quantity, cost_price,
-             current_price, market_value, pnl, pnl_rate, day_pnl, day_pnl_rate,
-             total_pnl, total_pnl_rate, week_pnl, month_pnl, year_pnl,
-             holding_days, latest_change_rate, weight, captured_at
-      FROM holding_snapshots
-      WHERE snapshot_date = ?
-      ORDER BY market_value DESC, instrument_name, instrument_code
-    `).bind(latestHoldingDate).all();
-    holdings = result.results || [];
+    const specificResult = await env.DB.prepare(`
+      WITH latest_account_dates AS (
+        SELECT account_key, MAX(snapshot_date) AS snapshot_date
+        FROM holding_snapshots
+        WHERE snapshot_date <= ?
+          AND strftime('%w', snapshot_date) NOT IN ('0', '6')
+          AND account_key <> 'all'
+        GROUP BY account_key
+      )
+      SELECT h.snapshot_date, h.account_key, h.account_name, h.account_type, h.asset_type,
+             h.instrument_code, h.instrument_name, h.quantity, h.cost_price,
+             h.current_price, h.market_value, h.pnl, h.pnl_rate, h.day_pnl, h.day_pnl_rate,
+             h.total_pnl, h.total_pnl_rate, h.week_pnl, h.month_pnl, h.year_pnl,
+             h.holding_days, h.latest_change_rate, h.weight, h.captured_at
+      FROM holding_snapshots h
+      INNER JOIN latest_account_dates latest
+        ON latest.account_key = h.account_key AND latest.snapshot_date = h.snapshot_date
+      ORDER BY h.account_name, h.market_value DESC, h.instrument_name, h.instrument_code
+    `).bind(selectionCutoff).all();
+    holdings = specificResult.results || [];
+
+    if (holdings.length === 0) {
+      const aggregateResult = await env.DB.prepare(`
+        SELECT snapshot_date, account_key, account_name, account_type, asset_type,
+               instrument_code, instrument_name, quantity, cost_price,
+               current_price, market_value, pnl, pnl_rate, day_pnl, day_pnl_rate,
+               total_pnl, total_pnl_rate, week_pnl, month_pnl, year_pnl,
+               holding_days, latest_change_rate, weight, captured_at
+        FROM holding_snapshots
+        WHERE snapshot_date = ? AND account_key = 'all'
+        ORDER BY market_value DESC, instrument_name, instrument_code
+      `).bind(latestHoldingDate).all();
+      holdings = aggregateResult.results || [];
+    }
   }
 
   return json({

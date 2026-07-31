@@ -73,6 +73,30 @@ comments: false
     </div>
   </section>
 
+  <section class="investment-ledger__section investment-ledger__performance" id="investment-performance-section" hidden>
+    <div class="investment-ledger__section-head">
+      <div>
+        <h2>资金与收益</h2>
+        <p>资产变化拆分为外部资金流动与投资盈亏；买卖和逆回购不计入资金流入流出。</p>
+      </div>
+      <span id="investment-performance-scope"></span>
+    </div>
+    <div class="investment-performance-tabs" role="tablist" aria-label="收益统计周期">
+      <button type="button" class="is-active" data-period="day" role="tab" aria-selected="true">按日</button>
+      <button type="button" data-period="month" role="tab" aria-selected="false">按月</button>
+      <button type="button" data-period="year" role="tab" aria-selected="false">按年</button>
+    </div>
+    <div class="investment-table-wrap">
+      <table class="investment-table investment-table--performance">
+        <thead>
+          <tr><th>期间</th><th>期末资产</th><th>资金流入</th><th>资金流出</th><th>净流入</th><th>投资收益</th><th>收益率</th><th>数据覆盖</th></tr>
+        </thead>
+        <tbody id="investment-performance"></tbody>
+      </table>
+    </div>
+    <p class="investment-performance-note" id="investment-performance-note"></p>
+  </section>
+
   <section class="investment-ledger__section" id="investment-detail-section" hidden>
     <div class="investment-view-tabs" role="tablist" aria-label="投资明细">
       <button type="button" class="is-active" data-view="holdings" role="tab" aria-selected="true">持仓列表</button>
@@ -88,7 +112,7 @@ comments: false
         <table class="investment-table investment-table--holdings">
           <thead>
             <tr>
-              <th>账户</th><th>代码</th><th>名称</th><th>持有盈亏率</th><th>持有金额</th>
+              <th>账户</th><th>数据日期</th><th>代码</th><th>名称</th><th>持有盈亏率</th><th>持有金额</th>
               <th>当日盈亏</th><th>当日盈亏率</th><th>持有盈亏</th><th>累计盈亏</th>
               <th>本周盈亏</th><th>本月盈亏</th><th>今年盈亏</th><th>仓位占比</th>
               <th>持有数量</th><th>持仓天数</th><th>最新价</th><th>单位成本</th>
@@ -195,11 +219,13 @@ comments: false
 .investment-ledger__section-head--compact { margin-top: 1.25rem; }
 .investment-ledger__section-head h2 { margin: 0; font-size: 1.15rem; letter-spacing: 0; }
 .investment-ledger__section-head span { color: var(--text-muted); font: .8rem/1.4 var(--font-code); }
+.investment-ledger__section-head p { margin: .25rem 0 0; color: var(--text-muted); font-size: .78rem; }
 .investment-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--border-strong); border-radius: 6px; overflow: hidden; }
 .investment-metric { min-width: 0; padding: 1rem; border-right: 1px solid var(--border-strong); }
 .investment-metric:last-child { border-right: 0; }
 .investment-metric span { display: block; color: var(--text-muted); font-size: .78rem; }
 .investment-metric strong { display: block; margin-top: .35rem; font: 650 1.2rem/1.2 var(--font-code); overflow-wrap: anywhere; }
+.investment-metric small { display: block; min-height: 1.3em; margin-top: .35rem; color: var(--text-muted); font: .68rem/1.3 var(--font-code); }
 .investment-account-tabs, .investment-view-tabs { display: flex; align-items: center; gap: 0; overflow-x: auto; border-bottom: 1px solid var(--border-strong); }
 .investment-account-tabs { margin-bottom: 1rem; }
 .investment-account-tabs button, .investment-view-tabs button { flex: 0 0 auto; min-height: 38px; padding: .55rem .9rem; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; color: var(--text-muted); font: 600 .88rem/1 var(--font-body); cursor: pointer; }
@@ -210,9 +236,10 @@ comments: false
 .investment-table th, .investment-table td { white-space: nowrap; text-align: right; }
 .investment-table th:first-child, .investment-table td:first-child { padding-left: .75rem; }
 .investment-table--accounts { min-width: 1080px; }
-.investment-table--holdings { min-width: 1900px; }
+.investment-table--holdings { min-width: 2000px; }
 .investment-table--trades { min-width: 1120px; }
-.investment-table--holdings th:nth-child(-n+3), .investment-table--holdings td:nth-child(-n+3),
+.investment-table--performance { min-width: 880px; }
+.investment-table--holdings th:nth-child(-n+4), .investment-table--holdings td:nth-child(-n+4),
 .investment-table--trades th:nth-child(-n+5), .investment-table--trades td:nth-child(-n+5),
 .investment-table--accounts th:first-child, .investment-table--accounts td:first-child { text-align: left; }
 .investment-ledger .is-positive { color: #d84b57; }
@@ -220,6 +247,15 @@ comments: false
 .investment-account-change strong, .investment-account-change small { display: block; }
 .investment-account-change strong { font: 600 .82rem/1.25 var(--font-code); }
 .investment-account-change small { margin-top: .18rem; color: var(--text-muted); font: .68rem/1.25 var(--font-code); }
+.investment-ledger__performance { border-top: 1px solid var(--border-strong); padding-top: 1.5rem; }
+.investment-performance-tabs { display: inline-flex; margin-bottom: .75rem; border: 1px solid var(--border-strong); border-radius: 5px; overflow: hidden; }
+.investment-performance-tabs button { min-width: 4.5rem; padding: .52rem .9rem; border: 0; border-right: 1px solid var(--border-strong); background: transparent; color: var(--text-muted); font: 600 .8rem/1 var(--font-body); cursor: pointer; }
+.investment-performance-tabs button:last-child { border-right: 0; }
+.investment-performance-tabs button:hover { color: var(--color-signal); background: var(--bg-subtle); }
+.investment-performance-tabs button.is-active { color: var(--color-signal); background: var(--bg-subtle); }
+.investment-performance-tabs button:focus-visible { outline: 2px solid var(--color-signal); outline-offset: -2px; }
+.investment-performance-coverage { color: var(--text-muted); font: .72rem/1.25 var(--font-code); }
+.investment-performance-note { margin: .65rem 0 0; color: var(--text-dim); font-size: .76rem; }
 .investment-empty { margin: .9rem 0 0; color: var(--text-muted); }
 .investment-ledger__history { border-top: 1px solid var(--border-strong); padding-top: 1.5rem; }
 .investment-history-legend { display: flex; flex-wrap: wrap; gap: .55rem 1.25rem; margin-bottom: .75rem; color: var(--text-muted); font-size: .82rem; }
@@ -282,7 +318,7 @@ comments: false
   var datePrev = document.getElementById('investment-date-prev');
   var dateNext = document.getElementById('investment-date-next');
   var dateLatest = document.getElementById('investment-date-latest');
-  var state = { data: null, accounts: [], selectedAccount: 'all', selectedView: 'holdings', requestedDate: '', latestSettledDate: '', requestSequence: 0, loading: false };
+  var state = { data: null, accounts: [], selectedAccount: 'all', selectedView: 'holdings', performanceView: 'day', requestedDate: '', latestSettledDate: '', requestSequence: 0, loading: false };
 
   function escapeHtml(value) {
     return String(value === null || value === undefined ? '' : value)
@@ -324,6 +360,22 @@ comments: false
     var values = items.map(function (item) { return number(item[field]); });
     if (values.some(function (value) { return value === null; })) return null;
     return values.reduce(function (result, value) { return result + value; }, 0);
+  }
+
+  function fieldCoverage(items, field) {
+    var known = []; var missing = [];
+    items.forEach(function (item) {
+      var value = number(item[field]);
+      if (value === null) missing.push(item.account_name || '未命名账户');
+      else known.push(value);
+    });
+    return {
+      value: known.length ? known.reduce(function (result, value) { return result + value; }, 0) : null,
+      known: known.length,
+      total: items.length,
+      missing: missing,
+      complete: items.length > 0 && known.length === items.length,
+    };
   }
 
   function previousAccountSnapshot(account) {
@@ -403,15 +455,18 @@ comments: false
     var holdings = selectedHoldings();
     var totalAsset = completeSum(state.accounts, 'total_asset');
     var totalPnl = completeSum(state.accounts, 'total_pnl');
-    var dayPnl = completeSum(state.accounts, 'day_pnl');
+    var dayPnl = fieldCoverage(state.accounts, 'day_pnl');
+    var dayPnlDetail = dayPnl.complete
+      ? dayPnl.known + '/' + dayPnl.total + ' 个账户已确认'
+      : (dayPnl.known ? '已采集 ' + dayPnl.known + '/' + dayPnl.total + ' · 缺少 ' + dayPnl.missing.join('、') : '暂无账户返回当日盈亏');
     var metrics = [
-      ['账户总资产', formatMoney(totalAsset), ''],
-      ['持有盈亏', formatSigned(totalPnl), valueClass(totalPnl)],
-      ['当日盈亏', dayPnl === null ? '数据不完整' : formatSigned(dayPnl), valueClass(dayPnl)],
-      ['当前持仓', holdings.length + ' 项', ''],
+      ['账户总资产', formatMoney(totalAsset), '', ''],
+      ['持有盈亏', formatSigned(totalPnl), valueClass(totalPnl), ''],
+      ['当日盈亏', formatSigned(dayPnl.value), valueClass(dayPnl.value), dayPnlDetail],
+      ['当前持仓', holdings.length + ' 项', '', '分账户按最近可用日期'],
     ];
     document.getElementById('investment-metrics').innerHTML = metrics.map(function (item) {
-      return '<div class="investment-metric"><span>' + item[0] + '</span><strong class="' + item[2] + '">' + item[1] + '</strong></div>';
+      return '<div class="investment-metric"><span>' + item[0] + '</span><strong class="' + item[2] + '">' + item[1] + '</strong><small>' + escapeHtml(item[3] || '') + '</small></div>';
     }).join('');
     document.getElementById('investment-overview').hidden = false;
   }
@@ -438,13 +493,152 @@ comments: false
     document.getElementById('investment-accounts-section').hidden = false;
   }
 
+  function performanceIdentity(item) {
+    var name = String(item.account_name || '').trim();
+    return name ? 'name:' + name : 'key:' + item.account_key;
+  }
+
+  function performanceDailyRows() {
+    var snapshots = Array.isArray(state.data.portfolio_snapshots) ? state.data.portfolio_snapshots : [];
+    if (snapshots.some(function (item) { return item.account_key !== 'all'; })) {
+      snapshots = snapshots.filter(function (item) { return item.account_key !== 'all'; });
+    }
+    if (state.selectedAccount !== 'all') {
+      var selected = state.accounts.find(function (item) { return item.account_key === state.selectedAccount; });
+      var selectedName = String(selected && selected.account_name || '').trim();
+      snapshots = snapshots.filter(function (item) {
+        return item.account_key === state.selectedAccount
+          || (selectedName && String(item.account_name || '').trim() === selectedName);
+      });
+    }
+
+    var latestByPoint = {};
+    snapshots.forEach(function (item) {
+      if (!item.snapshot_date || number(item.total_asset) === null) return;
+      var key = item.snapshot_date + '|' + performanceIdentity(item);
+      var current = latestByPoint[key];
+      if (!current || String(item.captured_at || '') >= String(current.captured_at || '')) latestByPoint[key] = item;
+    });
+    var records = Object.keys(latestByPoint).map(function (key) { return latestByPoint[key]; });
+    var identities = Array.from(new Set(records.map(performanceIdentity)));
+    var dates = Array.from(new Set(records.map(function (item) { return item.snapshot_date; }))).sort();
+    var byIdentity = {};
+    identities.forEach(function (identity) { byIdentity[identity] = []; });
+    records.forEach(function (item) { byIdentity[performanceIdentity(item)].push(item); });
+    identities.forEach(function (identity) {
+      byIdentity[identity].sort(function (a, b) { return a.snapshot_date < b.snapshot_date ? -1 : 1; });
+    });
+
+    return dates.map(function (date) {
+      var asset = 0; var assetKnown = 0;
+      var profit = 0; var profitKnown = 0;
+      var inflow = 0; var outflow = 0; var flowKnown = 0;
+      identities.forEach(function (identity) {
+        var series = byIdentity[identity];
+        var currentIndex = -1; var latest = null;
+        for (var index = 0; index < series.length; index += 1) {
+          if (series[index].snapshot_date <= date) latest = series[index];
+          if (series[index].snapshot_date === date) currentIndex = index;
+          if (series[index].snapshot_date > date) break;
+        }
+        if (latest && number(latest.total_asset) !== null) {
+          asset += number(latest.total_asset); assetKnown += 1;
+        }
+        if (currentIndex < 0) return;
+        var current = series[currentIndex];
+        var dayPnl = number(current.day_pnl);
+        if (dayPnl !== null) { profit += dayPnl; profitKnown += 1; }
+        var previous = currentIndex > 0 ? series[currentIndex - 1] : null;
+        var currentAsset = number(current.total_asset);
+        var previousAsset = previous ? number(previous.total_asset) : null;
+        if (dayPnl === null || currentAsset === null || previousAsset === null) return;
+        var flow = currentAsset - previousAsset - dayPnl;
+        if (Math.abs(flow) < 100) flow = 0;
+        if (flow >= 0) inflow += flow; else outflow += Math.abs(flow);
+        flowKnown += 1;
+      });
+      return {
+        date: date,
+        asset: assetKnown === identities.length && identities.length ? asset : null,
+        inflow: flowKnown ? inflow : null,
+        outflow: flowKnown ? outflow : null,
+        netFlow: flowKnown ? inflow - outflow : null,
+        profit: profitKnown ? profit : null,
+        profitKnown: profitKnown,
+        flowKnown: flowKnown,
+        total: identities.length,
+      };
+    });
+  }
+
+  function performanceRows(view) {
+    var daily = performanceDailyRows();
+    var referenceDate = state.data.resolved_snapshot_date || state.data.latest_snapshot_date || (daily.length ? daily[daily.length - 1].date : '');
+    if (view === 'day' && referenceDate) daily = daily.filter(function (row) { return row.date.slice(0, 7) === referenceDate.slice(0, 7); });
+    if (view === 'month' && referenceDate) daily = daily.filter(function (row) { return row.date.slice(0, 4) === referenceDate.slice(0, 4); });
+    var grouped = {};
+    daily.forEach(function (row) {
+      var key = view === 'day' ? row.date : (view === 'month' ? row.date.slice(0, 7) : row.date.slice(0, 4));
+      if (!grouped[key]) grouped[key] = {
+        period: key, asset: null, inflow: 0, outflow: 0, profit: 0,
+        profitKnown: 0, flowKnown: 0, profitTotal: 0, flowTotal: 0,
+      };
+      var result = grouped[key];
+      if (row.asset !== null) result.asset = row.asset;
+      if (row.inflow !== null) result.inflow += row.inflow;
+      if (row.outflow !== null) result.outflow += row.outflow;
+      if (row.profit !== null) result.profit += row.profit;
+      result.profitKnown += row.profitKnown;
+      result.flowKnown += row.flowKnown;
+      result.profitTotal += row.total;
+      result.flowTotal += row.total;
+    });
+    return Object.keys(grouped).sort().map(function (key) {
+      var row = grouped[key];
+      row.inflow = row.flowKnown ? row.inflow : null;
+      row.outflow = row.flowKnown ? row.outflow : null;
+      row.netFlow = row.flowKnown ? row.inflow - row.outflow : null;
+      row.profit = row.profitKnown ? row.profit : null;
+      var base = row.asset !== null && row.netFlow !== null && row.profit !== null
+        ? row.asset - row.netFlow - row.profit : null;
+      row.returnRate = base === null || base === 0 ? null : row.profit / Math.abs(base) * 100;
+      return row;
+    });
+  }
+
+  function renderPerformance() {
+    var rows = performanceRows(state.performanceView).reverse();
+    var labels = { day: '按日', month: '按月', year: '按年' };
+    document.querySelectorAll('.investment-performance-tabs button').forEach(function (button) {
+      var active = button.getAttribute('data-period') === state.performanceView;
+      button.classList.toggle('is-active', active); button.setAttribute('aria-selected', String(active));
+    });
+    document.getElementById('investment-performance-scope').textContent = accountLabel(state.selectedAccount) + ' · ' + labels[state.performanceView];
+    document.getElementById('investment-performance').innerHTML = rows.map(function (row) {
+      var profitCoverage = row.profitKnown + '/' + row.profitTotal;
+      var flowCoverage = row.flowKnown + '/' + row.flowTotal;
+      var rateText = formatRate(row.returnRate);
+      if (row.returnRate !== null && (row.profitKnown < row.profitTotal || row.flowKnown < row.flowTotal)) rateText = '≈' + rateText;
+      return '<tr><td>' + escapeHtml(row.period) + '</td><td>' + formatMoney(row.asset) + '</td>'
+        + cell(row.inflow, formatSigned) + cell(row.outflow === null ? null : -row.outflow, formatSigned)
+        + cell(row.netFlow, formatSigned) + cell(row.profit, formatSigned) + '<td class="' + valueClass(row.returnRate) + '">' + rateText + '</td>'
+        + '<td class="investment-performance-coverage">盈亏 ' + profitCoverage + ' · 资金 ' + flowCoverage + '</td></tr>';
+    }).join('');
+    var note = state.performanceView === 'day'
+      ? '当前显示所选日期所在月份。资金流动按“资产变化 − 当日盈亏”推算；低于 100 元的差额视为估值与舍入误差。'
+      : '区间收益率采用期末资产、净流入和已采集投资收益的简单口径；覆盖不足时结果仅代表已采集部分。';
+    document.getElementById('investment-performance-note').textContent = note;
+    document.getElementById('investment-performance-section').hidden = rows.length === 0;
+  }
+
   function renderHoldings() {
     var rows = selectedHoldings().slice().sort(function (a, b) { return (number(b.market_value) || 0) - (number(a.market_value) || 0); });
     document.getElementById('investment-holdings-title').textContent = accountLabel(state.selectedAccount);
-    document.getElementById('investment-holding-count').textContent = rows.length + ' 项持仓';
+    var holdingDates = Array.from(new Set(rows.map(function (item) { return item.snapshot_date; }))).sort().reverse();
+    document.getElementById('investment-holding-count').textContent = rows.length + ' 项持仓' + (holdingDates.length ? ' · 数据日期 ' + holdingDates.join(' / ') : '');
     document.getElementById('investment-holdings').innerHTML = rows.map(function (item) {
       return '<tr><td>' + escapeHtml(item.account_name || accountLabel(item.account_key)) + '</td>'
-        + '<td>' + escapeHtml(item.instrument_code || '-') + '</td><td>' + escapeHtml(item.instrument_name || '-') + '</td>'
+        + '<td>' + escapeHtml(item.snapshot_date || '-') + '</td><td>' + escapeHtml(item.instrument_code || '-') + '</td><td>' + escapeHtml(item.instrument_name || '-') + '</td>'
         + cell(item.pnl_rate, formatRate) + '<td>' + formatMoney(item.market_value) + '</td>'
         + cell(item.day_pnl, formatSigned) + cell(item.day_pnl_rate, formatRate)
         + cell(item.pnl, formatSigned) + cell(item.total_pnl, formatSigned)
@@ -640,7 +834,7 @@ comments: false
   }
 
   function renderDetail() {
-    renderMetrics(); renderAccountTabs(); renderHoldings(); renderTrades();
+    renderMetrics(); renderAccountTabs(); renderPerformance(); renderHoldings(); renderTrades();
     document.getElementById('investment-holdings-panel').hidden = state.selectedView !== 'holdings';
     document.getElementById('investment-trades-panel').hidden = state.selectedView !== 'trades';
     document.querySelectorAll('.investment-view-tabs button').forEach(function (button) {
@@ -660,9 +854,14 @@ comments: false
     if (!button) return;
     state.selectedView = button.getAttribute('data-view'); renderDetail();
   });
+  document.querySelector('.investment-performance-tabs').addEventListener('click', function (event) {
+    var button = event.target.closest('button[data-period]');
+    if (!button) return;
+    state.performanceView = button.getAttribute('data-period'); renderPerformance();
+  });
 
   function hideData() {
-    ['investment-overview', 'investment-accounts-section', 'investment-detail-section', 'investment-history-section'].forEach(function (id) {
+    ['investment-overview', 'investment-accounts-section', 'investment-performance-section', 'investment-detail-section', 'investment-history-section'].forEach(function (id) {
       document.getElementById(id).hidden = true;
     });
   }
