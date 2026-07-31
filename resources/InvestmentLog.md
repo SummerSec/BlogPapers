@@ -66,7 +66,7 @@ comments: false
     <div class="investment-table-wrap">
       <table class="investment-table investment-table--accounts">
         <thead>
-          <tr><th>账户</th><th>总资产</th><th>持有盈亏</th><th>持有盈亏率</th><th>当日盈亏</th><th>当日盈亏率</th><th>持仓市值</th><th>现金</th></tr>
+          <tr><th>账户</th><th>总资产</th><th>较上个交易日</th><th>持有盈亏</th><th>持有盈亏率</th><th>当日盈亏</th><th>当日盈亏率</th><th>持仓市值</th><th>现金</th></tr>
         </thead>
         <tbody id="investment-accounts"></tbody>
       </table>
@@ -209,7 +209,7 @@ comments: false
 .investment-table { width: 100%; margin: 0; font-size: .84rem; }
 .investment-table th, .investment-table td { white-space: nowrap; text-align: right; }
 .investment-table th:first-child, .investment-table td:first-child { padding-left: .75rem; }
-.investment-table--accounts { min-width: 900px; }
+.investment-table--accounts { min-width: 1080px; }
 .investment-table--holdings { min-width: 1900px; }
 .investment-table--trades { min-width: 1120px; }
 .investment-table--holdings th:nth-child(-n+3), .investment-table--holdings td:nth-child(-n+3),
@@ -217,6 +217,9 @@ comments: false
 .investment-table--accounts th:first-child, .investment-table--accounts td:first-child { text-align: left; }
 .investment-ledger .is-positive { color: #d84b57; }
 .investment-ledger .is-negative { color: #268a63; }
+.investment-account-change strong, .investment-account-change small { display: block; }
+.investment-account-change strong { font: 600 .82rem/1.25 var(--font-code); }
+.investment-account-change small { margin-top: .18rem; color: var(--text-muted); font: .68rem/1.25 var(--font-code); }
 .investment-empty { margin: .9rem 0 0; color: var(--text-muted); }
 .investment-ledger__history { border-top: 1px solid var(--border-strong); padding-top: 1.5rem; }
 .investment-history-legend { display: flex; flex-wrap: wrap; gap: .55rem 1.25rem; margin-bottom: .75rem; color: var(--text-muted); font-size: .82rem; }
@@ -316,14 +319,44 @@ comments: false
   function cell(value, formatter) {
     return '<td class="' + valueClass(value) + '">' + formatter(value) + '</td>';
   }
-  function sum(items, field) {
-    var found = false;
-    var total = items.reduce(function (result, item) {
-      var value = number(item[field]);
-      if (value !== null) { found = true; return result + value; }
-      return result;
-    }, 0);
-    return found ? total : null;
+  function completeSum(items, field) {
+    if (!items.length) return null;
+    var values = items.map(function (item) { return number(item[field]); });
+    if (values.some(function (value) { return value === null; })) return null;
+    return values.reduce(function (result, value) { return result + value; }, 0);
+  }
+
+  function previousAccountSnapshot(account) {
+    var snapshots = Array.isArray(state.data.portfolio_snapshots) ? state.data.portfolio_snapshots : [];
+    var currentDate = String(account.snapshot_date || '');
+    var accountName = String(account.account_name || '').trim();
+    var candidates = snapshots.filter(function (item) {
+      return item.account_key === account.account_key
+        && item.snapshot_date < currentDate
+        && number(item.total_asset) !== null;
+    });
+    if (!candidates.length && accountName) {
+      candidates = snapshots.filter(function (item) {
+        return String(item.account_name || '').trim() === accountName
+          && item.snapshot_date < currentDate
+          && number(item.total_asset) !== null;
+      });
+    }
+    return candidates.sort(function (a, b) {
+      if (a.snapshot_date !== b.snapshot_date) return a.snapshot_date < b.snapshot_date ? 1 : -1;
+      return String(a.captured_at || '') < String(b.captured_at || '') ? 1 : -1;
+    })[0] || null;
+  }
+
+  function accountChangeCell(account) {
+    var previous = previousAccountSnapshot(account);
+    var currentAsset = number(account.total_asset);
+    var previousAsset = previous ? number(previous.total_asset) : null;
+    if (currentAsset === null || previousAsset === null) return '<td class="investment-account-change">-</td>';
+    var change = currentAsset - previousAsset;
+    var rate = previousAsset === 0 ? null : change / Math.abs(previousAsset) * 100;
+    return '<td class="investment-account-change ' + valueClass(change) + '"><strong>' + formatSigned(change) + '</strong>'
+      + '<small>' + formatRate(rate) + ' · 较 ' + escapeHtml(previous.snapshot_date.slice(5)) + '</small></td>';
   }
 
   function latestAccounts(data) {
@@ -332,7 +365,14 @@ comments: false
     var rows = snapshots.filter(function (item) { return item.snapshot_date === latest; });
     var specific = rows.filter(function (item) { return item.account_key !== 'all'; });
     if (specific.length) rows = specific;
-    return rows.sort(function (a, b) {
+    var latestByIdentity = {};
+    rows.forEach(function (item) {
+      var name = String(item.account_name || '').trim();
+      var identity = name ? 'name:' + name : 'key:' + item.account_key;
+      var current = latestByIdentity[identity];
+      if (!current || String(item.captured_at || '') >= String(current.captured_at || '')) latestByIdentity[identity] = item;
+    });
+    return Object.keys(latestByIdentity).map(function (identity) { return latestByIdentity[identity]; }).sort(function (a, b) {
       var ao = number(a.account_order); var bo = number(b.account_order);
       if (ao !== null || bo !== null) return (ao === null ? 999 : ao) - (bo === null ? 999 : bo);
       return String(a.account_name || '').localeCompare(String(b.account_name || ''), 'zh-CN');
@@ -361,13 +401,13 @@ comments: false
 
   function renderMetrics() {
     var holdings = selectedHoldings();
-    var totalAsset = sum(state.accounts, 'total_asset');
-    var totalPnl = sum(state.accounts, 'total_pnl');
-    var dayPnl = sum(state.accounts, 'day_pnl');
+    var totalAsset = completeSum(state.accounts, 'total_asset');
+    var totalPnl = completeSum(state.accounts, 'total_pnl');
+    var dayPnl = completeSum(state.accounts, 'day_pnl');
     var metrics = [
       ['账户总资产', formatMoney(totalAsset), ''],
       ['持有盈亏', formatSigned(totalPnl), valueClass(totalPnl)],
-      ['当日盈亏', formatSigned(dayPnl), valueClass(dayPnl)],
+      ['当日盈亏', dayPnl === null ? '数据不完整' : formatSigned(dayPnl), valueClass(dayPnl)],
       ['当前持仓', holdings.length + ' 项', ''],
     ];
     document.getElementById('investment-metrics').innerHTML = metrics.map(function (item) {
@@ -389,6 +429,7 @@ comments: false
     body.innerHTML = state.accounts.map(function (item) {
       return '<tr><td>' + escapeHtml(item.account_name || '未命名账户') + '</td>'
         + '<td>' + formatMoney(item.total_asset) + '</td>'
+        + accountChangeCell(item)
         + cell(item.total_pnl, formatSigned) + cell(item.total_return, formatRate)
         + cell(item.day_pnl, formatSigned) + cell(item.day_return, formatRate)
         + '<td>' + formatMoney(item.market_value) + '</td><td>' + formatMoney(item.cash) + '</td></tr>';
