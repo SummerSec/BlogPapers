@@ -1,7 +1,7 @@
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
-  'Access-Control-Allow-Headers': 'Authorization,Content-Type',
+  'Access-Control-Allow-Headers': 'Authorization,Content-Type,X-Review-Token',
   'Access-Control-Max-Age': '86400',
 };
 
@@ -27,6 +27,20 @@ const TEXT_LIMITS = {
   asset_type: 16,
   holding_key: 128,
   captured_at: 40,
+  flow_key: 128,
+  direction: 8,
+  category: 32,
+  currency: 8,
+  source_kind: 16,
+  status: 16,
+  benchmark_key: 64,
+  benchmark_name: 80,
+  journal_key: 128,
+  thesis: 600,
+  action: 600,
+  evidence: 1000,
+  invalidation: 600,
+  tags: 240,
 };
 
 const TRADE_HISTORY_PATH = '/caishen_fund/pc/account/v1/get_money_history';
@@ -226,6 +240,94 @@ async function normalizeOperation(input) {
   return record;
 }
 
+async function normalizeCashFlow(input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return null;
+  const occurredAt = cleanText(input.occurred_at, 'occurred_at');
+  const direction = cleanText(input.direction, 'direction');
+  const category = cleanText(input.category, 'category');
+  const amount = cleanNumber(input.amount);
+  const sourceKind = cleanText(input.source_kind, 'source_kind');
+  if (!isValidIsoDate(occurredAt) || !['in', 'out'].includes(direction)
+    || !category || amount === null || amount <= 0
+    || !['platform', 'inferred', 'manual'].includes(sourceKind)) return null;
+  const confidenceInput = cleanNumber(input.confidence);
+  const confidence = Math.min(1, Math.max(0, confidenceInput === null
+    ? (sourceKind === 'platform' ? 1 : sourceKind === 'manual' ? 0.9 : 0.5)
+    : confidenceInput));
+  const requestedStatus = cleanText(input.status, 'status');
+  const status = ['confirmed', 'pending', 'rejected'].includes(requestedStatus)
+    ? requestedStatus
+    : (sourceKind === 'inferred' ? 'pending' : 'confirmed');
+  const record = {
+    occurred_at: new Date(occurredAt).toISOString(),
+    account_key: cleanText(input.account_key, 'account_key') || 'all',
+    account_name: cleanText(input.account_name, 'account_name'),
+    account_type: cleanText(input.account_type, 'account_type'),
+    direction,
+    category,
+    amount,
+    currency: cleanText(input.currency, 'currency') || 'CNY',
+    source_kind: sourceKind,
+    confidence,
+    status,
+    source_path: cleanText(input.source_path, 'source_path'),
+    note: cleanText(input.note, 'note'),
+  };
+  record.flow_key = cleanText(input.flow_key, 'flow_key') || await hashValue(JSON.stringify(record));
+  return record;
+}
+
+async function normalizeBenchmark(input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return null;
+  const benchmarkKey = cleanText(input.benchmark_key, 'benchmark_key');
+  const benchmarkName = cleanText(input.benchmark_name, 'benchmark_name');
+  const snapshotDate = cleanText(input.snapshot_date, 'snapshot_date');
+  const closeValue = cleanNumber(input.close_value);
+  const capturedAt = cleanText(input.captured_at, 'captured_at');
+  const sourceKind = cleanText(input.source_kind, 'source_kind') || 'platform';
+  if (!benchmarkKey || !benchmarkName || !isValidSnapshotDate(snapshotDate)
+    || closeValue === null || closeValue <= 0
+    || !['platform', 'manual'].includes(sourceKind)) return null;
+  return {
+    benchmark_key: benchmarkKey,
+    benchmark_name: benchmarkName,
+    snapshot_date: snapshotDate,
+    close_value: closeValue,
+    captured_at: isValidIsoDate(capturedAt) ? new Date(capturedAt).toISOString() : new Date().toISOString(),
+    source_kind: sourceKind,
+    source_path: cleanText(input.source_path, 'source_path'),
+  };
+}
+
+async function normalizeReviewNote(input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) return null;
+  const reviewDate = cleanText(input.review_date, 'snapshot_date');
+  const thesis = cleanText(input.thesis, 'thesis');
+  const action = cleanText(input.action, 'action');
+  const evidence = cleanText(input.evidence, 'evidence');
+  const invalidation = cleanText(input.invalidation, 'invalidation');
+  if (!isValidSnapshotDate(reviewDate) || (!thesis && !action && !evidence && !invalidation)) return null;
+  const requestedStatus = cleanText(input.status, 'status');
+  const record = {
+    review_date: reviewDate,
+    account_key: cleanText(input.account_key, 'account_key') || 'all',
+    account_name: cleanText(input.account_name, 'account_name'),
+    thesis,
+    action,
+    evidence,
+    invalidation,
+    tags: cleanText(input.tags, 'tags'),
+    status: ['open', 'validated', 'invalidated'].includes(requestedStatus) ? requestedStatus : 'open',
+  };
+  record.note_key = cleanText(input.note_key, 'journal_key') || await hashValue(JSON.stringify({
+    review_date: record.review_date,
+    account_key: record.account_key,
+    thesis: record.thesis,
+    action: record.action,
+  }));
+  return record;
+}
+
 function normalizePortfolioSnapshot(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) return null;
   const snapshotDate = cleanText(input.snapshot_date, 'snapshot_date');
@@ -296,6 +398,13 @@ async function normalizeHoldingSnapshot(input) {
 function isAuthorized(request, env) {
   if (!env.INGEST_TOKEN) return false;
   return request.headers.get('Authorization') === `Bearer ${env.INGEST_TOKEN}`;
+}
+
+async function isReviewAuthorized(request, env) {
+  const token = request.headers.get('X-Review-Token') || '';
+  return Boolean(env.REVIEW_WRITE_TOKEN)
+    && token.length <= 200
+    && await constantTimeEqual(token, env.REVIEW_WRITE_TOKEN);
 }
 
 async function ingestOperations(request, env) {
@@ -444,6 +553,119 @@ async function listOperations(url, env) {
   return json({ generated_at: new Date().toISOString(), operations: result.results || [] }, 200, { 'Cache-Control': 'no-store' });
 }
 
+async function ingestCashFlows(request, env) {
+  if (!isAuthorized(request, env)) return json({ error: 'unauthorized' }, 401);
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: 'invalid JSON body' }, 400);
+  }
+  const inputs = Array.isArray(body.records) ? body.records : [body];
+  if (inputs.length === 0 || inputs.length > 500) {
+    return json({ error: 'records must contain between 1 and 500 items' }, 400);
+  }
+  const normalized = (await Promise.all(inputs.map(normalizeCashFlow))).filter(Boolean);
+  if (normalized.length === 0) return json({ error: 'no valid cash flow records' }, 400);
+  const statement = env.DB.prepare(`
+    INSERT INTO cash_flow_events (
+      flow_key, occurred_at, account_key, account_name, account_type,
+      direction, category, amount, currency, source_kind, confidence,
+      status, source_path, note
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(flow_key) DO UPDATE SET
+      account_name = COALESCE(excluded.account_name, account_name),
+      account_type = COALESCE(excluded.account_type, account_type),
+      direction = excluded.direction,
+      category = excluded.category,
+      amount = excluded.amount,
+      currency = excluded.currency,
+      source_kind = excluded.source_kind,
+      confidence = excluded.confidence,
+      status = excluded.status,
+      source_path = COALESCE(excluded.source_path, source_path),
+      note = COALESCE(excluded.note, note)
+  `);
+  const results = await env.DB.batch(normalized.map((record) => statement.bind(
+    record.flow_key, record.occurred_at, record.account_key, record.account_name,
+    record.account_type, record.direction, record.category, record.amount,
+    record.currency, record.source_kind, record.confidence, record.status,
+    record.source_path, record.note,
+  )));
+  const changed = results.reduce((total, result) => total + (result.meta?.changes || 0), 0);
+  return json({ accepted: normalized.length, changed }, 202);
+}
+
+async function ingestBenchmarks(request, env) {
+  if (!isAuthorized(request, env)) return json({ error: 'unauthorized' }, 401);
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: 'invalid JSON body' }, 400);
+  }
+  const inputs = Array.isArray(body.records) ? body.records : [body];
+  if (inputs.length === 0 || inputs.length > 5000) {
+    return json({ error: 'records must contain between 1 and 5000 items' }, 400);
+  }
+  const normalized = (await Promise.all(inputs.map(normalizeBenchmark))).filter(Boolean);
+  if (normalized.length === 0) return json({ error: 'no valid benchmark records' }, 400);
+  const statement = env.DB.prepare(`
+    INSERT INTO benchmark_snapshots (
+      benchmark_key, benchmark_name, snapshot_date, close_value,
+      captured_at, source_kind, source_path
+    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(benchmark_key, snapshot_date) DO UPDATE SET
+      benchmark_name = excluded.benchmark_name,
+      close_value = excluded.close_value,
+      captured_at = excluded.captured_at,
+      source_kind = excluded.source_kind,
+      source_path = COALESCE(excluded.source_path, source_path)
+  `);
+  const results = await env.DB.batch(normalized.map((record) => statement.bind(
+    record.benchmark_key, record.benchmark_name, record.snapshot_date, record.close_value,
+    record.captured_at, record.source_kind, record.source_path,
+  )));
+  const changed = results.reduce((total, result) => total + (result.meta?.changes || 0), 0);
+  return json({ accepted: normalized.length, changed }, 202);
+}
+
+async function saveReviewNote(request, env) {
+  if (!(await isReviewAuthorized(request, env))) {
+    return json({ error: 'review write access denied' }, 401, { 'Cache-Control': 'no-store' });
+  }
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: 'invalid JSON body' }, 400, { 'Cache-Control': 'no-store' });
+  }
+  const record = await normalizeReviewNote(body);
+  if (!record) return json({ error: 'invalid review note' }, 400, { 'Cache-Control': 'no-store' });
+  await env.DB.prepare(`
+    INSERT INTO investment_review_notes (
+      note_key, review_date, account_key, account_name, thesis, action,
+      evidence, invalidation, tags, status, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+    ON CONFLICT(note_key) DO UPDATE SET
+      review_date = excluded.review_date,
+      account_key = excluded.account_key,
+      account_name = excluded.account_name,
+      thesis = excluded.thesis,
+      action = excluded.action,
+      evidence = excluded.evidence,
+      invalidation = excluded.invalidation,
+      tags = excluded.tags,
+      status = excluded.status,
+      updated_at = CURRENT_TIMESTAMP
+  `).bind(
+    record.note_key, record.review_date, record.account_key, record.account_name,
+    record.thesis, record.action, record.evidence, record.invalidation,
+    record.tags, record.status,
+  ).run();
+  return json({ accepted: 1, note: record }, 202, { 'Cache-Control': 'no-store' });
+}
+
 async function getPortfolio(url, env) {
   const days = Math.min(Math.max(Number.parseInt(url.searchParams.get('days') || '365', 10), 1), 3650);
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
@@ -498,7 +720,45 @@ async function getPortfolio(url, env) {
       ORDER BY occurred_at DESC, id DESC
       LIMIT 100
     `).bind(selectionCutoff);
-  const operationsResult = await operationsStatement.all();
+  const cashFlowsStatement = requestedDate && resolvedDate
+    ? env.DB.prepare(`
+      SELECT occurred_at, account_key, account_name, account_type, direction,
+             category, amount, currency, source_kind, confidence, status, note
+      FROM cash_flow_events
+      WHERE substr(occurred_at, 1, 10) = ? AND status <> 'rejected'
+      ORDER BY occurred_at DESC, id DESC
+      LIMIT 500
+    `).bind(resolvedDate)
+    : env.DB.prepare(`
+      SELECT occurred_at, account_key, account_name, account_type, direction,
+             category, amount, currency, source_kind, confidence, status, note
+      FROM cash_flow_events
+      WHERE substr(occurred_at, 1, 10) >= ? AND substr(occurred_at, 1, 10) <= ?
+        AND status <> 'rejected'
+      ORDER BY occurred_at DESC, id DESC
+      LIMIT 5000
+    `).bind(since, selectionCutoff);
+  const benchmarksStatement = env.DB.prepare(`
+    SELECT benchmark_key, benchmark_name, snapshot_date, close_value, captured_at, source_kind
+    FROM benchmark_snapshots
+    WHERE snapshot_date >= ? AND snapshot_date <= ?
+    ORDER BY benchmark_key, snapshot_date
+    LIMIT 20000
+  `).bind(since, selectionCutoff);
+  const reviewNotesStatement = env.DB.prepare(`
+    SELECT note_key, review_date, account_key, account_name, thesis, action,
+           evidence, invalidation, tags, status, created_at, updated_at
+    FROM investment_review_notes
+    WHERE review_date <= ?
+    ORDER BY review_date DESC, updated_at DESC
+    LIMIT 200
+  `).bind(selectionCutoff);
+  const [operationsResult, cashFlowsResult, benchmarksResult, reviewNotesResult] = await Promise.all([
+    operationsStatement.all(),
+    cashFlowsStatement.all(),
+    benchmarksStatement.all(),
+    reviewNotesStatement.all(),
+  ]);
 
   let holdings = [];
   if (latestHoldingDate) {
@@ -549,6 +809,9 @@ async function getPortfolio(url, env) {
     portfolio_snapshots: portfolioResult.results || [],
     holdings,
     operations: operationsResult.results || [],
+    cash_flows: cashFlowsResult.results || [],
+    benchmarks: benchmarksResult.results || [],
+    review_notes: reviewNotesResult.results || [],
   }, 200, { 'Cache-Control': 'no-store' });
 }
 
@@ -565,6 +828,9 @@ export default {
       return listOperations(url, env);
     }
     if (request.method === 'POST' && url.pathname === '/api/operations') return ingestOperations(request, env);
+    if (request.method === 'POST' && url.pathname === '/api/cash-flows') return ingestCashFlows(request, env);
+    if (request.method === 'POST' && url.pathname === '/api/benchmarks') return ingestBenchmarks(request, env);
+    if (request.method === 'POST' && url.pathname === '/api/review-notes') return saveReviewNote(request, env);
     if (request.method === 'POST' && url.pathname === '/api/snapshots') return ingestSnapshots(request, env);
     if (request.method === 'GET' && url.pathname === '/api/portfolio') {
       if (!(await isReadAuthorized(request, env))) return json({ error: 'unauthorized' }, 401, { 'Cache-Control': 'no-store' });

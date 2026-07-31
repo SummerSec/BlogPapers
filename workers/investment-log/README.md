@@ -5,10 +5,13 @@
 ## 接口
 
 - `POST /api/operations`：单条或批量写入真实交易流水，需要 `Authorization: Bearer <INGEST_TOKEN>`；仅接受 `get_money_history` 来源且包含成交字段的记录。
+- `POST /api/cash-flows`：写入外部转入、转出、申购或赎回资金事件；原始流水、人工确认与推算记录带有独立来源和确认状态。
+- `POST /api/benchmarks`：批量写入比较基准的交易日净值或收盘值，用于严格同区间的组合收益与基准收益比较。
+- `POST /api/review-notes`：保存判断、行动、证据与失效条件，需要独立的 `X-Review-Token`，不会复用博客查看密码。
 - `POST /api/login`：使用访问密码换取 12 小时有效的签名会话令牌。
 - `GET /api/operations?days=90&limit=1000`：按 T+1 读取交易记录，需要登录接口签发的会话令牌。
 - `POST /api/snapshots`：批量写入账户与持仓快照，需要写入令牌；允许上海时间 18:00 后暂存当天数据，但股票实时快照日期必须与采集日期一致。
-- `GET /api/portfolio?days=365&date=YYYY-MM-DD`：返回 T+1 历史账户快照、最新已结算持仓和近期操作，需要会话令牌；可用 `date` 查看指定日期，缺少当天快照时回退到此前最近交易日。周一及周末自动回退到上周五，历史趋势不返回周末快照。
+- `GET /api/portfolio?days=365&date=YYYY-MM-DD`：返回 T+1 历史账户快照、最新已结算持仓、交易、外部资金流、比较基准和复盘日志，需要会话令牌；可用 `date` 查看指定日期，缺少当天快照时回退到此前最近交易日。周一及周末自动回退到上周五，历史趋势不返回周末快照。
 - `GET /health`：健康检查。
 
 服务端接收账户显示名称、脱敏后的账户键、账户与持仓指标及交易记录，不接收同花顺 Cookie、userid 或原始接口响应。投资读取接口受密码会话保护，健康检查保持公开。
@@ -22,6 +25,7 @@ wrangler d1 migrations apply sumsec-investment-log --remote
 wrangler secret put INGEST_TOKEN
 wrangler secret put READ_PASSWORD
 wrangler secret put SESSION_SECRET
+wrangler secret put REVIEW_WRITE_TOKEN
 wrangler deploy
 ```
 

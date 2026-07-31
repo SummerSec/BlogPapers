@@ -1,3 +1,5 @@
 # Copy this file to .dev.vars for local development. Never commit real values.
 READ_PASSWORD="change-me"
 SESSION_SECRET="replace-with-at-least-32-random-characters"
+INGEST_TOKEN="replace-with-a-random-ingest-token"
+REVIEW_WRITE_TOKEN="replace-with-a-separate-review-editor-token"
