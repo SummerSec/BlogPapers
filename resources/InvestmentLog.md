@@ -31,14 +31,24 @@ comments: false
       <div class="investment-ledger__date-actions">
         <div class="investment-ledger__date-cluster" role="group" aria-label="切换交易日">
           <button class="investment-ledger__date-step" type="button" id="investment-date-prev" aria-label="查看上一交易日">‹</button>
-          <label class="investment-ledger__date-picker" for="investment-date">
-            <span>选择日期</span>
+          <button class="investment-ledger__date-picker" type="button" id="investment-date-trigger" aria-haspopup="dialog" aria-expanded="false" aria-controls="investment-date-menu">
+            <span>快速选择</span>
             <time id="investment-date-display">最新快照</time>
-            <input id="investment-date" type="date" aria-describedby="investment-date-resolution">
-          </label>
+          </button>
           <button class="investment-ledger__date-step" type="button" id="investment-date-next" aria-label="查看下一交易日">›</button>
         </div>
         <button class="investment-ledger__date-latest" type="button" id="investment-date-latest">回到最新</button>
+        <div class="investment-ledger__date-menu" id="investment-date-menu" role="dialog" aria-label="快速选择历史日期" hidden>
+          <div class="investment-ledger__date-menu-head">
+            <strong>选择日期</strong>
+            <span>最近 10 个交易日</span>
+          </div>
+          <div class="investment-ledger__quick-dates" id="investment-quick-dates" role="listbox" aria-label="最近交易日"></div>
+          <label class="investment-ledger__exact-date" for="investment-date">
+            <span>其他日期</span>
+            <input id="investment-date" type="date" aria-describedby="investment-date-resolution">
+          </label>
+        </div>
       </div>
     </div>
   </header>
@@ -146,23 +156,40 @@ comments: false
 .investment-ledger__date-filter[hidden] { display: none; }
 .investment-ledger__date-copy strong { display: block; color: var(--text-strong); font: 650 .86rem/1.3 var(--font-heading); }
 .investment-ledger__date-copy span { display: block; margin-top: .2rem; color: var(--text-muted); font: .76rem/1.4 var(--font-code); }
-.investment-ledger__date-actions { display: flex; align-items: stretch; gap: .5rem; }
+.investment-ledger__date-actions { position: relative; display: flex; align-items: stretch; gap: .5rem; }
 .investment-ledger__date-cluster { display: grid; grid-template-columns: 2.5rem minmax(10.75rem, 1fr) 2.5rem; overflow: hidden; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--bg-elevated); }
-.investment-ledger__date-step, .investment-ledger__date-latest { border: 0; background: transparent; color: var(--text); cursor: pointer; transition: color .16s ease, background-color .16s ease, transform .12s ease; }
+.investment-ledger__date-step, .investment-ledger__date-picker, .investment-ledger__date-latest { border: 0; background: transparent; color: var(--text); cursor: pointer; transition: color .16s ease, background-color .16s ease, transform .12s ease; }
 .investment-ledger__date-step { min-width: 2.5rem; padding: 0; color: var(--text-muted); font: 500 1.45rem/1 var(--font-body); }
 .investment-ledger__date-step:first-child { border-right: 1px solid var(--border-strong); }
 .investment-ledger__date-step:last-child { border-left: 1px solid var(--border-strong); }
 .investment-ledger__date-picker { position: relative; display: flex; min-height: 42px; padding: .35rem .8rem; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; }
 .investment-ledger__date-picker span { color: var(--text-muted); font: .65rem/1.2 var(--font-body); }
 .investment-ledger__date-picker time { margin-top: .1rem; color: var(--text-strong); font: 650 .82rem/1.25 var(--font-code); white-space: nowrap; }
-.investment-ledger__date-picker input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; color-scheme: light dark; cursor: pointer; }
 .investment-ledger__date-latest { min-height: 44px; padding: .5rem .8rem; border: 1px solid var(--border-strong); border-radius: 6px; color: var(--text-muted); font: 600 .78rem/1 var(--font-body); white-space: nowrap; }
 .investment-ledger__date-step:hover, .investment-ledger__date-latest:hover, .investment-ledger__date-picker:hover { background: var(--bg-subtle); color: var(--color-signal); }
 .investment-ledger__date-picker:hover time { color: var(--color-signal); }
-.investment-ledger__date-step:active, .investment-ledger__date-latest:active { transform: scale(.97); }
+.investment-ledger__date-step:active, .investment-ledger__date-picker:active, .investment-ledger__date-latest:active { transform: scale(.97); }
 .investment-ledger__date-step:focus-visible, .investment-ledger__date-latest:focus-visible, .investment-ledger__date-picker:focus-within { outline: 2px solid var(--color-signal); outline-offset: -2px; }
 .investment-ledger__date-actions input:disabled, .investment-ledger__date-actions button:disabled { cursor: wait; opacity: .45; }
 .investment-ledger__date-actions button:disabled:hover { background: transparent; color: var(--text-muted); }
+.investment-ledger__date-menu { position: absolute; z-index: 4; top: calc(100% + .55rem); right: 0; width: min(22rem, calc(100vw - 2rem)); padding: .8rem; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--bg-elevated); box-shadow: 0 14px 36px rgba(12, 18, 20, .18); }
+.investment-ledger__date-menu[hidden] { display: none; }
+.investment-ledger__date-menu-head { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; }
+.investment-ledger__date-menu-head strong { color: var(--text-strong); font: 650 .84rem/1.3 var(--font-heading); }
+.investment-ledger__date-menu-head span { color: var(--text-muted); font: .7rem/1.3 var(--font-code); }
+.investment-ledger__quick-dates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem; margin-top: .65rem; }
+.investment-ledger__quick-dates button { display: flex; min-width: 0; min-height: 38px; align-items: center; justify-content: space-between; gap: .5rem; padding: .45rem .6rem; border: 1px solid transparent; border-radius: 4px; background: var(--bg-subtle); color: var(--text); cursor: pointer; }
+.investment-ledger__quick-dates button span { color: var(--text-strong); font: 650 .78rem/1 var(--font-code); }
+.investment-ledger__quick-dates button small { color: var(--text-muted); font: .68rem/1 var(--font-body); }
+.investment-ledger__quick-dates button:hover { border-color: var(--border-strong); color: var(--color-signal); }
+.investment-ledger__quick-dates button.is-active { border-color: var(--color-signal); background: transparent; }
+.investment-ledger__quick-dates button.is-active span, .investment-ledger__quick-dates button.is-active small { color: var(--color-signal); }
+.investment-ledger__quick-dates button:active { transform: scale(.98); }
+.investment-ledger__quick-dates button:focus-visible { outline: 2px solid var(--color-signal); outline-offset: 1px; }
+.investment-ledger__exact-date { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: .75rem; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--border-strong); }
+.investment-ledger__exact-date span { color: var(--text-muted); font: .76rem/1.3 var(--font-body); }
+.investment-ledger__exact-date input { min-width: 0; height: 38px; padding: 0 .6rem; border: 1px solid var(--border-strong); border-radius: 4px; background: var(--bg-subtle); color: var(--text-strong); color-scheme: light dark; font: .8rem/1 var(--font-code); }
+.investment-ledger__exact-date input:focus { outline: 2px solid var(--color-signal); outline-offset: 1px; }
 .investment-ledger__section { margin-top: 2rem; }
 .investment-ledger__section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
 .investment-ledger__section-head--compact { margin-top: 1.25rem; }
@@ -223,6 +250,7 @@ comments: false
   .investment-ledger__date-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
   .investment-ledger__date-cluster { grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem; }
   .investment-ledger__date-latest { padding-inline: .7rem; }
+  .investment-ledger__date-menu { right: 0; }
   .investment-history-chart { aspect-ratio: 4 / 3; }
   .investment-history-chart .history-axis { font-size: 36px; }
   .investment-history-chart .history-axis-title { display: none; }
@@ -241,7 +269,11 @@ comments: false
   var loginError = document.getElementById('investment-login-error');
   var session = document.getElementById('investment-session');
   var dateFilter = document.getElementById('investment-date-filter');
+  var dateActions = dateFilter.querySelector('.investment-ledger__date-actions');
   var dateInput = document.getElementById('investment-date');
+  var dateTrigger = document.getElementById('investment-date-trigger');
+  var dateMenu = document.getElementById('investment-date-menu');
+  var quickDates = document.getElementById('investment-quick-dates');
   var dateDisplay = document.getElementById('investment-date-display');
   var dateResolution = document.getElementById('investment-date-resolution');
   var datePrev = document.getElementById('investment-date-prev');
@@ -598,6 +630,7 @@ comments: false
     hideData();
     session.hidden = true;
     dateFilter.hidden = true;
+    setDateMenu(false, false);
     auth.hidden = false;
     loginError.textContent = message || '';
     loginError.hidden = !message;
@@ -631,12 +664,45 @@ comments: false
     return date.getFullYear() + '.' + pad(date.getMonth() + 1) + '.' + pad(date.getDate()) + ' ' + weekdays[date.getDay()];
   }
 
+  function calendarWeekday(value) {
+    var date = parseCalendarDate(value);
+    return date ? ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getDay()] : '';
+  }
+
   function adjacentBusinessDate(value, direction) {
     var date = parseCalendarDate(value);
     if (!date) return '';
     do { date.setDate(date.getDate() + direction); }
     while (date.getDay() === 0 || date.getDay() === 6);
     return calendarDateValue(date);
+  }
+
+  function renderQuickDates() {
+    var cursor = state.latestSettledDate || dateInput.value;
+    var activeDate = dateInput.value || state.latestSettledDate;
+    var dates = [];
+    while (cursor && dates.length < 10) {
+      dates.push(cursor);
+      cursor = adjacentBusinessDate(cursor, -1);
+    }
+    quickDates.innerHTML = dates.map(function (value) {
+      var active = value === activeDate;
+      return '<button type="button" role="option" data-date="' + value + '" class="' + (active ? 'is-active' : '') + '" aria-selected="' + active + '">'
+        + '<span>' + value.slice(5).replace('-', '.') + '</span><small>' + calendarWeekday(value) + '</small></button>';
+    }).join('');
+  }
+
+  function setDateMenu(open, returnFocus) {
+    if (open && state.loading) return;
+    dateMenu.hidden = !open;
+    dateTrigger.setAttribute('aria-expanded', String(open));
+    if (open) {
+      renderQuickDates();
+      var activeButton = quickDates.querySelector('button.is-active');
+      (activeButton || dateInput).focus();
+    } else if (returnFocus) {
+      dateTrigger.focus();
+    }
   }
 
   function updateDateNavigation() {
@@ -647,10 +713,13 @@ comments: false
     datePrev.disabled = state.loading || !current;
     dateNext.disabled = state.loading || !current || !state.latestSettledDate || current >= state.latestSettledDate || next > state.latestSettledDate;
     dateLatest.disabled = state.loading || !state.requestedDate;
+    dateTrigger.disabled = state.loading;
     dateInput.disabled = state.loading;
+    if (!dateMenu.hidden) renderQuickDates();
   }
 
   function setDateLoading(loading) {
+    if (loading) setDateMenu(false, false);
     state.loading = loading;
     updateDateNavigation();
   }
@@ -705,27 +774,62 @@ comments: false
 
   dateInput.addEventListener('change', function () {
     var token = sessionStorage.getItem(sessionKey);
-    if (token && dateInput.value) loadPortfolio(token, dateInput.value);
+    if (token && dateInput.value) {
+      setDateMenu(false, true);
+      loadPortfolio(token, dateInput.value);
+    }
+  });
+
+  dateTrigger.addEventListener('click', function () {
+    setDateMenu(dateMenu.hidden, false);
+  });
+
+  quickDates.addEventListener('click', function (event) {
+    var button = event.target.closest('button[data-date]');
+    var token = sessionStorage.getItem(sessionKey);
+    if (!button || !quickDates.contains(button) || !token) return;
+    var target = button.getAttribute('data-date');
+    dateInput.value = target;
+    setDateMenu(false, true);
+    loadPortfolio(token, target);
   });
 
   datePrev.addEventListener('click', function () {
     var token = sessionStorage.getItem(sessionKey);
     var target = adjacentBusinessDate(dateInput.value || state.latestSettledDate, -1);
-    if (token && target) loadPortfolio(token, target);
+    if (token && target) {
+      setDateMenu(false, false);
+      loadPortfolio(token, target);
+    }
   });
 
   dateNext.addEventListener('click', function () {
     var token = sessionStorage.getItem(sessionKey);
     var target = adjacentBusinessDate(dateInput.value || state.latestSettledDate, 1);
     if (target > state.latestSettledDate) target = state.latestSettledDate;
-    if (token && target) loadPortfolio(token, target);
+    if (token && target) {
+      setDateMenu(false, false);
+      loadPortfolio(token, target);
+    }
   });
 
   dateLatest.addEventListener('click', function () {
     var token = sessionStorage.getItem(sessionKey);
     if (!token) return;
+    setDateMenu(false, false);
     dateInput.value = '';
     loadPortfolio(token, '');
+  });
+
+  document.addEventListener('click', function (event) {
+    if (!dateMenu.hidden && !dateActions.contains(event.target)) setDateMenu(false, false);
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && !dateMenu.hidden) {
+      event.preventDefault();
+      setDateMenu(false, true);
+    }
   });
 
   loginForm.addEventListener('submit', function (event) {
