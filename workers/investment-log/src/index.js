@@ -440,8 +440,16 @@ async function listOperations(url, env) {
 async function getPortfolio(url, env) {
   const days = Math.min(Math.max(Number.parseInt(url.searchParams.get('days') || '365', 10), 1), 3650);
   const since = new Date(Date.now() - days * 86400000).toISOString().slice(0, 10);
-  const settlementCutoff = previousBusinessDate(shanghaiToday());
-  const [portfolioResult, latestDateResult, latestHoldingDateResult, operationsResult] = await env.DB.batch([
+  const latestSettledDate = previousBusinessDate(shanghaiToday());
+  const requestedDate = url.searchParams.get('date');
+  if (requestedDate && !isValidSnapshotDate(requestedDate)) {
+    return json({ error: 'date must use YYYY-MM-DD format' }, 400, { 'Cache-Control': 'no-store' });
+  }
+  if (requestedDate && requestedDate > latestSettledDate) {
+    return json({ error: 'date is not settled yet', latest_settled_date: latestSettledDate }, 400, { 'Cache-Control': 'no-store' });
+  }
+  const selectionCutoff = requestedDate || latestSettledDate;
+  const [portfolioResult, latestDateResult, latestHoldingDateResult] = await env.DB.batch([
     env.DB.prepare(`
       SELECT snapshot_date, account_key, account_name, account_type, account_order, total_asset, market_value,
              cash, day_pnl, day_return, total_pnl, total_return, captured_at
@@ -449,30 +457,42 @@ async function getPortfolio(url, env) {
       WHERE snapshot_date >= ? AND snapshot_date <= ?
         AND strftime('%w', snapshot_date) NOT IN ('0', '6')
       ORDER BY snapshot_date DESC, account_name, account_key
-    `).bind(since, settlementCutoff),
+    `).bind(since, selectionCutoff),
     env.DB.prepare(`
       SELECT MAX(snapshot_date) AS latest_date
       FROM portfolio_snapshots
       WHERE snapshot_date <= ? AND strftime('%w', snapshot_date) NOT IN ('0', '6')
     `)
-      .bind(settlementCutoff),
+      .bind(selectionCutoff),
     env.DB.prepare(`
       SELECT MAX(snapshot_date) AS latest_date
       FROM holding_snapshots
       WHERE snapshot_date <= ? AND strftime('%w', snapshot_date) NOT IN ('0', '6')
-    `).bind(settlementCutoff),
-    env.DB.prepare(`
+    `).bind(selectionCutoff),
+  ]);
+
+  const latestDate = latestDateResult.results?.[0]?.latest_date || null;
+  const latestHoldingDate = latestHoldingDateResult.results?.[0]?.latest_date || null;
+  const resolvedDate = latestDate || latestHoldingDate || null;
+  const operationsStatement = requestedDate && resolvedDate
+    ? env.DB.prepare(`
+      SELECT occurred_at, operation, account_key, account_name, account_type,
+             instrument_code, instrument_name, side, quantity, price, amount, fee, note
+      FROM investment_events
+      WHERE substr(occurred_at, 1, 10) = ?
+      ORDER BY occurred_at DESC, id DESC
+      LIMIT 100
+    `).bind(resolvedDate)
+    : env.DB.prepare(`
       SELECT occurred_at, operation, account_key, account_name, account_type,
              instrument_code, instrument_name, side, quantity, price, amount, fee, note
       FROM investment_events
       WHERE substr(occurred_at, 1, 10) <= ?
       ORDER BY occurred_at DESC, id DESC
       LIMIT 100
-    `).bind(settlementCutoff),
-  ]);
+    `).bind(selectionCutoff);
+  const operationsResult = await operationsStatement.all();
 
-  const latestDate = latestDateResult.results?.[0]?.latest_date || null;
-  const latestHoldingDate = latestHoldingDateResult.results?.[0]?.latest_date || null;
   let holdings = [];
   if (latestHoldingDate) {
     const result = await env.DB.prepare(`
@@ -490,6 +510,10 @@ async function getPortfolio(url, env) {
 
   return json({
     generated_at: new Date().toISOString(),
+    requested_date: requestedDate || null,
+    selection_cutoff: selectionCutoff,
+    latest_settled_date: latestSettledDate,
+    resolved_snapshot_date: resolvedDate,
     latest_snapshot_date: latestDate,
     latest_holding_date: latestHoldingDate,
     portfolio_snapshots: portfolioResult.results || [],

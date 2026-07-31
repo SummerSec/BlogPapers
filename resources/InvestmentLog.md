@@ -23,6 +23,16 @@ comments: false
       <div class="investment-ledger__status" id="investment-status" role="status">正在读取最新数据...</div>
       <button type="button" id="investment-logout">退出访问</button>
     </div>
+    <div class="investment-ledger__date-filter" id="investment-date-filter" hidden>
+      <div>
+        <label for="investment-date">查看日期</label>
+        <span id="investment-date-resolution">选择一个交易日查看历史快照</span>
+      </div>
+      <div class="investment-ledger__date-actions">
+        <input id="investment-date" type="date" aria-describedby="investment-date-resolution">
+        <button type="button" id="investment-date-latest">查看最新</button>
+      </div>
+    </div>
   </header>
 
   <section class="investment-ledger__section" id="investment-overview" hidden>
@@ -124,6 +134,16 @@ comments: false
 .investment-ledger__session { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
 .investment-ledger__session[hidden] { display: none; }
 .investment-ledger__session .investment-ledger__status { margin-top: 0; }
+.investment-ledger__date-filter { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-top: 1rem; padding: .8rem .9rem; border: 1px solid var(--border-strong); border-left: 3px solid var(--color-signal); border-radius: 4px; background: var(--bg-subtle); }
+.investment-ledger__date-filter[hidden] { display: none; }
+.investment-ledger__date-filter label { display: block; color: var(--text-strong); font: 650 .85rem/1.3 var(--font-heading); }
+.investment-ledger__date-filter span { display: block; margin-top: .2rem; color: var(--text-muted); font: .76rem/1.4 var(--font-code); }
+.investment-ledger__date-actions { display: flex; align-items: center; gap: .5rem; }
+.investment-ledger__date-actions input { height: 38px; padding: 0 .65rem; border: 1px solid var(--border-strong); border-radius: 4px; background: var(--bg-elevated); color: var(--text); color-scheme: light dark; font: .82rem/1 var(--font-code); }
+.investment-ledger__date-actions button { min-height: 38px; padding: .5rem .75rem; border: 1px solid var(--border-strong); border-radius: 4px; background: transparent; color: var(--text); cursor: pointer; }
+.investment-ledger__date-actions button:hover { border-color: var(--color-signal); color: var(--color-signal); }
+.investment-ledger__date-actions input:focus, .investment-ledger__date-actions button:focus { outline: 2px solid var(--color-signal); outline-offset: 1px; }
+.investment-ledger__date-actions input:disabled, .investment-ledger__date-actions button:disabled { cursor: wait; opacity: .6; }
 .investment-ledger__section { margin-top: 2rem; }
 .investment-ledger__section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .75rem; }
 .investment-ledger__section-head--compact { margin-top: 1.25rem; }
@@ -180,6 +200,8 @@ comments: false
   .investment-metric:nth-child(2) { border-right: 0; }
   .investment-metric:nth-child(n+3) { border-bottom: 0; }
   .investment-ledger__section-head { align-items: flex-start; flex-direction: column; gap: .25rem; }
+  .investment-ledger__date-filter { align-items: stretch; flex-direction: column; }
+  .investment-ledger__date-actions input { flex: 1; min-width: 0; }
   .investment-history-chart { aspect-ratio: 4 / 3; }
   .investment-history-chart .history-axis { font-size: 36px; }
   .investment-history-chart .history-axis-title { display: none; }
@@ -197,7 +219,11 @@ comments: false
   var passwordInput = document.getElementById('investment-password');
   var loginError = document.getElementById('investment-login-error');
   var session = document.getElementById('investment-session');
-  var state = { data: null, accounts: [], selectedAccount: 'all', selectedView: 'holdings' };
+  var dateFilter = document.getElementById('investment-date-filter');
+  var dateInput = document.getElementById('investment-date');
+  var dateResolution = document.getElementById('investment-date-resolution');
+  var dateLatest = document.getElementById('investment-date-latest');
+  var state = { data: null, accounts: [], selectedAccount: 'all', selectedView: 'holdings', requestedDate: '', requestSequence: 0 };
 
   function escapeHtml(value) {
     return String(value === null || value === undefined ? '' : value)
@@ -547,6 +573,7 @@ comments: false
   function showLogin(message) {
     hideData();
     session.hidden = true;
+    dateFilter.hidden = true;
     auth.hidden = false;
     loginError.textContent = message || '';
     loginError.hidden = !message;
@@ -560,31 +587,66 @@ comments: false
     status.textContent = '正在读取最新数据...';
   }
 
-  function loadPortfolio(token) {
+  function loadPortfolio(token, requestedDate) {
+    var requestId = ++state.requestSequence;
+    var requestUrl = endpoint + (requestedDate ? '&date=' + encodeURIComponent(requestedDate) : '');
+    state.requestedDate = requestedDate || '';
+    dateInput.disabled = true;
+    dateLatest.disabled = true;
     showSession();
-    return fetch(endpoint, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } })
+    return fetch(requestUrl, { headers: { 'Accept': 'application/json', 'Authorization': 'Bearer ' + token } })
       .then(function (response) {
         if (response.status === 401) {
           sessionStorage.removeItem(sessionKey);
           showLogin('访问已过期，请重新输入密码。');
           return null;
         }
-        if (!response.ok) throw new Error('HTTP ' + response.status);
+        if (!response.ok) return response.json().catch(function () { return {}; }).then(function (body) {
+          throw new Error(body.error || ('HTTP ' + response.status));
+        });
         return response.json();
       })
     .then(function (data) {
-      if (!data) return;
-      state.data = data; state.accounts = latestAccounts(data);
+      if (!data || requestId !== state.requestSequence) return;
+      state.data = data; state.accounts = latestAccounts(data); state.selectedAccount = 'all';
+      dateInput.max = data.latest_settled_date || '';
+      dateInput.value = requestedDate || data.latest_snapshot_date || '';
+      dateFilter.hidden = false;
+      var actualDate = data.resolved_snapshot_date || data.latest_snapshot_date || data.latest_holding_date;
+      if (requestedDate && actualDate && requestedDate !== actualDate) {
+        dateResolution.textContent = '选择 ' + requestedDate + '，实际回退到 ' + actualDate;
+      } else if (actualDate) {
+        dateResolution.textContent = '当前数据日期 ' + actualDate;
+      } else {
+        dateResolution.textContent = '该日期之前暂无快照';
+      }
       if (!state.accounts.length) { status.textContent = '尚无账户快照'; return; }
       renderAccounts(); renderHistory(); renderDetail();
       var latestDate = state.accounts[0].snapshot_date;
-      status.textContent = '已同步至 ' + latestDate;
+      status.textContent = requestedDate ? '正在查看 ' + latestDate : '已同步至 ' + latestDate;
       if (state.accounts.length === 1 && state.accounts[0].account_key === 'all') status.textContent += '，等待分类账户明细';
     })
     .catch(function (error) {
+      if (requestId !== state.requestSequence) return;
       status.textContent = '数据读取失败：' + error.message; status.classList.add('is-error');
+    }).finally(function () {
+      if (requestId !== state.requestSequence) return;
+      dateInput.disabled = false;
+      dateLatest.disabled = false;
     });
   }
+
+  dateInput.addEventListener('change', function () {
+    var token = sessionStorage.getItem(sessionKey);
+    if (token && dateInput.value) loadPortfolio(token, dateInput.value);
+  });
+
+  dateLatest.addEventListener('click', function () {
+    var token = sessionStorage.getItem(sessionKey);
+    if (!token) return;
+    dateInput.value = '';
+    loadPortfolio(token, '');
+  });
 
   loginForm.addEventListener('submit', function (event) {
     event.preventDefault();
@@ -619,7 +681,7 @@ comments: false
   });
 
   var storedToken = sessionStorage.getItem(sessionKey);
-  if (storedToken) loadPortfolio(storedToken);
+  if (storedToken) loadPortfolio(storedToken, '');
   else showLogin('');
 })();
 </script>
