@@ -481,7 +481,7 @@ comments: false
 
 <script>
 (function () {
-  var apiBase = 'https://sumsec-investment-log.sumsec.workers.dev';
+  var apiBase = 'https://invest.sumsec.me';
   var endpoint = apiBase + '/api/portfolio?days=3650';
   var sessionKey = 'sumsec-investment-read-session';
   var status = document.getElementById('investment-status');

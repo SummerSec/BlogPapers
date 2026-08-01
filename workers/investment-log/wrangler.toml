@@ -4,6 +4,10 @@ compatibility_date = "2026-07-18"
 workers_dev = true
 preview_urls = false
 
+routes = [
+  { pattern = "invest.sumsec.me", custom_domain = true }
+]
+
 [[d1_databases]]
 binding = "DB"
 database_name = "sumsec-investment-log"
