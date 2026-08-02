@@ -38,7 +38,7 @@ tags:
 
 <!--CLOUDFLARE_DNS_SYNC_BEGIN-->
 
-> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **72** 条原始记录，**60** 个主机名）。TXT 等内容已截断。
+> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **73** 条原始记录，**61** 个主机名）。TXT 等内容已截断。
 
 | 主机名 | 类型 | 内容（节选） | Proxied |
 | ------ | ---- | ------------ | ------- |
@@ -68,6 +68,7 @@ tags:
 | [gs.sumsec.me](https://gs.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [ht.sumsec.me](https://ht.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [img.sumsec.me](https://img.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
+| [invest.sumsec.me](https://invest.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
 | [jb.sumsec.me](https://jb.sumsec.me/) | CNAME | CNAME: ipfs.cloudflare.com | 是 |
 | [life.sumsec.me](https://life.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [linux.sumsec.me](https://linux.sumsec.me/) | CNAME | CNAME: sumsec.me | 是 |
