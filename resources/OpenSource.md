@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-08-03 20:01:17 UTC；共 27 个项目，累计 7,965 Stars。
+> 数据生成时间：2026-08-04 03:41:11 UTC；共 27 个项目，累计 7,965 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -131,7 +131,7 @@ comments: false
     <td class="num">14</td>
     <td class="project"><a href="https://github.com/SummerSec/SummerSec">SummerSec</a></td>
     <td class="num">36</td>
-    <td>2026-08-03</td>
+    <td>2026-08-04</td>
     <td class="readme-links"><a href="./open-source/SummerSec/README.html">README</a></td>
     <td></td>
   </tr>
@@ -203,7 +203,7 @@ comments: false
     <td class="num">23</td>
     <td class="project"><a href="https://github.com/SummerSec/github-profile">github-profile</a></td>
     <td class="num">3</td>
-    <td>2026-08-03</td>
+    <td>2026-08-04</td>
     <td class="readme-links"><a href="./open-source/github-profile/README.html">README</a></td>
     <td></td>
   </tr>
@@ -227,7 +227,7 @@ comments: false
     <td class="num">26</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar">DeepSonar</a></td>
     <td class="num">1</td>
-    <td>2026-08-03</td>
+    <td>2026-08-04</td>
     <td class="readme-links"><a href="./open-source/DeepSonar/README.html">README</a></td>
     <td>DeepSonar 深流循迹 · 让复杂执行持续收敛 DeepSonar 是一套完整的 Loop Graph 工程平台。人只需要提供任务标题和自然语言内容，hub_reason 读取任务画布后决定调用 Audit、Explore、Analyze、Review、Test 或 Code Agent；调度器负责状态机、幂等、沙箱、验证和过程记账，让多项目 Agent 的编排、执行、反馈与收敛形成可信闭环。</td>
   </tr>
