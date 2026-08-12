@@ -44,5 +44,6 @@ tags:
 | dist/github-snake.svg | [dist/github-snake.svg](./dist/github-snake.svg) |
 | dist/github-snake-dark.svg | [dist/github-snake-dark.svg](./dist/github-snake-dark.svg) |
 | dist/ocean.gif | [dist/ocean.gif](./dist/ocean.gif) |
+| bilibili-feed-card-rollback-forward.user.js | [bilibili-feed-card-rollback-forward.user.js](./bilibili-feed-card-rollback-forward.user.js) |
 
 ![QRcode_C2.png](./QRcode_C2.png)
