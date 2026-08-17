@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-08-17 13:09:15 UTC；共 27 个项目，累计 7,969 Stars。
+> 数据生成时间：2026-08-17 18:59:57 UTC；共 28 个项目，累计 7,970 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -225,6 +225,14 @@ comments: false
   </tr>
   <tr>
     <td class="num">26</td>
+    <td class="project"><a href="https://github.com/SummerSec/dsh-web-auth">dsh-web-auth</a></td>
+    <td class="num">1</td>
+    <td>2026-08-17</td>
+    <td class="readme-links"><a href="./open-source/dsh-web-auth/README.html">README</a></td>
+    <td>Transport-level authentication gate for the DeepSeek Harness Web GUI</td>
+  </tr>
+  <tr>
+    <td class="num">27</td>
     <td class="project"><a href="https://github.com/SummerSec/Diagrams">Diagrams</a></td>
     <td class="num">1</td>
     <td>2021-06-22</td>
@@ -232,7 +240,7 @@ comments: false
     <td>个人 图表 图片保存项目</td>
   </tr>
   <tr>
-    <td class="num">27</td>
+    <td class="num">28</td>
     <td class="project"><a href="https://github.com/SummerSec/blog-rss">blog-rss</a></td>
     <td class="num">1</td>
     <td>2023-01-10</td>
