@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-08-25 01:54:27 UTC；共 28 个项目，累计 7,973 Stars。
+> 数据生成时间：2026-08-25 07:10:37 UTC；共 28 个项目，累计 7,974 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -115,7 +115,7 @@ comments: false
     <td class="num">12</td>
     <td class="project"><a href="https://github.com/SummerSec/BlogPapers">BlogPapers</a></td>
     <td class="num">60</td>
-    <td>2026-08-24</td>
+    <td>2026-08-25</td>
     <td class="readme-links"><a href="./open-source/BlogPapers/README.html">README</a></td>
     <td>个人博客网站</td>
   </tr>
@@ -163,7 +163,7 @@ comments: false
     <td class="num">18</td>
     <td class="project"><a href="https://github.com/SummerSec/Gen-Image">Gen-Image</a></td>
     <td class="num">11</td>
-    <td>2026-08-24</td>
+    <td>2026-08-25</td>
     <td class="readme-links"><a href="./open-source/Gen-Image/README.html">README</a></td>
     <td>基于OPENAI 的 GPT Image 模型前端图像生成工作台</td>
   </tr>
@@ -179,14 +179,14 @@ comments: false
     <td class="num">20</td>
     <td class="project"><a href="https://github.com/SummerSec/LOF_Arbiter">LOF_Arbiter</a></td>
     <td class="num">9</td>
-    <td>2026-08-24</td>
+    <td>2026-08-25</td>
     <td class="readme-links"><a href="./open-source/LOF_Arbiter/README.html">README</a></td>
     <td>LOF_Arbiter (套利)</td>
   </tr>
   <tr>
     <td class="num">21</td>
     <td class="project"><a href="https://github.com/SummerSec/SumSec-Skills">SumSec-Skills</a></td>
-    <td class="num">7</td>
+    <td class="num">8</td>
     <td>2026-08-15</td>
     <td class="readme-links"><a href="./open-source/SumSec-Skills/README.html">README</a></td>
     <td>SummerSec 个人自定义Skill仓库</td>
@@ -195,7 +195,7 @@ comments: false
     <td class="num">22</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar">DeepSonar</a></td>
     <td class="num">6</td>
-    <td>2026-08-23</td>
+    <td>2026-08-25</td>
     <td class="readme-links"><a href="./open-source/DeepSonar/README.html">README</a></td>
     <td>DeepSonar 深流循迹 · 让复杂执行持续收敛 DeepSonar 是一套完整的 Loop Graph 工程平台。人只需要提供任务标题和自然语言内容，hub_reason 读取任务画布后决定调用 Audit、Explore、Analyze、Review、Test 或 Code Agent；调度器负责状态机、幂等、沙箱、验证和过程记账，让多项目 Agent 的编排、执行、反馈与收敛形成可信闭环。</td>
   </tr>
