@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-08-25 07:10:37 UTC；共 28 个项目，累计 7,974 Stars。
+> 数据生成时间：2026-08-25 13:13:40 UTC；共 28 个项目，累计 7,975 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -146,7 +146,7 @@ comments: false
   <tr>
     <td class="num">16</td>
     <td class="project"><a href="https://github.com/SummerSec/AI-Inner-Os">AI-Inner-Os</a></td>
-    <td class="num">16</td>
+    <td class="num">17</td>
     <td>2026-05-10</td>
     <td class="readme-links"><a href="./open-source/AI-Inner-Os/README.html">README</a> <a href="./open-source/AI-Inner-Os/README_CN.html">README_CN</a></td>
     <td>AI Inner OS 是一个面向 AI CLI 工具的插件，支持 Claude Code、Codex CLI、Cursor、OpenCode CLI。  它通过协议注入，让 AI 在正常完成任务的同时，额外输出一层可见的自由独白：  ▎InnerOS：这仓库现在还像毛坯房，先把承重墙立起来再说。 不预设人格，不限制语气。AI 可以吐槽、得意、焦虑、冷笑、跳跃联想——或者什么都不说。独白是否出现，由 AI 自己决定。</td>
