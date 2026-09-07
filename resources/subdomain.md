@@ -38,7 +38,7 @@ tags:
 
 <!--CLOUDFLARE_DNS_SYNC_BEGIN-->
 
-> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **73** 条原始记录，**61** 个主机名）。TXT 等内容已截断。
+> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **76** 条原始记录，**64** 个主机名）。TXT 等内容已截断。
 
 | 主机名 | 类型 | 内容（节选） | Proxied |
 | ------ | ---- | ------------ | ------- |
@@ -59,6 +59,7 @@ tags:
 | [codeql.sumsec.me](https://codeql.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [ddns.sumsec.me](https://ddns.sumsec.me/) | AAAA | AAAA: 2409:8a28:8b7:a2c0:fdc5:5815:2e17:d262 | 否 |
 | [deeplx.sumsec.me](https://deeplx.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
+| [desk.sumsec.me](https://desk.sumsec.me/) | CNAME | CNAME: a8b0c208-78dc-49b7-ac8e-ae1d1b4bef54.cfargotunn… | 是 |
 | [draw.sumsec.me](https://draw.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [gd.sumsec.me](https://gd.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [gemini.sumsec.me](https://gemini.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 否 |
@@ -88,8 +89,10 @@ tags:
 | [sl.sumsec.me](https://sl.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
 | [spat.sumsec.me](https://spat.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [steam.sumsec.me](https://steam.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
+| [sumpi.sumsec.me](https://sumpi.sumsec.me/) | CNAME | CNAME: 7d8277ef-c7e4-4d3d-bb96-81e072211c1d.cfargotunn… | 是 |
 | [sumsec.me](https://sumsec.me/) | A, AAAA, MX, TXT | A: 185.199.111.153；A: 185.199.110.153；A: 185.199.109.153；A: 185.199.108.153；AAAA: 2606:50c0:800… | 是 |
 | [sumsec.sumsec.me](https://sumsec.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
+| [sumwin.sumsec.me](https://sumwin.sumsec.me/) | CNAME | CNAME: a8b0c208-78dc-49b7-ac8e-ae1d1b4bef54.cfargotunn… | 是 |
 | [svgedit.sumsec.me](https://svgedit.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
 | [sy.sumsec.me](https://sy.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [tools.sumsec.me](https://tools.sumsec.me/) | CNAME | CNAME: cname.vercel-dns.com | 是 |
