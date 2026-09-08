@@ -38,7 +38,7 @@ tags:
 
 <!--CLOUDFLARE_DNS_SYNC_BEGIN-->
 
-> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **76** 条原始记录，**64** 个主机名）。TXT 等内容已截断。
+> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **77** 条原始记录，**65** 个主机名）。TXT 等内容已截断。
 
 | 主机名 | 类型 | 内容（节选） | Proxied |
 | ------ | ---- | ------------ | ------- |
@@ -104,6 +104,7 @@ tags:
 | [vnc.sumsec.me](https://vnc.sumsec.me/) | CNAME | CNAME: c424a3e4-916b-4174-8d44-c9e59b54fbb5.cfargotunn… | 是 |
 | [vps.sumsec.me](https://vps.sumsec.me/) | A | A: 107.175.245.109 | 否 |
 | [webcheck.sumsec.me](https://webcheck.sumsec.me/) | CNAME | CNAME: cute-hotteok-8af4f6.netlify.app | 是 |
+| [webdev.sumsec.me](https://webdev.sumsec.me/) | CNAME | CNAME: davflare-by2.pages.dev | 是 |
 | [www.sumsec.me](https://www.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [xget.sumsec.me](https://xget.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
 
