@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-09-11 11:27:58 UTC；共 29 个项目，累计 7,987 Stars。
+> 数据生成时间：2026-09-11 14:28:35 UTC；共 29 个项目，累计 7,989 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -161,6 +161,14 @@ comments: false
   </tr>
   <tr>
     <td class="num">18</td>
+    <td class="project"><a href="https://github.com/SummerSec/LOF_Arbiter">LOF_Arbiter</a></td>
+    <td class="num">11</td>
+    <td>2026-09-11</td>
+    <td class="readme-links"><a href="./open-source/LOF_Arbiter/README.html">README</a></td>
+    <td>LOF_Arbiter (套利)</td>
+  </tr>
+  <tr>
+    <td class="num">19</td>
     <td class="project"><a href="https://github.com/SummerSec/Gen-Image">Gen-Image</a></td>
     <td class="num">11</td>
     <td>2026-09-10</td>
@@ -168,7 +176,7 @@ comments: false
     <td>基于OPENAI 的 GPT Image 模型前端图像生成工作台</td>
   </tr>
   <tr>
-    <td class="num">19</td>
+    <td class="num">20</td>
     <td class="project"><a href="https://github.com/SummerSec/template">template</a></td>
     <td class="num">10</td>
     <td>2022-12-26</td>
@@ -176,17 +184,9 @@ comments: false
     <td>个人使用模板仓库</td>
   </tr>
   <tr>
-    <td class="num">20</td>
-    <td class="project"><a href="https://github.com/SummerSec/LOF_Arbiter">LOF_Arbiter</a></td>
-    <td class="num">10</td>
-    <td>2026-09-11</td>
-    <td class="readme-links"><a href="./open-source/LOF_Arbiter/README.html">README</a></td>
-    <td>LOF_Arbiter (套利)</td>
-  </tr>
-  <tr>
     <td class="num">21</td>
     <td class="project"><a href="https://github.com/SummerSec/SumSec-Skills">SumSec-Skills</a></td>
-    <td class="num">8</td>
+    <td class="num">9</td>
     <td>2026-08-15</td>
     <td class="readme-links"><a href="./open-source/SumSec-Skills/README.html">README</a></td>
     <td>SummerSec 个人自定义Skill仓库</td>
