@@ -387,10 +387,10 @@
     var meta = document.querySelector('meta[name="theme-color"]');
     if (theme === 'dark') {
       root.setAttribute('data-theme', 'dark');
-      if (meta) meta.setAttribute('content', '#1b1b1d');
+      if (meta) meta.setAttribute('content', '#0f1716');
     } else {
       root.removeAttribute('data-theme');
-      if (meta) meta.setAttribute('content', '#fafafa');
+      if (meta) meta.setAttribute('content', '#f3efe7');
     }
     try {
       localStorage.setItem('sumsec-theme', theme);
@@ -655,7 +655,7 @@
       var routes = gsap.utils.toArray('[data-route-line]');
       var nodes = gsap.utils.toArray('[data-console-node]');
       var packets = gsap.utils.toArray('[data-console-packet]');
-      var contentItems = ['.home-hero__label', '.home-hero__title', '.home-hero__tagline', '.home-hero__actions > *', '.view-stats--hero'];
+      var contentItems = ['.home-hero__label', '.home-hero__title', '.home-hero__tagline', '.home-hero__thesis', '.home-hero__actions > *', '.view-stats--hero'];
       var toolbar = document.querySelector('.home-index__toolbar');
       var rows = gsap.utils.toArray('.home-index tbody tr');
 
@@ -685,6 +685,7 @@
         .from('.home-hero__label', { y: 18, autoAlpha: 0, duration: 0.5 })
         .from('.home-hero__title', { y: 34, scale: 0.98, autoAlpha: 0, duration: 0.72 }, '<0.08')
         .from('.home-hero__tagline', { y: 16, autoAlpha: 0, duration: 0.52 }, '<0.2')
+        .from('.home-hero__thesis', { y: 12, autoAlpha: 0, duration: 0.46 }, '<0.12')
         .from('.home-hero__actions > *', { y: 14, autoAlpha: 0, stagger: 0.08, duration: 0.42 }, '<0.12')
         .from('.view-stats--hero', { y: 10, autoAlpha: 0, duration: 0.42 }, '<0.08')
         .to('.home-hero__signal', { autoAlpha: 1, scale: 1, duration: 1.05 }, 0.08)

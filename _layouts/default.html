@@ -107,7 +107,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{{ page.description | default: site.description | default: 'SummerSec · 安全研究' }}">
-  <meta name="theme-color" content="#f6f8f7">
+  <meta name="theme-color" content="#f3efe7">
   <meta name="color-scheme" content="light dark">
   <meta name="stats-namespace" content="sumsecme">
   <meta name="image-preview-proxy" content="{{ site.image_preview_proxy | default: 'https://wsrv.nl/' | xml_escape }}">
@@ -120,7 +120,7 @@
   <link rel="apple-touch-icon" href="{{ '/resources/sumsec-icon.png' | relative_url }}?v={{ asset_rev }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ asset_rev }}">
   <script>
     (function () {
@@ -128,7 +128,7 @@
         var t = localStorage.getItem('sumsec-theme');
         if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
           document.documentElement.setAttribute('data-theme', 'dark');
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#111517');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0f1716');
         }
       } catch (e) {}
     })();
@@ -224,15 +224,16 @@
     </div>
     <div class="home-hero__layout">
       <div class="home-hero__content">
-        <p class="home-hero__label">{{ brand }} · 安全研究</p>
-        <h1 class="home-hero__title" id="hero-typewriter" data-typewriter='["安全研究","漏洞复盘","CodeQL 路径追踪","Agent 工程笔记"]'>安全研究</h1>
+        <p class="home-hero__label"><span>{{ brand }} / FIELD NOTES</span><span class="home-hero__edition">2026—ongoing</span></p>
+        <h1 class="home-hero__title" id="hero-typewriter" data-typewriter='["把问题追到尽头","漏洞复盘","CodeQL 路径追踪","Agent 工程笔记"]'>把问题追到尽头</h1>
         <p class="home-hero__tagline">{{ motto }}</p>
+        <p class="home-hero__thesis"><span>MY PRACTICE</span> 把漏洞、代码与 Agent 的路径，写成可以复盘的思考。</p>
         <div class="home-hero__actions">
           <a href="#home-timeline" class="home-hero__cta">
-            <span>进入研究台</span>
+            <span>阅读研究记录</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
           </a>
-          <a href="{{ '/resources/Archives.html' | relative_url }}" class="home-hero__ghost">查看归档</a>
+          <a href="{{ '/resources/Archives.html' | relative_url }}" class="home-hero__ghost">翻开归档 ↗</a>
         </div>
         {% assign _stats_banner_title = "使用 CountAPI；若长期为 — 可能是网络或广告拦截" %}
         {% if _stats_ep != "" %}
@@ -247,7 +248,11 @@
       <div class="home-console" data-gsap-console aria-label="SUMSEC 研究路径交互动画">
         <div class="home-console__chrome">
           <span></span><span></span><span></span>
-          <strong>SIGNAL-MAP</strong>
+          <strong>RESEARCH / TRACE</strong>
+        </div>
+        <div class="home-console__caption">
+          <span>TRACE NOTE // 001</span>
+          <strong>每一条路径，都会留下判断。</strong>
         </div>
         <svg class="home-console__map" viewBox="0 0 760 520" role="img" aria-label="安全研究路径图">
           <defs>
