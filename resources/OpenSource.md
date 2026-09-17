@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-09-16 21:22:26 UTC；共 29 个项目，累计 7,989 Stars。
+> 数据生成时间：2026-09-17 04:57:35 UTC；共 29 个项目，累计 7,982 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -26,7 +26,7 @@ comments: false
   <tr>
     <td class="num">1</td>
     <td class="project"><a href="https://github.com/SummerSec/ShiroAttack2">ShiroAttack2</a></td>
-    <td class="num">2,629</td>
+    <td class="num">2,628</td>
     <td>2026-06-04</td>
     <td class="readme-links"><a href="./open-source/ShiroAttack2/README.html">README</a> <a href="./open-source/ShiroAttack2/README_en.html">README_en</a></td>
     <td>shiro反序列化漏洞综合利用（仅限授权测试使用）</td>
@@ -34,7 +34,7 @@ comments: false
   <tr>
     <td class="num">2</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringBootExploit">SpringBootExploit</a></td>
-    <td class="num">1,894</td>
+    <td class="num">1,893</td>
     <td>2024-01-15</td>
     <td class="readme-links"><a href="./open-source/SpringBootExploit/README.html">README</a></td>
     <td>项目是根据LandGrey/SpringBootVulExploit清单编写，目的hvv期间快速利用漏洞、降低漏洞利用门槛。</td>
@@ -42,7 +42,7 @@ comments: false
   <tr>
     <td class="num">3</td>
     <td class="project"><a href="https://github.com/SummerSec/JavaLearnVulnerability">JavaLearnVulnerability</a></td>
-    <td class="num">943</td>
+    <td class="num">942</td>
     <td>2023-06-14</td>
     <td class="readme-links"><a href="./open-source/JavaLearnVulnerability/README.html">README</a></td>
     <td>Java漏洞学习笔记 Deserialization Vulnerability</td>
@@ -66,7 +66,7 @@ comments: false
   <tr>
     <td class="num">6</td>
     <td class="project"><a href="https://github.com/SummerSec/AgentInjectTool">AgentInjectTool</a></td>
-    <td class="num">280</td>
+    <td class="num">279</td>
     <td>2023-11-28</td>
     <td class="readme-links"><a href="./open-source/AgentInjectTool/README.html">README</a></td>
     <td>改造BeichenDream/InjectJDBC加入shiro获取key和修改key功能</td>
@@ -98,7 +98,7 @@ comments: false
   <tr>
     <td class="num">10</td>
     <td class="project"><a href="https://github.com/SummerSec/SPATool">SPATool</a></td>
-    <td class="num">135</td>
+    <td class="num">134</td>
     <td>2023-07-12</td>
     <td class="readme-links"><a href="./open-source/SPATool/README.html">README</a></td>
     <td>静态程序分析工具 主要生成方法的CFG和.java文件的AST</td>
@@ -131,7 +131,7 @@ comments: false
     <td class="num">14</td>
     <td class="project"><a href="https://github.com/SummerSec/SummerSec">SummerSec</a></td>
     <td class="num">36</td>
-    <td>2026-09-16</td>
+    <td>2026-09-17</td>
     <td class="readme-links"><a href="./open-source/SummerSec/README.html">README</a></td>
     <td></td>
   </tr>
@@ -161,14 +161,6 @@ comments: false
   </tr>
   <tr>
     <td class="num">18</td>
-    <td class="project"><a href="https://github.com/SummerSec/LOF_Arbiter">LOF_Arbiter</a></td>
-    <td class="num">11</td>
-    <td>2026-09-16</td>
-    <td class="readme-links"><a href="./open-source/LOF_Arbiter/README.html">README</a></td>
-    <td>LOF_Arbiter (套利)</td>
-  </tr>
-  <tr>
-    <td class="num">19</td>
     <td class="project"><a href="https://github.com/SummerSec/Gen-Image">Gen-Image</a></td>
     <td class="num">11</td>
     <td>2026-09-12</td>
@@ -176,7 +168,7 @@ comments: false
     <td>基于OPENAI 的 GPT Image 模型前端图像生成工作台</td>
   </tr>
   <tr>
-    <td class="num">20</td>
+    <td class="num">19</td>
     <td class="project"><a href="https://github.com/SummerSec/template">template</a></td>
     <td class="num">10</td>
     <td>2022-12-26</td>
@@ -184,9 +176,17 @@ comments: false
     <td>个人使用模板仓库</td>
   </tr>
   <tr>
+    <td class="num">20</td>
+    <td class="project"><a href="https://github.com/SummerSec/LOF_Arbiter">LOF_Arbiter</a></td>
+    <td class="num">10</td>
+    <td>2026-09-16</td>
+    <td class="readme-links"><a href="./open-source/LOF_Arbiter/README.html">README</a></td>
+    <td>LOF_Arbiter (套利)</td>
+  </tr>
+  <tr>
     <td class="num">21</td>
     <td class="project"><a href="https://github.com/SummerSec/SumSec-Skills">SumSec-Skills</a></td>
-    <td class="num">9</td>
+    <td class="num">8</td>
     <td>2026-09-16</td>
     <td class="readme-links"><a href="./open-source/SumSec-Skills/README.html">README</a></td>
     <td>SummerSec 个人自定义Skill仓库</td>
@@ -211,7 +211,7 @@ comments: false
     <td class="num">24</td>
     <td class="project"><a href="https://github.com/SummerSec/github-profile">github-profile</a></td>
     <td class="num">3</td>
-    <td>2026-09-16</td>
+    <td>2026-09-17</td>
     <td class="readme-links"><a href="./open-source/github-profile/README.html">README</a></td>
     <td></td>
   </tr>
