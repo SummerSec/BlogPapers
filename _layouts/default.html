@@ -140,6 +140,11 @@
   {% if _stats_ep != "" %}data-stats-endpoint="{{ _stats_ep | xml_escape }}"{% endif %}>
   <a class="skip-link" href="#main-content">跳到正文</a>
   <div id="read-progress" aria-hidden="true"></div>
+  <div class="site-ambient" aria-hidden="true">
+    <span class="site-ambient__spotlight"></span>
+    <span class="site-ambient__beam"></span>
+    <span class="site-ambient__grain"></span>
+  </div>
 
   <header class="site-header" data-site-header>
     <div class="navbar">
