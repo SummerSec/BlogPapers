@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-09-24 04:57:59 UTC；共 30 个项目，累计 7,981 Stars。
+> 数据生成时间：2026-09-24 11:52:53 UTC；共 30 个项目，累计 7,980 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -34,7 +34,7 @@ comments: false
   <tr>
     <td class="num">2</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringBootExploit">SpringBootExploit</a></td>
-    <td class="num">1,893</td>
+    <td class="num">1,892</td>
     <td>2024-01-15</td>
     <td class="readme-links"><a href="./open-source/SpringBootExploit/README.html">README</a></td>
     <td>项目是根据LandGrey/SpringBootVulExploit清单编写，目的hvv期间快速利用漏洞、降低漏洞利用门槛。</td>
@@ -115,7 +115,7 @@ comments: false
     <td class="num">12</td>
     <td class="project"><a href="https://github.com/SummerSec/BlogPapers">BlogPapers</a></td>
     <td class="num">60</td>
-    <td>2026-09-23</td>
+    <td>2026-09-24</td>
     <td class="readme-links"><a href="./open-source/BlogPapers/README.html">README</a></td>
     <td>个人博客网站</td>
   </tr>
@@ -179,7 +179,7 @@ comments: false
     <td class="num">20</td>
     <td class="project"><a href="https://github.com/SummerSec/LOF_Arbiter">LOF_Arbiter</a></td>
     <td class="num">10</td>
-    <td>2026-09-23</td>
+    <td>2026-09-24</td>
     <td class="readme-links"><a href="./open-source/LOF_Arbiter/README.html">README</a></td>
     <td>LOF_Arbiter (套利)</td>
   </tr>
