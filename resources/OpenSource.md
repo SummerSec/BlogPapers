@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-10-01 13:26:54 UTC；共 30 个项目，累计 7,983 Stars。
+> 数据生成时间：2026-10-01 22:46:00 UTC；共 30 个项目，累计 7,982 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -185,19 +185,19 @@ comments: false
   </tr>
   <tr>
     <td class="num">21</td>
-    <td class="project"><a href="https://github.com/SummerSec/SumSec-Skills">SumSec-Skills</a></td>
-    <td class="num">8</td>
-    <td>2026-09-16</td>
-    <td class="readme-links"><a href="./open-source/SumSec-Skills/README.html">README</a></td>
-    <td>SummerSec 个人自定义Skill仓库</td>
-  </tr>
-  <tr>
-    <td class="num">22</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar">DeepSonar</a></td>
     <td class="num">8</td>
     <td>2026-09-24</td>
     <td class="readme-links"><a href="./open-source/DeepSonar/README.html">README</a></td>
     <td>DeepSonar 深流循迹 · 让复杂执行持续收敛</td>
+  </tr>
+  <tr>
+    <td class="num">22</td>
+    <td class="project"><a href="https://github.com/SummerSec/SumSec-Skills">SumSec-Skills</a></td>
+    <td class="num">7</td>
+    <td>2026-09-16</td>
+    <td class="readme-links"><a href="./open-source/SumSec-Skills/README.html">README</a></td>
+    <td>SummerSec 个人自定义Skill仓库</td>
   </tr>
   <tr>
     <td class="num">23</td>
