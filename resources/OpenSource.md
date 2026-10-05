@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-10-05 05:47:57 UTC；共 30 个项目，累计 7,983 Stars。
+> 数据生成时间：2026-10-05 14:48:30 UTC；共 30 个项目，累计 7,982 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -115,14 +115,14 @@ comments: false
     <td class="num">12</td>
     <td class="project"><a href="https://github.com/SummerSec/BlogPapers">BlogPapers</a></td>
     <td class="num">61</td>
-    <td>2026-10-04</td>
+    <td>2026-10-05</td>
     <td class="readme-links"><a href="./open-source/BlogPapers/README.html">README</a></td>
     <td>个人博客网站</td>
   </tr>
   <tr>
     <td class="num">13</td>
     <td class="project"><a href="https://github.com/SummerSec/WebToolsCollections">WebToolsCollections</a></td>
-    <td class="num">52</td>
+    <td class="num">51</td>
     <td>2026-06-17</td>
     <td class="readme-links"><a href="./open-source/WebToolsCollections/README.html">README</a></td>
     <td>🐛糊涂虫工具箱 About The Project https://sumsec.me/2022/Hack-Tools2Web.html</td>
@@ -217,19 +217,19 @@ comments: false
   </tr>
   <tr>
     <td class="num">25</td>
-    <td class="project"><a href="https://github.com/SummerSec/semantic-linter">semantic-linter</a></td>
-    <td class="num">2</td>
-    <td>2026-08-15</td>
-    <td class="readme-links"><a href="./open-source/semantic-linter/README.html">README</a></td>
-    <td>一款面向 LLM 指令文件的插件和命令行工具，用于检测语义边界过宽的用词，并提供受保护的 Hook、项目级本地规则注入，以及针对 Skill、Prompt 和 Agent 的语义陷阱检查。</td>
-  </tr>
-  <tr>
-    <td class="num">26</td>
     <td class="project"><a href="https://github.com/SummerSec/dsh-web-auth">dsh-web-auth</a></td>
     <td class="num">2</td>
     <td>2026-08-30</td>
     <td class="readme-links"><a href="./open-source/dsh-web-auth/README.html">README</a></td>
     <td>Transport-level authentication gate for the DeepSeek Harness Web GUI</td>
+  </tr>
+  <tr>
+    <td class="num">26</td>
+    <td class="project"><a href="https://github.com/SummerSec/semantic-linter">semantic-linter</a></td>
+    <td class="num">2</td>
+    <td>2026-08-15</td>
+    <td class="readme-links"><a href="./open-source/semantic-linter/README.html">README</a></td>
+    <td>一款面向 LLM 指令文件的插件和命令行工具，用于检测语义边界过宽的用词，并提供受保护的 Hook、项目级本地规则注入，以及针对 Skill、Prompt 和 Agent 的语义陷阱检查。</td>
   </tr>
   <tr>
     <td class="num">27</td>
