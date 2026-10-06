@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-10-05 14:48:30 UTC；共 30 个项目，累计 7,982 Stars。
+> 数据生成时间：2026-10-06 00:06:42 UTC；共 30 个项目，累计 7,989 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -34,7 +34,7 @@ comments: false
   <tr>
     <td class="num">2</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringBootExploit">SpringBootExploit</a></td>
-    <td class="num">1,891</td>
+    <td class="num">1,892</td>
     <td>2024-01-15</td>
     <td class="readme-links"><a href="./open-source/SpringBootExploit/README.html">README</a></td>
     <td>项目是根据LandGrey/SpringBootVulExploit清单编写，目的hvv期间快速利用漏洞、降低漏洞利用门槛。</td>
@@ -42,7 +42,7 @@ comments: false
   <tr>
     <td class="num">3</td>
     <td class="project"><a href="https://github.com/SummerSec/JavaLearnVulnerability">JavaLearnVulnerability</a></td>
-    <td class="num">941</td>
+    <td class="num">942</td>
     <td>2023-06-14</td>
     <td class="readme-links"><a href="./open-source/JavaLearnVulnerability/README.html">README</a></td>
     <td>Java漏洞学习笔记 Deserialization Vulnerability</td>
@@ -50,7 +50,7 @@ comments: false
   <tr>
     <td class="num">4</td>
     <td class="project"><a href="https://github.com/SummerSec/learning-codeql">learning-codeql</a></td>
-    <td class="num">798</td>
+    <td class="num">799</td>
     <td>2022-03-18</td>
     <td class="readme-links"><a href="./open-source/learning-codeql/README.html">README</a></td>
     <td>CodeQL Java 全网最全的中文学习资料</td>
@@ -58,7 +58,7 @@ comments: false
   <tr>
     <td class="num">5</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringExploit">SpringExploit</a></td>
-    <td class="num">447</td>
+    <td class="num">448</td>
     <td>2022-06-14</td>
     <td class="readme-links"><a href="./open-source/SpringExploit/README.html">README</a></td>
     <td>🚀 一款为了学习go而诞生的漏洞利用工具</td>
@@ -74,7 +74,7 @@ comments: false
   <tr>
     <td class="num">7</td>
     <td class="project"><a href="https://github.com/SummerSec/Static-Analysis">Static-Analysis</a></td>
-    <td class="num">186</td>
+    <td class="num">187</td>
     <td>2023-01-11</td>
     <td class="readme-links"><a href="./open-source/Static-Analysis/README.html">README</a></td>
     <td>静态分析笔记 Static-Analysis-Notes 程序分析笔记 资源分享</td>
@@ -82,7 +82,7 @@ comments: false
   <tr>
     <td class="num">8</td>
     <td class="project"><a href="https://github.com/SummerSec/LookupInterface">LookupInterface</a></td>
-    <td class="num">165</td>
+    <td class="num">166</td>
     <td>2022-04-10</td>
     <td class="readme-links"><a href="./open-source/LookupInterface/README.html">README</a></td>
     <td>CodeQL 寻找 JNDI利用 Lookup接口</td>
@@ -90,7 +90,7 @@ comments: false
   <tr>
     <td class="num">9</td>
     <td class="project"><a href="https://github.com/SummerSec/BurpBountyProfiles">BurpBountyProfiles</a></td>
-    <td class="num">140</td>
+    <td class="num">141</td>
     <td>2021-02-08</td>
     <td class="readme-links"><a href="./open-source/BurpBountyProfiles/README.html">README</a></td>
     <td>BurpBounty插件的配置文件收集项目</td>
