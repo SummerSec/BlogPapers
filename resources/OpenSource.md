@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-10-09 22:42:23 UTC；共 30 个项目，累计 7,994 Stars。
+> 数据生成时间：2026-10-10 05:58:32 UTC；共 30 个项目，累计 7,993 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -131,7 +131,7 @@ comments: false
     <td class="num">14</td>
     <td class="project"><a href="https://github.com/SummerSec/SummerSec">SummerSec</a></td>
     <td class="num">36</td>
-    <td>2026-10-09</td>
+    <td>2026-10-10</td>
     <td class="readme-links"><a href="./open-source/SummerSec/README.html">README</a></td>
     <td></td>
   </tr>
@@ -146,7 +146,7 @@ comments: false
   <tr>
     <td class="num">16</td>
     <td class="project"><a href="https://github.com/SummerSec/AI-Inner-Os">AI-Inner-Os</a></td>
-    <td class="num">17</td>
+    <td class="num">16</td>
     <td>2026-05-10</td>
     <td class="readme-links"><a href="./open-source/AI-Inner-Os/README.html">README</a> <a href="./open-source/AI-Inner-Os/README_CN.html">README_CN</a></td>
     <td>AI Inner OS 是一个面向 AI CLI 工具的插件，支持 Claude Code、Codex CLI、Cursor、OpenCode CLI。  它通过协议注入，让 AI 在正常完成任务的同时，额外输出一层可见的自由独白：  ▎InnerOS：这仓库现在还像毛坯房，先把承重墙立起来再说。 不预设人格，不限制语气。AI 可以吐槽、得意、焦虑、冷笑、跳跃联想——或者什么都不说。独白是否出现，由 AI 自己决定。</td>
@@ -187,7 +187,7 @@ comments: false
     <td class="num">21</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar">DeepSonar</a></td>
     <td class="num">8</td>
-    <td>2026-09-24</td>
+    <td>2026-10-10</td>
     <td class="readme-links"><a href="./open-source/DeepSonar/README.html">README</a></td>
     <td>DeepSonar 深流循迹 · 让复杂执行持续收敛</td>
   </tr>
@@ -211,7 +211,7 @@ comments: false
     <td class="num">24</td>
     <td class="project"><a href="https://github.com/SummerSec/github-profile">github-profile</a></td>
     <td class="num">3</td>
-    <td>2026-10-09</td>
+    <td>2026-10-10</td>
     <td class="readme-links"><a href="./open-source/github-profile/README.html">README</a></td>
     <td></td>
   </tr>
