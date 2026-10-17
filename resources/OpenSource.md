@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-10-17 10:50:48 UTC；共 30 个项目，累计 8,003 Stars。
+> 数据生成时间：2026-10-17 15:39:53 UTC；共 30 个项目，累计 8,002 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -34,7 +34,7 @@ comments: false
   <tr>
     <td class="num">2</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringBootExploit">SpringBootExploit</a></td>
-    <td class="num">1,892</td>
+    <td class="num">1,891</td>
     <td>2024-01-15</td>
     <td class="readme-links"><a href="./open-source/SpringBootExploit/README.html">README</a></td>
     <td>项目是根据LandGrey/SpringBootVulExploit清单编写，目的hvv期间快速利用漏洞、降低漏洞利用门槛。</td>
