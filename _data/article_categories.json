@@ -218,6 +218,19 @@
       "keywords": ["投资记录", "持仓汇总", "账户资产"]
     },
     {
+      "slug": "network-ops",
+      "group": "工程实践",
+      "code": "NETOPS",
+      "name": "网络与运维",
+      "description": "家庭网络、旁路由、代理与基础设施的搭建和排障记录。",
+      "accent": "cyan",
+      "tags": ["树莓派", "Mihomo", "旁路由", "透明代理", "TPROXY", "DHCP", "网络"],
+      "keywords": ["树莓派旁路由", "Mihomo TPROXY", "透明代理", "DHCP 接管", "dnsmasq", "clash-for-linux", "IPv6"],
+      "articles": [
+        "2026/sumpi-mihomo-side-router.md"
+      ]
+    },
+    {
       "slug": "reviews-notes",
       "code": "LOG",
       "name": "复盘与随笔",
