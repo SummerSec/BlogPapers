@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-10-20 04:57:04 UTC；共 30 个项目，累计 8,002 Stars。
+> 数据生成时间：2026-10-20 11:45:14 UTC；共 30 个项目，累计 8,003 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -115,14 +115,14 @@ comments: false
     <td class="num">12</td>
     <td class="project"><a href="https://github.com/SummerSec/BlogPapers">BlogPapers</a></td>
     <td class="num">61</td>
-    <td>2026-10-19</td>
+    <td>2026-10-20</td>
     <td class="readme-links"><a href="./open-source/BlogPapers/README.html">README</a></td>
     <td>个人博客网站</td>
   </tr>
   <tr>
     <td class="num">13</td>
     <td class="project"><a href="https://github.com/SummerSec/WebToolsCollections">WebToolsCollections</a></td>
-    <td class="num">52</td>
+    <td class="num">53</td>
     <td>2026-06-17</td>
     <td class="readme-links"><a href="./open-source/WebToolsCollections/README.html">README</a></td>
     <td>🐛糊涂虫工具箱 About The Project https://sumsec.me/2022/Hack-Tools2Web.html</td>
