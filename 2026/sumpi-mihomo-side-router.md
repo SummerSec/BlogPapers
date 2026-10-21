@@ -3,11 +3,13 @@ tags:
 - blog-comments
 ---
 
-# 把树莓派变成家里的透明代理旁路由：Mihomo + TPROXY + DHCP 接管踩坑记
+# 把树莓派变成家里的透明代理旁路由：Mihomo + TPROXY + DNS-only 排障记
 
 一开始，这件事听起来很简单：家里所有连到华为 AX3 Pro 的设备，都能自动走代理，手机、电脑、平板不用一台台去填代理地址。
 
-真正动手之后才发现，装 Clash 只是最容易的一步。后面等着我的是两个 DHCP 服务器互抢、客户端死守旧 IP、Docker 默认丢转发、同网段双网卡的 ARP 乱窜、IPv6 悄悄绕过代理，以及“服务显示 ACK 了但手机根本没用”的经典错觉。
+真正动手之后才发现，装 Clash 只是最容易的一步。后面等着我的是两个 DHCP 服务器互抢、客户端死守旧 IP、Docker 默认丢转发、同网段双网卡的 ARP 乱窜、IPv6 悄悄绕过代理，以及“服务显示 ACK 了但手机根本没用”的经典错觉。最后稳定下来的方案保留华为路由器的 DHCP，让树莓派只做 DNS 和透明代理；早期 DHCP 接管实验继续作为踩坑记录保留，但不再是当前推荐架构。
+
+树莓派当然可以做 DHCP，这次仍把 DHCP 留给华为，是为了给家庭网络留一条业务上的备用路径：只要 AX3 Pro 还能正常拨号和供电，即使树莓派整机、服务、供电、网络链路或网线出故障，其他家人的设备仍能从华为自动拿到地址、网关和 DNS，继续正常上网。旁路由只影响主动选择它的设备，排查时也不会把全家的地址分配和上网入口一起绑定到 Pi；这是故障隔离设计，不是对树莓派硬件可靠性的判断。
 
 这篇文章把最终的架构、关键配置和踩坑过程完整记一遍。具体节点名、订阅地址、控制器密钥和设备的 MAC 都做了脱敏，只保留可复现的思路。
 
@@ -15,9 +17,12 @@ tags:
 
 目标很明确：
 
-- 华为 AX3 Pro 继续做主路由，负责拨号、NAT 和 Wi-Fi；
-- 树莓派 5 做旁路由，负责透明代理、DNS 和 DHCP；
-- 所有设备连上 Wi-Fi 后自动拿到“网关 `192.168.3.27`、DNS `192.168.3.27`”，不需要手动设置；
+- 华为 AX3 Pro（`192.168.3.1`）继续做主路由、NAT、Wi-Fi 和 DHCP，IPv6/RA 保持关闭；
+- 树莓派 5 做旁路由，负责透明代理和 DNS，不接管 DHCP；
+- `eth0` 使用静态 `192.168.3.27/24`，默认网关和本机 DNS 都指向 `192.168.3.1`；
+- `wlan0` 只做管理，使用华为 DHCP，当前租约曾为 `192.168.3.7`，这是动态地址，不是固定入口；
+- 华为使用两个名称不同的 Wi-Fi SSID 作为普通/备用入口和按需旁路由入口（下文用 2.4G/5G 举例，频段可以互换）；
+- 普通/备用 SSID 上的设备自动从华为 DHCP 获取地址、网关和 DNS `192.168.3.1`，需要走旁路由的 SSID 上的设备再自行把网关和 DNS 设为 `192.168.3.27`；
 - 出问题时能回滚，不能把家里的网搞成一次性工程。
 
 最终拓扑大概是这样：
@@ -25,24 +30,47 @@ tags:
 ```text
 Internet
    │
-华为 AX3 Pro（192.168.3.1，关闭 DHCP 和 IPv6/RA）
+华为 AX3 Pro（192.168.3.1，开启 DHCP，关闭 IPv6/RA）
    │ LAN
    ├── 树莓派 5 / sumpi
-   │     ├── eth0 192.168.3.27（静态，网关/DNS 的唯一入口）
-   │     ├── wlan0 192.168.3.25（仅管理，不参与转发）
+   │     ├── eth0 192.168.3.27/24（静态，网关/DNS 为 .1，路由 metric 100）
+   │     ├── wlan0 DHCP（仅管理，当前租约示例为 .7，默认路由 metric 600）
    │     ├── Mihomo
    │     │     ├── mixed-port 7890
    │     │     ├── tproxy-port 7894
    │     │     └── DNS 127.0.0.1:1053
-   │     ├── dnsmasq
-   │     │     ├── 监听 192.168.3.27:53
-   │     │     └── DHCP 下发网关/DNS 192.168.3.27
+   │     ├── dnsmasq（DNS-only）
+   │     │     └── 监听 192.168.3.27:53，转发到 127.0.0.1:1053
    │     └── nftables TPROXY + 策略路由
-   └── 手机 / 电脑 / 平板
-         └── 从树莓派 DHCP 获取地址，网关/DNS 指向 .27
+   ├── 华为 Wi-Fi 普通/备用 SSID（示例：2.4G）
+   │     └── 客户端自动 DHCP，网关/DNS 为 .1
+   └── 华为 Wi-Fi 旁路由 SSID（示例：5G）
+         └── 选中的客户端手动设置网关/DNS 为 .27
 ```
 
-树莓派本身不发射 Wi-Fi。设备还是连华为的 Wi-Fi，只是网关和 DNS 换成了树莓派；树莓派再把需要代理的流量接住，剩下交给 Mihomo 的规则决定直连还是走节点。
+树莓派本身不发射 Wi-Fi，两个入口都由华为发射。上面的 2.4G/5G 只是便于识别的示例，频段可以对换；关键是先关闭“5G 优选/双频合一”或确保两个 SSID 名称不同，再在客户端系统里分别保存自动 DHCP 和手动网关/DNS 配置。华为对含 AX3 Pro 机型的分频说明可参考[官方文档](https://consumer.huawei.com/cn/support/content/zh-cn00414341/)，具体菜单名称以当前固件为准。频段本身不会让 AX3 Pro 自动下发两套不同的网关或 DNS。只有选中的客户端把网关和 DNS 改成 `.27`，树莓派才会接住它们的 DNS 和透明流量，普通/备用入口上的设备仍由 `.1` 直接提供网络。
+
+### 接口地址必须在 Pi 自己的网络配置里声明
+
+拓扑里写“`eth0` 静态 `.27`”并不等于 dnsmasq 的 `dhcp-host` 预留。当前实际使用的是 systemd-networkd 的 drop-in，覆盖 `/run/systemd/network/10-netplan-eth0.network`：
+
+```ini
+# /etc/systemd/network/10-netplan-eth0.network.d/90-sumpi-gateway.conf
+[Match]
+Name=eth0
+
+[Network]
+DHCP=no
+Address=192.168.3.27/24
+IPv6AcceptRA=no
+DNS=192.168.3.1
+
+[Route]
+Gateway=192.168.3.1
+Metric=100
+```
+
+`wlan0` 一直从华为 DHCP 获取管理地址；`.25` 和本次排查时拿到的 `.7` 都是历史租约，不是固定入口，默认路由 metric 为 `600`。若只看到路由器识别到 Pi 的 MAC、却没有 DHCP 租约，先确认 `.27` 的静态配置和 `eth0` carrier，再判断是不是“没有 IP”。
 
 ## 二、为什么不是“每台设备填代理”
 
@@ -52,9 +80,22 @@ Internet
 - App 不一定会遵守系统代理，尤其是自己实现网络栈的应用；
 - 设备一多，配置和维护成本会迅速失控。
 
-旁路由的吸引力就在于：**设备什么都不用改，网关和 DNS 已经被 DHCP 指到树莓派**。
+旁路由的吸引力在于：需要代理的客户端只需把网关和 DNS 指向树莓派，应用本身不用填 HTTP/SOCKS 代理。
 
-问题也在这里。华为 AX3 Pro 的 DHCP 不能自定义下发的网关地址，所以只能让树莓派接管 DHCP 和 DNS。于是整个工程从“装一个代理”变成了“在家庭网络里安全地替换掉一半的基础设施”。
+早期尝试曾经让树莓派接管 DHCP，但两个 DHCP 服务器互抢，恢复成本高。树莓派具备做 DHCP 的能力，当前仍保留 AX3 Pro DHCP，是为了让普通/备用 SSID 在 Pi 整机、服务、供电、网络链路或网线出问题时继续由华为提供地址、网关和 DNS；这把故障影响限制在选择旁路由的设备，而不是让 Pi 成为全家的单点。地址分配和透明代理拆开，也避免为了修改网关而替换家庭网络的基础设施。
+
+两个 SSID 只是让客户端配置易于识别和切换，不能理解成 AX3 Pro 会按频段自动下发不同的 DHCP 网关或 DNS。下面的名称仅为示例，实际使用前要确保 SSID 不同；手机或其他系统能否按 SSID 保存独立的手动网关/DNS，要以系统能力为准。
+
+| 入口（示例） | 客户端网络配置 | 用途与故障时动作 |
+| --- | --- | --- |
+| `AX3-Home-2G`（普通/备用） | 自动 DHCP，预期地址、网关和 DNS 由华为提供，网关/DNS 为 `.1` | 普通直连；Pi 异常时切到这里绕过 Pi |
+| `AX3-Proxy-5G`（按需旁路由） | 在客户端网络设置中手动把网关和 DNS 设为 `.27`；若系统因此要求静态模式，保留有效且不冲突的客户端 IP 和 `/24` 前缀，不能把客户端自己的 IP 填成 `.27` | 只让选中的设备经过 Pi；Pi 异常时切回备用 SSID |
+
+这里的 `2G`/`5G` 与频段不是硬绑定，两个 SSID 也不提供自动故障切换。旁路由失效时，先把需要联网的设备切到自动 DHCP 的备用 SSID，确认网关/DNS 已回到 `.1`，再通过 SSH 或 IPv6 链路本地地址排查 Pi；这只能绕过 Pi，不能解决 AX3 Pro 或上游宽带本身的故障。
+
+![华为双 SSID 分离普通 DHCP 与按需旁路由，Pi 故障时切回备用入口](../assets/sumpi-mihomo-side-router-illustrations/01-dual-wifi-fallback-v2.png)
+
+_图：网关和 DNS 由客户端分别保存并手动切换，SSID 只是便于识别的入口，不由频段自动分配。_
 
 ## 三、组件和端口
 
@@ -64,6 +105,8 @@ Internet
 - `7894`：TPROXY 端口，局域网客户端的透明流量从这里进入 Mihomo；
 - `1053`：Mihomo 的本地 DNS，只监听 `127.0.0.1`；
 - `9090`：external controller，面板和 API。
+
+当前 `sumpi-dns`、`clash-for-linux` 和 `sumpi-gateway-netfilter` 均处于 active，Mihomo controller 仍绑定 `.27`；`53/7890/7894/9090` 可用，DNS 查询成功。这里的“active”仍要和实际监听端口分开验证，尤其是 `eth0` 没有 carrier 时。
 
 面板地址是：
 
@@ -119,7 +162,7 @@ table ip sumpi_tproxy {
         # 局域网、回环、多播、链路本地不碰
         iifname "eth0" ip saddr 192.168.3.0/24 ip daddr @private4 return
 
-        # DHCP 必须留给本地 dnsmasq
+        # 当前 AX3 保留 DHCP；这里不处理 DHCP 广播
         iifname "eth0" udp dport 67 return
 
         # 其余局域网 TCP/UDP 全部交给 Mihomo
@@ -143,9 +186,15 @@ ip route add local 0.0.0.0/0 dev lo table 233
 
 这里我特意把它做成独立的 systemd oneshot 服务：启动时先做 preflight，确认表名、规则优先级和路由表都没被占用，再应用规则；停止时只删除自己创建的对象，不做全局 flush。这样即使重启失败，也不会误删别的网络配置。
 
-## 五、DHCP/DNS 接管：让设备自动找到树莓派
+这段描述的是现有 netfilter 配置的工作方式；本次恢复没有新增策略路由，也没有把 controller 绑定改到别的地址。
 
-dnsmasq 的配置骨架如下：
+![TPROXY 保留原始目标地址并将选中流量交给 Mihomo 分流](../assets/sumpi-mihomo-side-router-illustrations/02-tproxy-transparent-routing.png)
+
+_图：TPROXY 接管的是匹配到的透明流量，具体走 DIRECT 还是代理仍由 Mihomo 规则决定。_
+
+## 五、DNS-only 接入：DHCP 留在华为
+
+当前 `/etc/sumpi-gateway/dnsmasq.conf` 已替换为既有 `dnsmasq-dns-only.conf` 的内容，dnsmasq 只做 DNS 转发：
 
 ```ini
 except-interface=wlan0
@@ -156,33 +205,24 @@ no-resolv
 no-poll
 server=127.0.0.1#1053
 cache-size=1000
-
-# 迁移期把旧 DHCP 的地址范围也包进来
-dhcp-range=192.168.3.2,192.168.3.254,255.255.255.0,1h
-dhcp-option=3,192.168.3.27
-dhcp-option=6,192.168.3.27
-dhcp-authoritative
-dhcp-leasefile=/var/lib/sumpi-gateway-dns/dnsmasq.leases
-
-# 基础设施和固定设备单独保留
-dhcp-host=<路由器 MAC>,192.168.3.1
-dhcp-host=<树莓派 eth0 MAC>,192.168.3.27
-dhcp-host=<树莓派 wlan0 MAC>,192.168.3.25
-dhcp-host=<手机 MAC>,192.168.3.54
 ```
 
-几个关键点：
+当前配置明确移除了 `dhcp-range`、`dhcp-option`、`dhcp-authoritative`、`dhcp-leasefile` 和所有 `dhcp-host`。`sumpi-dns` 处于 active，UDP 53 可用，UDP 67/547 没有监听；DNS 查询成功。AX3 Pro 保持 DHCP 开启，IPv6/RA 保持关闭。
 
-- DNS 只转发给 `127.0.0.1#1053`，不要同时把 `192.168.3.1` 或 `/etc/resolv.conf` 加进上游，否则 fake-IP 和分流规则会被绕过；
-- `except-interface=wlan0` 让 DHCP 只服务有线侧，避免树莓派自己的 Wi-Fi 接口也来抢；
-- `dhcp-authoritative` 适合“只留一个 DHCP 服务器”的场景，但它会 NAK 掉不在池子里的地址请求，后面会看到它的副作用；
-- 租约目录必须让 `dnsmasq` 用户可写，否则服务能启动，但租约永远写不进去。
+`except-interface=wlan0` 会排除树莓派自身 `wlan0` 上的 dnsmasq 监听（包括 DNS 和 DHCP），并不妨碍 AX3 Wi-Fi 客户端经由有线 LAN 访问树莓派 `eth0` 的 `.27:53`。当前没有 DHCP 服务；树莓派的 `wlan0` 管理地址由 AX3 DHCP 分配，当前租约 `.7` 只是一次动态结果；它既不是固定地址，也不是手机的网关。
 
-在路由器侧，必须关闭 AX3 Pro 的 **DHCP 服务器** 和 **IPv6/RA**。这一步不是“点一下保存”就结束：我遇到过页面看起来已经关闭、设备端却还在拿 `.1` 网关的情况。保存后要刷新页面确认状态，必要时重启路由器，再用客户端实际拿到的网关/DNS 验证。
+客户端接入分两类（不同 SSID 的使用约定见第二节）：
 
-## 六、踩坑一：两个 DHCP 服务器互抢
+- 普通/备用 SSID 上的客户端继续从 AX3 DHCP 获取地址、网关和 DNS `.1`；
+- 旁路由 SSID 上需要走代理的客户端把网关和 DNS 都改为 `192.168.3.27`；如果系统因此切换到静态网络模式，保留一个不冲突的 `192.168.3.0/24` 地址，不要把客户端自己的 IP 也填成 `.27`。
 
-这是整次排障里最隐蔽、也最伤的一个问题。
+`192.168.3.27` 是 Pi `eth0` 的本机静态地址，不是 DHCP 租约。应在 AX3 DHCP 池中排除或保留 `.27`，避免分配给别的设备；这篇文章不假设路由器已经替你完成了这项保留。
+
+早期的 DHCP 接管配置和失败现象放在下面几节，都是历史实验记录，不是当前应启用的配置。
+
+## 六、历史踩坑一：两个 DHCP 服务器互抢
+
+这是早期 DHCP 接管实验里最隐蔽、也最伤的一个问题；当前 AX3 DHCP 保持开启，Pi 不再运行 DHCP。
 
 现象：
 
@@ -213,9 +253,9 @@ sudo tcpdump -i eth0 -n -e -vv 'udp port 67 or udp port 68'
 
 只要看到两个不同的 `Server-ID` 在同一个交换里出现，就不用再猜了：先保证**全网只有一个 DHCP 服务器**。
 
-最终的结论很朴素：不是 TPROXY 的错，也不是 mihomo 的错，是网络里有两个“权威”在发地址。
+当时的结论很朴素：不是 TPROXY 的错，也不是 mihomo 的错，是实验网络里有两个“权威”在发地址。当前方案直接让 AX3 保留唯一 DHCP，避免再次进入这个状态。
 
-## 七、踩坑二：DHCP 池不覆盖旧租约
+## 七、历史踩坑二：DHCP 池不覆盖旧租约
 
 第二个坑紧跟着来。
 
@@ -229,19 +269,19 @@ sudo tcpdump -i eth0 -n -e -vv 'udp port 67 or udp port 68'
 dhcp-range=192.168.3.2,192.168.3.254,255.255.255.0,1h
 ```
 
-同时把基础设施地址单独保留：
+在当时的 DHCP 接管设计里，需要把基础设施地址单独保留：
 
 - `.1`：路由器；
-- `.25`：树莓派 wlan0 管理地址；
+- `.25`：早期拿到过的树莓派 wlan0 管理租约；当前 wlan0 仍由 AX3 DHCP 动态分配；
 - `.27`：树莓派 eth0 网关地址；
 - `.54`：手机固定地址；
 - 其他需要固定 IP 的设备，用 `dhcp-host` 预留。
 
-这样客户端申请旧地址时，只要在池子里且没被占用，就能直接 ACK；它会保留原来的 IP，同时从 ACK 里拿到新的网关/DNS `.27`。整个过程对用户几乎没有感知，也不需要逐台设备改配置。
+这样客户端申请旧地址时，只要在池子里且没被占用，就能直接 ACK；它会保留原来的 IP，同时从 ACK 里拿到新的网关/DNS `.27`。这段行为只适用于当时的 DHCP 接管实验，当前客户端改为手动选择网关/DNS。
 
 当然，池子开大之后要小心静态地址冲突。路由器、树莓派、NAS、打印机这类设备，最好都显式加 `dhcp-host` 保留。
 
-## 八、踩坑三：`dhcp-broadcast` 反而让鸿蒙忽略 OFFER
+## 八、历史踩坑三：`dhcp-broadcast` 反而让鸿蒙忽略 OFFER
 
 在还没发现“两个 DHCP 服务器互抢”之前，我一度以为是 OFFER 没有送到手机，于是给 dnsmasq 加了：
 
@@ -251,7 +291,7 @@ dhcp-broadcast
 
 它的作用是强制 DHCP 回复使用广播。对某些跨网桥、跨 VLAN 的场景确实有用，但在这台鸿蒙手机上，结果很反直觉：手机仍然只发 DISCOVER，不进入 REQUEST。抓包看，Pi 的 OFFER 已经发出去了，手机就是不接。
 
-后来把华为 DHCP 彻底关掉、并且去掉 `dhcp-broadcast` 之后，dnsmasq 回到默认行为：客户端没设置广播标志就发单播 OFFER，手机才正常走完 `REQUEST → ACK`。
+后来在那次 DHCP 接管实验里把华为 DHCP 彻底关掉、并且去掉 `dhcp-broadcast`，dnsmasq 才回到默认行为：客户端没设置广播标志就发单播 OFFER，手机正常走完 `REQUEST → ACK`。当前架构不启用这套 DHCP 配置。
 
 这件事的教训是：**不要在没定位根因之前叠加“看起来有用”的兼容选项**。`dhcp-broadcast` 没有错，它只是被用在了错误的阶段。等网络里只剩一个 DHCP 服务器后，默认行为往往就是最兼容的。
 
@@ -284,7 +324,7 @@ iptables -I FORWARD 1 \
 树莓派有两个接口：
 
 - `eth0`：`192.168.3.27`，有线网关；
-- `wlan0`：`192.168.3.25`，Wi-Fi 管理。
+- `wlan0`：从 AX3 DHCP 获取管理地址，曾拿到 `.25`、本次又拿到 `.7`；两者都是租约，不是固定地址。
 
 它们恰好在同一个 `/24` 里。Linux 默认的 ARP 行为（`arp_ignore=0`）允许它从任意接口回答本机地址的 ARP 请求。也就是说，客户端问“谁是 `192.168.3.27`”，树莓派可能从 `wlan0` 回一个 ARP，客户端就把网关解析到 `wlan0` 的 MAC。
 
@@ -308,9 +348,35 @@ net.ipv4.conf.eth0.send_redirects=0
 net.ipv4.conf.wlan0.send_redirects=0
 ```
 
-`arp_ignore=1` 的含义是：只回答“请求的地址确实配在收到请求的那个接口上”的 ARP。这样 `.27` 只会在 `eth0` 上被回答，`.25` 只会在 `wlan0` 上被回答，客户端不会再把网关解析到错误的接口。
+`arp_ignore=1` 的含义是：只回答“请求的地址确实配在收到请求的那个接口上”的 ARP。这样 `.27` 只会在 `eth0` 上被回答，当前动态管理地址（例如 `.7`）只会在 `wlan0` 上被回答，客户端不会再把网关解析到错误的接口。
 
 如果不需要 Wi-Fi 管理，最彻底的办法是把 `wlan0` 关掉，或者把它放到另一个网段。保留同网段管理地址时，上面这组 sysctl 基本是必需项。
+
+### 本次 eth0 失联复盘
+
+这次排查暴露了几个容易被“服务 active”掩盖的状态：
+
+- 最初 Pi 没有开机，Pi5 的 USB-A 主机口对接也不能提供登录链路；
+- `eth0` 处于 `NO-CARRIER` 时，静态 `.27` 尚未就绪，netfilter 的 preflight 会失败；服务没有自动重试，controller 仍绑定 `.27` 并不代表 `9090/7890/7894` 已经监听；
+- 插入网线、看到链路灯亮后，仍一度出现双向 IPv4 失联：定向从 `eth0` 到 `.1`/`.22` 的 ping 失败，而 `wlan0` 成功。同网段双网卡的默认路由选择会让 wlan0 的 IPv4 回程也走 eth0；当时 `rp_filter=2` 是宽松模式，不能据此把问题武断归因于严格反向路径过滤，也不能仅凭现象断定网线或驱动损坏；
+- 最终通过 wlan0 的 IPv6 链路本地地址恢复 SSH。路由器关闭 IPv6/RA 不会关闭接口自己的 `fe80::/10` 地址；这类地址只在本链路有效，可参考 [RFC 4291 §2.5.6](https://www.rfc-editor.org/rfc/rfc4291.html#section-2.5.6)。Windows 使用时要带作用域，例如 `fe80::1234:5678:9abc:def0%12`。
+
+OpenSSH 配置里 `%` 还会参与 token 展开，Windows 作用域应写成双百分号：
+
+```sshconfig
+Host sumpi6
+    HostName fe80::1234:5678:9abc:def0%%12
+    User sum
+    HostKeyAlias 192.168.3.27
+```
+
+这里的 IPv6 只是格式示例，不从真实 MAC 推导地址；`HostKeyAlias 192.168.3.27` 表示复用 `known_hosts` 中同一台 Pi 的 IPv4 地址条目，实际使用前应确认该条目确实属于这台 Pi，不能任意写一个别名，也不要用 `StrictHostKeyChecking=no` 绕过校验。`%%` 的规则见 [OpenSSH ssh_config TOKENS](https://man.openbsd.org/ssh_config#TOKENS)。
+
+随后正常重启树莓派一次，`boot_id` 已变化；重启后 `eth0`、`wlan0` 都能 ping 通 `.1`，服务和端口恢复，`GET /ui` 返回 `200`（`HEAD` 返回 `405` 不代表面板失效），仍无 DHCP 监听。本次没有改 controller 绑定、没有新增策略路由，也没有添加 service 自动重试配置。
+
+![同网段双网卡 IPv4 回程异常与 IPv6 链路本地地址恢复 Pi 管理](../assets/sumpi-mihomo-side-router-illustrations/03-dual-nic-ipv6-rescue-v2.png)
+
+_图：链路本地 IPv6 这里只用于同链路 SSH 救援管理，不提供备用上网；IPv4 双网卡回程仍需单独排查。_
 
 ## 十一、踩坑六：IPv6 绕过 TPROXY
 
@@ -325,7 +391,7 @@ net.ipv4.conf.wlan0.send_redirects=0
 - 手机开启 Private DNS/DoH 时，也可能绕过 Pi 的 DNS，拿到 AAAA；
 - 部分 App 甚至会走移动数据，连 Wi-Fi 网关都不看一眼。
 
-这次的症状是：Pi 上能看到手机大量的国内 IPv4 流量在走代理，但 x.com/Google **一个 IPv4 连接都没有**；手机 Wi-Fi 详情里有一个 `2409:` 开头的全局 IPv6 地址。关掉路由器的 IPv6/RA、重新连接手机之后，IPv6 只剩 `fe80:`，问题才彻底消失。
+这次的症状是：Pi 上能看到手机大量的国内 IPv4 流量在走代理，但 x.com/Google **一个 IPv4 连接都没有**；手机 Wi-Fi 详情里有一个 `2409:` 开头的全局 IPv6 地址。关掉 AX3 的 IPv6/RA、重新连接手机之后，全局地址消失，只剩本链路使用的 `fe80:`，问题才彻底消失。`fe80:` 仍然存在是正常现象，不等于 IPv6/RA 又被打开。
 
 所以排查顺序应该是：
 
@@ -336,9 +402,9 @@ net.ipv4.conf.wlan0.send_redirects=0
 
 如果路由器无法关闭 IPv6，那就要么让 Pi 接管 IPv6（RA + IPv6 TPROXY，工作量大得多），要么在客户端侧限制 IPv6。只靠 `dns.ipv6: false` 是不够的。
 
-## 十二、踩坑七：DHCP ACK 了，不代表客户端用了
+## 十二、历史踩坑七：DHCP ACK 了，不代表客户端用了
 
-有一个瞬间很容易让人误判：Pi 的日志明确显示：
+有一个瞬间很容易让人误判。在早期 DHCP 接管实验里，Pi 的日志明确显示：
 
 ```text
 DHCPREQUEST 192.168.3.53 <手机 MAC>
@@ -356,7 +422,7 @@ DHCPACK 192.168.3.53 <手机 MAC>
 
 最后的排查方法很土但有效：**直接看客户端 Wi-Fi 详情里的 IP / 网关 / DNS / IPv6**，不要只看 Pi 的 ACK。Pi 的租约文件证明“服务器发出了什么”，客户端详情证明“客户端实际用了什么”，这两件事必须分开验证。
 
-这次手机坚持保留旧地址 `.53`，我们最终把 Pi 的租约固定成 `.54`，并在手机上设置静态 `.54` + 网关/DNS `.27`，才把状态稳定下来。IP 数值没变并不代表失败——固定租约本来就会让它保持同一个地址。
+当时手机坚持保留旧地址 `.53`，实验阶段曾把它固定成 `.54`，并在手机上设置静态 `.54` + 网关/DNS `.27`，才把状态稳定下来。这个结果属于旧 DHCP 接管路径；当前方案不再让 Pi 发租约，客户端按需手动覆盖网关/DNS，自己的 IP 仍由 AX3 DHCP 或客户端静态配置决定。
 
 ## 十三、自动切换最优新加坡节点
 
@@ -408,14 +474,22 @@ proxy-groups:
 
 ## 十四、验证清单
 
-这套东西涉及 DNS、DHCP、路由、防火墙和客户端五层，出问题时不要凭感觉，按层验证：
+这套东西涉及 DNS、地址、路由、防火墙和客户端五层，出问题时不要凭感觉，按层验证。尤其要把“systemd active”和“端口正在监听”分开看：eth0 没有 carrier 时，netfilter preflight 可能失败，controller 仍绑定 `.27` 也不代表端口可用。
 
 **服务层**
 
 ```bash
 systemctl is-active clash-for-linux sumpi-dns sumpi-gateway-netfilter
 systemctl is-enabled clash-for-linux sumpi-dns sumpi-gateway-netfilter
+ip -br -4 addr show dev eth0
+ip -br -4 addr show dev wlan0
+ip route
+iw dev wlan0 link
 ```
+
+![systemd 服务 active 不等于端口已经监听](../assets/sumpi-mihomo-side-router-illustrations/04-active-versus-listening.png)
+
+_图：服务状态只能说明进程或 unit 的状态，仍需用地址、端口和 HTTP 请求验证实际可用性。_
 
 **TPROXY 层**
 
@@ -432,14 +506,20 @@ iptables -S FORWARD | head
 dig @192.168.3.27 www.google.com
 dig @192.168.3.27 AAAA x.com
 dig @127.0.0.1 -p 1053 www.google.com
+ss -lunp | grep -E ':(53|67|547)\b'
 ```
+
+当前预期是 UDP 53 有监听，UDP 67/547 没有监听。Pi 的 `eth0` 静态地址必须为 `.27/24`，网关和本机 DNS 为 `.1`；`wlan0` 地址由 AX3 DHCP 分配，`.25`、`.7` 都只能当历史租约看待。
 
 **代理层**
 
 ```bash
 curl -x http://192.168.3.27:7890 -I https://www.google.com
 curl -x http://192.168.3.27:7890 -I https://x.com
+curl -fsS -o /dev/null -w '%{http_code}\n' http://192.168.3.27:9090/ui/
 ```
+
+面板用 `GET /ui/` 验证，返回 `200` 即可；某些实现对 `HEAD` 返回 `405`，这不等于面板挂掉。
 
 **透明转发层**
 
@@ -447,10 +527,13 @@ curl -x http://192.168.3.27:7890 -I https://x.com
 
 **客户端层**
 
-- Wi-Fi 详情里网关/DNS 是否为 `192.168.3.27`；
+- 需要走旁路由的客户端是否把网关/DNS 手动设为 `192.168.3.27`，且自己的 IP 没有误填成 `.27`；
+- 其他客户端是否仍从 AX3 DHCP 获得网关/DNS `.1`；
 - IPv6 是否只剩 `fe80:`；
 - 是否能直接打开 `https://www.google.com` 和 `https://x.com`；
 - 出问题时在 Pi 上抓 `tcpdump`，看客户端到底有没有把包发过来、DNS 发给了谁。
+
+对单一目标的超时要和整条出口分开判断。本次 `118.193.240.37:443` 从 Pi 以源地址 `.27`、网关 `.1` 发起 TCP 连接，两次约 5 秒超时；Pi 直连 `https://www.baidu.com` 返回 `200`，Windows 直接连同一目标也约 4 秒超时，其他访问正常。因此只能记为单一目标或路径不可达，不能据此断言旁路由出口整体故障，也不能直接推出必须修改代理规则。当前规则中保留 `RULE-SET,cncidr,DIRECT,no-resolve`，遇到类似现象先做对照测试。
 
 ## 十五、回滚与维护
 
@@ -460,11 +543,12 @@ curl -x http://192.168.3.27:7890 -I https://x.com
 sudo /usr/local/libexec/sumpi-gateway-rollback --confirm
 ```
 
-回滚脚本会恢复安装时的文件备份，停止 dnsmasq/netfilter，并删除自己创建的 nft 表、策略路由和 FORWARD 规则。之后需要回到 AX3 Pro 管理页，重新打开 DHCP 和 IPv6。
+回滚脚本会恢复安装时的文件备份，停止 dnsmasq/netfilter，并删除自己创建的 nft 表、策略路由和 FORWARD 规则。它对应的是早期 DHCP 接管实验；当前 AX3 DHCP 本来就保持开启，IPv6/RA 按当前网络策略保持关闭，不要把“回滚后重新打开 IPv6”当成当前方案的必需步骤。
 
 日常维护要注意：
 
-- 路由器重启后，确认 DHCP 和 IPv6 没有自己变回开启；
+- 路由器重启后，确认 DHCP 仍开启、IPv6/RA 仍按预期关闭；
+- 维持普通/备用与旁路由两个不同的 SSID，并确认客户端分别保存了自动 DHCP 或手动网关/DNS；Pi 异常时先切到自动 DHCP 的备用 SSID，确认网关/DNS 为 `.1`，再排查 Pi；
 - 修改运行时配置前先备份，订阅更新可能覆盖 `config.yaml`；
 - 重启 `clash-for-linux` 会连带重启 `sumpi-gateway-netfilter`，重启后检查 TPROXY 和 FORWARD 是否都在；
 - systemd `ExecStart` 指向的脚本必须可执行。曾经因为把脚本改成 `0644`，服务报 `203/EXEC`，表现为“配置全对但 netfilter 起不来”；
@@ -474,15 +558,15 @@ sudo /usr/local/libexec/sumpi-gateway-rollback --confirm
 
 如果只让我留下几条结论，会是这些：
 
-1. **全网只能有一个 DHCP 服务器。** 两个 authoritative DHCP 互抢，会让整个网络表现出随机、间歇性的故障，非常难查。
-2. **DHCP ACK 不等于客户端采用了租约。** 服务器日志和客户端 Wi-Fi 详情必须分开验证。
-3. **迁移期要让 DHCP 池覆盖旧租约。** 否则客户端会死守旧 IP，在 NAK 和 DISCOVER 之间循环。
-4. **`dhcp-authoritative` 是双刃剑。** 只有一个 DHCP 服务器时很好用，有第二个服务器时会把问题放大。
-5. **先在包层面定位，再加兼容选项。** `dhcp-broadcast` 这种“看起来有用”的开关，在错误阶段只会让现象更迷惑。
-6. **TPROXY 只处理它匹配到的地址族和接口。** IPv6、`wlan0`、本机流量，都可能绕过你以为已经覆盖的规则。
-7. **Docker 的 `FORWARD DROP` 会咬人。** 加一条窄的 accept，不要动全局策略。
-8. **同网段双网卡要收敛 ARP。** `arp_ignore=1`、`arp_announce=2`，必要时加 `send_redirects=0`。
+1. **当前只保留一个 DHCP 服务器。** AX3 DHCP 保持开启，Pi 的 dnsmasq 只监听 DNS；两个 authoritative DHCP 互抢是历史实验的故障来源。这样在 AX3 仍能拨号和供电时，Pi 故障不会切断其他家人的自动地址分配和正常上网。
+2. **Pi 的静态地址必须由 Pi 自己配置。** `eth0=.27/24`、网关/DNS `.1` 写在 networkd 配置里；dnsmasq 的 `dhcp-host` 预留不能替代静态地址。
+3. **`.27` 应在 AX3 DHCP 池中排除或保留。** `wlan0` 的 `.25`、`.7` 都是动态租约，不能当固定管理入口，更不能当手机网关。
+4. **客户端按需手动选择旁路由。** 用两个名称不同的 SSID 作为普通/备用和旁路由入口；选中的设备把网关/DNS 改成 `.27`，自己的 IP 保持有效且不冲突，其他设备或故障时切回备用 SSID 使用 `.1`。
+5. **TPROXY 只处理它匹配到的地址族和接口。** IPv6、`wlan0`、本机流量，都可能绕过你以为已经覆盖的规则；服务 active 也不等于端口已经监听。
+6. **Docker 的 `FORWARD DROP` 会咬人。** 加一条窄的 accept，不要动全局策略。
+7. **同网段双网卡要收敛 ARP 和路由。** `arp_ignore=1`、`arp_announce=2`，并给 eth0/wlan0 设置明确的 metric。
+8. **IPv6/RA 关闭不等于链路本地 IPv6 消失。** `fe80::` 可作为同链路的恢复入口，Windows 和 OpenSSH 都要正确处理作用域 `%ifIndex`。
 9. **保留回滚路径和配置备份。** 旁路由不是一次性脚本，路由器固件更新、订阅更新、系统重启都会改变状态。
 10. **节点自动切换和流量分流是两件事。** `url-test` 解决“选哪个节点”，规则解决“哪些流量走代理”。
 
-最后，这套方案有一个前提：主路由器必须能关闭 DHCP 和 IPv6/RA。如果路由器不允许关闭 DHCP，那“接管 DHCP”这条路走不通，需要换方案，比如让树莓派做主路由/AP，或者用 ARP 方式接管网关。先把前提确认清楚，比后面抓十次包都省事。
+最后，当前方案的前提是：AX3 DHCP 保持开启，IPv6/RA 保持关闭；普通/备用与旁路由入口使用两个名称不同的 SSID，前者自动使用 `.1`，后者由选中的客户端手动把网关/DNS 指向 `.27`；Pi 的 `eth0` 有明确的静态 `.27/24` 配置，dnsmasq 只提供 `.27:53` 的 DNS。如果以后重新尝试 DHCP 接管，必须把它当成另一套方案，先准备单独的回滚路径和抓包验证。
