@@ -16,7 +16,7 @@ comments: false
     <div class="category-page__section-title"><h2 id="category-articles-title">文章</h2><span>按时间倒序</span></div>
     <ol class="category-article-list">
       <li>
-        <a class="category-article__title" href="../2026/sumpi-mihomo-side-router.html">把树莓派变成家里的透明代理旁路由：Mihomo + TPROXY + DNS-only 排障记</a>
+        <a class="category-article__title" href="../2026/sumpi-mihomo-side-router.html">树莓派旁路由实战：Mihomo 透明代理与双 Wi-Fi 故障备用</a>
         <div class="category-article__meta">
           <time datetime="2026-10-20">2026 · 10/20</time>
           <span class="category-article__tags" aria-label="文章标签">
