@@ -7,7 +7,7 @@ tags:
 
 | Time  | Name                                                         | Tags           |
 | ----- | ------------------------------------------------------------ | -------------- |
-| 10/20 | [把树莓派变成家里的透明代理旁路由：Mihomo + TPROXY + DHCP 接管踩坑记](./sumpi-mihomo-side-router.md) | 树莓派/Mihomo/旁路由/透明代理/DHCP |
+| 10/20 | [把树莓派变成家里的透明代理旁路由：Mihomo + TPROXY + DNS-only 排障记](./sumpi-mihomo-side-router.md) | 树莓派/Mihomo/旁路由/透明代理/DHCP/DNS |
 | 07/24 | [梁文锋投资人会议文字稿修正稿](./liang-wenfeng-investor-meeting-transcript.md) | DeepSeek/梁文锋/投资人会议/AI |
 | 07/22 | [AI 时代的真正竞争力：一个语音按钮与一套可进化的 Harness](./ai-agent-harness-sharing.md) · [HTML](./ai-agent-harness-sharing.html) | AI/Agent/Harness/Skills/语音输入 |
 | 07/21 | [AI 时代，如何保持个人与团队的顶尖竞争力](./ai-era-personal-team-competitiveness.md) | AI/团队协作/竞争力/方法论 |
