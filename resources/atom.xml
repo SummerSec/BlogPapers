@@ -2,15 +2,15 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
   <id>https://sumsec.me/</id>
   <title>SUMSEC</title>
-  <updated>2026-10-21T12:02:12Z</updated>
+  <updated>2026-10-21T12:13:58Z</updated>
   <link href="https://sumsec.me/resources/atom.xml" rel="self" />
   <link href="https://sumsec.me" rel="alternate" />
   <generator uri="https://github.com/SummerSec/BlogPapers" version="1">BlogPapers generate_feed_and_sitemap.py</generator>
   <subtitle>像清水一般清澈透明</subtitle>
   <entry>
     <id>https://sumsec.me/2026/sumpi-mihomo-side-router.html</id>
-    <title>把树莓派变成家里的透明代理旁路由：Mihomo + TPROXY + DNS-only 排障记</title>
-    <updated>2026-10-21T12:00:38Z</updated>
+    <title>树莓派旁路由实战：Mihomo 透明代理与双 Wi-Fi 故障备用</title>
+    <updated>2026-10-21T12:12:51Z</updated>
     <link href="https://sumsec.me/2026/sumpi-mihomo-side-router.html" rel="alternate" />
   </entry>
   <entry>
