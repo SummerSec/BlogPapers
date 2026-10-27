@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-10-27 05:11:45 UTC；共 30 个项目，累计 7,997 Stars。
+> 数据生成时间：2026-10-27 12:19:15 UTC；共 30 个项目，累计 7,997 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -115,7 +115,7 @@ comments: false
     <td class="num">12</td>
     <td class="project"><a href="https://github.com/SummerSec/BlogPapers">BlogPapers</a></td>
     <td class="num">61</td>
-    <td>2026-10-26</td>
+    <td>2026-10-27</td>
     <td class="readme-links"><a href="./open-source/BlogPapers/README.html">README</a></td>
     <td>个人博客网站</td>
   </tr>
@@ -187,7 +187,7 @@ comments: false
     <td class="num">21</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar">DeepSonar</a></td>
     <td class="num">9</td>
-    <td>2026-10-22</td>
+    <td>2026-10-27</td>
     <td class="readme-links"><a href="./open-source/DeepSonar/README.html">README</a></td>
     <td>DeepSonar 深流循迹 · 让复杂执行持续收敛</td>
   </tr>
@@ -251,7 +251,7 @@ comments: false
     <td class="num">29</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar-Skills">DeepSonar-Skills</a></td>
     <td class="num">1</td>
-    <td>2026-10-26</td>
+    <td>2026-10-27</td>
     <td class="readme-links"><a href="./open-source/DeepSonar-Skills/README.html">README</a></td>
     <td>DeepFlowHunter security agent skills: vulnerability definitions + whitebox/blackbox plugins by vuln type (Critical/High report policy)</td>
   </tr>
