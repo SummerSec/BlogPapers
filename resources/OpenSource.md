@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-10-29 05:54:06 UTC；共 30 个项目，累计 7,997 Stars。
+> 数据生成时间：2026-10-29 13:10:25 UTC；共 30 个项目，累计 7,995 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -34,7 +34,7 @@ comments: false
   <tr>
     <td class="num">2</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringBootExploit">SpringBootExploit</a></td>
-    <td class="num">1,889</td>
+    <td class="num">1,888</td>
     <td>2024-01-15</td>
     <td class="readme-links"><a href="./open-source/SpringBootExploit/README.html">README</a></td>
     <td>项目是根据LandGrey/SpringBootVulExploit清单编写，目的hvv期间快速利用漏洞、降低漏洞利用门槛。</td>
@@ -58,7 +58,7 @@ comments: false
   <tr>
     <td class="num">5</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringExploit">SpringExploit</a></td>
-    <td class="num">447</td>
+    <td class="num">446</td>
     <td>2022-06-14</td>
     <td class="readme-links"><a href="./open-source/SpringExploit/README.html">README</a></td>
     <td>🚀 一款为了学习go而诞生的漏洞利用工具</td>
@@ -115,7 +115,7 @@ comments: false
     <td class="num">12</td>
     <td class="project"><a href="https://github.com/SummerSec/BlogPapers">BlogPapers</a></td>
     <td class="num">61</td>
-    <td>2026-10-28</td>
+    <td>2026-10-29</td>
     <td class="readme-links"><a href="./open-source/BlogPapers/README.html">README</a></td>
     <td>个人博客网站</td>
   </tr>
@@ -187,7 +187,7 @@ comments: false
     <td class="num">21</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar">DeepSonar</a></td>
     <td class="num">9</td>
-    <td>2026-10-28</td>
+    <td>2026-10-29</td>
     <td class="readme-links"><a href="./open-source/DeepSonar/README.html">README</a></td>
     <td>DeepSonar 深流循迹 · 让复杂执行持续收敛</td>
   </tr>
@@ -195,7 +195,7 @@ comments: false
     <td class="num">22</td>
     <td class="project"><a href="https://github.com/SummerSec/SumSec-Skills">SumSec-Skills</a></td>
     <td class="num">8</td>
-    <td>2026-10-28</td>
+    <td>2026-10-29</td>
     <td class="readme-links"><a href="./open-source/SumSec-Skills/README.html">README</a></td>
     <td>SummerSec 个人自定义Skill仓库</td>
   </tr>
@@ -251,7 +251,7 @@ comments: false
     <td class="num">29</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar-Skills">DeepSonar-Skills</a></td>
     <td class="num">1</td>
-    <td>2026-10-27</td>
+    <td>2026-10-29</td>
     <td class="readme-links"><a href="./open-source/DeepSonar-Skills/README.html">README</a></td>
     <td>DeepFlowHunter security agent skills: vulnerability definitions + whitebox/blackbox plugins by vuln type (Critical/High report policy)</td>
   </tr>
