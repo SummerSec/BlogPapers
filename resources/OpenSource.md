@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-10-29 22:48:37 UTC；共 30 个项目，累计 7,995 Stars。
+> 数据生成时间：2026-10-30 05:55:22 UTC；共 30 个项目，累计 7,999 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -26,7 +26,7 @@ comments: false
   <tr>
     <td class="num">1</td>
     <td class="project"><a href="https://github.com/SummerSec/ShiroAttack2">ShiroAttack2</a></td>
-    <td class="num">2,636</td>
+    <td class="num">2,637</td>
     <td>2026-06-04</td>
     <td class="readme-links"><a href="./open-source/ShiroAttack2/README.html">README</a> <a href="./open-source/ShiroAttack2/README_en.html">README_en</a></td>
     <td>shiro反序列化漏洞综合利用（仅限授权测试使用）</td>
@@ -34,7 +34,7 @@ comments: false
   <tr>
     <td class="num">2</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringBootExploit">SpringBootExploit</a></td>
-    <td class="num">1,888</td>
+    <td class="num">1,889</td>
     <td>2024-01-15</td>
     <td class="readme-links"><a href="./open-source/SpringBootExploit/README.html">README</a></td>
     <td>项目是根据LandGrey/SpringBootVulExploit清单编写，目的hvv期间快速利用漏洞、降低漏洞利用门槛。</td>
@@ -42,7 +42,7 @@ comments: false
   <tr>
     <td class="num">3</td>
     <td class="project"><a href="https://github.com/SummerSec/JavaLearnVulnerability">JavaLearnVulnerability</a></td>
-    <td class="num">942</td>
+    <td class="num">943</td>
     <td>2023-06-14</td>
     <td class="readme-links"><a href="./open-source/JavaLearnVulnerability/README.html">README</a></td>
     <td>Java漏洞学习笔记 Deserialization Vulnerability</td>
@@ -106,7 +106,7 @@ comments: false
   <tr>
     <td class="num">11</td>
     <td class="project"><a href="https://github.com/SummerSec/BypassSuper">BypassSuper</a></td>
-    <td class="num">109</td>
+    <td class="num">110</td>
     <td>2021-02-08</td>
     <td class="readme-links"><a href="./open-source/BypassSuper/README.html">README</a></td>
     <td>Bypass 403 or 401 or 404</td>
@@ -131,7 +131,7 @@ comments: false
     <td class="num">14</td>
     <td class="project"><a href="https://github.com/SummerSec/SummerSec">SummerSec</a></td>
     <td class="num">36</td>
-    <td>2026-10-29</td>
+    <td>2026-10-30</td>
     <td class="readme-links"><a href="./open-source/SummerSec/README.html">README</a></td>
     <td></td>
   </tr>
@@ -187,7 +187,7 @@ comments: false
     <td class="num">21</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar">DeepSonar</a></td>
     <td class="num">9</td>
-    <td>2026-10-29</td>
+    <td>2026-10-30</td>
     <td class="readme-links"><a href="./open-source/DeepSonar/README.html">README</a></td>
     <td>DeepSonar 深流循迹 · 让复杂执行持续收敛</td>
   </tr>
@@ -211,7 +211,7 @@ comments: false
     <td class="num">24</td>
     <td class="project"><a href="https://github.com/SummerSec/github-profile">github-profile</a></td>
     <td class="num">3</td>
-    <td>2026-10-29</td>
+    <td>2026-10-30</td>
     <td class="readme-links"><a href="./open-source/github-profile/README.html">README</a></td>
     <td></td>
   </tr>
