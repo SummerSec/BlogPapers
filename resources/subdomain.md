@@ -38,7 +38,7 @@ tags:
 
 <!--CLOUDFLARE_DNS_SYNC_BEGIN-->
 
-> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **78** 条原始记录，**66** 个主机名）。TXT 等内容已截断。
+> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **79** 条原始记录，**67** 个主机名）。TXT 等内容已截断。
 
 | 主机名 | 类型 | 内容（节选） | Proxied |
 | ------ | ---- | ------------ | ------- |
@@ -87,6 +87,7 @@ tags:
 | [serverless-dns.sumsec.me](https://serverless-dns.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
 | [shiro.sumsec.me](https://shiro.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [sl.sumsec.me](https://sl.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
+| [socks.sumsec.me](https://socks.sumsec.me/) | CNAME | CNAME: 8272eafa-d765-46ca-a43b-a39642558e8b.cfargotunn… | 是 |
 | [spat.sumsec.me](https://spat.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [steam.sumsec.me](https://steam.sumsec.me/) | CNAME | CNAME: summersec.github.io | 是 |
 | [sumpi.sumsec.me](https://sumpi.sumsec.me/) | CNAME | CNAME: 7d8277ef-c7e4-4d3d-bb96-81e072211c1d.cfargotunn… | 是 |
