@@ -38,7 +38,7 @@ tags:
 
 <!--CLOUDFLARE_DNS_SYNC_BEGIN-->
 
-> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **79** 条原始记录，**67** 个主机名）。TXT 等内容已截断。
+> 以下由 `_scripts/fetch_cloudflare_subdomains.py` 根据 Cloudflare API 生成（共 **77** 条原始记录，**65** 个主机名）。TXT 等内容已截断。
 
 | 主机名 | 类型 | 内容（节选） | Proxied |
 | ------ | ---- | ------------ | ------- |
@@ -101,8 +101,6 @@ tags:
 | [ubu.sumsec.me](https://ubu.sumsec.me/) | CNAME | CNAME: 8272eafa-d765-46ca-a43b-a39642558e8b.cfargotunn… | 是 |
 | [ubuntu.sumsec.me](https://ubuntu.sumsec.me/) | CNAME | CNAME: c424a3e4-916b-4174-8d44-c9e59b54fbb5.cfargotunn… | 是 |
 | [uvnc.sumsec.me](https://uvnc.sumsec.me/) | CNAME | CNAME: b5c0ffe9-340b-41ff-9de9-b391adb59334.cfargotunn… | 是 |
-| [vless.sumsec.me](https://vless.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
-| [vless2sub.sumsec.me](https://vless2sub.sumsec.me/) | AAAA | AAAA: 100:: | 是 |
 | [vnc.sumsec.me](https://vnc.sumsec.me/) | CNAME | CNAME: c424a3e4-916b-4174-8d44-c9e59b54fbb5.cfargotunn… | 是 |
 | [vps.sumsec.me](https://vps.sumsec.me/) | A | A: 107.175.245.109 | 否 |
 | [webcheck.sumsec.me](https://webcheck.sumsec.me/) | CNAME | CNAME: cute-hotteok-8af4f6.netlify.app | 是 |
