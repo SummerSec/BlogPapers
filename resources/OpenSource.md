@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-11-10 07:25:39 UTC；共 30 个项目，累计 8,008 Stars。
+> 数据生成时间：2026-11-10 19:47:54 UTC；共 30 个项目，累计 8,011 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -42,7 +42,7 @@ comments: false
   <tr>
     <td class="num">3</td>
     <td class="project"><a href="https://github.com/SummerSec/JavaLearnVulnerability">JavaLearnVulnerability</a></td>
-    <td class="num">943</td>
+    <td class="num">944</td>
     <td>2023-06-14</td>
     <td class="readme-links"><a href="./open-source/JavaLearnVulnerability/README.html">README</a></td>
     <td>Java漏洞学习笔记 Deserialization Vulnerability</td>
@@ -50,7 +50,7 @@ comments: false
   <tr>
     <td class="num">4</td>
     <td class="project"><a href="https://github.com/SummerSec/learning-codeql">learning-codeql</a></td>
-    <td class="num">800</td>
+    <td class="num">801</td>
     <td>2022-03-18</td>
     <td class="readme-links"><a href="./open-source/learning-codeql/README.html">README</a></td>
     <td>CodeQL Java 全网最全的中文学习资料</td>
@@ -58,7 +58,7 @@ comments: false
   <tr>
     <td class="num">5</td>
     <td class="project"><a href="https://github.com/SummerSec/SpringExploit">SpringExploit</a></td>
-    <td class="num">446</td>
+    <td class="num">447</td>
     <td>2022-06-14</td>
     <td class="readme-links"><a href="./open-source/SpringExploit/README.html">README</a></td>
     <td>🚀 一款为了学习go而诞生的漏洞利用工具</td>
@@ -171,7 +171,7 @@ comments: false
     <td class="num">19</td>
     <td class="project"><a href="https://github.com/SummerSec/Gen-Image">Gen-Image</a></td>
     <td class="num">11</td>
-    <td>2026-11-05</td>
+    <td>2026-11-10</td>
     <td class="readme-links"><a href="./open-source/Gen-Image/README.html">README</a></td>
     <td>基于OPENAI 的 GPT Image 模型前端图像生成工作台</td>
   </tr>
