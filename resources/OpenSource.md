@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-11-12 07:20:09 UTC；共 30 个项目，累计 8,012 Stars。
+> 数据生成时间：2026-11-12 19:59:34 UTC；共 30 个项目，累计 8,011 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -42,7 +42,7 @@ comments: false
   <tr>
     <td class="num">3</td>
     <td class="project"><a href="https://github.com/SummerSec/JavaLearnVulnerability">JavaLearnVulnerability</a></td>
-    <td class="num">944</td>
+    <td class="num">943</td>
     <td>2023-06-14</td>
     <td class="readme-links"><a href="./open-source/JavaLearnVulnerability/README.html">README</a></td>
     <td>Java漏洞学习笔记 Deserialization Vulnerability</td>
@@ -115,7 +115,7 @@ comments: false
     <td class="num">12</td>
     <td class="project"><a href="https://github.com/SummerSec/BlogPapers">BlogPapers</a></td>
     <td class="num">61</td>
-    <td>2026-11-11</td>
+    <td>2026-11-12</td>
     <td class="readme-links"><a href="./open-source/BlogPapers/README.html">README</a></td>
     <td>个人博客网站</td>
   </tr>
