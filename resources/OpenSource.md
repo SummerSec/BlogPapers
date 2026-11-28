@@ -8,7 +8,7 @@ comments: false
 
 这里按 Star 数量从高到低列出 [SummerSec](https://github.com/SummerSec) 名下公开、非 fork 的 GitHub 仓库。README 链接会同步为本站镜像页，原文中的相对图片会尽量本地化。
 
-> 数据生成时间：2026-11-27 21:23:04 UTC；共 30 个项目，累计 8,011 Stars。
+> 数据生成时间：2026-11-28 07:56:16 UTC；共 30 个项目，累计 8,011 Stars。
 
 <div class="open-source-table-wrap">
 <table class="open-source-table">
@@ -131,7 +131,7 @@ comments: false
     <td class="num">14</td>
     <td class="project"><a href="https://github.com/SummerSec/SummerSec">SummerSec</a></td>
     <td class="num">36</td>
-    <td>2026-11-27</td>
+    <td>2026-11-28</td>
     <td class="readme-links"><a href="./open-source/SummerSec/README.html">README</a></td>
     <td></td>
   </tr>
@@ -169,27 +169,27 @@ comments: false
   </tr>
   <tr>
     <td class="num">19</td>
-    <td class="project"><a href="https://github.com/SummerSec/Gen-Image">Gen-Image</a></td>
-    <td class="num">11</td>
-    <td>2026-11-24</td>
-    <td class="readme-links"><a href="./open-source/Gen-Image/README.html">README</a></td>
-    <td>基于OPENAI 的 GPT Image 模型前端图像生成工作台</td>
-  </tr>
-  <tr>
-    <td class="num">20</td>
     <td class="project"><a href="https://github.com/SummerSec/DeepSonar">DeepSonar</a></td>
     <td class="num">11</td>
-    <td>2026-11-27</td>
+    <td>2026-11-28</td>
     <td class="readme-links"><a href="./open-source/DeepSonar/README.html">README</a></td>
     <td>DeepSonar 深流循迹 · 让复杂执行持续收敛</td>
   </tr>
   <tr>
-    <td class="num">21</td>
+    <td class="num">20</td>
     <td class="project"><a href="https://github.com/SummerSec/template">template</a></td>
     <td class="num">10</td>
     <td>2022-12-26</td>
     <td class="readme-links"><a href="./open-source/template/README.html">README</a></td>
     <td>个人使用模板仓库</td>
+  </tr>
+  <tr>
+    <td class="num">21</td>
+    <td class="project"><a href="https://github.com/SummerSec/Gen-Image">Gen-Image</a></td>
+    <td class="num">10</td>
+    <td>2026-11-24</td>
+    <td class="readme-links"><a href="./open-source/Gen-Image/README.html">README</a></td>
+    <td>基于OPENAI 的 GPT Image 模型前端图像生成工作台</td>
   </tr>
   <tr>
     <td class="num">22</td>
@@ -202,7 +202,7 @@ comments: false
   <tr>
     <td class="num">23</td>
     <td class="project"><a href="https://github.com/SummerSec/OpenChat">OpenChat</a></td>
-    <td class="num">3</td>
+    <td class="num">4</td>
     <td>2026-05-30</td>
     <td class="readme-links"><a href="./open-source/OpenChat/README.html">README</a> <a href="./open-source/OpenChat/README_en.html">README_en</a></td>
     <td></td>
@@ -211,7 +211,7 @@ comments: false
     <td class="num">24</td>
     <td class="project"><a href="https://github.com/SummerSec/github-profile">github-profile</a></td>
     <td class="num">3</td>
-    <td>2026-11-27</td>
+    <td>2026-11-28</td>
     <td class="readme-links"><a href="./open-source/github-profile/README.html">README</a></td>
     <td></td>
   </tr>
